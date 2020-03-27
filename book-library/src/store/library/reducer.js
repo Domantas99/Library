@@ -1,8 +1,18 @@
+import {GOT_BOOK_LIST} from './actionTypes';
 
-const initialState = {};
+const initialState = {
+  bookData: null
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case GOT_BOOK_LIST: {
+      return {
+        ...state,
+        bookData: action.payload
+      };
+    }
+
     default: {
       return state;
     }
