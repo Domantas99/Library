@@ -1,0 +1,27 @@
+.book-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.book-list-item {
+
+    &--cover {
+        height: 300px;
+        width: 200px;
+        margin: 2em;
+        margin-bottom: 1em;
+    }
+
+    &--title {
+        margin: 0 2rem 0 2rem;
+        font-size: 2em;
+        font-weight: bold;
+        display: block;
+    }
+
+    &--author {
+        margin: 0 2rem 0 2rem;
+        color: grey;
+        text-decoration: underline;
+    }
+}

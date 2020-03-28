@@ -7,7 +7,7 @@ export default () => {
 
   return (
     <div>
-      <h1>This is library</h1>
+      <h1>Library</h1>
       <BookList data={bookData}/>
     </div>
   )
