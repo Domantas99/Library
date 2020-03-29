@@ -1,7 +1,7 @@
 import {GOT_BOOK_LIST} from './actionTypes';
 
 const initialState = {
-  bookData: null
+  bookData: []
 };
 
 export default (state = initialState, action) => {
