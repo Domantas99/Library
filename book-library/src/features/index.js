@@ -1,6 +1,5 @@
 import { Test } from './test';
-import { Library } from './library';
-import { RegisterBook } from './register-book';
+import { Library, RegisterBook } from './library';
 
 export {
   Test,

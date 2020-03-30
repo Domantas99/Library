@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Test, Library } from './features';
-import { RegisterBook } from './features';
+import { Test, Library, RegisterBook } from './features';
 
 function App() {
   return (
@@ -9,7 +8,7 @@ function App() {
       <Route path={'/test'} component={Test} />
       <Route path={'/library'} component={Library} />
       <Route path={'/register-book'} component={RegisterBook} />
-      <Redirect exact from={'/'} to={'/register-book'} />
+      <Redirect exact from={'/'} to={'/test'} />
     </Switch>
   );
 }
