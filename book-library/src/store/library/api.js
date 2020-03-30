@@ -3,7 +3,7 @@
 export const getBookList = () => {
     return [
         {
-            Id: 0,
+            Id: 1,
             Title: "IT",
             Author: "Stephen King",
             CoverPictureUrl: "https://picsum.photos/200/300?random=1",
@@ -11,7 +11,7 @@ export const getBookList = () => {
             DateAdded: "2020-03-28"
         },
         {
-            Id: 1,
+            Id: 2,
             Title: "Storm Front",
             Author: "Jim Butcher",
             CoverPictureUrl: "https://picsum.photos/200/300?random=2",
@@ -19,7 +19,7 @@ export const getBookList = () => {
             DateAdded: "2020-03-28"
         },
         {
-            Id: 2,
+            Id: 3,
             Title: "The Colour Of Magic",
             Author: "Terry Pratchett",
             CoverPictureUrl: "https://picsum.photos/200/300?random=3",
