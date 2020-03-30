@@ -1,19 +1,8 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
+import {useSelector, useDispatch} from 'react-redux';
 import BookListItem from "./BookListItem";
-import { connect } from "react-redux";
-import {GET_BOOK_LIST} from '../store/library/actionTypes'
-
-const mapStateToProps = state => {
-    return {
-        data: state.library.bookData
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        refresh: () => dispatch({type: GET_BOOK_LIST})
-    }
-}
+import {getBookList} from "../store/library/actions"
+import { useEffect } from "react";
 
 const getBookSorter = (sort_field, sort_direction) => {
     return (a, b) => {
@@ -21,52 +10,51 @@ const getBookSorter = (sort_field, sort_direction) => {
     }
 }
 
-const getBookComponents = (data, sort_field, sort_direction) => {
+const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data].sort(getBookSorter(sort_field, sort_direction)).map((element, index) => {
         return (<BookListItem key={index} data={element}/>)}
     );
 }
 
-class BookList extends Component {
+function BookList(){
+    const dispatch = useDispatch();
+    const bookData = useSelector(state => state.library.bookData);
+    const [sortField, setSortField] = useState('DateAdded');
+    const [sortDirection, setSortDirection] = useState(-1);
+    const [bookComponents, setBookComponents] = useState([]);
 
-    constructor(props) {
-        super(props);
-
-        this.state = {sort_field: "DateAdded", sort_direction: -1};
-        this.handleChangeSortField = this.handleChangeSortField.bind(this);
-        this.handleChangeSortDirection = this.handleChangeSortDirection.bind(this);
+    const handleChangeSortField = (event) => {
+        setSortField(event.target.value);
     }
 
-    handleChangeSortField(event){
-        this.setState({sort_field: event.target.value});
-        this.forceUpdate();
+    const handleChangeSortDirection = (event) => {
+        setSortDirection(event.target.value);
     }
 
-    handleChangeSortDirection(event){
-        this.setState({sort_direction: parseInt(event.target.value)});
-        this.forceUpdate();
-    }
+    useEffect(() => {
+            dispatch(getBookList())
+        }, [dispatch]);
 
-    componentDidMount = () => {
-        this.props.refresh();
-    }
-    
-    render = () => (
+    useEffect(()=> {
+        setBookComponents(createBookComponents(bookData, sortField, sortDirection));
+    }, [bookData, sortDirection, sortField]);
+
+    return (
         <div className="library">
-            <select id="book-list-sorting-field" defaultValue="DateAdded"onChange={this.handleChangeSortField}>
+            <select id="book-list-sorting-field" defaultValue={sortField} onChange={handleChangeSortField}>
                 <option value="Title">Title</option>
                 <option value="ReleaseDate">Release Date</option>
                 <option value="DateAdded">Date Added</option>
             </select>
-            <select id="book-list-sorting-direction" defaultValue="-1" onChange={this.handleChangeSortDirection}>
+            <select id="book-list-sorting-direction" defaultValue={`${sortDirection}`} onChange={handleChangeSortDirection}>
                 <option value="1">Ascending</option>
                 <option value="-1">Descending</option>
             </select>
             <div className="book-list">
-                {(this.props.data)? getBookComponents(this.props.data, this.state.sort_field, this.state.sort_direction): null} 
+                {bookComponents} 
             </div>
         </div>
-    )
+    );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookList);
+export default BookList;
