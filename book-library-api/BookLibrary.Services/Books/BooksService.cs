@@ -34,5 +34,16 @@ namespace BookLibrary.Services.Books
 
             return new ResponseResult<Book> { Error = errorFlag, Message = message, ReturnResult = book };
         }
+
+        public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
+        {
+            pattern = pattern.ToLower();
+            var filteredBooks = _context.Book.Where(book => book.Title.ToLower().Contains(pattern) ||
+                                                            book.Author.ToLower().Contains(pattern) ||
+                                                            book.Isbn.ToLower().Contains(pattern))
+                                                            .ToList();
+
+            return new ResponseResult<ICollection<Book>> { Error = false, Message = "Books filtered by patern: " + pattern  , ReturnResult = filteredBooks };
+        }
     }
 }
