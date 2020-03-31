@@ -19,7 +19,7 @@ namespace BookLibrary.Api.Controllers.Books
             _booksService = booksService;
         }
 
-        // POST api/books
+        [HttpPost]
         public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] Book book) {
             return await _booksService.AddNewBook(book);
         }

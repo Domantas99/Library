@@ -35,9 +35,6 @@ namespace BookLibrary.DataBase.Models
         {
             modelBuilder.Entity<Book>(entity =>
             {
-                // Auto increment id
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.Author).HasMaxLength(250);
 
                 entity.Property(e => e.CoverPictureUrl)
