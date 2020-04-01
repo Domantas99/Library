@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 
-
-const validateForm = (errors) => {
+const validErrors = (errors) => {
 	let valid = true;
 	Object.values(errors).forEach(
-		// if we have an error string set valid to false
 		(val) => val.length > 0 && (valid = false)
 	);
+	return valid;
+}
+
+const validInputs = (inputs) => {
+	let valid = true;
+	for (let key in inputs) {
+		if (inputs.hasOwnProperty(key)) {
+			if (key !== 'goodreadsSearch' && key !== 'coverImage' && inputs[key].length < 1) {
+				valid = false;
+            }
+		}
+	}
 	return valid;
 }
 
@@ -18,6 +28,7 @@ class BookForm extends Component {
 			goodreadsSearch: '',
 			coverImage: '',
 			bookTitle: '',
+			bookAuthor: '',
 			bookDescription: '',
 			bookIsbn: '',
 			bookFormat: '',
@@ -29,13 +40,14 @@ class BookForm extends Component {
 			bookCategory: '',
 			kaunasCopies: '',
 			vilniusCopies: '',
-			longonCopies: '',
+			londonCopies: '',
 			chicagoCopies: '',
 			torontoCopies: '',
 			errors: {
 				goodreadsSearch: '',
 				coverImage: '',
 				bookTitle: '',
+				bookAuthor: '',
 				bookDescription: '',
 				bookIsbn: '',
 				bookFormat: '',
@@ -47,7 +59,7 @@ class BookForm extends Component {
 				bookCategory: '',
 				kaunasCopies: '',
 				vilniusCopies: '',
-				longonCopies: '',
+				londonCopies: '',
 				chicagoCopies: '',
 				torontoCopies: '',
             }
@@ -59,31 +71,21 @@ class BookForm extends Component {
 		const { name, value } = event.target;
 		let errors = this.state.errors;
 
-		for (var error in errors) {
-			// skip loop if the property is from prototype
-			if (!errors.hasOwnProperty(error)) continue;
-
-			if (error.match(name)) {
-				if (value.length < 5 || value.length > 1000) {
-					errors[name] = value.length < 5 || value.length > 1000
-						? 'field must be filled and can not take more than 1000 characters'
-						: '';
-                }
-            }
-		}
+		errors[name] = value.length < 1 || value.length > 1000
+			? 'field must be filled and can not exceed 1000 characters'
+			: '';
 
 		this.setState({ errors, [name]: value });
 	}
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		if (validateForm(this.state.errors)) {
+		if (validErrors(this.state.errors) && validInputs(this.state)) {
 			console.info('Valid Form')
 		} else {
 			console.error('Invalid Form')
 		}
 	}
-
 
 	render() {
 		const { errors } = this.state;
@@ -106,28 +108,30 @@ class BookForm extends Component {
 					<div className="input-wrapper">
 						<label htmlFor="bookTitle">TITLE</label><br />
 						<input type="text" name="bookTitle" onChange={this.handleChange} formNoValidate/>
-						{errors.bookTitle.length > 0 && <span className='error'>{errors.bookTitle}</span>}
+						{errors.bookTitle.length > 0 && <span className='error'><br />{errors.bookTitle}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookAuthor">AUTHOR(S)</label><br />
-						<input type="text" name="bookAuthor" onChange={this.handleChange} id="book-author" />
-						{errors.bookTitle.length > 0 && <span className='error'>{errors.bookTitle}</span>}
+						<input type="text" name="bookAuthor" onChange={this.handleChange} formNoValidate />
+						{errors.bookAuthor.length > 0 && <span className='error'><br />{errors.bookAuthor}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookDescription">DESCRIPTION</label><br />
-						<textarea name="bookDescription" cols="30" rows="10"></textarea>
+						<textarea name="bookDescription" cols="30" rows="10" onChange={this.handleChange} formNoValidate></textarea>
+						{errors.bookDescription.length > 0 && <span className='error'><br />{errors.bookDescription}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookIsbn">ISBN</label><br />
-						<input type="text" name="bookIsbn" />
+						<input type="text" name="bookIsbn" onChange={this.handleChange} formNoValidate />
+						{errors.bookIsbn.length > 0 && <span className='error'><br />{errors.bookIsbn}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookFormat">FORMAT</label><br />
-						<select name="bookFormat">
+						<select name="bookFormat" onChange={this.handleChange} formNoValidate>
 							<option value="paperback">Paperback</option>
 							<option value="e-book">E-book</option>
 							<option value="audiobook">Audiobook</option>
@@ -136,32 +140,37 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-						<input type="text" name="bookPages" />
+						<input type="text" name="bookPages" onChange={this.handleChange} formNoValidate />
+						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookDate">PUBLICATION DATE</label><br />
-						<input type="date" name="bookDate" />
+						<input type="date" name="bookDate" onChange={this.handleChange} formNoValidate />
+						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookPublisher">PUBLISHER</label><br />
-						<input type="text" name="bookPublisher" />
+						<input type="text" name="bookPublisher" onChange={this.handleChange} formNoValidate />
+						{errors.bookPublisher.length > 0 && <span className='error'><br />{errors.bookPublisher}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookLanguage">EDITION LANGUAGE</label><br />
-						<input type="text" name="bookLanguage" />
+						<input type="text" name="bookLanguage" onChange={this.handleChange} formNoValidate />
+						{errors.bookLanguage.length > 0 && <span className='error'><br />{errors.bookLanguage}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookSeries">SERIES</label><br />
-						<input type="text" name="bookSeries" />
+						<input type="text" name="bookSeries" onChange={this.handleChange} formNoValidate />
+						{errors.bookSeries.length > 0 && <span className='error'><br />{errors.bookSeries}</span>}
 					</div>
 
 					<div className="input-wrapper">
 						<label htmlFor="bookCategory">CATEGORY</label><br />
-						<select name="bookCategory" >
+						<select name="bookCategory" onChange={this.handleChange} formNoValidate>
 							<option value="drama">Drama</option>
 							<option value="sci-fi">Sci-fi</option>
 						</select>
@@ -172,22 +181,27 @@ class BookForm extends Component {
 							NUMBER OF COPIES
 							</h2>
 						<label htmlFor="kaunasCopies">Kaunas:</label>
-						<input type="text" name="kaunasCopies" /><br />
+						<input type="text" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
+						{errors.kaunasCopies.length > 0 && <span className='error'>{errors.kaunasCopies}<br /></span>}
 
 						<label htmlFor="vilniusCopies">Vilnius:</label>
-						<input type="text" name="vilniusCopies" /><br />
+						<input type="text" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
+						{errors.vilniusCopies.length > 0 && <span className='error'>{errors.vilniusCopies}<br /></span>}
 
 						<label htmlFor="londonCopies">London:</label>
-						<input type="text" name="londonCopies" /><br />
+						<input type="text" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
+						{errors.londonCopies.length > 0 && <span className='error'>{errors.londonCopies}<br /></span>}
 
 						<label htmlFor="chicagoCopies">Chicago:</label>
-						<input type="text" name="chicagoCopies" /><br />
+						<input type="text" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
+						{errors.chicagoCopies.length > 0 && <span className='error'>{errors.chicagoCopies}<br /></span>}
 
 						<label htmlFor="torontoCopies">Toronto:</label>
-						<input type="text" name="torontoCopies" /><br />
+						<input type="text" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
+						{errors.torontoCopies.length > 0 && <span className='error'>{errors.torontoCopies}<br /></span>}
 					</div>
 
-					<input type="submit" value="Register" disabled={!validateForm(errors)}/>
+					<input type="submit" value="Register" />
 				</form>
 			</div>
 		);
