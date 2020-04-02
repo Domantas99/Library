@@ -1,6 +1,9 @@
 .searchbar {
     width: 300px;
-    
+    a {
+        text-decoration: none;
+        color: black;
+    }
     &-input {
         width: 288px;
         padding: 6px;

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSearchedBooks } from '../store/search-bar/actions';
 import SearchBarResultBlock from './SearchBarResultBlock';
 import { useHistory } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 export default function SearchBar() {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ export default function SearchBar() {
         <input className="searchbar-input" onChange={(e) => search(e.target.value)} placeholder="Search books"></input>
         <div className="searchbar-results">
           {
-            books.map(book => (<SearchBarResultBlock key={book.id} book={book}></SearchBarResultBlock>))
+            books.map(book => (
+            <Link to={`/library/` + book.id}>
+             <SearchBarResultBlock key={book.id} book={book}></SearchBarResultBlock>
+            </Link>))
           }
         </div>
     </div>
