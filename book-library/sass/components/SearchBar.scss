@@ -1,0 +1,18 @@
+.searchbar {
+    width: 300px;
+    
+    &-input {
+        width: 288px;
+        padding: 6px;
+        border: 2px solid rgb(240, 240, 240);
+        border-radius: 3px;
+        font-size: 13px;
+    }
+    &-results {
+        width: 300px;
+        overflow-y: scroll;
+        position: absolute;
+        max-height: 360px;
+    }
+    background-color: rgb(224, 224, 224);
+}
