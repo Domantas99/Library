@@ -8,7 +8,7 @@ export default function SearchBar() {
   const books = useSelector(state => state.searchbar.data);
   
   function  search(value) {
-   dispatch(getSearchedBooks(value));
+    dispatch(getSearchedBooks(value));
   }
 
   return (

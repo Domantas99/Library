@@ -1,7 +1,7 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { call, put,  debounce } from 'redux-saga/effects';
 import { getSeachedBooksAPI } from './api';
-import { GET_SEARCHED_BOOKS, GET_SEARCHED_BOOKS_END } from './actionTypes';
-import { getSearchedBooks, searchedBooksLoaded } from './actions';
+import { GET_SEARCHED_BOOKS } from './actionTypes';
+import { searchedBooksLoaded } from './actions';
 
 
 export function* getSeachedBooksSaga(action) {
@@ -14,5 +14,5 @@ export function* getSeachedBooksSaga(action) {
 }
 
 export default function* () {
-    yield takeLatest(GET_SEARCHED_BOOKS, getSeachedBooksSaga);
+    yield debounce(300, GET_SEARCHED_BOOKS, getSeachedBooksSaga);
 }
