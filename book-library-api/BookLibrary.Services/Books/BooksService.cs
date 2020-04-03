@@ -20,19 +20,16 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<Book>> AddNewBook(Book book)
         {
             bool errorFlag = false;
-            string message;
             try
             {
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
-                message = "Book was added successfully";
             }
             catch (Exception ex) {
-                message = ex.Message;
                 errorFlag = true;
             }
 
-            return new ResponseResult<Book> { Error = errorFlag, Message = message, ReturnResult = book };
+            return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
         }
     }
 }
