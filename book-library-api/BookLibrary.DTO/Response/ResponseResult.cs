@@ -7,7 +7,6 @@ namespace BookLibrary.DTO.Response
     public class ResponseResult<T>
     {
         public bool Error { get; set; }
-        public string Message { get; set; }
         public T ReturnResult { get; set; }
     }
 }
