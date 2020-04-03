@@ -1,4 +1,4 @@
-import {GOT_BOOK_LIST} from './actionTypes';
+import {GET_BOOK_LIST_END} from './actionTypes';
 
 const initialState = {
   bookData: []
@@ -6,7 +6,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GOT_BOOK_LIST: {
+    case GET_BOOK_LIST_END: {
       return {
         ...state,
         bookData: action.payload

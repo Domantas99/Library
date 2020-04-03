@@ -1,7 +1,7 @@
 import {
-    GET_BOOK_LIST,
-    GOT_BOOK_LIST
+    GET_BOOK_LIST_START,
+    GET_BOOK_LIST_END
 } from "./actionTypes";
 
-export const getBookList = () => ({type: GET_BOOK_LIST});
-export const gotBookList = (bookList) => ({type: GOT_BOOK_LIST, payload: bookList});
+export const getBookList = () => ({type: GET_BOOK_LIST_START});
+export const getBookListEnd = (bookList) => ({type: GET_BOOK_LIST_END, payload: bookList});

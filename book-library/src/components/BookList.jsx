@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BookListItem from "./BookListItem";
-import {getBookList} from "../store/library/actions"
+import { getBookList } from "../store/library/actions"
 import { useEffect } from "react";
 
 const getBookSorter = (sort_field, sort_direction) => {
