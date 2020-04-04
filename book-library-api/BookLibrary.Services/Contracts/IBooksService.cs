@@ -11,5 +11,6 @@ namespace BookLibrary.Services.Contracts
     {
         Task<ResponseResult<Book>> AddNewBook(Book book);
         Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
+        Task<ResponseResult<Book>> GetBook(int id);
     }
 }

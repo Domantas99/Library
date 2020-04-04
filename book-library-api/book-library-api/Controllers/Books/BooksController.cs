@@ -29,5 +29,11 @@ namespace BookLibrary.Api.Controllers.Books
         {
             return await _booksService.GetFilteredBooks(pattern);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ResponseResult<Book>>> GetBook(int id)
+        {
+            return await _booksService.GetBook(id);
+        }
     }
 }
