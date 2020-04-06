@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--#include virtual="/includes/head.html" -->
+</head>
+<body>
+<!--#include virtual="/includes/layout/header.html" -->
+<!--#include virtual="/includes/layout/sidebar.html" -->
+<div class="page">
+    <div class="page__content">
+        <div class="panel">
+            <div class="panel__header">
+                <h1>Reservations</h1>
+            </div>
+            <div class="panel__content">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--#include virtual="/includes/scripts.shtml" -->
+</body>
+</html>
