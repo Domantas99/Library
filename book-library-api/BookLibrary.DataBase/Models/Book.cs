@@ -22,7 +22,9 @@ namespace BookLibrary.DataBase.Models
         public string Tag { get; set; }
         public string CoverPictureUrl { get; set; }
         public string GoodReadsUrl { get; set; }
+        [Column(TypeName ="Date")]
         public DateTime DateAdded { get; set; }
+        [Column(TypeName = "Date")]
         public DateTime ReleaseDate { get; set; }
         public virtual Wish Wish { get; set; }
         public virtual ICollection<BookComment> BookComment { get; set; }
