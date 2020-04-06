@@ -1,0 +1,12 @@
+@mixin no-list-style() {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin multiline-elipsis($rows: 1) {
+  display: -webkit-box;
+  -webkit-line-clamp: $rows;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
