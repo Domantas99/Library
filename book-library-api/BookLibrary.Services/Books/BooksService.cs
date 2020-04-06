@@ -44,6 +44,14 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errFlag, ReturnResult = book };
         }
 
+        public async Task<ResponseResult<ICollection<Book>>> GetBooks()
+        {
+            
+            var books = _context.Book.ToList();
+
+            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };
+        }
+
         public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
