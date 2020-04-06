@@ -1,0 +1,3 @@
+<script type="text/javascript" data-main="/scripts/main" src="/scripts/require.js"></script>
+<!--#include virtual="/includes/templates/modal.html" -->
+<!--#include virtual="/includes/templates/book.html" -->

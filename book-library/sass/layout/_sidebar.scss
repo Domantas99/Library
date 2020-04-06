@@ -1,0 +1,134 @@
+.sidebar {
+  margin: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  width: $sidebar-width;
+  box-shadow: inset -1px 0px 0px $color-book-shadow;
+
+  &__content {
+    margin-top: base(14);
+    width: 100%;
+  }
+
+  &__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $header-height;
+  }
+
+  &__logo {
+    padding: base(2);
+  }
+}
+
+.user-info {
+  margin: 0 base(2) base(4);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+
+  &__image {
+    border-radius: 50%;
+    overflow: hidden;
+    width: base(7);
+    height: base(7);
+  }
+
+  &__greeting {
+    margin-top: base(2);
+    margin-bottom: $base / 2;
+  }
+}
+
+.navigation {
+  $this: &;
+  $nav-icons: 'dashboard', 'library', 'wishlist', 'history';
+
+  @include no-list-style();
+  @include heading-style(h4);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0 base(2);
+    min-height: base(5.5);
+
+    &:hover, &.active {
+      background: $color-background-selected;
+      color: $color-blue;
+      box-shadow: inset -2px 0px 0px $color-blue;
+
+      #{$this}__item-icon {
+        background-color: $color-blue;
+      }
+    }
+
+    &.active {
+      cursor: unset;
+
+      #{$this}__item-content {
+        display: flex;
+      }
+    }
+  }
+
+  &__item-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: base(5.5);
+  }
+
+  &__item-content {
+    @include no-list-style();
+    display: none;
+    flex-direction: column;
+    padding: base(2) 0;
+  }
+
+  &__item-icon {
+    margin-right: base(2);
+    width: 20px;
+    height: 20px;
+
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: $color-text;
+
+    @each $icon in $nav-icons {
+      &--#{$icon} {
+        mask-image: sassvg($icon);
+        -webkit-mask-image: sassvg($icon);
+      }
+    }
+  }
+
+  &__item-secondary {
+    margin-right: base(2);
+    padding-left: base(2) + 20px;
+    cursor: pointer;
+    min-height: base(4);
+    max-height: base(4);
+    display: flex;
+    align-items: center;
+    color: $color-text;
+
+    &:hover, &.active {
+      background: $color-background-selected;
+      color: $color-blue;
+    }
+
+    &.active {
+      cursor: unset;
+    }
+  }
+}
