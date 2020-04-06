@@ -60,7 +60,8 @@ namespace BookLibrary.Services.Books
                                                             book.Isbn.ToLower().Contains(pattern))
                                                             .ToList();
 
-            return new ResponseResult<ICollection<Book>> { Error = false , ReturnResult = filteredBooks };
+            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks };
+
         }
     }
 }

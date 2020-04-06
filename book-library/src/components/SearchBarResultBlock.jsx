@@ -13,8 +13,8 @@ export default function SearchBarResultBlock({book}) {
                 <h1 className="_search-block__text-title">{book.title}</h1>
                 <h3 className="_search-block__text-isbn">{book.isbn}</h3>
                 <h2 className="_search-block__text-other">{book.author}</h2>
-                <h2 className="_search-block__text-other">Stars</h2>
-                <h2 className="_search-block__text-other">Available</h2>
+                {/* <h2 className="_search-block__text-other">Stars</h2> */}
+                {/* <h2 className="_search-block__text-other">Available</h2> */}
             </div>
         </div>
     )
