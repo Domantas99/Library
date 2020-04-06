@@ -1,0 +1,39 @@
+
+$base: 8px;
+
+// NUMBERS -------------------------------------------
+
+$header-height: $base * 8;
+$sidebar-width: $base * 30;
+$side-padding: $base * 5;
+
+// TEXT ----------------------------------------------
+$font-family: 'Inter';
+$font-style: normal;
+$font-weight-default: 600;
+$font-weight-bold: 700;
+$font-size-default: 12px;
+$line-height-default: 16px;
+
+
+// COLORS --------------------------------------------
+$color-white: #fff;
+
+$color-text: #050237;
+$color-text-secondary: #777692;
+
+$color-blue: #4568FB;
+
+$color-background: #F4F5F7;
+$color-background-selected: #EBEEF7;
+$color-background-secondary: #E8E9ED;
+$color-background-button: #DDDDE4;
+
+$color-border: #D0D1DA;
+
+$color-red: #EE3D57;
+$color-green: #3BA77A;
+$color-yellow: #EEB23D;
+
+$color-book-shadow: rgba(5, 2, 55, 0.08);
+$color-shadow: rgba(5, 2, 55, 0.15);
