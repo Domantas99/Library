@@ -1,21 +1,23 @@
-.searchbar {
-    width: 300px;
+._searchbar {
     a {
         text-decoration: none;
         color: black;
     }
     &-input {
+        background-color: #E8E9ED;
+        color: black;
         width: 288px;
         padding: 6px;
-        border: 2px solid rgb(240, 240, 240);
+        border: 1px solid #E8E9ED;
         border-radius: 3px;
         font-size: 13px;
     }
     &-results {
-        width: 300px;
+        min-width: 400px;
         overflow-y: scroll;
         position: absolute;
         max-height: 360px;
     }
+    width: 300px;
     background-color: rgb(224, 224, 224);
 }

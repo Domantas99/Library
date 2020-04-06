@@ -22,8 +22,8 @@ export default function SearchBar() {
 
   return (
     <div onKeyPress= {e => e.key === 'Enter' && navigationOnEnter() } className="searchbar"> 
-        <input className="searchbar-input" onChange={(e) => search(e.target.value)} placeholder="Search books"></input>
-        <div className="searchbar-results">
+        <input className="_searchbar-input" onChange={(e) => search(e.target.value)} placeholder="Search books"></input>
+        <div className="_searchbar-results">
           {
             books.map(book => (
             <Link to={`/library/` + book.id}>
