@@ -23,6 +23,11 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] Book book) {
             return await _booksService.AddNewBook(book);
         }
+        [HttpGet()]
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks(int id)
+        {
+            return await _booksService.GetBooks();
+        }
 
         [HttpGet("filter/{pattern}")]
         public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetFilteredBooks(string pattern)
