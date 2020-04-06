@@ -6,7 +6,7 @@ function App() {
   return (
     <Switch>
       <Route path={'/test'} component={Test} />
-      <Route path={'/library'} component={Library} />
+      <Route path={'/library/:id?'} component={Library} />
       <Route path={'/register-book'} component={RegisterBook} />
       <Redirect exact from={'/'} to={'/test'} />
     </Switch>
