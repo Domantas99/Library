@@ -32,6 +32,18 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
         }
 
+        public async Task<ResponseResult<Book>> GetBook(int id)
+        {
+            bool errFlag = false;
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
+            if (book != null)
+            {
+                errFlag = true;
+            }
+
+            return new ResponseResult<Book> { Error = errFlag, ReturnResult = book };
+        }
+
         public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
