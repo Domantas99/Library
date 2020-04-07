@@ -6,10 +6,17 @@ export default () => {
   const {id} = useParams();
   
   return (
-    id ? <BookDetails id={id}/> :
-    <div>
-      <h1>Library</h1>
-      <BookList/>
-    </div>
+    id ?
+      <div className="panel">
+       <div className="panel__content">
+          <BookDetails id={id}/>
+        </div>
+      </div> :
+      <div className="panel">
+        <div className="panel__header">
+          <h1>Library</h1>
+        </div>
+        <BookList/>
+      </div>
   )
 }

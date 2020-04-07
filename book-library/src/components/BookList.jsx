@@ -40,7 +40,7 @@ function BookList(){
     }, [bookData, sortDirection, sortField]);
 
     return (
-        <div className="library">
+        <div className="panel__content">
             <select id="book-list-sorting-field" defaultValue={sortField} onChange={handleChangeSortField}>
                 <option value="Title">Title</option>
                 <option value="ReleaseDate">Release Date</option>
@@ -50,7 +50,7 @@ function BookList(){
                 <option value="1">Ascending</option>
                 <option value="-1">Descending</option>
             </select>
-            <div className="book-list">
+            <div className="book-grid">
                 {bookComponents} 
             </div>
         </div>
