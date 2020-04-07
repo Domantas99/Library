@@ -19,6 +19,7 @@ namespace BookLibrary.DataBase.Models
         public string Isbn { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
+        public string Category { get; set; }
         public string Tag { get; set; }
         public string CoverPictureUrl { get; set; }
         public string GoodReadsUrl { get; set; }
