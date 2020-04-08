@@ -3,11 +3,17 @@ import BookForm from './BookForm';
 import BookListItem from './BookListItem';
 import BookList from './BookList';
 import BookDetails from './BookDetails'
+import SearchBar from './SearchBar';
+import SearchBarResultBlock from './SearchBarResultBlock';
+import Categories from './Categories';
 
 export {
-  TestBlock,
-  BookForm,
+  	TestBlock,
+  	BookForm,
 	BookListItem,
 	BookList,
-	BookDetails
+	BookDetails,
+	SearchBar,
+	SearchBarResultBlock,
+	Categories
 }

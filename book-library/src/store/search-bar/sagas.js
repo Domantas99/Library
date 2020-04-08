@@ -9,7 +9,7 @@ export function* getSeachedBooksSaga(action) {
         const apiResult = yield call(getSeachedBooksAPI,action.payload);
         yield put(searchedBooksLoaded(apiResult));
     } catch (ex) {
-        console.log("Exextion in get searched books:", ex);
+        console.log("Exeption in get searched books saga:", ex);
     }
 }
 
