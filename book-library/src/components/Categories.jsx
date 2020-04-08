@@ -1,32 +1,29 @@
 import React, { useEffect} from 'react';
 import { getCategories } from '../store/categories/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-
-export default function Categories(props) {
-  debugger;
+export default function Categories() {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.data);
-  debugger;
+
   useEffect(() => {
     dispatch(getCategories());
   }, [])
 
-  //function getCategories
-
   return (
-    <>
-        <h1>
-      sada
-      <ul>
+        // <ul class="navigation__item-content"> uncomment when there be functionality
+        <ul>
+          <Link to="/library">
+            <li className="navigation__item-secondary">All books</li>
+          </Link>
         {
           categories.map(category => (
-            <li>{category}</li>
+            <Link to={`/library/${category}`}>
+              <li className="navigation__item-secondary">{category}</li>
+            </Link>
           ))
         }
-       
-      </ul>
-        </h1>
-    </>
+       </ul> 
   );
 }

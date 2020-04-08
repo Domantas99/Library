@@ -6,6 +6,7 @@ import BookDetails from './BookDetails'
 import SearchBar from './SearchBar';
 import SearchBarResultBlock from './SearchBarResultBlock';
 import Categories from './Categories';
+import Navigation from './Navigation';
 
 export {
   	TestBlock,
@@ -15,5 +16,6 @@ export {
 	BookDetails,
 	SearchBar,
 	SearchBarResultBlock,
-	Categories
+	Categories,
+	Navigation
 }

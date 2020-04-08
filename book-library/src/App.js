@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Test, Library, RegisterBook } from './features';
-import { SearchBar, Categories } from './components';
+import { SearchBar, Categories, Navigation } from './components';
 
 function App() {
   return (<>
@@ -9,7 +9,7 @@ function App() {
       <SearchBar/>
     </div>
     <div className="sidebar">
-      <Categories/>
+      <Navigation></Navigation>
     </div>
     <div className="page">
       <div className="page__content">
