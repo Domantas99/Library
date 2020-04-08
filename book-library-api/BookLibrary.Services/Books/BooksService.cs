@@ -52,6 +52,13 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };
         }
 
+        public async Task<ResponseResult<ICollection<string>>> GetCategories()
+        {
+            var uniqueCategories = _context.Book.Select(book => book.Category).Distinct().ToList();
+
+            return new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories };
+        }
+
         public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
