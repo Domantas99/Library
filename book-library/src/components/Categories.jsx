@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 export default function Categories() {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.data);
-
+  
   useEffect(() => {
     dispatch(getCategories());
   }, [])
 
   return (
-        // <ul class="navigation__item-content"> uncomment when there be functionality
-        <ul>
+        // <ul class="navigation__item-content"> // uncomment when there will be functionality 
+        <ul> 
           <Link to="/library">
             <li className="navigation__item-secondary">All books</li>
           </Link>

@@ -18,6 +18,7 @@ export default function Navigation() {
                         </div>
                     </Link>
                 </li>
+                
                 <li>
                     <div class="navigation__item" id="library">
                         <Link to="/library">
@@ -29,6 +30,7 @@ export default function Navigation() {
                         <Categories/>
                     </div>
                 </li>
+
                 <li>
                 <Link class="navigation__item" href="/wishlist" id="wishlist">
                     <div class="navigation__item-header">
@@ -37,6 +39,7 @@ export default function Navigation() {
                     </div>
                 </Link>
                 </li>
+
                 <li>
                     <Link to="/reservations" class="navigation__item"  id="reservations">
                         <div class="navigation__item-header">
@@ -46,7 +49,6 @@ export default function Navigation() {
                     </Link>
                 </li>
             </ul>
-
         </div>
     )
 }
