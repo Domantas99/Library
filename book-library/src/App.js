@@ -1,8 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import SearchBar from './components/SearchBar';
-import { Test, Library, Wishlist, RegisterBook } from './features';
-
+import { Test, Library, RegisterBook, Wishlist } from './features';
+import { SearchBar, Navigation } from './components';
 
 function App() {
   return (<>
@@ -10,20 +9,7 @@ function App() {
       <SearchBar/>
     </div>
     <div className="sidebar">
-      <div className="sidebar__header">
-      </div>
-      <div className="sidebar__content">
-        <ul className="navigation">
-          <li>
-            <a id="library" className="navigation__item" href="/library">Library</a>
-          </li>
-        </ul>
-        <ul className="navigation">
-          <li>
-            <a id="wishlist" className="navigation__item" href="/wishlist">Wishlist</a>
-          </li>
-        </ul>
-      </div>
+      <Navigation></Navigation>
     </div>
     <div className="page">
       <div className="page__content">
