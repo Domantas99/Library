@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import {getBookList} from './api';
-import {GET_BOOK_LIST_START} from './actionTypes';
-import {getBookListEnd} from './actions';
+import { getBookList } from './api';
+import { GET_BOOK_LIST_START } from './actionTypes';
+import { getBookListEnd } from './actions';
 
 export function* getBookListSaga(action) {
   try{
