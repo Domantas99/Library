@@ -1,5 +1,7 @@
 import React from 'react';
-import {BookList, BookDetails} from '../../components';
+import { useSelector } from "react-redux"
+import { BookList, BookDetails } from '../../components';
+import { getBookList } from "../../store/library/actions"
 import { useParams } from 'react-router-dom';
 
 export default () => {
@@ -16,7 +18,7 @@ export default () => {
         <div className="panel__header">
           <h1>Library</h1>
         </div>
-        <BookList/>
+        <BookList dataSelector={useSelector(state => state.library.bookData)} dataAction={getBookList}/>
       </div>
   )
 }

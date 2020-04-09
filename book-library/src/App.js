@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Test, Library, RegisterBook } from './features';
-import { SearchBar, Categories, Navigation } from './components';
+import { Test, Library, RegisterBook, Wishlist } from './features';
+import { SearchBar, Navigation } from './components';
 
 function App() {
   return (<>
@@ -16,6 +16,7 @@ function App() {
         <Switch>
           <Route path={'/test'} component={Test} />
           <Route path={'/library/:id?'} component={Library} />
+          <Route path={'/wishlist'} component={Wishlist} />
           <Route path={'/register-book'} component={RegisterBook} />
           <Redirect exact from={'/'} to={'/test'} />
         </Switch>
