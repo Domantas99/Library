@@ -11,19 +11,19 @@ export default function Navigation() {
             </div>
             <ul className="navigation">
                 <li>
-                    <Link to="/dashboard" class="navigation__item" id="dashboard">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--dashboard"></i>
+                    <Link to="/dashboard" className="navigation__item" id="dashboard">
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--dashboard"></i>
                             Dashboard
                         </div>
                     </Link>
                 </li>
                 
                 <li>
-                    <div class="navigation__item" id="library">
+                    <div className="navigation__item" id="library">
                         <Link to="/library">
-                            <div class="navigation__item-header">
-                                <i class="navigation__item-icon navigation__item-icon--library"></i>
+                            <div className="navigation__item-header">
+                                <i className="navigation__item-icon navigation__item-icon--library"></i>
                                 Library
                             </div>
                         </Link>
@@ -32,18 +32,18 @@ export default function Navigation() {
                 </li>
 
                 <li>
-                <Link class="navigation__item" href="/wishlist" id="wishlist">
-                    <div class="navigation__item-header">
-                        <i class="navigation__item-icon navigation__item-icon--wishlist"></i>
+                <Link className="navigation__item" id="wishlist" to="/wishlist">
+                    <div className="navigation__item-header">
+                        <i className="navigation__item-icon navigation__item-icon--wishlist"></i>
                         Wishlist
                     </div>
                 </Link>
                 </li>
 
                 <li>
-                    <Link to="/reservations" class="navigation__item"  id="reservations">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--history"></i>
+                    <Link to="/reservations" className="navigation__item"  id="reservations">
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--history"></i>
                             My reservations
                         </div>
                     </Link>

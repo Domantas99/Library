@@ -9,19 +9,19 @@ export default function Categories() {
   
   useEffect(() => {
     dispatch(getCategories());
-  }, [])
+  }, [dispatch])
 
   return (
         // <ul class="navigation__item-content"> // uncomment when there will be functionality 
         <ul> 
           <Link to="/library">
-            <li className="navigation__item-secondary">All books</li>
+            <li key="all" className="navigation__item-secondary">All books</li>
           </Link>
         {
           categories.map(category => (
-            <Link to={`/library/${category}`}>
-              <li className="navigation__item-secondary">{category}</li>
-            </Link>
+            <li key={category} className="navigation__item-secondary">
+                <Link to={`/library/${category}`}>{category}</Link>
+            </li>
           ))
         }
        </ul> 
