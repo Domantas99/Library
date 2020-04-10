@@ -25,24 +25,34 @@ class BookForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			goodreadsSearch: '',
-			coverImage: '',
 			bookTitle: '',
+			bookIsbn: '',
 			bookAuthor: '',
 			bookDescription: '',
-			bookIsbn: '',
+			bookCategory: '',
+			tag: 'tempTagPlaceholder',
+			coverImage: '',
+			goodreadsSearch: '',
+			// missing date added
+			bookDate: '', // realease data
+			
+
+			
+			
+			
+			
 			bookFormat: '',
 			bookPages: '',
-			bookDate: '',
+			
 			bookPublisher: '',
 			bookLanguage: '',
 			bookSeries: '',
-			bookCategory: '',
-			kaunasCopies: '',
-			vilniusCopies: '',
-			londonCopies: '',
-			chicagoCopies: '',
-			torontoCopies: '',
+			
+			kaunasCopies: 0,
+			vilniusCopies: 0,
+			londonCopies: 0,
+			chicagoCopies: 0,
+			torontoCopies: 0,
 			errors: {
 				goodreadsSearch: '',
 				coverImage: '',
@@ -101,8 +111,9 @@ class BookForm extends Component {
 					</div>
 
 					<div className="input-wrapper">
-						<label htmlFor="coverImage">COVER</label><br />
-						<input type="file" name="coverImage" accept="image/*" />
+						<label htmlFor="coverImage">COVER IMAGE URL</label><br />
+						{/* <input type="file" name="coverImage" accept="image/*" /> */}
+						<input type="text" onChange={this.handleChange} name="coverImage" accept="image/*" />
 					</div>
 
 					<div className="input-wrapper">
@@ -181,23 +192,23 @@ class BookForm extends Component {
 							NUMBER OF COPIES
 							</h2>
 						<label htmlFor="kaunasCopies">Kaunas:</label>
-						<input type="text" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.kaunasCopies.length > 0 && <span className='error'>{errors.kaunasCopies}<br /></span>}
 
 						<label htmlFor="vilniusCopies">Vilnius:</label>
-						<input type="text" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.vilniusCopies.length > 0 && <span className='error'>{errors.vilniusCopies}<br /></span>}
 
 						<label htmlFor="londonCopies">London:</label>
-						<input type="text" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.londonCopies.length > 0 && <span className='error'>{errors.londonCopies}<br /></span>}
 
 						<label htmlFor="chicagoCopies">Chicago:</label>
-						<input type="text" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.chicagoCopies.length > 0 && <span className='error'>{errors.chicagoCopies}<br /></span>}
 
 						<label htmlFor="torontoCopies">Toronto:</label>
-						<input type="text" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.torontoCopies.length > 0 && <span className='error'>{errors.torontoCopies}<br /></span>}
 					</div>
 
