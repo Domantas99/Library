@@ -1,0 +1,82 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'decypt ssh key'
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=id_rsa.enc
+  - --plaintext-file=/root/.ssh/id_rsa
+  - --location=global
+  - --keyring=git-ssh-keyring
+  - --key=bitbucket-key
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Set up git with key and domain
+- name: 'gcr.io/cloud-builders/git'
+  id: 'config ssh'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    Hostname bitbucket.org
+    IdentityFile /root/.ssh/id_rsa
+    EOF
+    mv known_hosts /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Connect to the repository
+- name: 'gcr.io/cloud-builders/git'
+  id: 'clone repository'
+  args:
+  - clone
+  - git@bitbucket.org:devbridge-sourcery/sourcery-academy-2020-spring-team-edvinas.git
+  - $_SOURCE_DIR
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- name: node:$_NODE_VERSION
+  id: 'install node modules'
+  dir: './$_SOURCE_DIR/book-library'
+  entrypoint: npm
+  args: ['install']
+
+- name: node:$_NODE_VERSION
+  id: 'build frontend bundle'
+  dir: './$_SOURCE_DIR/book-library'
+  entrypoint: npm
+  args: ['run', 'build']
+  
+- name: 'gcr.io/cloud-builders/git'
+  id: 'copy frontend bundle'
+  entrypoint: bash
+  args:
+  - '-c'
+  - |
+    cp -r $_SOURCE_DIR/book-library/build $_SOURCE_DIR/book-library-api/book-library-api/wwwroot
+    
+- name: 'mcr.microsoft.com/dotnet/core/sdk:3.1-buster'
+  id: 'restore'
+  entrypoint: dotnet
+  args:
+  - publish
+  - ./workspace/$_SOURCE_DIR/book-library-api/book-library-api/BookLibrary.API.csproj
+  - -c
+  - Release
+  - -o
+  - ./workspace/app/publish
+  
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'deploy'
+  dir: '$_SOURCE_DIR/app/publish'
+  args: ['app', 'deploy']
+  
+substitutions:
+  _NODE_VERSION: '12.16'
+  _SOURCE_DIR: 'source'

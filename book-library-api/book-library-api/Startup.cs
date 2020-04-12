@@ -54,6 +54,9 @@ namespace BookLibrary.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }

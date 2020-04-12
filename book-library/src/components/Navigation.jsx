@@ -1,6 +1,6 @@
 import React from 'react';
 import Categories from './Categories';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function Navigation() {
     return (
@@ -11,42 +11,40 @@ export default function Navigation() {
             </div>
             <ul className="navigation">
                 <li>
-                    <Link to="/dashboard" class="navigation__item" id="dashboard">
+                    <NavLink to="/dashboard" className="navigation__item" activeClassName="active">
                         <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--dashboard"></i>
+                            <i class="navigation__item-icon navigation__item-icon--dashboard"/>
                             Dashboard
                         </div>
-                    </Link>
-                </li>
-                
-                <li>
-                    <div class="navigation__item" id="library">
-                        <Link to="/library">
-                            <div class="navigation__item-header">
-                                <i class="navigation__item-icon navigation__item-icon--library"></i>
-                                Library
-                            </div>
-                        </Link>
-                        <Categories/>
-                    </div>
+                    </NavLink>
                 </li>
 
                 <li>
-                <Link class="navigation__item" href="/wishlist" id="wishlist">
+                    <NavLink to="/library" className="navigation__item" activeClassName="active">
+                        <div class="navigation__item-header">
+                            <i class="navigation__item-icon navigation__item-icon--library"/>
+                            Library
+                        </div>
+                        <Categories/>
+                    </NavLink>
+                </li>
+
+                <li>
+                <NavLink to="/wishlist" className="navigation__item" activeClassName="active">
                     <div class="navigation__item-header">
-                        <i class="navigation__item-icon navigation__item-icon--wishlist"></i>
+                        <i class="navigation__item-icon navigation__item-icon--wishlist"/>
                         Wishlist
                     </div>
-                </Link>
+                </NavLink>
                 </li>
 
                 <li>
-                    <Link to="/reservations" class="navigation__item"  id="reservations">
+                    <NavLink to="/reservations" className="navigation__item" activeClassName="active">
                         <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--history"></i>
+                            <i class="navigation__item-icon navigation__item-icon--history"/>
                             My reservations
                         </div>
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
         </div>
