@@ -62,19 +62,27 @@ steps:
     cp -r $_SOURCE_DIR/book-library/build $_SOURCE_DIR/book-library-api/book-library-api/wwwroot
     
 - name: 'mcr.microsoft.com/dotnet/core/sdk:3.1-buster'
+  id: 'test ls'
+  entrypoint: bash
+  args:
+  - '-c'
+  - |
+    ls -a
+    
+- name: 'mcr.microsoft.com/dotnet/core/sdk:3.1-buster'
   id: 'restore'
   entrypoint: dotnet
   args:
   - publish
-  - ./workspace/$_SOURCE_DIR/book-library-api/book-library-api/BookLibrary.API.csproj
+  - ./$_SOURCE_DIR/book-library-api/book-library-api/BookLibrary.API.csproj
   - -c
   - Release
   - -o
-  - ./workspace/app/publish
+  - ./app/publish
   
 - name: 'gcr.io/cloud-builders/gcloud'
   id: 'deploy'
-  dir: '$_SOURCE_DIR/app/publish'
+  dir: './app/publish'
   args: ['app', 'deploy']
   
 substitutions:

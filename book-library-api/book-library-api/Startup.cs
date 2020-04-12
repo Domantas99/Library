@@ -31,6 +31,9 @@ namespace BookLibrary.Api
 
             services.AddScoped<ITestService, TestService>();
             services.AddScoped<IBooksService, BooksService>();
+            services.AddSpaStaticFiles(options => {
+                options.RootPath = "wwwroot";
+            });
 
         }
 
@@ -50,13 +53,17 @@ namespace BookLibrary.Api
 
             app.UseAuthorization();
 
+            app.UseSpaStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.DefaultPage = "/index.html";
+            });
         }
     }
 }
