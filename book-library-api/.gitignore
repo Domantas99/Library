@@ -32,6 +32,7 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-
+wwwroot/
+!wwwroot/readme.txt
 # Visual Studio 2015
 .vs/
