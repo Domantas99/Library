@@ -1,4 +1,5 @@
 import React, { useEffect} from 'react';
+import _ from 'lodash';
 import { getCategories } from '../store/categories/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,21 +10,18 @@ export default function Categories() {
   
   useEffect(() => {
     dispatch(getCategories());
-  }, [])
+  }, []);
 
   return (
-        // <ul class="navigation__item-content"> // uncomment when there will be functionality 
-        <ul> 
-          <Link to="/library">
-            <li className="navigation__item-secondary">All books</li>
-          </Link>
-        {
-          categories.map(category => (
-            <Link to={`/library/${category}`}>
-              <li className="navigation__item-secondary">{category}</li>
-            </Link>
-          ))
-        }
-       </ul> 
+    <ul className="navigation__item-content">
+      <Link to="/library">
+        <li className="navigation__item-secondary">All books</li>
+      </Link>
+      {!_.isEmpty(categories) && categories.map(category => (
+        <Link to={`/library/${category}`}>
+          <li className="navigation__item-secondary">{category}</li>
+        </Link>
+      ))}
+    </ul>
   );
 }
