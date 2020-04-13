@@ -18,7 +18,7 @@ function App() {
           <Route path={'/library/:id?'} component={Library} />
           <Route path={'/wishlist'} component={Wishlist} />
           <Route path={'/register-book'} component={RegisterBook} />
-          <Redirect exact from={'/'} to={'/test'} />
+          <Redirect exact from={'/'} to={'/library'} />
         </Switch>
       </div>
     </div>

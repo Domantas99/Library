@@ -32,7 +32,7 @@ export default function Navigation() {
                 </li>
 
                 <li>
-                <Link class="navigation__item" href="/wishlist" id="wishlist">
+                <Link to="wishlist" class="navigation__item" href="/wishlist" id="wishlist">
                     <div class="navigation__item-header">
                         <i class="navigation__item-icon navigation__item-icon--wishlist"></i>
                         Wishlist
