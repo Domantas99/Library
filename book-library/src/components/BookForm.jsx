@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { addNewBook } from '../store/library/actions';
+import { connect } from 'react-redux';
 
 const validErrors = (errors) => {
 	let valid = true;
@@ -30,24 +32,18 @@ class BookForm extends Component {
 			bookAuthor: '',
 			bookDescription: '',
 			bookCategory: '',
-			tag: 'tempTagPlaceholder',
+			bookTag: 'tempTagPlaceholder',
+			bookFormat: '',
+			bookPages: '',
+			bookSeries: '',
+			bookPublisher: '',
+			bookLanguage: '',
+
 			coverImage: '',
 			goodreadsSearch: '',
 			// missing date added
-			bookDate: '', // realease data
-			
-
-			
-			
-			
-			
-			bookFormat: '',
-			bookPages: '',
-			
-			bookPublisher: '',
-			bookLanguage: '',
-			bookSeries: '',
-			
+			bookDate: '', // created
+					
 			kaunasCopies: 0,
 			vilniusCopies: 0,
 			londonCopies: 0,
@@ -92,9 +88,38 @@ class BookForm extends Component {
 		event.preventDefault();
 		if (validErrors(this.state.errors) && validInputs(this.state)) {
 			console.info('Valid Form')
+			
+			
+			const book = this.createBookObject();
+			debugger;
+			console.log(book);
+
+			this.props.addBook(book);
 		} else {
 			console.error('Invalid Form')
 		}
+	}
+
+	createBookObject() {
+		const date = new Date()
+		const book = {
+			Title: this.state.bookTitle,
+			Isbn: this.state.bookIsbn,
+			Author: this.state.bookAuthor,
+			Description: this.state.bookDescription,
+			Category: this.state.bookCategory,
+			Tag: this.state.bookTag,
+			Format: this.state.bookFormat,
+			NumberOfPages: this.state.bookPages,
+			Series: this.state.bookSeries,
+			Publisher: this.state.bookPublisher,
+			EditionLanguage: this.state.bookLanguage,
+			CoverPictureUrl: this.state.coverImage,
+			GoodReadsUrl: this.state.goodreadsSearch,
+			DateAdded: date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate(),
+			ReleaseDate: this.state.bookDate,
+		}
+		return book;
 	}
 
 	render() {
@@ -107,7 +132,7 @@ class BookForm extends Component {
 				<form onSubmit={this.handleSubmit}>
 					<div className="input-wrapper">
 						<label htmlFor="goodreadsSearch">FIND IN GOODREADS</label><br />
-						<input type="text" name="goodreadsSearch" />
+						<input onChange={this.handleChange} type="text" name="goodreadsSearch" />
 					</div>
 
 					<div className="input-wrapper">
@@ -143,6 +168,7 @@ class BookForm extends Component {
 					<div className="input-wrapper">
 						<label htmlFor="bookFormat">FORMAT</label><br />
 						<select name="bookFormat" onChange={this.handleChange} formNoValidate>
+							<option selected="selected" value="">Not Selected</option>
 							<option value="paperback">Paperback</option>
 							<option value="e-book">E-book</option>
 							<option value="audiobook">Audiobook</option>
@@ -182,6 +208,7 @@ class BookForm extends Component {
 					<div className="input-wrapper">
 						<label htmlFor="bookCategory">CATEGORY</label><br />
 						<select name="bookCategory" onChange={this.handleChange} formNoValidate>
+							<option selected="selected" value="">Not Selected</option>
 							<option value="drama">Drama</option>
 							<option value="sci-fi">Sci-fi</option>
 						</select>
@@ -218,5 +245,9 @@ class BookForm extends Component {
 		);
 	}
 }
+const mapStateToProps = state => ({state})
+const mapDispatchToProps = dispatch => ({
+	addBook: book => dispatch(addNewBook(book))
+})
 
-export default BookForm;
+export default connect(mapStateToProps, mapDispatchToProps)(BookForm);

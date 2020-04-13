@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { getBookList } from './api';
-import { GET_BOOK_LIST_START } from './actionTypes';
-import { getBookListEnd } from './actions';
+import { getBookList, addBookAPI } from './api';
+import { GET_BOOK_LIST_START, ADD_NEW_BOOK,  } from './actionTypes';
+import { getBookListEnd, addNewBookEnd } from './actions';
 
 export function* getBookListSaga(action) {
   try{
@@ -12,6 +12,19 @@ export function* getBookListSaga(action) {
   }
 }
 
+export function* addNewBookSaga(action) {
+  try {
+    debugger;
+    const apiResult = yield call(addBookAPI, action.payload);
+    debugger;
+    yield put(addNewBookEnd(apiResult));
+  }
+  catch (e) {
+    
+  }
+}
+
 export default function* (){
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
+  yield takeLatest(ADD_NEW_BOOK, addNewBookSaga);
 }

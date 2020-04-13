@@ -13,6 +13,7 @@ class HTTPClient {
   async post(path, body) {
     const response = await request
       .post(this._getUrl(path))
+      .set('Content-Type', 'application/json') 
       .send(body);
 
     return response.body;
