@@ -1,0 +1,113 @@
+.header {
+  margin-left: $sidebar-width;
+  padding: base(2) $side-padding;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  height: $header-height - base(4);
+  top: 0;
+  width: 100%;
+  background: $color-background;
+}
+
+.search {
+  position: relative;
+
+  &__input {
+    width: base(45);
+    min-height: base(4);
+    max-height: base(4);
+    height: base(4);
+    background: $color-background-secondary;
+    border: none;
+    margin: 0;
+    padding-left: base(4);
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    &.suggestions-visible {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: base(4);
+    height: base(4);
+    content: '';
+    background-image: sassvg('search');
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+  }
+}
+
+.suggestions {
+  $this: &;
+
+  @include no-list-style();
+  position: absolute;
+  width: base(45);
+  left: 0;
+  top: base(4);
+  background: $color-background-secondary;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 4px 4px;
+
+  &.hidden {
+    display: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    padding: base(.5) base();
+    border-top: solid 1px $color-border;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-blue;
+      background-color: $color-background-selected;
+    }
+
+    &:first-of-type {
+      padding-top: base();
+    }
+
+    &:last-of-type {
+      padding-bottom: base();
+    }
+  }
+
+  &__image {
+    min-width: base(4);
+    width: base(4);
+    height: base(6);
+    border-radius: 4px;
+    background-color: $color-white;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    margin-left: base(1);
+
+    &--primary {
+      @include multiline-elipsis(2)
+    }
+
+    &--secondary {
+      color: $color-text-secondary;
+    }
+  }
+}

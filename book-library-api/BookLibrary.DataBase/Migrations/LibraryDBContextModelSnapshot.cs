@@ -30,10 +30,16 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CoverPictureUrl")
                         .HasColumnName("CoverPictureURL")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("Date");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(1000)")
@@ -48,6 +54,9 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnName("ISBN")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("Date");
 
                     b.Property<string>("Tag")
                         .HasColumnType("nvarchar(250)")

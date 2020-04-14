@@ -1,7 +1,10 @@
 import { Test } from './test';
-import { Library } from './library';
+import { Library, RegisterBook } from './library';
+import { Wishlist } from './wishlist'
 
 export {
   Test,
-  Library
+  Wishlist,
+  Library,
+  RegisterBook
 }

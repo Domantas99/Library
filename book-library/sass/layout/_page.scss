@@ -1,0 +1,12 @@
+.page {
+  margin-top: $header-height;
+  margin-left: $sidebar-width;
+
+
+  &__content {
+    padding: base(6) $side-padding 0;
+    max-width: base(180) - $sidebar-width;
+    margin: auto;
+    display: flex;
+  }
+}

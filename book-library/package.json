@@ -21,7 +21,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sass:build": "node-sass ./sass/main.scss ../prototype/Content/Styles/CSS/main.css",
+    "sass:watch": "node-sass ./sass/main.scss ../prototype/Content/Styles/CSS/main.css -w ./sass/**/*.scss",
+    "svg:map": "gulp sassvg"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sassvg": "^4.0.1"
   }
 }
