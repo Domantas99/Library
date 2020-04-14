@@ -12,8 +12,8 @@ export default function Navigation() {
             <ul className="navigation">
                 <li>
                     <NavLink to="/dashboard" className="navigation__item" activeClassName="active">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--dashboard"/>
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--dashboard"/>
                             Dashboard
                         </div>
                     </NavLink>
@@ -21,8 +21,8 @@ export default function Navigation() {
 
                 <li>
                     <NavLink to="/library" className="navigation__item" activeClassName="active">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--library"/>
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--library"/>
                             Library
                         </div>
                         <Categories/>
@@ -31,8 +31,8 @@ export default function Navigation() {
 
                 <li>
                     <NavLink to="/wishlist" className="navigation__item" activeClassName="active">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--wishlist"/>
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--wishlist"/>
                             Wishlist
                         </div>
                     </NavLink>
@@ -40,8 +40,8 @@ export default function Navigation() {
 
                 <li>
                     <NavLink to="/reservations" className="navigation__item" activeClassName="active">
-                        <div class="navigation__item-header">
-                            <i class="navigation__item-icon navigation__item-icon--history"/>
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--history"/>
                             My reservations
                         </div>
                     </NavLink>
