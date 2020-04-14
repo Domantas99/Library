@@ -11,7 +11,7 @@ const getBookSorter = (sort_field, sort_direction) => {
 
 const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data].sort(getBookSorter(sort_field, sort_direction)).map((element, index) => {
-        return (<BookListItem key={index} data={element}/>)}
+        return (<BookListItem key={element["Id"]} data={element}/>)}
     );
 }
 
@@ -30,8 +30,8 @@ function BookList({dataSelector, dataAction}){
     }
 
     useEffect(() => {
-            dispatch(dataAction())
-        }, [dispatch, dataAction]);
+        dispatch(dataAction())
+    }, [dispatch, dataAction]);
 
     useEffect(()=> {
         setBookComponents(createBookComponents(dataSelector, sortField, sortDirection));
