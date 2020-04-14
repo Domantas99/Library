@@ -1,7 +1,8 @@
-import {GET_BOOK_LIST_END} from './actionTypes';
+import {GET_BOOK_LIST_END, GET_BOOK_DETAILS_END} from './actionTypes';
 
 const initialState = {
-  bookData: []
+  bookData: [],
+  bookDetails: []
 };
 
 export default (state = initialState, action) => {
@@ -11,6 +12,13 @@ export default (state = initialState, action) => {
         ...state,
         bookData: action.payload
       };
+    }
+
+    case GET_BOOK_DETAILS_END: {
+      return {
+        ...state,
+        bookDetails: action.payload
+      }
     }
 
     default: {
