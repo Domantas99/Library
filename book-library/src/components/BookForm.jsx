@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const validErrors = (errors) => {
 	let valid = true;
@@ -20,27 +20,26 @@ const validInputs = (inputs) => {
 	return valid;
 }
 
-const BookForm = (props) => {
-
+const BookForm = ({ formTitle, bookDetails }) => {
 	const [formInfo, setState] = useState({
 		goodreadsSearch: '',
 		coverImage: '',
-		bookTitle: '',
-		bookAuthor: '',
-		bookDescription: '',
-		bookIsbn: '',
-		bookFormat: '',
-		bookPages: '',
-		bookDate: '',
-		bookPublisher: '',
-		bookLanguage: '',
-		bookSeries: '',
-		bookCategory: '',
-		kaunasCopies: '',
-		vilniusCopies: '',
-		londonCopies: '',
-		chicagoCopies: '',
-		torontoCopies: '',
+		bookTitle: bookDetails.Title || '',
+		bookAuthor: bookDetails.Author || '',
+		bookDescription: bookDetails.Description || '',
+		bookIsbn: bookDetails.Isbn || '',
+		bookFormat: bookDetails.Format || '',
+		bookPages: bookDetails.PageNumber || '',
+		bookDate: bookDetails.ReleaseDate || '',
+		bookPublisher: bookDetails.Publisher || '',
+		bookLanguage: bookDetails.Language || '',
+		bookSeries: bookDetails.Series || '',
+		bookCategory: bookDetails.Category || '',
+		kaunasCopies: bookDetails.KaunasCopies || '',
+		vilniusCopies: bookDetails.VilniusCopies || '',
+		londonCopies: bookDetails.LondonCopies || '',
+		chicagoCopies: bookDetails.ChicagoCopies || '',
+		torontoCopies: bookDetails.TorontoCopies || '',
 		errors: {
 			coverImage: '',
 			bookTitle: '',
@@ -61,33 +60,6 @@ const BookForm = (props) => {
 			torontoCopies: '',
 		}
 	});
-
-	//useEffect(() => {
-	//	if (props.formTitle !== 'Register') {
-	//		const { data } = this.props;
-	//		setState({
-	//			...formInfo,
-	//			goodreadsSearch: data.goodreadsSearch || '',
-	//			coverImage: data.coverImage || '',
-	//			bookTitle: data.bookTitle || '',
-	//			bookAuthor: data.bookAuthor || '',
-	//			bookDescription: data.bookDescription || '',
-	//			bookIsbn: data.bookIsbn || '',
-	//			bookFormat: data.bookFormat || '',
-	//			bookPages: data.bookPages || '',
-	//			bookDate: data.bookDate || '',
-	//			bookPublisher: data.bookPublisher || '',
-	//			bookLanguage: data.bookLanguage || '',
-	//			bookSeries: data.bookSeries || '',
-	//			bookCategory: data.bookCategory || '',
-	//			kaunasCopies: data.kaunasCopies || '',
-	//			vilniusCopies: data.vilniusCopies || '',
-	//			londonCopies: data.londonCopies || '',
-	//			chicagoCopies: data.chicagoCopies || '',
-	//			torontoCopies: data.torontoCopies || ''
-	//		}, [props.formTitle, formInfo]);
-	//	}
-	//})
 
 	const handleChange = (event) => {
 		event.preventDefault();
@@ -114,7 +86,7 @@ const BookForm = (props) => {
 	return(
 		<div className="form-wrapper">
 			<h1 className="form-title">
-				{props.formTitle} Book
+				{formTitle} Book
 				</h1>
 			<form onSubmit={handleSubmit} noValidate>
 				<div className="input-wrapper">
@@ -223,7 +195,7 @@ const BookForm = (props) => {
 					{formInfo.errors.torontoCopies.length > 0 && <span className='error'>{formInfo.errors.torontoCopies}<br /></span>}
 				</div>
 
-				<input type="submit" value={props.formTitle } />
+				<input type="submit" value={formTitle } />
 			</form>
 		</div>
 	)

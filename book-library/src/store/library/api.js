@@ -28,3 +28,14 @@ export const getBookList = () => {
         }
     ];
 };
+
+export const getBookDetails = (id) => {
+    return {
+        Id: id,
+        Title: "IT",
+        Author: "Stephen King",
+        CoverPictureUrl: "https://picsum.photos/200/300?random=1",
+        ReleaseDate: "1986-09-15",
+        DateAdded: "2020-03-28"
+    };
+};
