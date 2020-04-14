@@ -13,13 +13,11 @@ export default (state = initialState, action) => {
       };
     }
     case ADD_NEW_BOOK: {
-      debugger;
       return {
         ...state
       };
     }
     case ADD_NEW_BOOK_END: {
-      debugger;
       let temp = state.bookData;
       temp.push(action.payload.returnResult);
       return {

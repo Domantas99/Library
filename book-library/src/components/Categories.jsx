@@ -14,9 +14,9 @@ export default function Categories() {
   return (
         // <ul class="navigation__item-content"> // uncomment when there will be functionality 
         <ul> 
-          <Link to="/library">
-            <li className="navigation__item-secondary">All books</li>
-          </Link>
+         <Link to="/library">
+         <li className="navigation__item-secondary">All books</li>
+          </Link> 
         {
           categories.map(category => (
             <Link to={`/library/${category}`}>

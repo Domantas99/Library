@@ -34,16 +34,13 @@ class BookForm extends Component {
 			bookCategory: '',
 			bookTag: 'tempTagPlaceholder',
 			bookFormat: '',
-			bookPages: '',
+			bookPages: 0,
 			bookSeries: '',
 			bookPublisher: '',
 			bookLanguage: '',
-
 			coverImage: '',
 			goodreadsSearch: '',
-			// missing date added
-			bookDate: '', // created
-					
+			bookDate: '', 				
 			kaunasCopies: 0,
 			vilniusCopies: 0,
 			londonCopies: 0,
@@ -86,22 +83,15 @@ class BookForm extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		if (validErrors(this.state.errors) && validInputs(this.state)) {
-			console.info('Valid Form')
-			
-			
+		if (validErrors(this.state.errors) && validInputs(this.state)) {					
 			const book = this.createBookObject();
-			debugger;
-			console.log(book);
-
 			this.props.addBook(book);
 		} else {
-			console.error('Invalid Form')
+			//	alert("Invalid form")
 		}
 	}
 
 	createBookObject() {
-		const date = new Date()
 		const book = {
 			Title: this.state.bookTitle,
 			Isbn: this.state.bookIsbn,
@@ -110,13 +100,13 @@ class BookForm extends Component {
 			Category: this.state.bookCategory,
 			Tag: this.state.bookTag,
 			Format: this.state.bookFormat,
-			NumberOfPages: this.state.bookPages,
+			NumberOfPages: +this.state.bookPages,
 			Series: this.state.bookSeries,
 			Publisher: this.state.bookPublisher,
 			EditionLanguage: this.state.bookLanguage,
 			CoverPictureUrl: this.state.coverImage,
 			GoodReadsUrl: this.state.goodreadsSearch,
-			DateAdded: date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate(),
+			DateAdded: new Date(),
 			ReleaseDate: this.state.bookDate,
 		}
 		return book;
@@ -137,7 +127,7 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="coverImage">COVER IMAGE URL</label><br />
-						{/* <input type="file" name="coverImage" accept="image/*" /> */}
+						{/* <input type="file" name="coverImage" accept="image/*" /> */} 
 						<input type="text" onChange={this.handleChange} name="coverImage" accept="image/*" />
 					</div>
 
@@ -177,7 +167,7 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-						<input type="text" name="bookPages" onChange={this.handleChange} formNoValidate />
+						<input type="number" name="bookPages" onChange={this.handleChange} formNoValidate />
 						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
 					</div>
 

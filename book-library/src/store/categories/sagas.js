@@ -5,13 +5,9 @@ import { categoriesLoaded } from './actions';
 
 export function* getCategoriesSaga(action) {
     try {
-        debugger;
         const apiResult = yield call(getCategoriesAPI);
-        debugger
         yield put(categoriesLoaded(apiResult));
-    } catch (ex) {
-        console.log("Exeption in get categories saga: ", ex);
-    }
+    } catch (ex) { }
 }
 
 export default function* () {

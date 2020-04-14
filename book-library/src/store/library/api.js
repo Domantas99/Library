@@ -1,9 +1,7 @@
 import httpClient from '../../core/httpClient'
 
 export const addBookAPI = (bookObj) => {
-    debugger;
-    //return httpClient.post('books',JSON.stringify(bookObj));
-    return httpClient.post('books',bookObj);
+    return httpClient.post('books', bookObj);
 } 
 
 export const getBookList = () => {
@@ -59,9 +57,5 @@ export const getBookList = () => {
             EditionLanguage: "English",
             GoodReadsUrl: "www.google.com"
         }
-
-
-
-
     ];
 };

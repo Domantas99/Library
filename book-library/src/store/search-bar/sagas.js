@@ -8,9 +8,7 @@ export function* getSeachedBooksSaga(action) {
     try {
         const apiResult = yield call(getSeachedBooksAPI,action.payload);
         yield put(searchedBooksLoaded(apiResult));
-    } catch (ex) {
-        console.log("Exeption in get searched books saga:", ex);
-    }
+    } catch (ex) { }
 }
 
 export default function* () {

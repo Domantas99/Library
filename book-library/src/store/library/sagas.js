@@ -14,14 +14,10 @@ export function* getBookListSaga(action) {
 
 export function* addNewBookSaga(action) {
   try {
-    debugger;
     const apiResult = yield call(addBookAPI, action.payload);
-    debugger;
     yield put(addNewBookEnd(apiResult));
   }
-  catch (e) {
-    
-  }
+  catch (e) { }
 }
 
 export default function* (){
