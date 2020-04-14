@@ -87,7 +87,7 @@ class BookForm extends Component {
 			const book = this.createBookObject();
 			this.props.addBook(book);
 		} else {
-			//	alert("Invalid form")
+			alert("Invalid form")
 		}
 	}
 
