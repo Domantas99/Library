@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getCategoriesAPI } from './api';
-import { GET_CATEGORIES, GET_CATEGORIES_END } from './actionTypes';
+import { GET_CATEGORIES } from './actionTypes';
 import { categoriesLoaded } from './actions';
 
 export function* getCategoriesSaga(action) {
