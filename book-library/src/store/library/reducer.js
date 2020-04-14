@@ -1,7 +1,9 @@
-import {GET_BOOK_LIST_END, ADD_NEW_BOOK, ADD_NEW_BOOK_END} from './actionTypes';
+
+import {GET_BOOK_LIST_END, ADD_NEW_BOOK, ADD_NEW_BOOK_END, GET_BOOK_DETAILS_END} from './actionTypes';
 
 const initialState = {
-  bookData: []
+  bookData: [],
+  bookDetails: []
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +24,13 @@ export default (state = initialState, action) => {
       temp.push(action.payload.returnResult);
       return {
         ...state, bookData:temp
+      }
+    }
+
+    case GET_BOOK_DETAILS_END: {
+      return {
+        ...state,
+        bookDetails: action.payload
       }
     }
 

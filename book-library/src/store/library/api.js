@@ -9,8 +9,10 @@ export const getBookList = () => {
         {
             Id: 1,
             Title: "IT",
+            Isbn: "9789851807822",
             Author: "Stephen King",
             CoverPictureUrl: "https://picsum.photos/200/300?random=1",
+            GoodReadsUrl: "https://www.goodreads.com/book/show/830502.It",
             ReleaseDate: "1986-09-15",
             DateAdded: "2020-03-28",
             Description: "textA",
@@ -59,3 +61,7 @@ export const getBookList = () => {
         }
     ];
 };
+
+export const getBookDetails = (id) => {
+    return getBookList().find(element => element.Id === id);
+}

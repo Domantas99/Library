@@ -30,12 +30,12 @@ export default function Navigation() {
                 </li>
 
                 <li>
-                <NavLink to="/wishlist" className="navigation__item" activeClassName="active">
-                    <div className="navigation__item-header">
-                        <i className="navigation__item-icon navigation__item-icon--wishlist"/>
-                        Wishlist
-                    </div>
-                </NavLink>
+                    <NavLink to="/wishlist" className="navigation__item" activeClassName="active">
+                        <div className="navigation__item-header">
+                            <i className="navigation__item-icon navigation__item-icon--wishlist"/>
+                            Wishlist
+                        </div>
+                    </NavLink>
                 </li>
 
                 <li>
