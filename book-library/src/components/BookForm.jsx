@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addNewBook } from '../store/library/actions';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 const validErrors = (errors) => {
 	let valid = true;
@@ -22,27 +23,29 @@ const validInputs = (inputs) => {
 	return valid;
 }
 
-const BookForm = ({ formTitle, bookDetails, addBook }) => {
+const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
+	const history = useHistory();
+
 	const [formState, setState] = useState({
 		goodreadsSearch: '',
-		coverImage: bookDetails.CoverPictureUrl || '',
-		bookTitle: bookDetails.Title || '',
-		bookAuthor: bookDetails.Author || '',
-		bookDescription: bookDetails.Description || '',
-		bookIsbn: bookDetails.Isbn || '',
-		bookFormat: bookDetails.Format || '',
-		bookPages: bookDetails.PageNumber || 0,
-		bookDate: bookDetails.ReleaseDate || '',
-		bookPublisher: bookDetails.Publisher || '',
-		bookLanguage: bookDetails.EditionLanguage || '',
-		bookSeries: bookDetails.Series || '',
-		bookCategory: bookDetails.Category || '',
-		bookTag: bookDetails.Tag || 'tempTagPlaceholder',
-		kaunasCopies: bookDetails.KaunasCopies || 0,
-		vilniusCopies: bookDetails.VilniusCopies || 0,
-		londonCopies: bookDetails.LondonCopies || 0,
-		chicagoCopies: bookDetails.ChicagoCopies || 0,
-		torontoCopies: bookDetails.TorontoCopies || 0,
+		coverImage: bookDetails ? bookDetails.CoverPictureUrl || '' : '',
+		bookTitle: bookDetails ? bookDetails.Title || '' : '',
+		bookAuthor: bookDetails ? bookDetails.Author || '' : '',
+		bookDescription: bookDetails ? bookDetails.Description || '' : '',
+		bookIsbn: bookDetails ? bookDetails.Isbn || '' : '',
+		bookFormat: bookDetails ? bookDetails.Format || '' : '',
+		bookPages: bookDetails ? bookDetails.PageNumber || 0 : 0,
+		bookDate: bookDetails ? bookDetails.ReleaseDate || '' : '',
+		bookPublisher: bookDetails ? bookDetails.Publisher || '' : '',
+		bookLanguage: bookDetails ? bookDetails.EditionLanguage || '' : '',
+		bookSeries: bookDetails ? bookDetails.Series || '' : '',
+		bookCategory: bookDetails ? bookDetails.Category || '' : '',
+		bookTag: bookDetails ? bookDetails.Tag || 'tempTagPlaceholder' : 'tempTagPlaceholder',
+		kaunasCopies: bookDetails ? bookDetails.KaunasCopies || 0 : 0,
+		vilniusCopies: bookDetails ? bookDetails.VilniusCopies || 0 : 0,
+		londonCopies: bookDetails ? bookDetails.LondonCopies || 0 : 0,
+		chicagoCopies: bookDetails ? bookDetails.ChicagoCopies || 0 : 0,
+		torontoCopies: bookDetails ? bookDetails.TorontoCopies || 0 : 0,
 		errors: {
 			coverImage: '',
 			bookTitle: '',
@@ -83,6 +86,7 @@ const BookForm = ({ formTitle, bookDetails, addBook }) => {
 		if (validErrors(formState.errors) && validInputs(formState)) {
 			const book = createBookObject();
 			addBook(book);
+			id ? history.push("/library/" + id) : history.push("/library");
 		} else {
 			alert("Invalid form")
 		}

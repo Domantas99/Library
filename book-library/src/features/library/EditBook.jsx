@@ -17,7 +17,7 @@ export default () => {
     return (
         id ?
             <div className="content-wrapper">
-                {bookDetails && <BookForm formTitle="Edit" bookDetails={bookDetails} />}
+                {bookDetails && <BookForm formTitle="Edit" bookDetails={bookDetails} id={id} />}
             </div>
             : <Link to="/">Return home</Link>
     )
