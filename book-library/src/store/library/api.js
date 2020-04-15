@@ -22,8 +22,7 @@ export const getBookList = () => {
             NumberOfPages: "255",
             Series: "batman",
             Publisher: "Alma littera",
-            EditionLanguage: "English",
-            GoodReadsUrl: "www.google.com",
+            EditionLanguage: "English"
         },
         {
             Id: 2,
