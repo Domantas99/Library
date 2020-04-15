@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { addNewBook } from '../store/library/actions';
+import { connect } from 'react-redux';
 
 const validErrors = (errors) => {
 	let valid = true;
@@ -25,24 +27,25 @@ class BookForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			goodreadsSearch: '',
-			coverImage: '',
 			bookTitle: '',
+			bookIsbn: '',
 			bookAuthor: '',
 			bookDescription: '',
-			bookIsbn: '',
+			bookCategory: '',
+			bookTag: 'tempTagPlaceholder',
 			bookFormat: '',
-			bookPages: '',
-			bookDate: '',
+			bookPages: 0,
+			bookSeries: '',
 			bookPublisher: '',
 			bookLanguage: '',
-			bookSeries: '',
-			bookCategory: '',
-			kaunasCopies: '',
-			vilniusCopies: '',
-			londonCopies: '',
-			chicagoCopies: '',
-			torontoCopies: '',
+			coverImage: '',
+			goodreadsSearch: '',
+			bookDate: '', 				
+			kaunasCopies: 0,
+			vilniusCopies: 0,
+			londonCopies: 0,
+			chicagoCopies: 0,
+			torontoCopies: 0,
 			errors: {
 				goodreadsSearch: '',
 				coverImage: '',
@@ -80,11 +83,33 @@ class BookForm extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		if (validErrors(this.state.errors) && validInputs(this.state)) {
-			console.info('Valid Form')
+		if (validErrors(this.state.errors) && validInputs(this.state)) {					
+			const book = this.createBookObject();
+			this.props.addBook(book);
 		} else {
-			console.error('Invalid Form')
+			alert("Invalid form")
 		}
+	}
+
+	createBookObject() {
+		const book = {
+			Title: this.state.bookTitle,
+			Isbn: this.state.bookIsbn,
+			Author: this.state.bookAuthor,
+			Description: this.state.bookDescription,
+			Category: this.state.bookCategory,
+			Tag: this.state.bookTag,
+			Format: this.state.bookFormat,
+			NumberOfPages: +this.state.bookPages,
+			Series: this.state.bookSeries,
+			Publisher: this.state.bookPublisher,
+			EditionLanguage: this.state.bookLanguage,
+			CoverPictureUrl: this.state.coverImage,
+			GoodReadsUrl: this.state.goodreadsSearch,
+			DateAdded: new Date(),
+			ReleaseDate: this.state.bookDate,
+		}
+		return book;
 	}
 
 	render() {
@@ -97,12 +122,13 @@ class BookForm extends Component {
 				<form onSubmit={this.handleSubmit}>
 					<div className="input-wrapper">
 						<label htmlFor="goodreadsSearch">FIND IN GOODREADS</label><br />
-						<input type="text" name="goodreadsSearch" />
+						<input onChange={this.handleChange} type="text" name="goodreadsSearch" />
 					</div>
 
 					<div className="input-wrapper">
-						<label htmlFor="coverImage">COVER</label><br />
-						<input type="file" name="coverImage" accept="image/*" />
+						<label htmlFor="coverImage">COVER IMAGE URL</label><br />
+						{/* <input type="file" name="coverImage" accept="image/*" /> */} 
+						<input type="text" onChange={this.handleChange} name="coverImage" accept="image/*" />
 					</div>
 
 					<div className="input-wrapper">
@@ -132,6 +158,7 @@ class BookForm extends Component {
 					<div className="input-wrapper">
 						<label htmlFor="bookFormat">FORMAT</label><br />
 						<select name="bookFormat" onChange={this.handleChange} formNoValidate>
+							<option selected="selected" value="">Not Selected</option>
 							<option value="paperback">Paperback</option>
 							<option value="e-book">E-book</option>
 							<option value="audiobook">Audiobook</option>
@@ -140,7 +167,7 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-						<input type="text" name="bookPages" onChange={this.handleChange} formNoValidate />
+						<input type="number" name="bookPages" onChange={this.handleChange} formNoValidate />
 						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
 					</div>
 
@@ -171,6 +198,7 @@ class BookForm extends Component {
 					<div className="input-wrapper">
 						<label htmlFor="bookCategory">CATEGORY</label><br />
 						<select name="bookCategory" onChange={this.handleChange} formNoValidate>
+							<option selected="selected" value="">Not Selected</option>
 							<option value="drama">Drama</option>
 							<option value="sci-fi">Sci-fi</option>
 						</select>
@@ -181,23 +209,23 @@ class BookForm extends Component {
 							NUMBER OF COPIES
 							</h2>
 						<label htmlFor="kaunasCopies">Kaunas:</label>
-						<input type="text" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.kaunasCopies.length > 0 && <span className='error'>{errors.kaunasCopies}<br /></span>}
 
 						<label htmlFor="vilniusCopies">Vilnius:</label>
-						<input type="text" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.vilniusCopies.length > 0 && <span className='error'>{errors.vilniusCopies}<br /></span>}
 
 						<label htmlFor="londonCopies">London:</label>
-						<input type="text" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.londonCopies.length > 0 && <span className='error'>{errors.londonCopies}<br /></span>}
 
 						<label htmlFor="chicagoCopies">Chicago:</label>
-						<input type="text" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.chicagoCopies.length > 0 && <span className='error'>{errors.chicagoCopies}<br /></span>}
 
 						<label htmlFor="torontoCopies">Toronto:</label>
-						<input type="text" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
+						<input type="number" min="0" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
 						{errors.torontoCopies.length > 0 && <span className='error'>{errors.torontoCopies}<br /></span>}
 					</div>
 
@@ -207,5 +235,9 @@ class BookForm extends Component {
 		);
 	}
 }
+const mapStateToProps = state => ({state})
+const mapDispatchToProps = dispatch => ({
+	addBook: book => dispatch(addNewBook(book))
+})
 
-export default BookForm;
+export default connect(mapStateToProps, mapDispatchToProps)(BookForm);

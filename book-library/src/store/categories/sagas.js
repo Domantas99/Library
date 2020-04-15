@@ -7,9 +7,7 @@ export function* getCategoriesSaga(action) {
     try {
         const apiResult = yield call(getCategoriesAPI);
         yield put(categoriesLoaded(apiResult));
-    } catch (ex) {
-        console.log("Exeption in get categories saga: ", ex);
-    }
+    } catch (ex) { }
 }
 
 export default function* () {
