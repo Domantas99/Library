@@ -24,13 +24,16 @@ namespace BookLibrary.Api
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("all", builder => builder.AllowAnyOrigin());
+                options.AddPolicy("all", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
             services.AddControllers();
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<ITestService, TestService>();
             services.AddScoped<IBooksService, BooksService>();
+            services.AddSpaStaticFiles(options => {
+                options.RootPath = "wwwroot";
+            });
 
         }
 
@@ -50,9 +53,16 @@ namespace BookLibrary.Api
 
             app.UseAuthorization();
 
+            app.UseSpaStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.DefaultPage = "/index.html";
             });
         }
     }

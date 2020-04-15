@@ -19,14 +19,19 @@ namespace BookLibrary.DataBase.Models
         public string Isbn { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
+        public string Category { get; set; }
         public string Tag { get; set; }
+        public string Format { get; set; }
+        public int NumberOfPages { get; set; }
+        public string Series { get; set; }
+        public string Publisher { get; set; }
+        public string EditionLanguage { get; set; }
         public string CoverPictureUrl { get; set; }
         public string GoodReadsUrl { get; set; }
-        [Column(TypeName="Date")]
+        [Column(TypeName ="Date")]
         public DateTime DateAdded { get; set; }
         [Column(TypeName = "Date")]
         public DateTime ReleaseDate { get; set; }
-
         public virtual Wish Wish { get; set; }
         public virtual ICollection<BookComment> BookComment { get; set; }
         public virtual ICollection<BookWish> BookWish { get; set; }

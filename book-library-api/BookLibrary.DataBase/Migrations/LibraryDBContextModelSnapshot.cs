@@ -30,6 +30,9 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CoverPictureUrl")
                         .HasColumnName("CoverPictureURL")
                         .HasColumnType("nvarchar(250)")
@@ -38,12 +41,15 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("Date");
 
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("Date");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
+
+                    b.Property<string>("EditionLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Format")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GoodReadsUrl")
                         .HasColumnName("GoodReadsURL")
@@ -54,6 +60,18 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnName("ISBN")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<int>("NumberOfPages")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("Date");
+
+                    b.Property<string>("Series")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
                         .HasColumnType("nvarchar(250)")

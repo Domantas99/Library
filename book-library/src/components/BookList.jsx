@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BookListItem from "./BookListItem";
-import { getBookList } from "../store/library/actions"
 import { useEffect } from "react";
 
 const getBookSorter = (sort_field, sort_direction) => {
@@ -12,13 +11,12 @@ const getBookSorter = (sort_field, sort_direction) => {
 
 const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data].sort(getBookSorter(sort_field, sort_direction)).map((element, index) => {
-        return (<BookListItem key={index} data={element}/>)}
+        return (<BookListItem key={element["Id"]} data={element}/>)}
     );
 }
 
-function BookList(){
+function BookList({dataSelector, dataAction}){
     const dispatch = useDispatch();
-    const bookData = useSelector(state => state.library.bookData);
     const [sortField, setSortField] = useState('DateAdded');
     const [sortDirection, setSortDirection] = useState(-1);
     const [bookComponents, setBookComponents] = useState([]);
@@ -32,12 +30,12 @@ function BookList(){
     }
 
     useEffect(() => {
-            dispatch(getBookList())
-        }, [dispatch]);
+        dispatch(dataAction())
+    }, [dispatch, dataAction]);
 
     useEffect(()=> {
-        setBookComponents(createBookComponents(bookData, sortField, sortDirection));
-    }, [bookData, sortDirection, sortField]);
+        setBookComponents(createBookComponents(dataSelector, sortField, sortDirection));
+    }, [dataSelector, sortDirection, sortField]);
 
     return (
         <div className="panel__content">
