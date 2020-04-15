@@ -25,7 +25,7 @@
           background-color: #4568FB; }
       .navigation__item.active {
         cursor: unset; }
-        .navigation__item.active .navigation__item-content {
+        .navigation__item.active + .navigation__item-content {
           display: flex; }
     .navigation__item-header {
       display: flex;

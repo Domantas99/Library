@@ -15,7 +15,7 @@ const createBookComponents = (data, sort_field, sort_direction) => {
     );
 }
 
-function BookList({dataSelector, dataAction}){
+function BookList({dataSelector, dataAction, addLink=""}){
     const dispatch = useDispatch();
     const [sortField, setSortField] = useState('DateAdded');
     const [sortDirection, setSortDirection] = useState(-1);
@@ -49,6 +49,12 @@ function BookList({dataSelector, dataAction}){
                 <option value="-1">Descending</option>
             </select>
             <div className="book-grid">
+                {addLink && <a className="book" id="register-new" href={`/register-book`}>
+                    <div className="book__add">
+                        <span className="book__add_plus">+</span>
+                        <span className="book__add_text">Register new book</span>
+                    </div>
+                </a>}
                 {bookComponents} 
             </div>
         </div>
