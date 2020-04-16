@@ -28,3 +28,10 @@ export const getBookList = () => {
         }
     ];
 };
+
+export const getBookDetails = (id) => (
+    {
+        Id: id,
+        Title: 'asdasd',
+    }
+);

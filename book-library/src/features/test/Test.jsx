@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TestBlock } from '../../components'
 import { getMocked, getMockedById, getTest } from '../../store/test/actions';
+import { getBookDetails } from '../../store/library/actions';
 
 export default () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export default () => {
     <div className="test">
       <input type="number" value={id} onChange={(e) => setId(e.target.value || 0)}/>
       <div className="test--wrapper">
-        <TestBlock label="API" data={testData} action={() => dispatch(getTest())} />
+        <TestBlock label="API" data={testData} action={() => dispatch(getBookDetails(5))} />
         <TestBlock label="Mocked" data={mockedData} action={() => dispatch(getMocked())} />
         <TestBlock label="Mocked with input" data={mockedById} action={() => dispatch(getMockedById(id))} />
       </div>

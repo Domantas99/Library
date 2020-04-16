@@ -43,4 +43,30 @@
     color: $color-text-secondary;
     text-decoration: underline;
   }
+
+  &__add {
+    @include heading-style(h3);
+    background-color: $color-blue;
+    max-height: base(22);
+    border-radius: 6px;
+    color: $color-white;
+    justify-content: center;
+    align-items: center;
+    padding: base(4);
+    text-align: center;
+    cursor: pointer;
+    transition: color .5s;
+
+    &:hover {
+      color: $color-blue;
+      background-color: $color-background-selected;
+      border: solid 1px $color-blue;
+    }
+
+    > span:first-child {
+      font-size: base(8);
+      line-height: base(8);
+      font-weight: 300;
+    }
+  }
 }
