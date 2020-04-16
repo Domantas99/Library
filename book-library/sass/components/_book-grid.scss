@@ -19,6 +19,31 @@
     }
   }
 
+  &__add {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: base(30);
+    border-radius: 6px;
+    overflow: hidden;
+    color: white;
+    background: #4568FB;
+    line-height: initial;
+
+    &_plus {
+      font-size: 4em;
+    }
+
+    &_text {
+      text-align: center;
+    }
+
+  }
+
   &__image {
     width: 100%;
     height: base(30);

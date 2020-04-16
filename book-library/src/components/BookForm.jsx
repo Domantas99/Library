@@ -157,8 +157,8 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="bookFormat">FORMAT</label><br />
-						<select name="bookFormat" onChange={this.handleChange} formNoValidate>
-							<option selected="selected" value="">Not Selected</option>
+						<select name="bookFormat" onChange={this.handleChange} defaultValue="" formNoValidate>
+							<option value="">Not Selected</option>
 							<option value="paperback">Paperback</option>
 							<option value="e-book">E-book</option>
 							<option value="audiobook">Audiobook</option>
@@ -197,8 +197,8 @@ class BookForm extends Component {
 
 					<div className="input-wrapper">
 						<label htmlFor="bookCategory">CATEGORY</label><br />
-						<select name="bookCategory" onChange={this.handleChange} formNoValidate>
-							<option selected="selected" value="">Not Selected</option>
+						<select name="bookCategory" onChange={this.handleChange} defaultValue="" formNoValidate>
+							<option value="">Not Selected</option>
 							<option value="drama">Drama</option>
 							<option value="sci-fi">Sci-fi</option>
 						</select>
