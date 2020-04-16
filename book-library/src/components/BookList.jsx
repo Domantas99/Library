@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { useDispatch } from 'react-redux';
 import BookListItem from "./BookListItem";
 import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 const getBookSorter = (sort_field, sort_direction) => {
     return (a, b) => {
@@ -49,12 +50,12 @@ function BookList({dataSelector, dataAction, addLink=""}){
                 <option value="-1">Descending</option>
             </select>
             <div className="book-grid">
-                {addLink && <a className="book" id="register-new" href={`/register-book`}>
+                {addLink && <Link className="book" id="register-new" to={`/register-book`}>
                     <div className="book__add">
                         <span className="book__add_plus">+</span>
                         <span className="book__add_text">Register new book</span>
                     </div>
-                </a>}
+                </Link>}
                 {bookComponents} 
             </div>
         </div>
