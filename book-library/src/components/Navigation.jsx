@@ -25,8 +25,8 @@ export default function Navigation() {
                             <i className="navigation__item-icon navigation__item-icon--library"/>
                             Library
                         </div>
-                        <Categories/>
                     </NavLink>
+                    <Categories/>
                 </li>
 
                 <li>

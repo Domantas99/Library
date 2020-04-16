@@ -112,7 +112,6 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
 		}
 		return book;
 	}
-
 	return(
 		<div className="form-wrapper">
 			<h1 className="form-title">
@@ -165,7 +164,7 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
 
 				<div className="input-wrapper">
 					<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-					<input type="text" name="bookPages" value={formState.bookPages} onChange={handleChange} />
+					<input type="number" name="bookPages" value={formState.bookPages} onChange={handleChange} />
 					{formState.errors.bookPages.length > 0 && <span className='error'><br />{formState.errors.bookPages}</span>}
 				</div>
 
@@ -206,23 +205,23 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
 						NUMBER OF COPIES
 						</h2>
 					<label htmlFor="kaunasCopies">Kaunas:</label>
-					<input type="text" name="kaunasCopies" value={formState.kaunasCopies} onChange={handleChange} /><br />
+					<input type="number" name="kaunasCopies" value={formState.kaunasCopies} onChange={handleChange} /><br />
 					{formState.errors.kaunasCopies.length > 0 && <span className='error'>{formState.errors.kaunasCopies}<br /></span>}
 
 					<label htmlFor="vilniusCopies">Vilnius:</label>
-					<input type="text" name="vilniusCopies" value={formState.vilniusCopies} onChange={handleChange} /><br />
+					<input type="number" name="vilniusCopies" value={formState.vilniusCopies} onChange={handleChange} /><br />
 					{formState.errors.vilniusCopies.length > 0 && <span className='error'>{formState.errors.vilniusCopies}<br /></span>}
 
 					<label htmlFor="londonCopies">London:</label>
-					<input type="text" name="londonCopies" value={formState.londonCopies} onChange={handleChange} /><br />
+					<input type="number" name="londonCopies" value={formState.londonCopies} onChange={handleChange} /><br />
 					{formState.errors.londonCopies.length > 0 && <span className='error'>{formState.errors.londonCopies}<br /></span>}
 
 					<label htmlFor="chicagoCopies">Chicago:</label>
-					<input type="text" name="chicagoCopies" value={formState.chicagoCopies} onChange={handleChange} /><br />
+					<input type="number" name="chicagoCopies" value={formState.chicagoCopies} onChange={handleChange} /><br />
 					{formState.errors.chicagoCopies.length > 0 && <span className='error'>{formState.errors.chicagoCopies}<br /></span>}
 
 					<label htmlFor="torontoCopies">Toronto:</label>
-					<input type="text" name="torontoCopies" value={formState.torontoCopies} onChange={handleChange} /><br />
+					<input type="number" name="torontoCopies" value={formState.torontoCopies} onChange={handleChange} /><br />
 					{formState.errors.torontoCopies.length > 0 && <span className='error'>{formState.errors.torontoCopies}<br /></span>}
 				</div>
 
