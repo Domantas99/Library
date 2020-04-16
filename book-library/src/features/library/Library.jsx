@@ -18,7 +18,7 @@ export default () => {
         <div className="panel__header">
           <h1>Library</h1>
         </div>
-        <BookList dataSelector={useSelector(state => state.library.bookData)} dataAction={getBookList}/>
+        <BookList dataSelector={useSelector(state => state.library.bookData)} dataAction={getBookList} addLink="/register-book"/>
       </div>
   )
 }

@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { useDispatch } from 'react-redux';
 import BookListItem from "./BookListItem";
 import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 const getBookSorter = (sort_field, sort_direction) => {
     return (a, b) => {
@@ -11,11 +12,11 @@ const getBookSorter = (sort_field, sort_direction) => {
 
 const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data].sort(getBookSorter(sort_field, sort_direction)).map((element, index) => {
-        return (<BookListItem key={index} data={element}/>)}
+        return (<BookListItem key={element["Id"]} data={element}/>)}
     );
 }
 
-function BookList({dataSelector, dataAction}){
+function BookList({dataSelector, dataAction, addLink=""}){
     const dispatch = useDispatch();
     const [sortField, setSortField] = useState('DateAdded');
     const [sortDirection, setSortDirection] = useState(-1);
@@ -30,8 +31,8 @@ function BookList({dataSelector, dataAction}){
     }
 
     useEffect(() => {
-            dispatch(dataAction())
-        }, [dispatch, dataAction]);
+        dispatch(dataAction())
+    }, [dispatch, dataAction]);
 
     useEffect(()=> {
         setBookComponents(createBookComponents(dataSelector, sortField, sortDirection));
@@ -49,6 +50,12 @@ function BookList({dataSelector, dataAction}){
                 <option value="-1">Descending</option>
             </select>
             <div className="book-grid">
+                {addLink && <Link className="book" id="register-new" to={`/register-book`}>
+                    <div className="book__add">
+                        <span className="book__add_plus">+</span>
+                        <span className="book__add_text">Register new book</span>
+                    </div>
+                </Link>}
                 {bookComponents} 
             </div>
         </div>

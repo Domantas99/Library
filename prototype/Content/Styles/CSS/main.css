@@ -391,6 +391,22 @@ a {
   flex-direction: column; }
   .book:hover .book__title {
     color: #4568FB; }
+  .book__add {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 240px;
+    border-radius: 6px;
+    overflow: hidden;
+    color: white;
+    background: #4568FB;
+    line-height: initial; }
+    .book__add_plus {
+      font-size: 4em; }
+    .book__add_text {
+      text-align: center; }
   .book__image {
     width: 100%;
     height: 240px;

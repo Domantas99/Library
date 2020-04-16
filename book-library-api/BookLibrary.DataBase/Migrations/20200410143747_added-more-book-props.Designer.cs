@@ -4,14 +4,16 @@ using BookLibrary.DataBase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200410143747_added-more-book-props")]
+    partial class addedmorebookprops
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<string>("EditionLanguage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Format")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,9 +62,6 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.Property<int>("NumberOfPages")
                         .HasColumnType("int");
-
-                    b.Property<string>("Publisher")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("Date");
