@@ -29,7 +29,6 @@ namespace BookLibrary.Api
             services.AddControllers();
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
-            services.AddScoped<ITestService, TestService>();
             services.AddScoped<IBooksService, BooksService>();
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";
