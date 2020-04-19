@@ -1,10 +1,11 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
-import { getMocked, getMockedById, getTest } from './api';
-import { GET_MOCKED, GET_MOCKED_ID, GET_TEST } from './actionTypes';
-import { mockedByIdLoaded, mockedLoaded, testLoaded } from './actions';
+/* eslint-disable no-unused-vars */
+import { takeLatest, call, put } from "redux-saga/effects";
+import { getMocked, getMockedById, getTest } from "./api";
+import { GET_MOCKED, GET_MOCKED_ID, GET_TEST } from "./actionTypes";
+import { mockedByIdLoaded, mockedLoaded, testLoaded } from "./actions";
 
 export function* getTestSaga(action) {
-  try{
+  try {
     const apiResult = yield call(getTest);
 
     yield put(testLoaded(apiResult));
@@ -14,7 +15,7 @@ export function* getTestSaga(action) {
 }
 
 export function* getMockedSaga(action) {
-  try{
+  try {
     const apiResult = yield call(getMocked);
 
     yield put(mockedLoaded(apiResult));
@@ -24,7 +25,7 @@ export function* getMockedSaga(action) {
 }
 
 export function* getMockedByIdSaga(action) {
-  try{
+  try {
     const apiResult = yield call(getMockedById, action.payload);
 
     yield put(mockedByIdLoaded(apiResult));

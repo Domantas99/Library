@@ -1,5 +1,4 @@
-import Test from './Test'
+/* eslint-disable import/prefer-default-export */
+import Test from "./Test";
 
-export {
-  Test
-}
+export { Test };

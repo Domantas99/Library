@@ -1,9 +1,9 @@
-import { GET_MOCKED_END, GET_MOCKED_ID_END, GET_TEST_END } from './actionTypes';
+import { GET_MOCKED_END, GET_MOCKED_ID_END, GET_TEST_END } from "./actionTypes";
 
 const initialState = {
   testData: null,
   mockedData: null,
-  mockedById: null
+  mockedById: null,
 };
 
 export default (state = initialState, action) => {
@@ -11,21 +11,21 @@ export default (state = initialState, action) => {
     case GET_TEST_END: {
       return {
         ...state,
-        testData: action.payload
+        testData: action.payload,
       };
     }
 
     case GET_MOCKED_END: {
       return {
         ...state,
-        mockedData: action.payload
+        mockedData: action.payload,
       };
     }
 
     case GET_MOCKED_ID_END: {
       return {
         ...state,
-        mockedById: action.payload
+        mockedById: action.payload,
       };
     }
 
