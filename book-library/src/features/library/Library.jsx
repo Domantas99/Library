@@ -9,7 +9,7 @@ export default () => {
   
   return (
     id ?
-      <div className="panel">
+      <div>
        <div className="panel__content">
           <BookDetails id={id}/>
         </div>
