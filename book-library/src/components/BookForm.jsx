@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { addNewBook } from '../store/library/actions';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 const validErrors = (errors) => {
 	let valid = true;
@@ -22,218 +23,212 @@ const validInputs = (inputs) => {
 	return valid;
 }
 
-class BookForm extends Component {
+const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
+	const history = useHistory();
 
-	constructor(props) {
-		super(props);
-		this.state = {
+	const [formState, setState] = useState({
+		goodreadsSearch: '',
+		coverImage: bookDetails ? bookDetails.CoverPictureUrl || '' : '',
+		bookTitle: bookDetails ? bookDetails.Title || '' : '',
+		bookAuthor: bookDetails ? bookDetails.Author || '' : '',
+		bookDescription: bookDetails ? bookDetails.Description || '' : '',
+		bookIsbn: bookDetails ? bookDetails.Isbn || '' : '',
+		bookFormat: bookDetails ? bookDetails.Format || '' : '',
+		bookPages: bookDetails ? bookDetails.PageNumber || 0 : 0,
+		bookDate: bookDetails ? bookDetails.ReleaseDate || '' : '',
+		bookPublisher: bookDetails ? bookDetails.Publisher || '' : '',
+		bookLanguage: bookDetails ? bookDetails.EditionLanguage || '' : '',
+		bookSeries: bookDetails ? bookDetails.Series || '' : '',
+		bookCategory: bookDetails ? bookDetails.Category || '' : '',
+		bookTag: bookDetails ? bookDetails.Tag || 'tempTagPlaceholder' : 'tempTagPlaceholder',
+		kaunasCopies: bookDetails ? bookDetails.KaunasCopies || 0 : 0,
+		vilniusCopies: bookDetails ? bookDetails.VilniusCopies || 0 : 0,
+		londonCopies: bookDetails ? bookDetails.LondonCopies || 0 : 0,
+		chicagoCopies: bookDetails ? bookDetails.ChicagoCopies || 0 : 0,
+		torontoCopies: bookDetails ? bookDetails.TorontoCopies || 0 : 0,
+		errors: {
+			coverImage: '',
 			bookTitle: '',
 			bookIsbn: '',
 			bookAuthor: '',
 			bookDescription: '',
 			bookCategory: '',
-			bookTag: 'tempTagPlaceholder',
+			bookTag: '',
 			bookFormat: '',
-			bookPages: 0,
+			bookPages: '',
+			bookDate: '',
 			bookSeries: '',
 			bookPublisher: '',
 			bookLanguage: '',
-			coverImage: '',
-			goodreadsSearch: '',
-			bookDate: '', 				
-			kaunasCopies: 0,
-			vilniusCopies: 0,
-			londonCopies: 0,
-			chicagoCopies: 0,
-			torontoCopies: 0,
-			errors: {
-				goodreadsSearch: '',
-				coverImage: '',
-				bookTitle: '',
-				bookAuthor: '',
-				bookDescription: '',
-				bookIsbn: '',
-				bookFormat: '',
-				bookPages: '',
-				bookDate: '',
-				bookPublisher: '',
-				bookLanguage: '',
-				bookSeries: '',
-				bookCategory: '',
-				kaunasCopies: '',
-				vilniusCopies: '',
-				londonCopies: '',
-				chicagoCopies: '',
-				torontoCopies: '',
-            }
+			kaunasCopies: '',
+			vilniusCopies: '',
+			londonCopies: '',
+			chicagoCopies: '',
+			torontoCopies: '',
 		}
-	}
+	});
 
-	handleChange = (event) => {
+	const handleChange = (event) => {
 		event.preventDefault();
 		const { name, value } = event.target;
-		let errors = this.state.errors;
+		let errors = formState.errors;
 
-		errors[name] = value.length < 1 || value.length > 1000
-			? 'field must be filled and can not exceed 1000 characters'
-			: '';
-
-		this.setState({ errors, [name]: value });
+		if (name !== 'goodreadsSearch') {
+			errors[name] = value.length < 1 || value.length > 1000
+				? 'field must be filled and can not exceed 1000 characters'
+				: '';
+		}
+		setState({ ...formState, errors, [name]: value });
 	}
 
-	handleSubmit = (event) => {
+	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (validErrors(this.state.errors) && validInputs(this.state)) {					
-			const book = this.createBookObject();
-			this.props.addBook(book);
+		if (validErrors(formState.errors) && validInputs(formState)) {
+			const book = createBookObject();
+			addBook(book);
+			id ? history.push("/library/" + id) : history.push("/library");
 		} else {
 			alert("Invalid form")
 		}
 	}
 
-	createBookObject() {
+	const createBookObject = () => {
 		const book = {
-			Title: this.state.bookTitle,
-			Isbn: this.state.bookIsbn,
-			Author: this.state.bookAuthor,
-			Description: this.state.bookDescription,
-			Category: this.state.bookCategory,
-			Tag: this.state.bookTag,
-			Format: this.state.bookFormat,
-			NumberOfPages: +this.state.bookPages,
-			Series: this.state.bookSeries,
-			Publisher: this.state.bookPublisher,
-			EditionLanguage: this.state.bookLanguage,
-			CoverPictureUrl: this.state.coverImage,
-			GoodReadsUrl: this.state.goodreadsSearch,
+			Title: formState.bookTitle,
+			Isbn: formState.bookIsbn,
+			Author: formState.bookAuthor,
+			Description: formState.bookDescription,
+			Category: formState.bookCategory,
+			Tag: formState.bookTag,
+			Format: formState.bookFormat,
+			NumberOfPages: +formState.bookPages,
+			Series: formState.bookSeries,
+			Publisher: formState.bookPublisher,
+			EditionLanguage: formState.bookLanguage,
+			CoverPictureUrl: formState.coverImage,
+			GoodReadsUrl: formState.goodreadsSearch,
 			DateAdded: new Date(),
-			ReleaseDate: this.state.bookDate,
+			ReleaseDate: formState.bookDate,
 		}
 		return book;
 	}
+	return(
+		<div className="form-wrapper">
+			<h1 className="form-title">
+				{formTitle} Book
+				</h1>
+			<form onSubmit={handleSubmit} noValidate>
+				<div className="input-wrapper">
+					<label htmlFor="goodreadsSearch">FIND IN GOODREADS</label><br />
+					<input type="text" name="goodreadsSearch" />
+				</div>
 
-	render() {
-		const { errors } = this.state;
-		return (
-			<div className="form-wrapper">
-				<h1 className="form-title">
-					Register Book
-					</h1>
-				<form onSubmit={this.handleSubmit}>
-					<div className="input-wrapper">
-						<label htmlFor="goodreadsSearch">FIND IN GOODREADS</label><br />
-						<input onChange={this.handleChange} type="text" name="goodreadsSearch" />
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="coverImage">COVER</label><br />
+					{/*<input type="file" value={formInfo.coverImage} onChange={handleChange} name="coverImage" accept="image/*" />*/}
+					<input type="text" value={formState.coverImage} onChange={handleChange} name="coverImage" accept="image/*" />
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="coverImage">COVER IMAGE URL</label><br />
-						{/* <input type="file" name="coverImage" accept="image/*" /> */} 
-						<input type="text" onChange={this.handleChange} name="coverImage" accept="image/*" />
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookTitle">TITLE</label><br />
+					<input type="text" value={formState.bookTitle} name="bookTitle" onChange={handleChange} />
+					{formState.errors.bookTitle.length > 0 && <span className='error'><br />{formState.errors.bookTitle}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookTitle">TITLE</label><br />
-						<input type="text" name="bookTitle" onChange={this.handleChange} formNoValidate/>
-						{errors.bookTitle.length > 0 && <span className='error'><br />{errors.bookTitle}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookAuthor">AUTHOR(S)</label><br />
+					<input type="text" value={formState.bookAuthor} name="bookAuthor" onChange={handleChange} />
+					{formState.errors.bookAuthor.length > 0 && <span className='error'><br />{formState.errors.bookAuthor}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookAuthor">AUTHOR(S)</label><br />
-						<input type="text" name="bookAuthor" onChange={this.handleChange} formNoValidate />
-						{errors.bookAuthor.length > 0 && <span className='error'><br />{errors.bookAuthor}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookDescription">DESCRIPTION</label><br />
+					<textarea name="bookDescription" value={formState.bookDescription} cols="30" rows="10" onChange={handleChange} ></textarea>
+					{formState.errors.bookDescription.length > 0 && <span className='error'><br />{formState.errors.bookDescription}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookDescription">DESCRIPTION</label><br />
-						<textarea name="bookDescription" cols="30" rows="10" onChange={this.handleChange} formNoValidate></textarea>
-						{errors.bookDescription.length > 0 && <span className='error'><br />{errors.bookDescription}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookIsbn">ISBN</label><br />
+					<input type="text" name="bookIsbn" value={formState.bookIsbn} onChange={handleChange} />
+					{formState.errors.bookIsbn.length > 0 && <span className='error'><br />{formState.errors.bookIsbn}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookIsbn">ISBN</label><br />
-						<input type="text" name="bookIsbn" onChange={this.handleChange} formNoValidate />
-						{errors.bookIsbn.length > 0 && <span className='error'><br />{errors.bookIsbn}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookFormat">FORMAT</label><br />
+					<select name="bookFormat" value={formState.bookFormat} onChange={handleChange} >
+						<option value="paperback">Paperback</option>
+						<option value="e-book">E-book</option>
+						<option value="audiobook">Audiobook</option>
+					</select>
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookFormat">FORMAT</label><br />
-						<select name="bookFormat" onChange={this.handleChange} defaultValue="" formNoValidate>
-							<option value="">Not Selected</option>
-							<option value="paperback">Paperback</option>
-							<option value="e-book">E-book</option>
-							<option value="audiobook">Audiobook</option>
-						</select>
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
+					<input type="number" name="bookPages" value={formState.bookPages} onChange={handleChange} />
+					{formState.errors.bookPages.length > 0 && <span className='error'><br />{formState.errors.bookPages}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-						<input type="number" name="bookPages" onChange={this.handleChange} formNoValidate />
-						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookDate">PUBLICATION DATE</label><br />
+					<input type="date" name="bookDate" value={formState.bookDate} onChange={handleChange} />
+					{formState.errors.bookPages.length > 0 && <span className='error'><br />{formState.errors.bookPages}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookDate">PUBLICATION DATE</label><br />
-						<input type="date" name="bookDate" onChange={this.handleChange} formNoValidate />
-						{errors.bookPages.length > 0 && <span className='error'><br />{errors.bookPages}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookPublisher">PUBLISHER</label><br />
+					<input type="text" name="bookPublisher" value={formState.bookPublisher} onChange={handleChange} />
+					{formState.errors.bookPublisher.length > 0 && <span className='error'><br />{formState.errors.bookPublisher}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookPublisher">PUBLISHER</label><br />
-						<input type="text" name="bookPublisher" onChange={this.handleChange} formNoValidate />
-						{errors.bookPublisher.length > 0 && <span className='error'><br />{errors.bookPublisher}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookLanguage">EDITION LANGUAGE</label><br />
+					<input type="text" name="bookLanguage" value={formState.bookLanguage} onChange={handleChange} />
+					{formState.errors.bookLanguage.length > 0 && <span className='error'><br />{formState.errors.bookLanguage}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookLanguage">EDITION LANGUAGE</label><br />
-						<input type="text" name="bookLanguage" onChange={this.handleChange} formNoValidate />
-						{errors.bookLanguage.length > 0 && <span className='error'><br />{errors.bookLanguage}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookSeries">SERIES</label><br />
+					<input type="text" name="bookSeries" value={formState.bookSeries} onChange={handleChange} />
+					{formState.errors.bookSeries.length > 0 && <span className='error'><br />{formState.errors.bookSeries}</span>}
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookSeries">SERIES</label><br />
-						<input type="text" name="bookSeries" onChange={this.handleChange} formNoValidate />
-						{errors.bookSeries.length > 0 && <span className='error'><br />{errors.bookSeries}</span>}
-					</div>
+				<div className="input-wrapper">
+					<label htmlFor="bookCategory">CATEGORY</label><br />
+					<select name="bookCategory" value={formState.bookCategory} onChange={handleChange} >
+						<option value="drama">Drama</option>
+						<option value="sci-fi">Sci-fi</option>
+					</select>
+				</div>
 
-					<div className="input-wrapper">
-						<label htmlFor="bookCategory">CATEGORY</label><br />
-						<select name="bookCategory" onChange={this.handleChange} defaultValue="" formNoValidate>
-							<option value="">Not Selected</option>
-							<option value="drama">Drama</option>
-							<option value="sci-fi">Sci-fi</option>
-						</select>
-					</div>
+				<div className="copies-wrapper">
+					<h2>
+						NUMBER OF COPIES
+						</h2>
+					<label htmlFor="kaunasCopies">Kaunas:</label>
+					<input type="number" name="kaunasCopies" value={formState.kaunasCopies} onChange={handleChange} /><br />
+					{formState.errors.kaunasCopies.length > 0 && <span className='error'>{formState.errors.kaunasCopies}<br /></span>}
 
-					<div className="copies-wrapper">
-						<h2>
-							NUMBER OF COPIES
-							</h2>
-						<label htmlFor="kaunasCopies">Kaunas:</label>
-						<input type="number" min="0" name="kaunasCopies" onChange={this.handleChange} formNoValidate /><br />
-						{errors.kaunasCopies.length > 0 && <span className='error'>{errors.kaunasCopies}<br /></span>}
+					<label htmlFor="vilniusCopies">Vilnius:</label>
+					<input type="number" name="vilniusCopies" value={formState.vilniusCopies} onChange={handleChange} /><br />
+					{formState.errors.vilniusCopies.length > 0 && <span className='error'>{formState.errors.vilniusCopies}<br /></span>}
 
-						<label htmlFor="vilniusCopies">Vilnius:</label>
-						<input type="number" min="0" name="vilniusCopies" onChange={this.handleChange} formNoValidate /><br />
-						{errors.vilniusCopies.length > 0 && <span className='error'>{errors.vilniusCopies}<br /></span>}
+					<label htmlFor="londonCopies">London:</label>
+					<input type="number" name="londonCopies" value={formState.londonCopies} onChange={handleChange} /><br />
+					{formState.errors.londonCopies.length > 0 && <span className='error'>{formState.errors.londonCopies}<br /></span>}
 
-						<label htmlFor="londonCopies">London:</label>
-						<input type="number" min="0" name="londonCopies" onChange={this.handleChange} formNoValidate /><br />
-						{errors.londonCopies.length > 0 && <span className='error'>{errors.londonCopies}<br /></span>}
+					<label htmlFor="chicagoCopies">Chicago:</label>
+					<input type="number" name="chicagoCopies" value={formState.chicagoCopies} onChange={handleChange} /><br />
+					{formState.errors.chicagoCopies.length > 0 && <span className='error'>{formState.errors.chicagoCopies}<br /></span>}
 
-						<label htmlFor="chicagoCopies">Chicago:</label>
-						<input type="number" min="0" name="chicagoCopies" onChange={this.handleChange} formNoValidate /><br />
-						{errors.chicagoCopies.length > 0 && <span className='error'>{errors.chicagoCopies}<br /></span>}
+					<label htmlFor="torontoCopies">Toronto:</label>
+					<input type="number" name="torontoCopies" value={formState.torontoCopies} onChange={handleChange} /><br />
+					{formState.errors.torontoCopies.length > 0 && <span className='error'>{formState.errors.torontoCopies}<br /></span>}
+				</div>
 
-						<label htmlFor="torontoCopies">Toronto:</label>
-						<input type="number" min="0" name="torontoCopies" onChange={this.handleChange} formNoValidate /><br />
-						{errors.torontoCopies.length > 0 && <span className='error'>{errors.torontoCopies}<br /></span>}
-					</div>
-
-					<input type="submit" value="Register" />
-				</form>
-			</div>
-		);
-	}
+				<input type="submit" value={formTitle } />
+			</form>
+		</div>
+	)
 }
 const mapStateToProps = state => ({state})
 const mapDispatchToProps = dispatch => ({

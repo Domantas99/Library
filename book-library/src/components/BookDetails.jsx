@@ -1,14 +1,20 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBookDetails } from "../store/library/actions";
+import { useHistory } from "react-router-dom";
 
 export default ({id}) => {
     const dispatch = useDispatch();
     const bookDetails = useSelector(state => state.library.bookDetails);
-    debugger;
+    const history = useHistory();
+
     useEffect(() => {
         dispatch(getBookDetails(id));
     }, [dispatch, id]);
+
+    function handleClick() {
+        history.push("/edit-book/" + id);
+    }
 
     return (
         <div className="page">
@@ -55,7 +61,7 @@ export default ({id}) => {
                         <span className="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>
 
                     </div>
-                </div>
+                    </div>
                     <div className="reservation-panel">
                         <h4>Reserve at</h4>
                     </div>

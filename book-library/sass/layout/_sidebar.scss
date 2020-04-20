@@ -74,10 +74,6 @@
 
     &.active {
       cursor: unset;
-
-      #{$this}__item-content {
-        display: flex;
-      }
     }
   }
 
@@ -93,6 +89,10 @@
     display: none;
     flex-direction: column;
     padding: base(2) 0;
+
+    .active + &{
+      display: flex;
+    }
   }
 
   &__item-icon {
