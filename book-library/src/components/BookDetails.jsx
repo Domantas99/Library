@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getBookDetails } from "../store/library/actions";
 import { useHistory } from "react-router-dom";
+import { getBookDetails } from "../store/library/actions";
 
 export default ({id}) => {
-    const dispatch = useDispatch();
-    const bookDetails = useSelector(state => state.library.bookDetails);
-    const history = useHistory();
+  const dispatch = useDispatch();
+  const bookDetails = useSelector((state) => state.library.bookDetails);
+  const history = useHistory();
 
-    useEffect(() => {
-        dispatch(getBookDetails(id));
-    }, [dispatch, id]);
+  useEffect(() => {
+    dispatch(getBookDetails(id));
+  }, [dispatch, id]);
 
-    function handleClick() {
-        history.push("/edit-book/" + id);
-    }
+  function handleClick() {
+    history.push(`/edit-book/${  id}`);
+  }
 
-    return (
-        <div className="page">
-            { bookDetails ? <div>
+  return (
+    <div className="page">
+          { bookDetails ? (
+            <div>
                 <div className="page__content book-details">
                 <div className="book-details__image">
                     <img src={bookDetails.CoverPictureUrl} alt=""/>
@@ -66,9 +67,8 @@ export default ({id}) => {
                         <h4>Reserve at</h4>
                     </div>
                 </div>
-            </div> : 
-            <div>Loading</div> 
-            }
-        </div>
-    );
-}
+            </div> ): 
+            (<div>Loading</div>)} 
+    </div>
+  );
+ }

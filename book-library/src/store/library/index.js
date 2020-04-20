@@ -1,7 +1,4 @@
-import reducer from './reducer';
-import sagas from './sagas'
+import reducer from "./reducer";
+import sagas from "./sagas";
 
-export {
-  reducer,
-  sagas
-}
+export { reducer, sagas };

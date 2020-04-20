@@ -1,9 +1,4 @@
-import { Library, RegisterBook, EditBook } from './library';
-import { Wishlist } from './wishlist'
+import { Library, RegisterBook } from "./library";
+import { Wishlist } from "./wishlist";
 
-export {
-  Wishlist,
-  Library,
-  RegisterBook,
-  EditBook
-}
+export { Wishlist, Library, RegisterBook };
