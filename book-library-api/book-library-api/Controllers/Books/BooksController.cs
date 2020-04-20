@@ -23,8 +23,8 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] Book book) {
             return await _booksService.AddNewBook(book);
         }
-        [HttpGet()]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks(int id)
+        [HttpGet]
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks()
         {
             return await _booksService.GetBooks();
         }
