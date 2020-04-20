@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Test, Library, RegisterBook, Wishlist } from './features';
+import { Test, Library, RegisterBook, Wishlist, EditBook } from './features';
 import { SearchBar, Navigation } from './components';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
           <Route path={'/library/:id?'} component={Library} />
           <Route path={'/wishlist'} component={Wishlist} />
           <Route path={'/register-book'} component={RegisterBook} />
+          <Route exact path={'/edit-book/:id?'} component={EditBook} />
           <Redirect exact from={'/'} to={'/library'} />
         </Switch>
       </div>

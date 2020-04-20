@@ -1,9 +1,8 @@
-
 import {GET_BOOK_LIST_END, ADD_NEW_BOOK, ADD_NEW_BOOK_END, GET_BOOK_DETAILS_END} from './actionTypes';
 
 const initialState = {
   bookData: [],
-  bookDetails: []
+  bookDetails: null
 };
 
 export default (state = initialState, action) => {
