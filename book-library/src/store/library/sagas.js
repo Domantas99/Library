@@ -1,7 +1,7 @@
 import history from '../../core/history';
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { getBookList, addBookAPI, getBookDetails } from './api';
-import { GET_BOOK_LIST_START, ADD_NEW_BOOK, GET_BOOK_DETAILS_START } from './actionTypes';
+import { GET_BOOK_LIST_START, ADD_NEW_BOOK, GET_BOOK_DETAILS } from './actionTypes';
 import { getBookListEnd, addNewBookEnd, getBookDetailsEnd } from './actions';
 
 export function* getBookListSaga(action) {
@@ -36,5 +36,5 @@ export function* getBookDetailsSaga(action) {
 export default function* (){
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK, addNewBookSaga);
-  yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
+  yield takeLatest(GET_BOOK_DETAILS, getBookDetailsSaga);
 }

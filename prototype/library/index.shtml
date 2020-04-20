@@ -13,6 +13,10 @@
                 <h1>Library</h1>
             </div>
             <div class="panel__content book-grid" data-copies="100" >
+                <a class="book book__add">
+                    <span>+</span>
+                    <span>Register new book</span>
+                </a>
             </div>
         </div>
     </div>

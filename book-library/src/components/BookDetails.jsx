@@ -1,14 +1,20 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBookDetails } from "../store/library/actions";
+import { useHistory } from "react-router-dom";
 
 export default ({id}) => {
     const dispatch = useDispatch();
     const bookDetails = useSelector(state => state.library.bookDetails);
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(getBookDetails(id));
     }, [dispatch, id]);
+
+    function handleClick() {
+        history.push("/edit-book/" + id);
+    }
 
     return (
         <div>
@@ -51,7 +57,7 @@ export default ({id}) => {
                                             GoodReads URL
                                         </td>
                                         <td>
-                                            <a href={ bookDetails["GoodReadsUrl"] }>{ bookDetails["GoodReadsUrl"] }</a> }
+                                            <a href={ bookDetails["GoodReadsUrl"] }>{ bookDetails["GoodReadsUrl"] }</a>
                                         </td>
                                     </tr>
                             }
@@ -79,6 +85,9 @@ export default ({id}) => {
                             }
                         </tbody>
                     </table>
+                    <button onClick={handleClick}>
+                        Edit details
+                    </button>
                 </div>
              : null}
         </div>

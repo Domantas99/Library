@@ -1,0 +1,49 @@
+.book-details {
+  @include heading-style(h4);
+  line-height: 20px;
+  font-weight: normal;
+
+  &__image {
+    display: flex;
+    max-width: base(33);
+    min-width: base(13);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  &__content {
+    margin: 0 base(5);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: base(40);
+    max-width: base(69);
+
+    hr {
+      width: 100%;
+      border: none;
+      margin: base(3) 0;
+      border-bottom: solid 1px $color-border;
+    }
+  }
+
+  &__description {
+    color: $color-text-secondary;
+    margin-top: base(2);
+  }
+
+  &__title {
+    @include heading-style(h1)
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 33.33% 66.67%;
+    grid-column-gap: base(2);
+    grid-row-gap: base();
+  }
+
+  &__detail {
+    font-weight: $font-weight-default;
+  }
+}
