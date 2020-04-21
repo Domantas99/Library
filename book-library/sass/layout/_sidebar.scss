@@ -1,3 +1,5 @@
+@import "../svg/sassvg-data";
+
 .sidebar {
   margin: 0;
   top: 0;
@@ -12,7 +14,6 @@
   }
 
   &__header {
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -20,7 +21,9 @@
   }
 
   &__logo {
+    @include sassvg("logo", $color: white, $fillcolor: #EE3D57);
     padding: base(2);
+    margin: base(2);
   }
 }
 
