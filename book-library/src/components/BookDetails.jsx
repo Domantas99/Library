@@ -28,7 +28,7 @@ export default ({id}) => {
                     <div className="book-details__title">
                     {bookDetails['Title']}
                     </div>
-                    <h4 className="text-secondary">by <span className="text-underlined">Charles Petzold</span></h4>
+                    <h4 className="text-secondary">by <span className="text-underlined">{bookDetails.Author}</span></h4>
                     <div className="book-details__description">
                         <p>{bookDetails.Description}</p>
                     </div>
