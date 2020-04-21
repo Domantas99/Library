@@ -46,5 +46,11 @@ namespace BookLibrary.Api.Controllers.Books
         {
             return await _booksService.GetCategories();
         }
+
+        [HttpGet("latest")]
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetLatestBooks()
+        {
+            return await _booksService.GetLatestBooks();
+        }
     }
 }
