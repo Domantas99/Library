@@ -8,6 +8,7 @@ import {
 const initialState = {
   bookData: [],
   bookDetails: [],
+  latestBooks: []
 };
 
 export default (state = initialState, action) => {
