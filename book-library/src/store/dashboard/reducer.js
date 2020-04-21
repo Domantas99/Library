@@ -1,7 +1,13 @@
-import { GET_LATEST_BOOKS, GET_LATEST_BOOKS_END } from "./actionTypes";
+import {
+  GET_LATEST_BOOKS,
+  GET_LATEST_BOOKS_END,
+  GET_CURRENTLY_READING_BOOKS,
+  GET_CURRENTLY_READING_BOOKS_END,
+} from "./actionTypes";
 
 const initialState = {
   latestBooks: [],
+  currentlyReadingBooks: [],
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +21,12 @@ export default (state = initialState, action) => {
         return { ...state, latestBooks: result.returnResult };
       }
       break;
+    }
+    case GET_CURRENTLY_READING_BOOKS: {
+      return state;
+    }
+    case GET_CURRENTLY_READING_BOOKS_END: {
+      return { ...state, currentlyReadingBooks: action.payload };
     }
     default: {
       return state;
