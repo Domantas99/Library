@@ -9,9 +9,7 @@ function App() {
       <div className="header">
         <SearchBar />
       </div>
-      <div className="sidebar">
-        <Navigation />
-      </div>
+      <Navigation />
       <div className="page">
         <div className="page__content">
           <Switch>

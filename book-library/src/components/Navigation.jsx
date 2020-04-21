@@ -4,10 +4,9 @@ import Categories from "./Categories";
 
 export default function Navigation() {
   return (
-    <div>
-      <div>
-        <h2>Hello, Nathan!</h2>
-        <h3>nathan@gmail.com</h3>
+    <div className="sidebar">
+      <div className="sidebar__header">
+        <img className="sidebar__logo" alt=""/>
       </div>
       <ul className="navigation">
         <li>
