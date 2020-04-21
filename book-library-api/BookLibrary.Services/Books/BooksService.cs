@@ -71,12 +71,12 @@ namespace BookLibrary.Services.Books
 
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetLatestBooks()
+        public async Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
         {
             var books = _context.Book.ToList();
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(4).ToList() };
+            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() };
         }
     }
 }
