@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { useParams, Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux';
-import { BookForm } from '../../components'
+import { useParams, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { BookForm } from "../../components";
 import { getBookDetails } from "../../store/library/actions";
 
 export default () => {
@@ -15,8 +15,10 @@ export default () => {
 
   return id ? (
     <div className="content-wrapper">
-              {bookDetails && <BookForm formTitle="Edit" bookDetails={bookDetails} id={id} />}
+      {bookDetails && (
+        <BookForm formTitle="Edit" bookDetails={bookDetails} id={id} />
       )}
+      )
     </div>
   ) : (
     <Link to="/">Return home</Link>
