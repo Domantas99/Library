@@ -13,7 +13,7 @@ export default function Dashboard() {
   const currentlyReadingBooks = useSelector(
     (state) => state.dashboard.currentlyReadingBooks
   );
-  console.log(currentlyReadingBooks);
+
   useEffect(() => {
     dispatch(getLatestBooks(4));
     dispatch(getCurrentlyReadingBooks());
@@ -22,9 +22,9 @@ export default function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <div className="page">
+      <div>
         <div className="page_content dashboard">
-          <div className="panel panel--size-5">
+          <div className="panel panel--size-5 dashboard-latest">
             <BooksSection sectionName="New Books" books={latestBooks} />
           </div>
           <div className="panel panel--margin-left">
