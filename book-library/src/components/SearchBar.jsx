@@ -27,7 +27,7 @@ export default function SearchBar() {
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       onKeyPress={(e) => e.key === "Enter" && navigationOnEnter()}
-      onBlur={() => setSuggestionsVisible(false)}
+      onBlur={(e) => setSuggestionsVisible(e.currentTarget.contains(e.relatedTarget))}
       onFocus={() => {
         setSuggestionsVisible(books);
       }}
