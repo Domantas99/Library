@@ -1,0 +1,2 @@
+export const GET_RESERVATIONS_START = "reservations/GET_RESERVATIONS_START";
+export const GET_RESERVATIONS_END = "reservations/GET_RESERVATIONS_END";

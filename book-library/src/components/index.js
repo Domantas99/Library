@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar";
 import SearchBarResultBlock from "./SearchBarResultBlock";
 import Categories from "./Categories";
 import Navigation from "./Navigation";
+import ReservationsTable from "./ReservationsTable";
 
 export {
   BookForm,
@@ -17,4 +18,5 @@ export {
   SearchBarResultBlock,
   Categories,
   Navigation,
+  ReservationsTable,
 };
