@@ -1,0 +1,52 @@
+.curr-reading-section {
+    width: 300px; 
+    &-title {
+        font-size: 24px;
+    }
+    &-list {
+        overflow-y: scroll;
+        height: 420px;
+        background-color: #E8E9ED;
+    }
+    &-block {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+        &-info {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            
+            &-image {
+                width: 80px;
+                height: 122px;
+            }
+            &-text {
+                font-size:12px;
+                &-title {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        &-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            &-edit {
+                background-color: #DCDDE4;
+                color: black;
+                width: 130px;
+                height: 28px;
+            }
+            &-checkin {
+                background-color: #4568FB;
+                color: white;
+                width: 130px;
+                height: 28px;
+            }
+        }
+    }
+}
