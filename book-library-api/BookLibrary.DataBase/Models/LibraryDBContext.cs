@@ -33,6 +33,14 @@ namespace BookLibrary.DataBase.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Office>().HasData(
+                new Office { Id = 1, Name="Kaunas" },
+                new Office { Id = 2, Name = "Vilnius" },
+                new Office { Id = 3, Name = "London" },
+                new Office { Id = 4, Name = "Toronto" },
+                new Office { Id = 5, Name = "Chicago" }
+                );
+
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.Property(e => e.Author).HasMaxLength(250);

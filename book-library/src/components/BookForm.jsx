@@ -1,238 +1,368 @@
-import React, { useState } from 'react';
-import { addNewBook } from '../store/library/actions';
-import { connect } from 'react-redux';
+/* eslint-disable no-return-assign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-alert */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { addNewBook } from "../store/library/actions";
 
 const validErrors = (errors) => {
-	let valid = true;
-	Object.values(errors).forEach(
-		(val) => val.length > 0 && (valid = false)
-	);
-	return valid;
-}
+  let valid = true;
+  Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
+  return valid;
+};
 
 const validInputs = (inputs) => {
-	let valid = true;
-	for (let key in inputs) {
-		if (inputs.hasOwnProperty(key)) {
-			if (key !== 'goodreadsSearch' && key !== 'coverImage' && inputs[key].length < 1) {
-				valid = false;
-            }
-		}
-	}
-	return valid;
-}
+  let valid = true;
+  for (const key in inputs) {
+    if (inputs.hasOwnProperty(key)) {
+      if (
+        key !== "goodreadsSearch" &&
+        key !== "coverImage" &&
+        key !== "bookFormat" &&
+        key !== "bookCategory" &&
+        inputs[key].length < 1
+      ) {
+        valid = false;
+      }
+    }
+  }
+  return valid;
+};
 
-const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
-	const history = useHistory();
+const BookForm = ({ formTitle, bookDetails, id, offices }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [officeData, setOffices] = useState(offices);
 
-	const [formState, setState] = useState({
-		goodreadsSearch: '',
-		coverImage: bookDetails ? bookDetails.CoverPictureUrl || '' : '',
-		bookTitle: bookDetails ? bookDetails.Title || '' : '',
-		bookAuthor: bookDetails ? bookDetails.Author || '' : '',
-		bookDescription: bookDetails ? bookDetails.Description || '' : '',
-		bookIsbn: bookDetails ? bookDetails.Isbn || '' : '',
-		bookFormat: bookDetails ? bookDetails.Format || '' : '',
-		bookPages: bookDetails ? bookDetails.PageNumber || 0 : 0,
-		bookDate: bookDetails ? bookDetails.ReleaseDate || '' : '',
-		bookPublisher: bookDetails ? bookDetails.Publisher || '' : '',
-		bookLanguage: bookDetails ? bookDetails.EditionLanguage || '' : '',
-		bookSeries: bookDetails ? bookDetails.Series || '' : '',
-		bookCategory: bookDetails ? bookDetails.Category || '' : '',
-		bookTag: bookDetails ? bookDetails.Tag || 'tempTagPlaceholder' : 'tempTagPlaceholder',
-		kaunasCopies: bookDetails ? bookDetails.KaunasCopies || 0 : 0,
-		vilniusCopies: bookDetails ? bookDetails.VilniusCopies || 0 : 0,
-		londonCopies: bookDetails ? bookDetails.LondonCopies || 0 : 0,
-		chicagoCopies: bookDetails ? bookDetails.ChicagoCopies || 0 : 0,
-		torontoCopies: bookDetails ? bookDetails.TorontoCopies || 0 : 0,
-		errors: {
-			coverImage: '',
-			bookTitle: '',
-			bookIsbn: '',
-			bookAuthor: '',
-			bookDescription: '',
-			bookCategory: '',
-			bookTag: '',
-			bookFormat: '',
-			bookPages: '',
-			bookDate: '',
-			bookSeries: '',
-			bookPublisher: '',
-			bookLanguage: '',
-			kaunasCopies: '',
-			vilniusCopies: '',
-			londonCopies: '',
-			chicagoCopies: '',
-			torontoCopies: '',
-		}
-	});
+  const [formState, setState] = useState({
+    goodreadsSearch: "",
+    coverImage: bookDetails ? bookDetails.CoverPictureUrl || "" : "",
+    bookTitle: bookDetails ? bookDetails.Title || "" : "",
+    bookAuthor: bookDetails ? bookDetails.Author || "" : "",
+    bookDescription: bookDetails ? bookDetails.Description || "" : "",
+    bookIsbn: bookDetails ? bookDetails.Isbn || "" : "",
+    bookFormat: bookDetails ? bookDetails.Format || "Paperback" : "",
+    bookPages: bookDetails ? bookDetails.PageNumber || 0 : 0,
+    bookDate: bookDetails ? bookDetails.ReleaseDate || "" : "",
+    bookPublisher: bookDetails ? bookDetails.Publisher || "Not Defined" : "",
+    bookLanguage: bookDetails ? bookDetails.EditionLanguage || "" : "",
+    bookSeries: bookDetails ? bookDetails.Series || "" : "",
+    bookCategory: bookDetails ? bookDetails.Category || "" : "",
+    bookTag: bookDetails
+      ? bookDetails.Tag || "tempTagPlaceholder"
+      : "tempTagPlaceholder",
+    errors: {
+      coverImage: "",
+      bookTitle: "",
+      bookIsbn: "",
+      bookAuthor: "",
+      bookDescription: "",
+      bookCategory: "",
+      bookTag: "",
+      bookFormat: "",
+      bookPages: "",
+      bookDate: "",
+      bookSeries: "",
+      bookPublisher: "",
+      bookLanguage: "",
+    },
+  });
 
-	const handleChange = (event) => {
-		event.preventDefault();
-		const { name, value } = event.target;
-		let errors = formState.errors;
+  useEffect(() => {
+    setOffices(offices);
+  }, [offices]);
 
-		if (name !== 'goodreadsSearch') {
-			errors[name] = value.length < 1 || value.length > 1000
-				? 'field must be filled and can not exceed 1000 characters'
-				: '';
-		}
-		setState({ ...formState, errors, [name]: value });
-	}
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    const { errors } = formState;
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		if (validErrors(formState.errors) && validInputs(formState)) {
-			const book = createBookObject();
-			addBook(book);
-			id ? history.push("/library/" + id) : history.push("/library");
-		} else {
-			alert("Invalid form")
-		}
-	}
+    if (name !== "goodreadsSearch") {
+      errors[name] =
+        value.length < 1 || value.length > 1000
+          ? "field must be filled and can not exceed 1000 characters"
+          : "";
+    }
+    setState({ ...formState, errors, [name]: value });
+  };
 
-	const createBookObject = () => {
-		const book = {
-			Title: formState.bookTitle,
-			Isbn: formState.bookIsbn,
-			Author: formState.bookAuthor,
-			Description: formState.bookDescription,
-			Category: formState.bookCategory,
-			Tag: formState.bookTag,
-			Format: formState.bookFormat,
-			NumberOfPages: +formState.bookPages,
-			Series: formState.bookSeries,
-			Publisher: formState.bookPublisher,
-			EditionLanguage: formState.bookLanguage,
-			CoverPictureUrl: formState.coverImage,
-			GoodReadsUrl: formState.goodreadsSearch,
-			DateAdded: new Date(),
-			ReleaseDate: formState.bookDate,
-		}
-		return book;
-	}
-	return(
-		<div className="form-wrapper">
-			<h1 className="form-title">
-				{formTitle} Book
-				</h1>
-			<form onSubmit={handleSubmit} noValidate>
-				<div className="input-wrapper">
-					<label htmlFor="goodreadsSearch">FIND IN GOODREADS</label><br />
-					<input type="text" name="goodreadsSearch" />
-				</div>
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (validErrors(formState.errors) && validInputs(formState)) {
+      const book = createBookObject();
+      dispatch(addNewBook(book));
+      id ? history.push(`/library/${id}`) : history.push("/library");
+    } else {
+      alert("Invalid form");
+    }
+  };
 
-				<div className="input-wrapper">
-					<label htmlFor="coverImage">COVER</label><br />
-					{/*<input type="file" value={formInfo.coverImage} onChange={handleChange} name="coverImage" accept="image/*" />*/}
-					<input type="text" value={formState.coverImage} onChange={handleChange} name="coverImage" accept="image/*" />
-				</div>
+  const handleNumberOfCopiesChange = (event) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-shadow
+    const { id, value } = event.target;
+    const office = officeData.find((x) => x.id === +id);
+    const temp = officeData;
+    const index = temp.indexOf(office);
+    temp[index].count = +value;
+    setOffices([...temp]);
+  };
 
-				<div className="input-wrapper">
-					<label htmlFor="bookTitle">TITLE</label><br />
-					<input type="text" value={formState.bookTitle} name="bookTitle" onChange={handleChange} />
-					{formState.errors.bookTitle.length > 0 && <span className='error'><br />{formState.errors.bookTitle}</span>}
-				</div>
+  const createBookObject = () => {
+    const library = [];
+    officeData.forEach((o) => library.push({ OfficeId: o.id, Count: o.count }));
 
-				<div className="input-wrapper">
-					<label htmlFor="bookAuthor">AUTHOR(S)</label><br />
-					<input type="text" value={formState.bookAuthor} name="bookAuthor" onChange={handleChange} />
-					{formState.errors.bookAuthor.length > 0 && <span className='error'><br />{formState.errors.bookAuthor}</span>}
-				</div>
+    const book = {
+      Title: formState.bookTitle,
+      Isbn: formState.bookIsbn,
+      Author: formState.bookAuthor,
+      Description: formState.bookDescription,
+      Category: formState.bookCategory,
+      Tag: formState.bookTag,
+      Format: formState.bookFormat,
+      NumberOfPages: +formState.bookPages,
+      Series: formState.bookSeries,
+      Publisher: formState.bookPublisher,
+      EditionLanguage: formState.bookLanguage,
+      CoverPictureUrl: formState.coverImage,
+      GoodReadsUrl: formState.goodreadsSearch,
+      DateAdded: new Date(),
+      ReleaseDate: formState.bookDate,
+      Library: library,
+    };
+    return book;
+  };
+  return (
+    <div className="form-wrapper">
+      <h1 className="form-title">{formTitle} Book</h1>
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="input-wrapper">
+          <label htmlFor="goodreadsSearch">FIND IN GOODREADS</label>
+          <br />
+          <input type="text" name="goodreadsSearch" />
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="coverImage">COVER</label>
+          <br />
+          {/* <input type="file" value={formInfo.coverImage} onChange={handleChange} name="coverImage" accept="image/*" /> */}
+          <input
+            type="text"
+            value={formState.coverImage}
+            onChange={handleChange}
+            name="coverImage"
+            accept="image/*"
+          />
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookDescription">DESCRIPTION</label><br />
-					<textarea name="bookDescription" value={formState.bookDescription} cols="30" rows="10" onChange={handleChange} ></textarea>
-					{formState.errors.bookDescription.length > 0 && <span className='error'><br />{formState.errors.bookDescription}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookTitle">TITLE</label>
+          <br />
+          <input
+            type="text"
+            value={formState.bookTitle}
+            name="bookTitle"
+            onChange={handleChange}
+          />
+          {formState.errors.bookTitle.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookTitle}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookIsbn">ISBN</label><br />
-					<input type="text" name="bookIsbn" value={formState.bookIsbn} onChange={handleChange} />
-					{formState.errors.bookIsbn.length > 0 && <span className='error'><br />{formState.errors.bookIsbn}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookAuthor">AUTHOR(S)</label>
+          <br />
+          <input
+            type="text"
+            value={formState.bookAuthor}
+            name="bookAuthor"
+            onChange={handleChange}
+          />
+          {formState.errors.bookAuthor.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookAuthor}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookFormat">FORMAT</label><br />
-					<select name="bookFormat" value={formState.bookFormat} onChange={handleChange} >
-						<option value="paperback">Paperback</option>
-						<option value="e-book">E-book</option>
-						<option value="audiobook">Audiobook</option>
-					</select>
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookDescription">DESCRIPTION</label>
+          <br />
+          <textarea
+            name="bookDescription"
+            value={formState.bookDescription}
+            cols="30"
+            rows="10"
+            onChange={handleChange}
+          />
+          {formState.errors.bookDescription.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookDescription}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookPages">NUMBER OF PAGES</label><br />
-					<input type="number" name="bookPages" value={formState.bookPages} onChange={handleChange} />
-					{formState.errors.bookPages.length > 0 && <span className='error'><br />{formState.errors.bookPages}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookIsbn">ISBN</label>
+          <br />
+          <input
+            type="text"
+            name="bookIsbn"
+            value={formState.bookIsbn}
+            onChange={handleChange}
+          />
+          {formState.errors.bookIsbn.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookIsbn}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookDate">PUBLICATION DATE</label><br />
-					<input type="date" name="bookDate" value={formState.bookDate} onChange={handleChange} />
-					{formState.errors.bookPages.length > 0 && <span className='error'><br />{formState.errors.bookPages}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookFormat">FORMAT</label>
+          <br />
+          <select
+            name="bookFormat"
+            value={formState.bookFormat}
+            onChange={handleChange}
+          >
+            <option value="paperback">Paperback</option>
+            <option value="e-book">E-book</option>
+            <option value="audiobook">Audiobook</option>
+          </select>
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookPublisher">PUBLISHER</label><br />
-					<input type="text" name="bookPublisher" value={formState.bookPublisher} onChange={handleChange} />
-					{formState.errors.bookPublisher.length > 0 && <span className='error'><br />{formState.errors.bookPublisher}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookPages">NUMBER OF PAGES</label>
+          <br />
+          <input
+            min="0"
+            type="number"
+            name="bookPages"
+            value={formState.bookPages}
+            onChange={handleChange}
+          />
+          {formState.errors.bookPages.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookPages}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookLanguage">EDITION LANGUAGE</label><br />
-					<input type="text" name="bookLanguage" value={formState.bookLanguage} onChange={handleChange} />
-					{formState.errors.bookLanguage.length > 0 && <span className='error'><br />{formState.errors.bookLanguage}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookDate">PUBLICATION DATE</label>
+          <br />
+          <input
+            type="date"
+            name="bookDate"
+            value={formState.bookDate}
+            onChange={handleChange}
+          />
+          {formState.errors.bookPages.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookPages}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookSeries">SERIES</label><br />
-					<input type="text" name="bookSeries" value={formState.bookSeries} onChange={handleChange} />
-					{formState.errors.bookSeries.length > 0 && <span className='error'><br />{formState.errors.bookSeries}</span>}
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookPublisher">PUBLISHER</label>
+          <br />
+          <input
+            type="text"
+            name="bookPublisher"
+            value={formState.bookPublisher}
+            onChange={handleChange}
+          />
+          {formState.errors.bookPublisher.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookPublisher}
+            </span>
+          )}
+        </div>
 
-				<div className="input-wrapper">
-					<label htmlFor="bookCategory">CATEGORY</label><br />
-					<select name="bookCategory" value={formState.bookCategory} onChange={handleChange} >
-						<option value="drama">Drama</option>
-						<option value="sci-fi">Sci-fi</option>
-					</select>
-				</div>
+        <div className="input-wrapper">
+          <label htmlFor="bookLanguage">EDITION LANGUAGE</label>
+          <br />
+          <input
+            type="text"
+            name="bookLanguage"
+            value={formState.bookLanguage}
+            onChange={handleChange}
+          />
+          {formState.errors.bookLanguage.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookLanguage}
+            </span>
+          )}
+        </div>
 
-				<div className="copies-wrapper">
-					<h2>
-						NUMBER OF COPIES
-						</h2>
-					<label htmlFor="kaunasCopies">Kaunas:</label>
-					<input type="number" name="kaunasCopies" value={formState.kaunasCopies} onChange={handleChange} /><br />
-					{formState.errors.kaunasCopies.length > 0 && <span className='error'>{formState.errors.kaunasCopies}<br /></span>}
+        <div className="input-wrapper">
+          <label htmlFor="bookSeries">SERIES</label>
+          <br />
+          <input
+            type="text"
+            name="bookSeries"
+            value={formState.bookSeries}
+            onChange={handleChange}
+          />
+          {formState.errors.bookSeries.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookSeries}
+            </span>
+          )}
+        </div>
 
-					<label htmlFor="vilniusCopies">Vilnius:</label>
-					<input type="number" name="vilniusCopies" value={formState.vilniusCopies} onChange={handleChange} /><br />
-					{formState.errors.vilniusCopies.length > 0 && <span className='error'>{formState.errors.vilniusCopies}<br /></span>}
+        <div className="input-wrapper">
+          <label htmlFor="bookCategory">CATEGORY</label>
+          <br />
+          <select
+            name="bookCategory"
+            value={formState.bookCategory}
+            onChange={handleChange}
+          >
+            <option value="drama">Drama</option>
+            <option value="sci-fi">Sci-fi</option>
+          </select>
+        </div>
 
-					<label htmlFor="londonCopies">London:</label>
-					<input type="number" name="londonCopies" value={formState.londonCopies} onChange={handleChange} /><br />
-					{formState.errors.londonCopies.length > 0 && <span className='error'>{formState.errors.londonCopies}<br /></span>}
+        <div className="copies-wrapper">
+          <h2>NUMBER OF COPIES</h2>
+          {officeData.map((office) => (
+            <div>
+              <label htmlFor="kaunasCopies">{office.name}:</label>
+              <input
+                min="0"
+                type="number"
+                id={office.id}
+                value={office.count}
+                onChange={(e) => handleNumberOfCopiesChange(e)}
+              />
+            </div>
+          ))}
+        </div>
 
-					<label htmlFor="chicagoCopies">Chicago:</label>
-					<input type="number" name="chicagoCopies" value={formState.chicagoCopies} onChange={handleChange} /><br />
-					{formState.errors.chicagoCopies.length > 0 && <span className='error'>{formState.errors.chicagoCopies}<br /></span>}
+        <input type="submit" value={formTitle} />
+      </form>
+    </div>
+  );
+};
 
-					<label htmlFor="torontoCopies">Toronto:</label>
-					<input type="number" name="torontoCopies" value={formState.torontoCopies} onChange={handleChange} /><br />
-					{formState.errors.torontoCopies.length > 0 && <span className='error'>{formState.errors.torontoCopies}<br /></span>}
-				</div>
-
-				<input type="submit" value={formTitle } />
-			</form>
-		</div>
-	)
-}
-const mapStateToProps = state => ({state})
-const mapDispatchToProps = dispatch => ({
-	addBook: book => dispatch(addNewBook(book))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(BookForm);
+export default BookForm;
