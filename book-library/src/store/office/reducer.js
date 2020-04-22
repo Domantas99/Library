@@ -1,7 +1,4 @@
-import {
-  GET_OFFICES,
-  GET_OFFICES_END
-} from "./actionTypes";
+import { GET_OFFICES, GET_OFFICES_END } from "./actionTypes";
 
 const initialState = {
   offices: [],

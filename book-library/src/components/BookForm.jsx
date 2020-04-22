@@ -7,8 +7,8 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addNewBook } from "../store/library/actions";
 
@@ -36,8 +36,10 @@ const validInputs = (inputs) => {
   return valid;
 };
 
-const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
+const BookForm = ({ formTitle, bookDetails, id, offices }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [officeData, setOffices] = useState(offices);
 
   const [formState, setState] = useState({
     goodreadsSearch: "",
@@ -56,11 +58,6 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
     bookTag: bookDetails
       ? bookDetails.Tag || "tempTagPlaceholder"
       : "tempTagPlaceholder",
-    kaunasCopies: bookDetails ? bookDetails.KaunasCopies || 0 : 0,
-    vilniusCopies: bookDetails ? bookDetails.VilniusCopies || 0 : 0,
-    londonCopies: bookDetails ? bookDetails.LondonCopies || 0 : 0,
-    chicagoCopies: bookDetails ? bookDetails.ChicagoCopies || 0 : 0,
-    torontoCopies: bookDetails ? bookDetails.TorontoCopies || 0 : 0,
     errors: {
       coverImage: "",
       bookTitle: "",
@@ -75,13 +72,12 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
       bookSeries: "",
       bookPublisher: "",
       bookLanguage: "",
-      kaunasCopies: "",
-      vilniusCopies: "",
-      londonCopies: "",
-      chicagoCopies: "",
-      torontoCopies: "",
     },
   });
+
+  useEffect(() => {
+    setOffices(offices);
+  }, [offices]);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -101,14 +97,28 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
     event.preventDefault();
     if (validErrors(formState.errors) && validInputs(formState)) {
       const book = createBookObject();
-      addBook(book);
+      dispatch(addNewBook(book));
       id ? history.push(`/library/${id}`) : history.push("/library");
     } else {
       alert("Invalid form");
     }
   };
 
+  const handleNumberOfCopiesChange = (event) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-shadow
+    const { id, value } = event.target;
+    const office = officeData.find((x) => x.id === +id);
+    const temp = officeData;
+    const index = temp.indexOf(office);
+    temp[index].count = +value;
+    setOffices([...temp]);
+  };
+
   const createBookObject = () => {
+    const library = [];
+    officeData.forEach((o) => library.push({ OfficeId: o.id, Count: o.count }));
+
     const book = {
       Title: formState.bookTitle,
       Isbn: formState.bookIsbn,
@@ -125,6 +135,7 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
       GoodReadsUrl: formState.goodreadsSearch,
       DateAdded: new Date(),
       ReleaseDate: formState.bookDate,
+      Library: library,
     };
     return book;
   };
@@ -137,7 +148,6 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
           <br />
           <input type="text" name="goodreadsSearch" />
         </div>
-
         <div className="input-wrapper">
           <label htmlFor="coverImage">COVER</label>
           <br />
@@ -238,6 +248,7 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
           <label htmlFor="bookPages">NUMBER OF PAGES</label>
           <br />
           <input
+            min="0"
             type="number"
             name="bookPages"
             value={formState.bookPages}
@@ -334,80 +345,18 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
 
         <div className="copies-wrapper">
           <h2>NUMBER OF COPIES</h2>
-          <label htmlFor="kaunasCopies">Kaunas:</label>
-          <input
-            type="number"
-            name="kaunasCopies"
-            value={formState.kaunasCopies}
-            onChange={handleChange}
-          />
-          <br />
-          {formState.errors.kaunasCopies.length > 0 && (
-            <span className="error">
-              {formState.errors.kaunasCopies}
-              <br />
-            </span>
-          )}
-
-          <label htmlFor="vilniusCopies">Vilnius:</label>
-          <input
-            type="number"
-            name="vilniusCopies"
-            value={formState.vilniusCopies}
-            onChange={handleChange}
-          />
-          <br />
-          {formState.errors.vilniusCopies.length > 0 && (
-            <span className="error">
-              {formState.errors.vilniusCopies}
-              <br />
-            </span>
-          )}
-
-          <label htmlFor="londonCopies">London:</label>
-          <input
-            type="number"
-            name="londonCopies"
-            value={formState.londonCopies}
-            onChange={handleChange}
-          />
-          <br />
-          {formState.errors.londonCopies.length > 0 && (
-            <span className="error">
-              {formState.errors.londonCopies}
-              <br />
-            </span>
-          )}
-
-          <label htmlFor="chicagoCopies">Chicago:</label>
-          <input
-            type="number"
-            name="chicagoCopies"
-            value={formState.chicagoCopies}
-            onChange={handleChange}
-          />
-          <br />
-          {formState.errors.chicagoCopies.length > 0 && (
-            <span className="error">
-              {formState.errors.chicagoCopies}
-              <br />
-            </span>
-          )}
-
-          <label htmlFor="torontoCopies">Toronto:</label>
-          <input
-            type="number"
-            name="torontoCopies"
-            value={formState.torontoCopies}
-            onChange={handleChange}
-          />
-          <br />
-          {formState.errors.torontoCopies.length > 0 && (
-            <span className="error">
-              {formState.errors.torontoCopies}
-              <br />
-            </span>
-          )}
+          {officeData.map((office) => (
+            <div>
+              <label htmlFor="kaunasCopies">{office.name}:</label>
+              <input
+                min="0"
+                type="number"
+                id={office.id}
+                value={office.count}
+                onChange={(e) => handleNumberOfCopiesChange(e)}
+              />
+            </div>
+          ))}
         </div>
 
         <input type="submit" value={formTitle} />
@@ -415,9 +364,5 @@ const BookForm = ({ formTitle, bookDetails, addBook, id }) => {
     </div>
   );
 };
-const mapStateToProps = (state) => ({ state });
-const mapDispatchToProps = (dispatch) => ({
-  addBook: (book) => dispatch(addNewBook(book)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookForm);
+export default BookForm;
