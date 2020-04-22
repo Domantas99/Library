@@ -1,5 +1,6 @@
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.Offices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace BookLibrary.Api
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<IBooksService, BooksService>();
+            services.AddScoped<IOfficesService, OfficesService>();
+
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";
             });
