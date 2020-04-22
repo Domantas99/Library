@@ -22,7 +22,16 @@ namespace BookLibrary.Services.Books
             bool errorFlag = false;
             try
             {
+                var library = book.Library;
+                book.Library = null;
                 _context.Book.Add(book);
+                await _context.SaveChangesAsync();
+                foreach (var lib in library) {
+                    lib.BookId = book.Id;
+                    lib.ModifiedOn = null;
+                    lib.CreatedOn = DateTime.Today;
+                    _context.Library.Add(lib);
+                }
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex) {

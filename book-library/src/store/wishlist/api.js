@@ -2,20 +2,20 @@
 export const getWishlist = () => {
   return [
     {
-      Id: 4,
-      Title: "The Prince",
-      Author: "Niccolò Machiavelli",
-      CoverPictureUrl: "https://picsum.photos/200/300?random=4",
-      ReleaseDate: "1532-01-01",
-      DateAdded: "2020-04-08",
+      id: 4,
+      title: "The Prince",
+      author: "Niccolò Machiavelli",
+      coverPictureUrl: "https://picsum.photos/200/300?random=4",
+      releaseDate: "1532-01-01",
+      dateAdded: "2020-04-08",
     },
     {
-      Id: 5,
-      Title: "Frankenstein; or, Modern Prometheus",
-      Author: "Mary Shelley",
-      CoverPictureUrl: "https://picsum.photos/200/300?random=5",
-      ReleaseDate: "1818-01-01",
-      DateAdded: "2020-04-08",
+      id: 5,
+      title: "Frankenstein; or, Modern Prometheus",
+      author: "Mary Shelley",
+      coverPictureUrl: "https://picsum.photos/200/300?random=5",
+      releaseDate: "1818-01-01",
+      dateAdded: "2020-04-08",
     },
   ];
 };

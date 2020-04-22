@@ -1,0 +1,32 @@
+.book-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    
+    &-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        &-link {
+            color: #4568FB;
+            font-size: 14px;
+            text-decoration: none;
+        }
+    }
+    
+    &-block {
+        padding: 10px;
+        &-image {
+            height: 259px;
+            width: 170px;
+        }
+        &-title {
+            font-size: 16px;
+        }
+
+        &-author {
+            font-size: 12px;
+        }
+    }
+}

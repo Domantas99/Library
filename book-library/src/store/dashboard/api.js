@@ -1,16 +1,17 @@
+/* eslint-disable import/prefer-default-export */
 import httpClient from "../../core/httpClient";
 
-export const addBookAPI = (bookObj) => {
-  return httpClient.post("books", bookObj);
+export const getLatestBooksAPI = (numberOfBooks) => {
+  return httpClient.get(`books/latest/${numberOfBooks}`);
 };
 
-export const getBookList = () => {
+export const getCurrentlyReadingBooksAPI = () => {
   return [
     {
       id: 1,
-      title: "IT",
+      title: "Batman",
       isbn: "9789851807822",
-      author: "Stephen King",
+      author: "Donald Trump",
       coverPictureUrl: "https://picsum.photos/200/300?random=1",
       goodReadsUrl: "https://www.goodreads.com/book/show/830502.It",
       releaseDate: "1986-09-15",
@@ -26,8 +27,8 @@ export const getBookList = () => {
     },
     {
       id: 2,
-      title: "Storm Front",
-      author: "Jim Butcher",
+      title: "World War2",
+      author: "Baravykas",
       coverPictureUrl: "https://picsum.photos/200/300?random=2",
       releaseDate: "2000-04-01",
       dateAdded: "2020-03-28",
@@ -43,8 +44,8 @@ export const getBookList = () => {
     },
     {
       id: 3,
-      title: "The Colour Of Magic",
-      author: "Terry Pratchett",
+      title: "Spidar",
+      author: "Balandis",
       coverPictureUrl: "https://picsum.photos/200/300?random=3",
       releaseDate: "1983-11-24",
       dateAdded: "2020-03-29",
@@ -59,8 +60,4 @@ export const getBookList = () => {
       goodReadsUrl: "www.google.com",
     },
   ];
-};
-
-export const getBookDetails = (id) => {
-  return getBookList().find((element) => element.Id === id);
 };

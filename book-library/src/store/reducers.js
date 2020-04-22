@@ -4,6 +4,8 @@ import { reducer as wishlist } from "./wishlist";
 import { reducer as searchbar } from "./search-bar";
 import { reducer as categories } from "./categories";
 import { reducer as reservations } from "./reservations";
+import { reducer as dashboard } from "./dashboard";
+import { reducer as office } from "./office";
 
 const reducers = combineReducers({
   library,
@@ -11,6 +13,8 @@ const reducers = combineReducers({
   categories,
   wishlist,
   reservations,
+  dashboard,
+  office
 });
 
 export default reducers;
