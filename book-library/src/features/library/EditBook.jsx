@@ -18,6 +18,7 @@ export default () => {
       {bookDetails && (
         <BookForm formTitle="Edit" bookDetails={bookDetails} id={id} />
       )}
+      )
     </div>
   ) : (
     <Link to="/">Return home</Link>
