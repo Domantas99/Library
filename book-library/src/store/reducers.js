@@ -3,6 +3,7 @@ import { reducer as library } from "./library";
 import { reducer as wishlist } from "./wishlist";
 import { reducer as searchbar } from "./search-bar";
 import { reducer as categories } from "./categories";
+import { reducer as reservations } from "./reservations";
 import { reducer as dashboard } from "./dashboard";
 import { reducer as office } from "./office";
 
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   searchbar,
   categories,
   wishlist,
+  reservations,
   dashboard,
   office
 });
