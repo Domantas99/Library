@@ -19,44 +19,44 @@ export default ({id}) => {
   return (
     <div className="page">
           { bookDetails ? (
-            <div>
+              <div>
                 <div className="page__content book-details">
                 <div className="book-details__image">
-                    <img src={bookDetails.CoverPictureUrl} alt=""/>
+                    <img src={bookDetails.coverPictureUrl} alt=""/>
                 </div>
                 <div className="book-details__content">
                     <div className="book-details__title">
-                    {bookDetails['Title']}
+                    {bookDetails['title']}
                     </div>
-                    <h4 className="text-secondary">by <span className="text-underlined">{bookDetails.Author}</span></h4>
+                    <h4 className="text-secondary">by <span className="text-underlined">{bookDetails.author}</span></h4>
                     <div className="book-details__description">
-                        <p>{bookDetails.Description}</p>
+                        <p>{bookDetails.description}</p>
                     </div>
                     <hr></hr>
                     <h3>Details</h3>
                     <div className="book-details__grid">
                         <span className="text-secondary">Original Title</span>
                         <span className="book-details__detail">
-                            {bookDetails.Title}
+                            {bookDetails.title}
                         </span>
 
                         <span className="text-secondary">Format</span>
-                        <span className="book-details__detail">{bookDetails.Format} | {bookDetails.NumberOfPages} pages</span>
+                        <span className="book-details__detail">{bookDetails.format} | {bookDetails.numberOfPages} pages</span>
 
                         <span className="text-secondary">Publication date</span>
-                        <span className="book-details__detail">{bookDetails.ReleaseDate}</span>
+                        <span className="book-details__detail">{bookDetails.releaseDate}</span>
 
                         <span className="text-secondary">Publisher</span>
-                        <span className="book-details__detail">{bookDetails.Publisher}</span>
+                        <span className="book-details__detail">{bookDetails.publisher}</span>
 
                         <span className="text-secondary">ISBN</span>
-                        <span className="book-details__detail">{bookDetails.Isbn}</span>
+                        <span className="book-details__detail">{bookDetails.isbn}</span>
 
                         <span className="text-secondary">Edition Language</span>
-                        <span className="book-details__detail">{bookDetails.EditionLanguage}</span>
+                        <span className="book-details__detail">{bookDetails.editionLanguage}</span>
 
                         <span className="text-secondary">Series</span>
-                        <span className="book-details__detail">{bookDetails.Series}</span>
+                        <span className="book-details__detail">{bookDetails.series}</span>
 
                         <span className="text-secondary">Copies available</span>
                         <span className="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>

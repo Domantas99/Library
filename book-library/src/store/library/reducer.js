@@ -15,7 +15,7 @@ export default (state = initialState, action) => {
     case GET_BOOK_LIST_END: {
       return {
         ...state,
-        bookData: action.payload,
+        bookData: action.payload.returnResult,
       };
     }
     case ADD_NEW_BOOK: {
@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
     case GET_BOOK_DETAILS_END: {
       return {
         ...state,
-        bookDetails: action.payload,
+        bookDetails: action.payload.returnResult,
       };
     }
 
