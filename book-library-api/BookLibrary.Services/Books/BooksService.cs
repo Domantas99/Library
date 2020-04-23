@@ -58,7 +58,7 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
-            var libraries = _context.Library.Where(lib => lib.BookId == bookId).ToList();
+            var libraries = _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToList();
 
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }

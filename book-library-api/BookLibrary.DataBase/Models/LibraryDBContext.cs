@@ -34,11 +34,11 @@ namespace BookLibrary.DataBase.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Office>().HasData(
-                new Office { Id = 1, Name="Kaunas" },
-                new Office { Id = 2, Name = "Vilnius" },
-                new Office { Id = 3, Name = "London" },
-                new Office { Id = 4, Name = "Toronto" },
-                new Office { Id = 5, Name = "Chicago" }
+                new Office { Id = 1, Name = "Kaunas", FullAddress = "11d. Juozapaviciaus pr., Kaunas, LT-45252, Lithuania" },
+                new Office { Id = 2, Name = "Vilnius", FullAddress = "135 Zalgirio g., Vilnius, LT-08217, Lithuania" },
+                new Office { Id = 3, Name = "London", FullAddress = "8 Devonshire Square, London, EC2M 4PL, United Kingdom" },
+                new Office { Id = 4, Name = "Toronto", FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada" },
+                new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
                 );
 
             modelBuilder.Entity<Book>(entity =>
