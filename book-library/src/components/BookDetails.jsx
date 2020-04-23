@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getBookDetails } from "../store/library/actions";
+import BookAvailabilitySection from "./BookAvailabilitySection";
 
 export default ({ id }) => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export default ({ id }) => {
               <img src={bookDetails.coverPictureUrl} alt="" />
             </div>
             <div className="book-details__content">
-              <div className="book-details__title">{bookDetails["title"]}</div>
+              <div className="book-details__title">{bookDetails.title}</div>
               <h4 className="text-secondary">
                 by <span className="text-underlined">{bookDetails.author}</span>
               </h4>
@@ -76,7 +77,7 @@ export default ({ id }) => {
               </div>
             </div>
             <div className="reservation-panel">
-              <h4>Reserve at</h4>
+              <BookAvailabilitySection bookId={id} />
             </div>
           </div>
         </div>
