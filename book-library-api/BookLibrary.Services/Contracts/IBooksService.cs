@@ -15,5 +15,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<Book>> GetBook(int id);
         Task<ResponseResult<ICollection<string>>> GetCategories();
         Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count);
+        Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId);
     }
 }

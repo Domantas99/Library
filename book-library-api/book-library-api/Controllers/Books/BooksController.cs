@@ -52,5 +52,11 @@ namespace BookLibrary.Api.Controllers.Books
         {
             return await _booksService.GetLatestBooks(count);
         }
+
+        [HttpGet("{id}/availability")]
+        public async Task<ActionResult<ResponseResult<ICollection<Library>>>> GetBookAvailability(int id)
+        {
+            return await _booksService.GetBookAvailability(id);
+        }
     }
 }
