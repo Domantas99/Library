@@ -27,10 +27,13 @@ namespace BookLibrary.Services.Books
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
                 foreach (var lib in library) {
-                    lib.BookId = book.Id;
-                    lib.ModifiedOn = null;
-                    lib.CreatedOn = DateTime.Today;
-                    _context.Library.Add(lib);
+                    if (lib.Count > 0)
+                    {
+                        lib.BookId = book.Id;
+                        lib.ModifiedOn = null;
+                        lib.CreatedOn = DateTime.Today;
+                        _context.Library.Add(lib);
+                    }
                 }
                 await _context.SaveChangesAsync();
             }
@@ -53,9 +56,15 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errFlag, ReturnResult = book };
         }
 
+        public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
+        {
+            var libraries = _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToList();
+
+            return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
+        }
+
         public async Task<ResponseResult<ICollection<Book>>> GetBooks()
         {
-            
             var books = _context.Book.ToList();
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };

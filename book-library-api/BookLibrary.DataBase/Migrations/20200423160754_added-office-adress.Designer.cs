@@ -4,14 +4,16 @@ using BookLibrary.DataBase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200423160754_added-office-adress")]
+    partial class addedofficeadress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,31 +295,26 @@ namespace BookLibrary.DataBase.Migrations
                         new
                         {
                             Id = 1,
-                            FullAddress = "11d. Juozapaviciaus pr., Kaunas, LT-45252, Lithuania",
                             Name = "Kaunas"
                         },
                         new
                         {
                             Id = 2,
-                            FullAddress = "135 Zalgirio g., Vilnius, LT-08217, Lithuania",
                             Name = "Vilnius"
                         },
                         new
                         {
                             Id = 3,
-                            FullAddress = "8 Devonshire Square, London, EC2M 4PL, United Kingdom",
                             Name = "London"
                         },
                         new
                         {
                             Id = 4,
-                            FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada",
                             Name = "Toronto"
                         },
                         new
                         {
                             Id = 5,
-                            FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States",
                             Name = "Chicago"
                         });
                 });

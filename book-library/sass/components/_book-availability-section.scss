@@ -1,0 +1,47 @@
+.ba-section {  
+    &-buttons {
+        display: flex;
+        flex-direction: column;
+        &-dark {
+            color: white;
+            background-color: #050237;
+            width: 100%;
+            margin: 10px 0px;
+        }
+        &-light {
+            color: #050237;
+            background-color: #E8E9ED;
+            width: 100%;
+        }
+    }
+
+    &-list { 
+        overflow-y: scroll;
+        height: 300px;
+        &-item {
+            background-color: #E8E9ED;
+            margin-bottom: 15px;   
+            &-text {
+                &-title {
+                    color: black;
+                    font-weight: 600
+                }
+                &-available {
+                    color: #3BA77A;
+                    font-weight: 600
+                }
+                &-unavailable {
+                    color: #EF5067;
+                    font-weight: 600
+                }
+                &-address {
+                    color: #B0B0C1;
+                }
+                &-other {
+                    color: #4D6EFA;
+                    font-weight: 600
+                }
+            }
+        }
+    }
+}
