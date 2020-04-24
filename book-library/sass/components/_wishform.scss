@@ -1,0 +1,13 @@
+.wishform {
+    display: flex;
+    flex-direction: column;
+
+    &-buttons{
+        display: flex;
+        flex-direction: row;
+        &-submit {
+            background-color: #4568FB;
+            color: white;
+        }
+    }
+}
