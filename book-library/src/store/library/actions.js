@@ -6,7 +6,7 @@ import {
   GET_BOOK_DETAILS_START,
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
-  GET_BOOK_AVAILABILITY_END
+  GET_BOOK_AVAILABILITY_END,
 } from "./actionTypes";
 
 export const getBookList = () => ({ type: GET_BOOK_LIST_START });
