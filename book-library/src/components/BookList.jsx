@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
+import Modal from "./Modal";
 
 const createBookComponents = (data, sort_field, sort_direction) => {
   return [...data]
@@ -12,11 +15,13 @@ const createBookComponents = (data, sort_field, sort_direction) => {
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "" }) {
+function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
   const dispatch = useDispatch();
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
+  const [modalState, setModalState] = useState(false);
+  const history = useHistory();
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);
@@ -24,6 +29,14 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
 
   const handleChangeSortDirection = (event) => {
     setSortDirection(event.target.value);
+  };
+
+  const handleBookOperationClick = () => {
+    if (addLink === "/register-book") {
+      history.push(addLink);
+    } else if (addLink === "/add-wishlist") {
+      setModalState(!modalState);
+    }
   };
 
   useEffect(() => {
@@ -37,7 +50,11 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
   }, [dataSelector, sortDirection, sortField]);
 
   return (
-    <div className="panel__content">
+    <div
+      className="panel__content"
+      onClick={() => modalState && setModalState(false)}
+    >
+      <Modal state={modalState}>blabla</Modal>
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}
@@ -57,12 +74,16 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
       </select>
       <div className="book-grid">
         {addLink && (
-          <Link className="book" id="register-new" to="/register-book">
+          <div
+            onClick={() => handleBookOperationClick()}
+            className="book"
+            id={addLink}
+          >
             <div className="book__add">
               <span className="book__add_plus">+</span>
-              <span className="book__add_text">Register new book</span>
+              <span className="book__add_text">{linkTitle}</span>
             </div>
-          </Link>
+          </div>
         )}
         {bookComponents}
       </div>

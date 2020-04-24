@@ -22,6 +22,7 @@ export default () => {
         dataSelector={useSelector((state) => state.library.bookData)}
         dataAction={getBookList}
         addLink="/register-book"
+        linkTitle="Register new book"
       />
     </div>
   );
