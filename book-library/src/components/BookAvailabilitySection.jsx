@@ -12,7 +12,7 @@ export default function BookAvailabilitySection({ bookId }) {
 
   useEffect(() => {
     dispatch(getBookAvailability(bookId));
-  }, [dispatch]);
+  }, [dispatch, bookId]);
 
   return (
     <div className="ba-section">

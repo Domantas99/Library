@@ -1,32 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import { Link } from "react-router-dom";
 import BookListItem from "./BookListItem";
-
-const getBookSorter = (sort_field, sort_direction) => {
-  return (a, b) => {
-    return (
-      (a[sort_field] > b[sort_field]
-        ? 1
-        : a[sort_field] < b[sort_field]
-        ? -1
-        : 0) * sort_direction
-    );
-  };
-};
+import { getFieldSorter } from "../utilities";
 
 const createBookComponents = (data, sort_field, sort_direction) => {
   return [...data]
-    .sort(getBookSorter(sort_field, sort_direction))
-    .map((element, index) => {
-      return <BookListItem key={element.Id} data={element} />;
+    .sort(getFieldSorter(sort_field, sort_direction))
+    .map((element) => {
+      return <BookListItem key={element.id} data={element} />;
     });
 };
 
 function BookList({ dataSelector, dataAction, addLink = "" }) {
   const dispatch = useDispatch();
-  const [sortField, setSortField] = useState("DateAdded");
+  const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
 
@@ -55,9 +43,9 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
         defaultValue={sortField}
         onChange={handleChangeSortField}
       >
-        <option value="Title">Title</option>
-        <option value="ReleaseDate">Release Date</option>
-        <option value="DateAdded">Date Added</option>
+        <option value="title">Title</option>
+        <option value="releaseDate">Release Date</option>
+        <option value="dateAdded">Date Added</option>
       </select>
       <select
         id="book-list-sorting-direction"

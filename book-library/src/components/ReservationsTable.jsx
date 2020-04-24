@@ -2,40 +2,12 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getReservations } from "../store/reservations/actions";
+import { getFieldSorter } from "../utilities";
+import ReservationsTableItem from "./ReservationsTableItem";
 
-const createTableRows = (reservations) => {
-    return reservations.map(reservation => (
-        <tr key={reservation.Id}>
-            <td>
-                <img src={reservation.CoverPictureUrl} alt=""/>
-                <span>{reservation.Title}</span>
-                <span>{reservation.Author}</span>
-            </td>
-            <td>
-                <span>{reservation.Office}</span>
-            </td>
-            <td>
-                {
-                    reservation.Status === "Borrowed" ? //We'll need to tag these with different classes anyway when we're applying styles.
-                        (
-                            <span>Borrowed</span>
-                        ) : (
-                            <span>Requested</span>
-                        )
-                }
-            </td>
-            <td>{reservation.BookedFrom}</td>
-            <td>{reservation.ReturnDate}</td>
-            {
-                reservation.Status === "Borrowed" ?
-                (
-                    <td><button>Edit</button><button>Check In</button></td>
-                ) : (
-                    <td><button>Leave waitlist</button></td>
-                )
-            }
-            
-        </tr>
+const createTableRows = (reservations, sort_field, sort_direction) => {
+    return [...reservations].sort(getFieldSorter(sort_field, sort_direction)).map(reservation => (
+        <ReservationsTableItem key={reservation.Id} data={reservation}/>
     ));
 }
 
@@ -43,19 +15,47 @@ const ReservationsTable = () => {
     const dispatch = useDispatch();
     
     const reservations = useSelector(state => state.reservations.reservationData)
+    const [sortField, setSortField] = useState("BookedFrom");
+    const [sortDirection, setSortDirection] = useState(-1);
     const [tableRows, setTableRows] = useState([]);
 
     useEffect(() => {
         dispatch(getReservations());
     }, [dispatch]);
 
+    const handleChangeSortField = (event) => {
+        setSortField(event.target.value);
+      };
+    
+    const handleChangeSortDirection = (event) => {
+        setSortDirection(event.target.value);
+    };
+
     useEffect(() => {
         setTableRows(
-            createTableRows(reservations)
+            createTableRows(reservations, sortField, sortDirection)
         );
-    }, [reservations]);
+    }, [reservations, sortField, sortDirection]);
 
     return (
+        <div className="panel__content">
+            <select
+                id="book-list-sorting-field"
+                defaultValue={sortField}
+                onChange={handleChangeSortField}
+            >
+                <option value="Status">Status</option>
+                <option value="ReturnDate">Return Date</option>
+                <option value="BookedFrom">Booked From</option>
+            </select>
+            <select
+                id="book-list-sorting-direction"
+                defaultValue={`${sortDirection}`}
+                onChange={handleChangeSortDirection}
+            >
+                <option value="1">Ascending</option>
+                <option value="-1">Descending</option>
+            </select>
         <table>
             <thead>
                 <tr>
@@ -69,6 +69,7 @@ const ReservationsTable = () => {
             </thead>
             <tbody>{tableRows}</tbody>
         </table>
+        </div>
     );
 }
 

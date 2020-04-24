@@ -14,7 +14,7 @@ const reducers = combineReducers({
   wishlist,
   reservations,
   dashboard,
-  office
+  office,
 });
 
 export default reducers;
