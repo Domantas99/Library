@@ -43,20 +43,20 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
 
   const [formState, setState] = useState({
     goodreadsSearch: "",
-    coverImage: bookDetails ? bookDetails.CoverPictureUrl || "" : "",
-    bookTitle: bookDetails ? bookDetails.Title || "" : "",
-    bookAuthor: bookDetails ? bookDetails.Author || "" : "",
-    bookDescription: bookDetails ? bookDetails.Description || "" : "",
-    bookIsbn: bookDetails ? bookDetails.Isbn || "" : "",
-    bookFormat: bookDetails ? bookDetails.Format || "Paperback" : "",
-    bookPages: bookDetails ? bookDetails.PageNumber || 0 : 0,
-    bookDate: bookDetails ? bookDetails.ReleaseDate || "" : "",
-    bookPublisher: bookDetails ? bookDetails.Publisher || "Not Defined" : "",
-    bookLanguage: bookDetails ? bookDetails.EditionLanguage || "" : "",
-    bookSeries: bookDetails ? bookDetails.Series || "" : "",
-    bookCategory: bookDetails ? bookDetails.Category || "" : "",
+    coverImage: bookDetails ? bookDetails.coverPictureUrl || "" : "",
+    bookTitle: bookDetails ? bookDetails.title || "" : "",
+    bookAuthor: bookDetails ? bookDetails.author || "" : "",
+    bookDescription: bookDetails ? bookDetails.description || "" : "",
+    bookIsbn: bookDetails ? bookDetails.isbn || "" : "",
+    bookFormat: bookDetails ? bookDetails.format || "Paperback" : "",
+    bookPages: bookDetails ? bookDetails.pageNumber || 0 : 0,
+    bookDate: bookDetails ? bookDetails.releaseDate || "" : "",
+    bookPublisher: bookDetails ? bookDetails.publisher || "Not Defined" : "",
+    bookLanguage: bookDetails ? bookDetails.editionLanguage || "" : "",
+    bookSeries: bookDetails ? bookDetails.series || "" : "",
+    bookCategory: bookDetails ? bookDetails.category || "" : "",
     bookTag: bookDetails
-      ? bookDetails.Tag || "tempTagPlaceholder"
+      ? bookDetails.tag || "tempTagPlaceholder"
       : "tempTagPlaceholder",
     errors: {
       coverImage: "",
