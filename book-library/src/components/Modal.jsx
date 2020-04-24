@@ -1,11 +1,25 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/button-has-type */
-import React from "react";
+import React, {useState} from "react";
 import * as ModalReact from "react-modal";
+import { useDispatch, useSelector } from "react-redux";
+import { setWishlistModal } from "../store/wishlist/actions";
 
-export default function Modala({ children, state }) {
+export default function Modala({ children }) {
+  const dispatch = useDispatch();
+  const modalState = useSelector((state) => state.wishlist.modalState);
+  console.log(modalState, 'cia state');
+
+  const onExitClick = () => {
+    dispatch(setWishlistModal(false));
+  };
+
   return (
     <ModalReact
-      isOpen={state}
+      isOpen={modalState}
       style={{
         overlay: {
           position: "fixed",
@@ -23,7 +37,9 @@ export default function Modala({ children, state }) {
         },
       }}
     >
-      <div className="modal-exit">X</div>
+      <div className="modal-exit" onClick={() => onExitClick()}>
+        X
+      </div>
       {children}
     </ModalReact>
   );

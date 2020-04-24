@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
@@ -6,6 +8,8 @@ import { useHistory } from "react-router-dom";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
 import Modal from "./Modal";
+import WishForm from "./WishForm";
+import { setWishlistModal } from "../store/wishlist/actions";
 
 const createBookComponents = (data, sort_field, sort_direction) => {
   return [...data]
@@ -35,7 +39,7 @@ function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
     if (addLink === "/register-book") {
       history.push(addLink);
     } else if (addLink === "/add-wishlist") {
-      setModalState(!modalState);
+      dispatch(setWishlistModal(true));
     }
   };
 
@@ -50,11 +54,10 @@ function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
   }, [dataSelector, sortDirection, sortField]);
 
   return (
-    <div
-      className="panel__content"
-      onClick={() => modalState && setModalState(false)}
-    >
-      <Modal state={modalState}>blabla</Modal>
+    <div className="panel__content">
+      <Modal state={modalState}>
+        <WishForm />
+      </Modal>
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}
