@@ -69,11 +69,6 @@ export default ({ id }) => {
                 <span className="book-details__detail">
                   {bookDetails.series}
                 </span>
-
-                <span className="text-secondary">Copies available</span>
-                <span className="book-details__detail">
-                  5 total, Kaunas (3) &middot; Vilnius (1)
-                </span>
               </div>
             </div>
             <div className="reservation-panel">
