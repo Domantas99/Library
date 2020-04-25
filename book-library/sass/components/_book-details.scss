@@ -3,6 +3,16 @@
   line-height: 20px;
   font-weight: normal;
 
+  &__main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__book {
+    display: flex;
+    flex-direction: row;
+  }
+
   &__image {
     display: flex;
     max-width: base(33);
