@@ -1,4 +1,6 @@
 /* eslint-disable import/prefer-default-export */
+import httpClient from "../../core/httpClient";
+
 export const getWishlist = () => {
   return [
     {
@@ -18,4 +20,20 @@ export const getWishlist = () => {
       dateAdded: "2020-04-08",
     },
   ];
+};
+
+export const addWishAPI = (wishObj) => {
+  // add url here
+  // httpClient.post(url, wishObj);
+  return {
+    error: false,
+    returnResult: {
+      id: 6,
+      title: "Whoooohoooo",
+      author: "Mary xa",
+      coverPictureUrl: "https://picsum.photos/200/300?random=6",
+      releaseDate: "1818-01-01",
+      dateAdded: "2020-04-08",
+    },
+  };
 };

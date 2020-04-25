@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
@@ -21,10 +21,10 @@ const createBookComponents = (data, sort_field, sort_direction) => {
 
 function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
   const dispatch = useDispatch();
+  const modalState = useSelector((state) => state.wishlist.modalState);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
-  const [modalState, setModalState] = useState(false);
   const history = useHistory();
 
   const handleChangeSortField = (event) => {
@@ -55,7 +55,7 @@ function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
 
   return (
     <div className="panel__content">
-      <Modal state={modalState}>
+      <Modal state={modalState} exitAction={setWishlistModal(false)}>
         <WishForm />
       </Modal>
       <select

@@ -1,15 +1,45 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setWishlistModal } from "../store/wishlist/actions";
+import { setWishlistModal, addWish } from "../store/wishlist/actions";
 
 export default function WishForm() {
   const dispatch = useDispatch();
-  const handleChange = (event) => {};
+  const [bookInfo, setBookInfo] = useState({
+    title: "",
+    author: "",
+    coverPictureUrl: "",
+    publicationDate: "",
+    comment: "",
+  });
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setBookInfo({ ...bookInfo, [name]: value });
+  };
 
   const onCancelClick = () => {
     dispatch(setWishlistModal(false));
+  };
+
+  const createBookWishObject = () => {
+    return {
+      Book: {
+        Title: bookInfo.title,
+        Author: bookInfo.author,
+        CoverPictureUrl: bookInfo.coverPictureUrl,
+        ReleaseDate: bookInfo.publicationDate,
+      },
+      CreatedOn: new Date(),
+      Comment: bookInfo.comment,
+    };
+  };
+
+  const onSubmitClick = () => {
+    const wish = createBookWishObject();
+    dispatch(addWish(wish));
   };
 
   return (
@@ -19,51 +49,34 @@ export default function WishForm() {
       </div>
       <div>
         <div className="input-wrapper">
-          <label htmlFor="bookTitle">FIND IN GOOD READS</label>
-          <br />
-          <input
-            type="text"
-            name="bookTitle"
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="input-wrapper">
           <label htmlFor="bookTitle">TITLE</label>
           <br />
-          <input
-            type="text"
-            name="bookTitle"
-            onChange={(e) => handleChange(e)}
-          />
+          <input type="text" name="title" onChange={(e) => handleChange(e)} />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="bookTitle">AUTHOR(S)</label>
+          <label htmlFor="bookTitle">AUTHOR</label>
+          <br />
+          <input type="text" name="author" onChange={(e) => handleChange(e)} />
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="bookTitle">COVER PICTURE URL</label>
           <br />
           <input
             type="text"
-            name="bookTitle"
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="bookTitle">ISBN</label>
-          <br />
-          <input
-            type="text"
-            name="bookTitle"
+            name="coverPictureUrl"
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="input-wrapper">
           <label htmlFor="bookDate">PUBLICATION DATE</label>
           <br />
-          <input type="date" onChange={handleChange} />
+          <input type="date" name="publicationDate" onChange={handleChange} />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="bookTitle">DESCRIPTION</label>
+          <label htmlFor="bookTitle">COMMENT</label>
           <br />
           <textarea
-            name="bookDescription"
+            name="comment"
             cols="30"
             rows="10"
             onChange={handleChange}
@@ -75,7 +88,12 @@ export default function WishForm() {
           <button onClick={() => onCancelClick()}>Cancel</button>
         </div>
         <div>
-          <button className="wishform-buttons-submit">Submit</button>
+          <button
+            onClick={() => onSubmitClick()}
+            className="wishform-buttons-submit"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
