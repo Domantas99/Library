@@ -1,10 +1,12 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React from "react";
-import { useSelector } from "react-redux";
-import Modal from "react-modal";
+import { useSelector, useDispatch } from "react-redux";
 import { BookList } from "../../components";
-import { getWishlist } from "../../store/wishlist/actions";
+import { getWishlist, setWishlistModal } from "../../store/wishlist/actions";
+import ActionItem from "../../components/ActionItem";
 
 export default () => {
+  const dispatch = useDispatch();
   return (
     <div className="panel">
       <div className="panel__header">
@@ -14,7 +16,12 @@ export default () => {
         dataSelector={useSelector((state) => state.wishlist.bookData)}
         dataAction={getWishlist}
         addLink="/add-wishlist"
-        linkTitle="Add new book request"
+        item={
+          <ActionItem
+            linkTitle="Add new book request"
+            onClickAction={() => dispatch(setWishlistModal(true))}
+          />
+        }
       />
     </div>
   );

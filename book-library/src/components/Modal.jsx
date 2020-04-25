@@ -8,7 +8,7 @@ import React from "react";
 import * as ModalReact from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Modala({ children, exitAction }) {
+export default function Modal({ children, exitAction, bb }) {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.wishlist.modalState);
 
@@ -41,6 +41,7 @@ export default function Modala({ children, exitAction }) {
         X
       </div>
       {children}
+      {bb}
     </ModalReact>
   );
 }

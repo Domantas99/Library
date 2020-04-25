@@ -3,7 +3,7 @@ import {
   GET_WISHLIST_END,
   SET_WISHLIST_MODAL,
   ADD_WISH,
-  ADD_WISH_END
+  ADD_WISH_END,
 } from "./actionTypes";
 
 export const getWishlist = () => ({ type: GET_WISHLIST_START });

@@ -31,6 +31,7 @@ export default function WishForm() {
         Author: bookInfo.author,
         CoverPictureUrl: bookInfo.coverPictureUrl,
         ReleaseDate: bookInfo.publicationDate,
+        DateAdded: new Date(),
       },
       CreatedOn: new Date(),
       Comment: bookInfo.comment,

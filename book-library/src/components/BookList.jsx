@@ -4,7 +4,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
 import Modal from "./Modal";
@@ -19,13 +18,12 @@ const createBookComponents = (data, sort_field, sort_direction) => {
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
+function BookList({ dataSelector, dataAction, addLink = "", item }) {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.wishlist.modalState);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
-  const history = useHistory();
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);
@@ -33,14 +31,6 @@ function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
 
   const handleChangeSortDirection = (event) => {
     setSortDirection(event.target.value);
-  };
-
-  const handleBookOperationClick = () => {
-    if (addLink === "/register-book") {
-      history.push(addLink);
-    } else if (addLink === "/add-wishlist") {
-      dispatch(setWishlistModal(true));
-    }
   };
 
   useEffect(() => {
@@ -76,18 +66,7 @@ function BookList({ dataSelector, dataAction, addLink = "", linkTitle }) {
         <option value="-1">Descending</option>
       </select>
       <div className="book-grid">
-        {addLink && (
-          <div
-            onClick={() => handleBookOperationClick()}
-            className="book"
-            id={addLink}
-          >
-            <div className="book__add">
-              <span className="book__add_plus">+</span>
-              <span className="book__add_text">{linkTitle}</span>
-            </div>
-          </div>
-        )}
+        {addLink && <div>{item}</div>}
         {bookComponents}
       </div>
     </div>

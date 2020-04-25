@@ -14,7 +14,7 @@ export function* getWishlistSaga(action) {
 }
 export function* addWishSaga(action) {
   try {
-    const apiResult = yield call(addWishAPI);
+    const apiResult = yield call(addWishAPI, action.payload);
     if (!apiResult.error) {
       yield put(addWishEnd(apiResult));
       // Closes the modal after put;

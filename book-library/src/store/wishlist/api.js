@@ -23,17 +23,5 @@ export const getWishlist = () => {
 };
 
 export const addWishAPI = (wishObj) => {
-  // add url here
-  // httpClient.post(url, wishObj);
-  return {
-    error: false,
-    returnResult: {
-      id: 6,
-      title: "Whoooohoooo",
-      author: "Mary xa",
-      coverPictureUrl: "https://picsum.photos/200/300?random=6",
-      releaseDate: "1818-01-01",
-      dateAdded: "2020-04-08",
-    },
-  };
+  return httpClient.post("books/add-wish", wishObj);
 };
