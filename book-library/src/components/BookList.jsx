@@ -18,7 +18,7 @@ const createBookComponents = (data, sort_field, sort_direction) => {
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "", item }) {
+function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.wishlist.modalState);
   const [sortField, setSortField] = useState("dateAdded");
@@ -66,7 +66,7 @@ function BookList({ dataSelector, dataAction, addLink = "", item }) {
         <option value="-1">Descending</option>
       </select>
       <div className="book-grid">
-        {addLink && <div>{item}</div>}
+        {addLink && <div>{actionButton}</div>}
         {bookComponents}
       </div>
     </div>

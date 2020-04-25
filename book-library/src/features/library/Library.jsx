@@ -24,7 +24,7 @@ export default () => {
         dataSelector={useSelector((state) => state.library.bookData)}
         dataAction={getBookList}
         addLink="/register-book"
-        item={
+        actionButton={
           <ActionItem
             linkTitle="Register new book"
             onClickAction={() => history.push("/register-book")}

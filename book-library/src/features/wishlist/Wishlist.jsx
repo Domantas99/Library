@@ -16,7 +16,7 @@ export default () => {
         dataSelector={useSelector((state) => state.wishlist.bookData)}
         dataAction={getWishlist}
         addLink="/add-wishlist"
-        item={
+        actionButton={
           <ActionItem
             linkTitle="Add new book request"
             onClickAction={() => dispatch(setWishlistModal(true))}
