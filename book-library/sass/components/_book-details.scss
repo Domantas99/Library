@@ -2,10 +2,21 @@
   @include heading-style(h4);
   line-height: 20px;
   font-weight: normal;
+  display: flex;
+  flex-direction: row;
 
   &__main {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+
+    hr {
+      width: 100%;
+      border: none;
+      margin: base(3) 0;
+      border-bottom: solid 1px $color-border;
+    }
+
   }
 
   &__book {
@@ -19,6 +30,7 @@
     min-width: base(13);
     border-radius: 6px;
     overflow: hidden;
+    align-items: baseline;
   }
 
   &__content {

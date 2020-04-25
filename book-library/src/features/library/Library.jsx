@@ -8,11 +8,7 @@ export default () => {
   const { id } = useParams();
 
   return id ? (
-    <div>
-      <div className="panel__content">
-        <BookDetails id={id} />
-      </div>
-    </div>
+    <BookDetails id={id} />
   ) : (
     <div className="panel">
       <div className="panel__header">
