@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from "redux-saga/effects";
-import { getWishlist } from "./api";
-import { GET_WISHLIST_START } from "./actionTypes";
-import { getWishlistEnd } from "./actions";
+import { getWishlist, addWishAPI } from "./api";
+import { GET_WISHLIST_START, ADD_WISH, ADD_WISH_END } from "./actionTypes";
+import { getWishlistEnd, setWishlistModal, addWishEnd } from "./actions";
 
 export function* getWishlistSaga(action) {
   try {
@@ -12,7 +12,22 @@ export function* getWishlistSaga(action) {
     // stops saga from braking on api error
   }
 }
+export function* addWishSaga(action) {
+  try {
+    const apiResult = yield call(addWishAPI, action.payload);
+    if (!apiResult.error) {
+      yield put(addWishEnd(apiResult));
+      // Closes the modal after put;
+      yield put(setWishlistModal(false));
+    }
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
 
 export default function* () {
   yield takeLatest(GET_WISHLIST_START, getWishlistSaga);
+  yield takeLatest(ADD_WISH, addWishSaga);
+  // Refreshes wishlist
+  yield takeLatest(ADD_WISH_END, getWishlistSaga);
 }

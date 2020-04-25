@@ -1,8 +1,14 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
+import Modal from "./Modal";
+import WishForm from "./WishForm";
+import { setWishlistModal } from "../store/wishlist/actions";
 
 const createBookComponents = (data, sort_field, sort_direction) => {
   return [...data]
@@ -12,8 +18,9 @@ const createBookComponents = (data, sort_field, sort_direction) => {
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "" }) {
+function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
   const dispatch = useDispatch();
+  const modalState = useSelector((state) => state.wishlist.modalState);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
@@ -38,6 +45,9 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
 
   return (
     <div className="panel__content">
+      <Modal state={modalState} exitAction={setWishlistModal(false)}>
+        <WishForm />
+      </Modal>
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}
@@ -56,14 +66,7 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
         <option value="-1">Descending</option>
       </select>
       <div className="book-grid">
-        {addLink && (
-          <Link className="book" id="register-new" to="/register-book">
-            <div className="book__add">
-              <span className="book__add_plus">+</span>
-              <span className="book__add_text">Register new book</span>
-            </div>
-          </Link>
-        )}
+        {addLink && <div>{actionButton}</div>}
         {bookComponents}
       </div>
     </div>
