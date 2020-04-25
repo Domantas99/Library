@@ -22,7 +22,7 @@ namespace BookLibrary.DataBase.Models
         public string Category { get; set; }
         public string Tag { get; set; }
         public string Format { get; set; }
-        public int NumberOfPages { get; set; }
+        public int? NumberOfPages { get; set; }
         public string Series { get; set; }
         public string Publisher { get; set; }
         public string EditionLanguage { get; set; }

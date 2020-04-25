@@ -64,7 +64,7 @@ namespace BookLibrary.DataBase.Models
                 entity.Property(e => e.Title).HasMaxLength(250);
             });
 
-            modelBuilder.Entity<Book>().HasOne(e => e.Wish).WithOne(w => w.Book);
+            modelBuilder.Entity<Wish>().HasOne(e => e.Book).WithOne(a => a.Wish);
 
             modelBuilder.Entity<BookCase>(entity =>
             {

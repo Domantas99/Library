@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    [Migration("20200425163517_edited-wish3")]
-    partial class editedwish3
+    [Migration("20200425193115_edited-wish")]
+    partial class editedwish
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,7 +63,7 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("NumberOfPages")
+                    b.Property<int?>("NumberOfPages")
                         .HasColumnType("int");
 
                     b.Property<string>("Publisher")
@@ -421,7 +421,7 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookId")
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
@@ -436,7 +436,8 @@ namespace BookLibrary.DataBase.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[BookId] IS NOT NULL");
 
                     b.ToTable("Wish");
                 });
@@ -535,9 +536,7 @@ namespace BookLibrary.DataBase.Migrations
                 {
                     b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
                         .WithOne("Wish")
-                        .HasForeignKey("BookLibrary.DataBase.Models.Wish", "BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookLibrary.DataBase.Models.Wish", "BookId");
                 });
 #pragma warning restore 612, 618
         }

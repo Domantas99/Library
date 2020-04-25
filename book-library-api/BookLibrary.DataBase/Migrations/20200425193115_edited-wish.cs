@@ -10,22 +10,36 @@ namespace BookLibrary.DataBase.Migrations
                 name: "FK_Wish_Id",
                 table: "Wish");
 
+            migrationBuilder.AlterColumn<int>(
+                name: "CreatedBy",
+                table: "Wish",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
             migrationBuilder.AddColumn<int>(
                 name: "BookId",
                 table: "Wish",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "Comment",
                 table: "Wish",
                 nullable: true);
 
+            migrationBuilder.AlterColumn<int>(
+                name: "NumberOfPages",
+                table: "Book",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Wish_BookId",
                 table: "Wish",
                 column: "BookId",
-                unique: true);
+                unique: true,
+                filter: "[BookId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Wish_Book_BookId",
@@ -33,7 +47,7 @@ namespace BookLibrary.DataBase.Migrations
                 column: "BookId",
                 principalTable: "Book",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -54,13 +68,29 @@ namespace BookLibrary.DataBase.Migrations
                 name: "Comment",
                 table: "Wish");
 
+            migrationBuilder.AlterColumn<int>(
+                name: "CreatedBy",
+                table: "Wish",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "NumberOfPages",
+                table: "Book",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldNullable: true);
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Wish_Id",
                 table: "Wish",
                 column: "Id",
                 principalTable: "Book",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.NoAction);
         }
     }
 }

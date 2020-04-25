@@ -11,8 +11,7 @@ namespace BookLibrary.DataBase.Models
         public DateTime CreatedOn { get; set; }
         public int? CreatedBy { get; set; }
         public string Comment { get; set; }
-        [ForeignKey("Book")]
-        public int BookId { get; set; }
+        public int? BookId { get; set; }
         public virtual Book Book { get; set; }
     }
 }
