@@ -10,7 +10,7 @@ export default function CurrentlyReadingSection({ books, title }) {
       </div>
       <div className="panel__content curr-reading-section-list">
         {books.map((book) => (
-          <div className="curr-reading-section-block">
+          <div key={book.id} className="curr-reading-section-block">
             <div className="curr-reading-section-block-info">
               <div className="curr-reading-section-block-info-image">
                 <img src={book.coverPictureUrl} alt="" />

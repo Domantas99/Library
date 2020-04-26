@@ -1,6 +1,7 @@
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.Offices;
+using BookLibrary.Services.Wishlist;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,11 +27,14 @@ namespace BookLibrary.Api
             {
                 options.AddPolicy("all", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IOfficesService, OfficesService>();
+            services.AddScoped<IWishlistService, WishlistService>();
 
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";

@@ -1,32 +1,27 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import BookListItem from "./BookListItem";
-
-const getBookSorter = (sort_field, sort_direction) => {
-  return (a, b) => {
-    return (
-      (a[sort_field] > b[sort_field]
-        ? 1
-        : a[sort_field] < b[sort_field]
-        ? -1
-        : 0) * sort_direction
-    );
-  };
-};
+import { getFieldSorter } from "../utilities";
+import Modal from "./Modal";
+import WishForm from "./WishForm";
+import { setWishlistModal } from "../store/wishlist/actions";
 
 const createBookComponents = (data, sort_field, sort_direction) => {
   return [...data]
-    .sort(getBookSorter(sort_field, sort_direction))
-    .map((element, index) => {
-      return <BookListItem key={element.Id} data={element} />;
+    .sort(getFieldSorter(sort_field, sort_direction))
+    .map((element) => {
+      return <BookListItem key={element.id} data={element} />;
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "" }) {
+function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
   const dispatch = useDispatch();
-  const [sortField, setSortField] = useState("DateAdded");
+  const modalState = useSelector((state) => state.wishlist.modalState);
+  const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
 
@@ -50,14 +45,22 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
 
   return (
     <div className="panel__content">
+      <Modal
+        state={modalState}
+        exitAction={setWishlistModal(false)}
+        height="80%"
+        width="56%"
+      >
+        <WishForm />
+      </Modal>
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}
         onChange={handleChangeSortField}
       >
-        <option value="Title">Title</option>
-        <option value="ReleaseDate">Release Date</option>
-        <option value="DateAdded">Date Added</option>
+        <option value="title">Title</option>
+        <option value="releaseDate">Release Date</option>
+        <option value="dateAdded">Date Added</option>
       </select>
       <select
         id="book-list-sorting-direction"
@@ -68,14 +71,7 @@ function BookList({ dataSelector, dataAction, addLink = "" }) {
         <option value="-1">Descending</option>
       </select>
       <div className="book-grid">
-        {addLink && (
-          <Link className="book" id="register-new" to="/register-book">
-            <div className="book__add">
-              <span className="book__add_plus">+</span>
-              <span className="book__add_text">Register new book</span>
-            </div>
-          </Link>
-        )}
+        {addLink && <div>{actionButton}</div>}
         {bookComponents}
       </div>
     </div>

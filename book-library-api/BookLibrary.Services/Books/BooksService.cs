@@ -27,10 +27,13 @@ namespace BookLibrary.Services.Books
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
                 foreach (var lib in library) {
-                    lib.BookId = book.Id;
-                    lib.ModifiedOn = null;
-                    lib.CreatedOn = DateTime.Today;
-                    _context.Library.Add(lib);
+                    if (lib.Count > 0)
+                    {
+                        lib.BookId = book.Id;
+                        lib.ModifiedOn = null;
+                        lib.CreatedOn = DateTime.Today;
+                        _context.Library.Add(lib);
+                    }
                 }
                 await _context.SaveChangesAsync();
             }
@@ -39,6 +42,21 @@ namespace BookLibrary.Services.Books
             }
 
             return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
+        }
+
+        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
+        {
+            bool flag = false;
+            try
+            {
+                _context.Wish.Add(wish);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                flag = true;
+            }
+            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
         }
 
         public async Task<ResponseResult<Book>> GetBook(int id)
@@ -53,17 +71,23 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errFlag, ReturnResult = book };
         }
 
+        public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
+        {
+            var libraries = _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToList();
+
+            return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
+        }
+
         public async Task<ResponseResult<ICollection<Book>>> GetBooks()
         {
-            
-            var books = _context.Book.ToList();
-
+            var books = BooksWithoutWishes();
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };
         }
 
         public async Task<ResponseResult<ICollection<string>>> GetCategories()
         {
-            var uniqueCategories = _context.Book.Select(book => book.Category).Distinct().ToList();
+            var books = BooksWithoutWishes();
+            var uniqueCategories = books.Select(book => book.Category).Distinct().ToList();
 
             return new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories };
         }
@@ -82,10 +106,21 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
         {
-            var books = _context.Book.ToList();
+            var books = BooksWithoutWishes();
+
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() };
+        }
+
+        private List<Book> BooksWithoutWishes() {
+            var books = _context.Book.ToList();
+            var wishes = _context.Wish.Include(w => w.Book).ToList();
+            for (int i = 0; i < wishes.Count; i++)
+            {
+                books.Remove(wishes[i].Book);
+            }
+            return books;
         }
     }
 }

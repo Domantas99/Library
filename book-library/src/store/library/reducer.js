@@ -3,11 +3,14 @@ import {
   ADD_NEW_BOOK,
   ADD_NEW_BOOK_END,
   GET_BOOK_DETAILS_END,
+  GET_BOOK_AVAILABILITY,
+  GET_BOOK_AVAILABILITY_END,
 } from "./actionTypes";
 
 const initialState = {
   bookData: [],
   bookDetails: [],
+  bookAvailability: [],
 };
 
 export default (state = initialState, action) => {
@@ -31,11 +34,22 @@ export default (state = initialState, action) => {
         bookData: temp,
       };
     }
-
     case GET_BOOK_DETAILS_END: {
       return {
         ...state,
         bookDetails: action.payload.returnResult,
+      };
+    }
+    case GET_BOOK_AVAILABILITY: {
+      return {
+        ...state,
+        bookAvailability: [],
+      };
+    }
+    case GET_BOOK_AVAILABILITY_END: {
+      return {
+        ...state,
+        bookAvailability: action.payload.returnResult,
       };
     }
 

@@ -34,11 +34,11 @@ namespace BookLibrary.DataBase.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Office>().HasData(
-                new Office { Id = 1, Name="Kaunas" },
-                new Office { Id = 2, Name = "Vilnius" },
-                new Office { Id = 3, Name = "London" },
-                new Office { Id = 4, Name = "Toronto" },
-                new Office { Id = 5, Name = "Chicago" }
+                new Office { Id = 1, Name = "Kaunas", FullAddress = "11d. Juozapaviciaus pr., Kaunas, LT-45252, Lithuania" },
+                new Office { Id = 2, Name = "Vilnius", FullAddress = "135 Zalgirio g., Vilnius, LT-08217, Lithuania" },
+                new Office { Id = 3, Name = "London", FullAddress = "8 Devonshire Square, London, EC2M 4PL, United Kingdom" },
+                new Office { Id = 4, Name = "Toronto", FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada" },
+                new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
                 );
 
             modelBuilder.Entity<Book>(entity =>
@@ -63,6 +63,8 @@ namespace BookLibrary.DataBase.Models
 
                 entity.Property(e => e.Title).HasMaxLength(250);
             });
+
+            modelBuilder.Entity<Wish>().HasOne(e => e.Book).WithOne(a => a.Wish);
 
             modelBuilder.Entity<BookCase>(entity =>
             {
@@ -220,11 +222,11 @@ namespace BookLibrary.DataBase.Models
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Wish)
-                    .HasForeignKey<Wish>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Wish_Id");
+                //entity.HasOne(d => d.Book)
+                //    .WithOne(p => p.Wish)
+                //    .HasForeignKey<Wish>(d => d.Id)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Wish_Id");
             });
 
             OnModelCreatingPartial(modelBuilder);

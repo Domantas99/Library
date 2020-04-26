@@ -6,6 +6,7 @@ import { reducer as categories } from "./categories";
 import { reducer as reservations } from "./reservations";
 import { reducer as dashboard } from "./dashboard";
 import { reducer as office } from "./office";
+import { reducer as comments } from "./comments";
 
 const reducers = combineReducers({
   library,
@@ -14,7 +15,8 @@ const reducers = combineReducers({
   wishlist,
   reservations,
   dashboard,
-  office
+  office,
+  comments,
 });
 
 export default reducers;

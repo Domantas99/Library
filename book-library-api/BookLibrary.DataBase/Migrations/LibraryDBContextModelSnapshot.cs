@@ -61,7 +61,7 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("NumberOfPages")
+                    b.Property<int?>("NumberOfPages")
                         .HasColumnType("int");
 
                     b.Property<string>("Publisher")
@@ -278,6 +278,9 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("FullAddress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
@@ -290,26 +293,31 @@ namespace BookLibrary.DataBase.Migrations
                         new
                         {
                             Id = 1,
+                            FullAddress = "11d. Juozapaviciaus pr., Kaunas, LT-45252, Lithuania",
                             Name = "Kaunas"
                         },
                         new
                         {
                             Id = 2,
+                            FullAddress = "135 Zalgirio g., Vilnius, LT-08217, Lithuania",
                             Name = "Vilnius"
                         },
                         new
                         {
                             Id = 3,
+                            FullAddress = "8 Devonshire Square, London, EC2M 4PL, United Kingdom",
                             Name = "London"
                         },
                         new
                         {
                             Id = 4,
+                            FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada",
                             Name = "Toronto"
                         },
                         new
                         {
                             Id = 5,
+                            FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States",
                             Name = "Chicago"
                         });
                 });
@@ -367,6 +375,9 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<int>("OfficeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(250)")
@@ -376,7 +387,27 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.HasIndex("OfficeId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("BookLibrary.DataBase.Models.UserWish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WishId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserWish");
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Waiting", b =>
@@ -411,13 +442,28 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("WishId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId")
+                        .IsUnique()
+                        .HasFilter("[BookId] IS NOT NULL");
+
+                    b.HasIndex("WishId");
 
                     b.ToTable("Wish");
                 });
@@ -495,6 +541,10 @@ namespace BookLibrary.DataBase.Migrations
                         .HasForeignKey("OfficeId")
                         .HasConstraintName("FK_User_OfficeId")
                         .IsRequired();
+
+                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "UserWish")
+                        .WithMany("Users")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Waiting", b =>
@@ -514,11 +564,13 @@ namespace BookLibrary.DataBase.Migrations
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Wish", b =>
                 {
-                    b.HasOne("BookLibrary.DataBase.Models.Book", "IdNavigation")
+                    b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
                         .WithOne("Wish")
-                        .HasForeignKey("BookLibrary.DataBase.Models.Wish", "Id")
-                        .HasConstraintName("FK_Wish_Id")
-                        .IsRequired();
+                        .HasForeignKey("BookLibrary.DataBase.Models.Wish", "BookId");
+
+                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "Votes")
+                        .WithMany("Wishes")
+                        .HasForeignKey("WishId");
                 });
 #pragma warning restore 612, 618
         }

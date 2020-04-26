@@ -7,9 +7,7 @@ export default () => {
             <div className="panel__header">
                 <h1>My reservations</h1>
             </div>
-            <div className="panel__content">
-                <ReservationsTable/>
-            </div>
+            <ReservationsTable/>
         </div>
     )
 }
