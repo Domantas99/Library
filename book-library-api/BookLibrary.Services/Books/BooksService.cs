@@ -44,21 +44,6 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
         }
 
-        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
-        {
-            bool flag = false;
-            try
-            {
-                _context.Wish.Add(wish);
-                await _context.SaveChangesAsync();
-            }
-            catch(Exception e)
-            {
-                flag = true;
-            }
-            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
-        }
-
         public async Task<ResponseResult<Book>> DeleteBook(int id)
         {
             var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);

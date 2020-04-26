@@ -59,12 +59,6 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetBookAvailability(id);
         }
 
-        [HttpPost("add-wish")]
-        public async Task<ActionResult<ResponseResult<Wish>>> AddNewWish ([FromBody]Wish wish)
-        {
-            return await _booksService.AddNewWish(wish);
-        }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseResult<Book>>> DeleteBook(int id) {
             return await _booksService.DeleteBook(id);

@@ -2,9 +2,9 @@
 import httpClient from "../../core/httpClient";
 
 export const getWishlist = () => {
-    return httpClient.get('wishlist');
+  return httpClient.get("wishlist");
 };
 
 export const addWishAPI = (wishObj) => {
-  return httpClient.post('books/add-wish', wishObj);
+  return httpClient.post("wishlist/add", wishObj);
 };

@@ -17,6 +17,22 @@ namespace BookLibrary.Services.Wishlist
         {
             _context = context;
         }
+
+        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
+        {
+            bool flag = false;
+            try
+            {
+                _context.Wish.Add(wish);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                flag = true;
+            }
+            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
+        }
+
         public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist()
         {
             var wishlist = _context.Wish.Select(x => new WishlistItemDTO() {
