@@ -13,5 +13,6 @@ namespace BookLibrary.DataBase.Models
         public string Comment { get; set; }
         public int? BookId { get; set; }
         public virtual Book Book { get; set; }
+        public virtual UserWish Votes { get; set; }
     }
 }
