@@ -64,5 +64,10 @@ namespace BookLibrary.Api.Controllers.Books
         {
             return await _booksService.AddNewWish(wish);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResponseResult<Book>>> DeleteBook(int id) {
+            return await _booksService.DeleteBook(id);
+        }
     }
 }
