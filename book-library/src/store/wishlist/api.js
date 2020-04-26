@@ -1,4 +1,6 @@
 /* eslint-disable import/prefer-default-export */
+import httpClient from "../../core/httpClient";
+
 export const getWishlist = () => {
   return [
     {
@@ -18,4 +20,8 @@ export const getWishlist = () => {
       dateAdded: "2020-04-08",
     },
   ];
+};
+
+export const addWishAPI = (wishObj) => {
+  return httpClient.post("books/add-wish", wishObj);
 };

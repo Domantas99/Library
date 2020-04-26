@@ -64,6 +64,8 @@ namespace BookLibrary.DataBase.Models
                 entity.Property(e => e.Title).HasMaxLength(250);
             });
 
+            modelBuilder.Entity<Wish>().HasOne(e => e.Book).WithOne(a => a.Wish);
+
             modelBuilder.Entity<BookCase>(entity =>
             {
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
@@ -220,11 +222,11 @@ namespace BookLibrary.DataBase.Models
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Wish)
-                    .HasForeignKey<Wish>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Wish_Id");
+                //entity.HasOne(d => d.Book)
+                //    .WithOne(p => p.Wish)
+                //    .HasForeignKey<Wish>(d => d.Id)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Wish_Id");
             });
 
             OnModelCreatingPartial(modelBuilder);
