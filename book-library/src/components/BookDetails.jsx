@@ -66,14 +66,24 @@ export default ({ id }) => {
                   <span className="book-details__detail">
                     {bookDetails.editionLanguage}
                   </span>
+                        <span className="text-secondary">Edition Language</span>
+                        <span className="book-details__detail">{bookDetails.editionLanguage}</span>
 
-                  <span className="text-secondary">Series</span>
-                  <span className="book-details__detail">
-                    {bookDetails.series}
-                  </span>
+                        <span className="text-secondary">Series</span>
+                        <span className="book-details__detail">{bookDetails.series}</span>
+
+                        <span className="text-secondary">Copies available</span>
+                        <span className="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>
+
+                    </div>
+                        <button onClick={handleClick}>
+                            Edit details
+                        </button>
+                    </div>
+                    <div className="reservation-panel">
+                        <h4>Reserve at</h4>
+                    </div>
                 </div>
-              </div>
-            </div>
             <hr/>
             <BookCommentsSection id={id}/>
           </div>

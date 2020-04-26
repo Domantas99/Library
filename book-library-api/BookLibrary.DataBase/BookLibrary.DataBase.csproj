@@ -11,6 +11,10 @@
     <Compile Remove="Migrations\20200425163213_edited-wish2.Designer.cs" />
     <Compile Remove="Migrations\20200425163517_edited-wish3.cs" />
     <Compile Remove="Migrations\20200425163517_edited-wish3.Designer.cs" />
+    <Compile Remove="Migrations\20200426152527_test.cs" />
+    <Compile Remove="Migrations\20200426152527_test.Designer.cs" />
+    <Compile Remove="Migrations\20200426154129_AddUserVotes.cs" />
+    <Compile Remove="Migrations\20200426154129_AddUserVotes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

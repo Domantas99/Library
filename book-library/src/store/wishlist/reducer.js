@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
     case GET_WISHLIST_END: {
       return {
         ...state,
-        bookData: action.payload,
+        bookData: action.payload.returnResult,
       };
     }
     case SET_WISHLIST_MODAL: {

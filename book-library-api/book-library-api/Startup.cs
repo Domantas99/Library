@@ -1,6 +1,7 @@
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.Offices;
+using BookLibrary.Services.Wishlist;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ namespace BookLibrary.Api
 
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IOfficesService, OfficesService>();
+            services.AddScoped<IWishlistService, WishlistService>();
 
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";
