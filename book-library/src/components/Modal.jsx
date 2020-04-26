@@ -8,12 +8,19 @@ import React from "react";
 import * as ModalReact from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Modal({ children, exitAction, height, width }) {
+export default function Modal({
+  modalState,
+  children,
+  exitAction,
+  height,
+  width,
+}) {
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.wishlist.modalState);
+  //const modalState = useSelector((state) => state.wishlist.modalState);
 
   const onExitClick = () => {
-    dispatch(exitAction);
+    //dispatch(exitAction);
+    exitAction()
   };
 
   return (
@@ -21,11 +28,6 @@ export default function Modal({ children, exitAction, height, width }) {
       isOpen={modalState}
       style={{
         overlay: {
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
           backgroundColor: "rgba(255, 255, 255, 0.55)",
         },
         content: {

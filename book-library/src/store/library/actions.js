@@ -7,6 +7,7 @@ import {
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
+  SET_CONFIRMATION_MODAL,
 } from "./actionTypes";
 
 export const getBookList = () => ({ type: GET_BOOK_LIST_START });
@@ -37,4 +38,8 @@ export const getBookAvailability = (id) => ({
 export const getBookAvailabilityEnd = (availabilityDetails) => ({
   type: GET_BOOK_AVAILABILITY_END,
   payload: availabilityDetails,
+});
+export const setConfirmationModal = (modalState) => ({
+  type: SET_CONFIRMATION_MODAL,
+  payload: modalState,
 });

@@ -5,15 +5,18 @@ import {
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
+  SET_CONFIRMATION_MODAL,
 } from "./actionTypes";
 
 const initialState = {
   bookData: [],
   bookDetails: [],
   bookAvailability: [],
+  confirmationModal: false,
 };
 
 export default (state = initialState, action) => {
+  debugger
   switch (action.type) {
     case GET_BOOK_LIST_END: {
       return {
@@ -50,6 +53,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookAvailability: action.payload.returnResult,
+      };
+    }
+    case SET_CONFIRMATION_MODAL: {
+      return {
+        ...state,
+        confirmationModal: action.payload,
       };
     }
 
