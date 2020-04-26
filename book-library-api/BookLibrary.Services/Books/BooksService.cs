@@ -80,14 +80,14 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Book>>> GetBooks()
         {
-            var books = _context.Book.ToList();
-
+            var books = BooksWithoutWishes();
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };
         }
 
         public async Task<ResponseResult<ICollection<string>>> GetCategories()
         {
-            var uniqueCategories = _context.Book.Select(book => book.Category).Distinct().ToList();
+            var books = BooksWithoutWishes();
+            var uniqueCategories = books.Select(book => book.Category).Distinct().ToList();
 
             return new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories };
         }
@@ -106,10 +106,21 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
         {
-            var books = _context.Book.ToList();
+            var books = BooksWithoutWishes();
+
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() };
+        }
+
+        private List<Book> BooksWithoutWishes() {
+            var books = _context.Book.ToList();
+            var wishes = _context.Wish.Include(w => w.Book).ToList();
+            for (int i = 0; i < wishes.Count; i++)
+            {
+                books.Remove(wishes[i].Book);
+            }
+            return books;
         }
     }
 }
