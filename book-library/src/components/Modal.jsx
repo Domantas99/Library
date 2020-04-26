@@ -8,7 +8,7 @@ import React from "react";
 import * as ModalReact from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Modal({ children, exitAction, bb }) {
+export default function Modal({ children, exitAction, height, width }) {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.wishlist.modalState);
 
@@ -29,8 +29,8 @@ export default function Modal({ children, exitAction, bb }) {
           backgroundColor: "rgba(255, 255, 255, 0.55)",
         },
         content: {
-          width: "56%",
-          height: "80%",
+          width,
+          height,
           margin: "auto",
           backgroundColor: "white",
         },
@@ -41,7 +41,6 @@ export default function Modal({ children, exitAction, bb }) {
         X
       </div>
       {children}
-      {bb}
     </ModalReact>
   );
 }

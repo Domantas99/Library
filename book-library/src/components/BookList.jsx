@@ -45,7 +45,12 @@ function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
 
   return (
     <div className="panel__content">
-      <Modal state={modalState} exitAction={setWishlistModal(false)}>
+      <Modal
+        state={modalState}
+        exitAction={setWishlistModal(false)}
+        height="80%"
+        width="56%"
+      >
         <WishForm />
       </Modal>
       <select
