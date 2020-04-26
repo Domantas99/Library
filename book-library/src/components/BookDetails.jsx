@@ -4,7 +4,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getBookDetails, setConfirmationModal } from "../store/library/actions";
+import {
+  getBookDetails,
+  setConfirmationModal,
+  deleteBook,
+} from "../store/library/actions";
 import BookAvailabilitySection from "./BookAvailabilitySection";
 import BookCommentsSection from "./BookCommentsSection";
 import Modal from "./Modal";
@@ -17,6 +21,12 @@ export default ({ id }) => {
   const modalState = useSelector((state) => state.library.confirmationModal);
   const [confimationData, setConfirmationData] = useState([]);
 
+  function onDelete() {
+    dispatch(deleteBook(bookDetails.id));
+    dispatch(setConfirmationModal(false));
+    history.push("/library");
+  }
+
   const archiveConfimationData = {
     text: "Do you really want to ARCHIVE this book?",
     onNo: () => dispatch(setConfirmationModal(false)),
@@ -25,7 +35,7 @@ export default ({ id }) => {
   const DeleteConfimationData = {
     text: "Do you really want to DELETE this book?",
     onNo: () => dispatch(setConfirmationModal(false)),
-    onYes: () => dispatch(setConfirmationModal(false)),
+    onYes: onDelete,
   };
 
   useEffect(() => {

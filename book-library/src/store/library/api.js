@@ -15,3 +15,7 @@ export const getBookDetails = (id) => {
 export const getBookAvailabilityAPI = (id) => {
   return httpClient.get(`books/${id}/availability`);
 };
+
+export const deleteBookApi = (id) => {
+  return httpClient.delete(`books/${id}`);
+};

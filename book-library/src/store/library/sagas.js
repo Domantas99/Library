@@ -6,6 +6,7 @@ import {
   addBookAPI,
   getBookDetails,
   getBookAvailabilityAPI,
+  deleteBookApi,
 } from "./api";
 import {
   GET_BOOK_LIST_START,
@@ -13,12 +14,16 @@ import {
   GET_BOOK_DETAILS_START,
   ADD_NEW_BOOK_END,
   GET_BOOK_AVAILABILITY,
+  DELETE_BOOK,
+  DELETE_BOOK_END,
 } from "./actionTypes";
 import {
   getBookListEnd,
   addNewBookEnd,
   getBookDetailsEnd,
   getBookAvailabilityEnd,
+  deleteBook,
+  deleteBookEnd,
 } from "./actions";
 
 export function* getBookListSaga(action) {
@@ -61,10 +66,21 @@ export function* getBookAvailabilitySaga(action) {
   }
 }
 
+export function* deleteBookSaga(action) {
+  try {
+    const apiResult = yield call(deleteBookApi, action.payload);
+    yield put(deleteBookEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK, addNewBookSaga);
   yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_AVAILABILITY, getBookAvailabilitySaga);
+  yield takeLatest(DELETE_BOOK, deleteBookSaga);
+  yield takeLatest(DELETE_BOOK_END, getBookListSaga);
 }

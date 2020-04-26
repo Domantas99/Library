@@ -6,6 +6,8 @@ import {
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
   SET_CONFIRMATION_MODAL,
+  DELETE_BOOK,
+  DELETE_BOOK_END,
 } from "./actionTypes";
 
 const initialState = {
@@ -16,7 +18,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  debugger
   switch (action.type) {
     case GET_BOOK_LIST_END: {
       return {
@@ -59,6 +60,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         confirmationModal: action.payload,
+      };
+    }
+    case DELETE_BOOK: {
+      return {
+        ...state,
+      };
+    }
+    case DELETE_BOOK_END: {
+      const result = action.payload;
+      if (!result.error) {
+        const books = state.bookData.filter((x) => x.result.returnResult.id);
+        return {
+          ...state,
+          bookData: books,
+        }
+      }
+      return {
+        ...state,
       };
     }
 

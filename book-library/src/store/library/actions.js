@@ -8,6 +8,8 @@ import {
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
   SET_CONFIRMATION_MODAL,
+  DELETE_BOOK,
+  DELETE_BOOK_END
 } from "./actionTypes";
 
 export const getBookList = () => ({ type: GET_BOOK_LIST_START });
@@ -42,4 +44,12 @@ export const getBookAvailabilityEnd = (availabilityDetails) => ({
 export const setConfirmationModal = (modalState) => ({
   type: SET_CONFIRMATION_MODAL,
   payload: modalState,
+});
+export const deleteBook = (bookId) => ({
+  type: DELETE_BOOK,
+  payload: bookId,
+});
+export const deleteBookEnd = (deletedBook) => ({
+  type: DELETE_BOOK_END,
+  payload: deletedBook,
 });
