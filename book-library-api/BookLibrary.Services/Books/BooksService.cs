@@ -50,7 +50,9 @@ namespace BookLibrary.Services.Books
             if (bookToDelete!=null)
             {
                 var libraryToRemove = _context.Library.Where(b => b.BookId == id);
+                var wishToRemove = _context.Wish.Where(b => b.BookId == id);
                 _context.Library.RemoveRange(libraryToRemove);
+                _context.RemoveRange(wishToRemove);
                 _context.Book.Remove(bookToDelete);
                 await _context.SaveChangesAsync();
             }

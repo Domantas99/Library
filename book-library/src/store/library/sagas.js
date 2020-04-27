@@ -22,7 +22,6 @@ import {
   addNewBookEnd,
   getBookDetailsEnd,
   getBookAvailabilityEnd,
-  deleteBook,
   deleteBookEnd,
 } from "./actions";
 

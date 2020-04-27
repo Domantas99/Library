@@ -4,11 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {
-  getBookDetails,
-  setConfirmationModal,
-  deleteBook,
-} from "../store/library/actions";
+import { getBookDetails, deleteBook } from "../store/library/actions";
 import BookAvailabilitySection from "./BookAvailabilitySection";
 import BookCommentsSection from "./BookCommentsSection";
 import Modal from "./Modal";
@@ -18,23 +14,23 @@ export default ({ id }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
-  const modalState = useSelector((state) => state.library.confirmationModal);
   const [confimationData, setConfirmationData] = useState([]);
+  const [modalState, setModalState] = useState(false);
 
   function onDelete() {
-    dispatch(deleteBook(bookDetails.id));
-    dispatch(setConfirmationModal(false));
+    setModalState(false);
     history.push("/library");
+    dispatch(deleteBook(bookDetails.id));
   }
 
   const archiveConfimationData = {
     text: "Do you really want to ARCHIVE this book?",
-    onNo: () => dispatch(setConfirmationModal(false)),
+    onNo: () => setModalState(false),
     onYes: () => {},
   };
   const DeleteConfimationData = {
     text: "Do you really want to DELETE this book?",
-    onNo: () => dispatch(setConfirmationModal(false)),
+    onNo: () => setModalState(false),
     onYes: onDelete,
   };
 
@@ -48,12 +44,12 @@ export default ({ id }) => {
 
   function onArchiveClick() {
     setConfirmationData(archiveConfimationData);
-    dispatch(setConfirmationModal(true));
+    setModalState(true);
   }
 
   function onDeleteClick() {
     setConfirmationData(DeleteConfimationData);
-    dispatch(setConfirmationModal(true));
+    setModalState(true);
   }
 
   return (
@@ -62,7 +58,7 @@ export default ({ id }) => {
         <div className="book-details">
           <Modal
             modalState={modalState}
-            exitAction={() => dispatch(setConfirmationModal(false))}
+            exitAction={() => setModalState(false)}
             height="120px"
             width="400px"
           >

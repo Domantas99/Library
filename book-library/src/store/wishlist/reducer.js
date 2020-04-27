@@ -1,8 +1,4 @@
-import {
-  GET_WISHLIST_END,
-  SET_WISHLIST_MODAL,
-  ADD_WISH_END,
-} from "./actionTypes";
+import { GET_WISHLIST_END, ADD_WISH_END } from "./actionTypes";
 
 const initialState = {
   bookData: [],
@@ -15,12 +11,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookData: action.payload.returnResult,
-      };
-    }
-    case SET_WISHLIST_MODAL: {
-      return {
-        ...state,
-        modalState: action.payload,
       };
     }
     case ADD_WISH_END: {

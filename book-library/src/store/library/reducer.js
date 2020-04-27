@@ -5,7 +5,6 @@ import {
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
-  SET_CONFIRMATION_MODAL,
   DELETE_BOOK,
   DELETE_BOOK_END,
 } from "./actionTypes";
@@ -14,7 +13,6 @@ const initialState = {
   bookData: [],
   bookDetails: [],
   bookAvailability: [],
-  confirmationModal: false,
 };
 
 export default (state = initialState, action) => {
@@ -54,12 +52,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookAvailability: action.payload.returnResult,
-      };
-    }
-    case SET_CONFIRMATION_MODAL: {
-      return {
-        ...state,
-        confirmationModal: action.payload,
       };
     }
     case DELETE_BOOK: {

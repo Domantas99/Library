@@ -6,6 +6,5 @@ export const GET_BOOK_DETAILS_START = "library/GET_BOOK_DETAILS_START";
 export const GET_BOOK_DETAILS_END = "library/GET_BOOK_DETAILS_END";
 export const GET_BOOK_AVAILABILITY = "library/GET_BOOK_AVAILABILITY";
 export const GET_BOOK_AVAILABILITY_END = "library/GET_BOOK_AVAILABILITY_END";
-export const SET_CONFIRMATION_MODAL = "library/SET_CONFIRMATION_MODAL";
 export const DELETE_BOOK = "library/DELETE_BOOK";
 export const DELETE_BOOK_END = "library/DELETE_BOOK_END";
