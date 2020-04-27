@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { BookList } from "../../components";
-import { getWishlist, setWishlistModal } from "../../store/wishlist/actions";
+import { getWishlist } from "../../store/wishlist/actions";
 import ActionItem from "../../components/ActionItem";
 import Modal from "../../components/Modal";
 import WishForm from "../../components/WishForm";

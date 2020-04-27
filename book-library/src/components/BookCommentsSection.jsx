@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getComments } from "../store/comments/actions"; 
+import { getBookComments } from "../store/comments/actions"; 
 import BookCommentComponent from "./BookCommentComponent";
+import CommentForm from "./CommentForm";
 import { getFieldSorter} from "../utilities";
 
 export default ({id, initPage = 1, commentsPerPage = 5}) => {
@@ -52,7 +53,7 @@ export default ({id, initPage = 1, commentsPerPage = 5}) => {
     };
 
     useEffect(() => {
-        dispatch(getComments(id));
+        dispatch(getBookComments(id));
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -79,6 +80,7 @@ export default ({id, initPage = 1, commentsPerPage = 5}) => {
                 <span>{ total } comments</span>
                 <div>{ navButtons }</div>
             </div>
+            <CommentForm book={id}/>
         </div>
         );
 }

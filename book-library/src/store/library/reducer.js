@@ -66,7 +66,7 @@ export default (state = initialState, action) => {
         return {
           ...state,
           bookData: books,
-        }
+        };
       }
       return {
         ...state,

@@ -346,7 +346,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
         <div className="copies-wrapper">
           <h2>NUMBER OF COPIES</h2>
           {officeData.map((office) => (
-            <div>
+            <div key={office.name}>
               <label htmlFor="kaunasCopies">{office.name}:</label>
               <input
                 min="0"

@@ -1,4 +1,4 @@
-import { Library, RegisterBook, EditBook} from "./library";
+import { Library, RegisterBook, EditBook } from "./library";
 import { Wishlist } from "./wishlist";
 import { Reservations } from "./reservations";
 
