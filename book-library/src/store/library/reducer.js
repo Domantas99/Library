@@ -5,6 +5,8 @@ import {
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
+  DELETE_BOOK,
+  DELETE_BOOK_END,
 } from "./actionTypes";
 
 const initialState = {
@@ -50,6 +52,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookAvailability: action.payload.returnResult,
+      };
+    }
+    case DELETE_BOOK: {
+      return {
+        ...state,
+      };
+    }
+    case DELETE_BOOK_END: {
+      const result = action.payload;
+      if (!result.error) {
+        const books = state.bookData.filter((x) => x.result.returnResult.id);
+        return {
+          ...state,
+          bookData: books,
+        }
+      }
+      return {
+        ...state,
       };
     }
 

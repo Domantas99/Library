@@ -44,19 +44,19 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
         }
 
-        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
+        public async Task<ResponseResult<Book>> DeleteBook(int id)
         {
-            bool flag = false;
-            try
+            var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);
+            if (bookToDelete!=null)
             {
-                _context.Wish.Add(wish);
+                var libraryToRemove = _context.Library.Where(b => b.BookId == id);
+                var wishToRemove = _context.Wish.Where(b => b.BookId == id);
+                _context.Library.RemoveRange(libraryToRemove);
+                _context.RemoveRange(wishToRemove);
+                _context.Book.Remove(bookToDelete);
                 await _context.SaveChangesAsync();
             }
-            catch(Exception e)
-            {
-                flag = true;
-            }
-            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
+            return new ResponseResult<Book> { Error = false, ReturnResult = bookToDelete };
         }
 
         public async Task<ResponseResult<Book>> GetBook(int id)

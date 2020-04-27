@@ -15,6 +15,20 @@
     <Compile Remove="Migrations\20200426152527_test.Designer.cs" />
     <Compile Remove="Migrations\20200426154129_AddUserVotes.cs" />
     <Compile Remove="Migrations\20200426154129_AddUserVotes.Designer.cs" />
+    <Compile Remove="Migrations\20200426203216_book-ondelete-action.cs" />
+    <Compile Remove="Migrations\20200426203216_book-ondelete-action.Designer.cs" />
+    <Compile Remove="Migrations\20200426203446_book-ondelete-action2.cs" />
+    <Compile Remove="Migrations\20200426203446_book-ondelete-action2.Designer.cs" />
+    <Compile Remove="Migrations\20200426203909_book-ondelete-action3.cs" />
+    <Compile Remove="Migrations\20200426203909_book-ondelete-action3.Designer.cs" />
+    <Compile Remove="Migrations\20200426204328_book-ondelete-action4.cs" />
+    <Compile Remove="Migrations\20200426204328_book-ondelete-action4.Designer.cs" />
+    <Compile Remove="Migrations\20200426204948_book-ondelete-action.cs" />
+    <Compile Remove="Migrations\20200426204948_book-ondelete-action.Designer.cs" />
+    <Compile Remove="Migrations\20200426205257_book-ondelete-action2.cs" />
+    <Compile Remove="Migrations\20200426205257_book-ondelete-action2.Designer.cs" />
+    <Compile Remove="Migrations\20200426205707_aaa.cs" />
+    <Compile Remove="Migrations\20200426205707_aaa.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { getWishlist, addWishAPI } from "./api";
 import { GET_WISHLIST_START, ADD_WISH, ADD_WISH_END } from "./actionTypes";
-import { getWishlistEnd, setWishlistModal, addWishEnd } from "./actions";
+import { getWishlistEnd, addWishEnd } from "./actions";
 
 export function* getWishlistSaga(action) {
   try {
@@ -18,7 +18,6 @@ export function* addWishSaga(action) {
     if (!apiResult.error) {
       yield put(addWishEnd(apiResult));
       // Closes the modal after put;
-      yield put(setWishlistModal(false));
     }
   } catch (e) {
     // stops saga from braking on api error
