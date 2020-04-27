@@ -76,14 +76,12 @@ export default ({ id }) => {
               <div className="book-details__content">
                 <div className="book-details__title">{bookDetails.title}</div>
                 <h4 className="text-secondary">
-                  by{" "}
-                  <span className="text-underlined">{bookDetails.author}</span>
+                  by <span className="text-underlined">{bookDetails.author}</span>
                 </h4>
                 <div className="book-details__description">
                   <p>{bookDetails.description}</p>
                 </div>
                 <div>
-                  {/* <button>More</button> */}
                   <button onClick={() => onArchiveClick()}>Archive book</button>
                   <button onClick={() => onDeleteClick()}>Delete book</button>
                 </div>
