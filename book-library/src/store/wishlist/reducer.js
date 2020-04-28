@@ -2,7 +2,6 @@ import { GET_WISHLIST_END, ADD_WISH_END } from "./actionTypes";
 
 const initialState = {
   bookData: [],
-  modalState: false,
 };
 
 export default (state = initialState, action) => {
