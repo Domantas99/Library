@@ -59,6 +59,12 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetBookAvailability(id);
         }
 
+        [HttpGet("{id}/comments")]
+        public async Task<ActionResult<ResponseResult<ICollection<BookComment>>>> GetComments(int id)
+        {
+            return await _booksService.GetComments(id);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseResult<Book>>> DeleteBook(int id) {
             return await _booksService.DeleteBook(id);

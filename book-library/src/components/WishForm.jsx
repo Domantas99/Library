@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setWishlistModal, addWish } from "../store/wishlist/actions";
+import { addWish } from "../store/wishlist/actions";
 
 export default function WishForm({exitAction}) {
   const dispatch = useDispatch();

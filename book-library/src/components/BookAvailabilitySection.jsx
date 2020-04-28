@@ -22,7 +22,7 @@ export default function BookAvailabilitySection({ bookId }) {
       {bookInOffices.length > 0 ? (
         <div className="ba-section-list">
         {bookInOffices.map((d) => (
-          <div className="ba-section-list-item">
+          <div className="ba-section-list-item" key={d.office.name}>
             <div className="ba-section-list-item-text-title">{d.office.name} office</div>
             {d.count > 0 ? (
               <div className="ba-section-list-item-text-available">{d.count} available</div>

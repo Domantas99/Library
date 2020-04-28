@@ -63,7 +63,7 @@ namespace BookLibrary.Services.Books
         {
             bool errFlag = false;
             var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
-            if (book != null)
+            if (book == null)
             {
                 errFlag = true;
             }
@@ -90,6 +90,12 @@ namespace BookLibrary.Services.Books
             var uniqueCategories = books.Select(book => book.Category).Distinct().ToList();
 
             return new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories };
+        }
+
+        public async Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId)
+        {
+            var comments = _context.BookComment.Where(comment => comment.BookId == bookId).ToList();
+            return new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments };
         }
 
         public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)

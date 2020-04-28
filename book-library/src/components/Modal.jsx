@@ -6,7 +6,6 @@
 /* eslint-disable react/button-has-type */
 import React from "react";
 import * as ModalReact from "react-modal";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Modal({
   modalState,
@@ -15,11 +14,8 @@ export default function Modal({
   height,
   width,
 }) {
-  const dispatch = useDispatch();
-  //const modalState = useSelector((state) => state.wishlist.modalState);
 
   const onExitClick = () => {
-    //dispatch(exitAction);
     exitAction()
   };
 

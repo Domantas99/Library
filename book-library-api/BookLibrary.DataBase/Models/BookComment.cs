@@ -9,7 +9,7 @@ namespace BookLibrary.DataBase.Models
         public int BookId { get; set; }
         public string Comment { get; set; }
         public int? Rating { get; set; }
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int CreatedBy { get; set; }
 
         public virtual Book Book { get; set; }

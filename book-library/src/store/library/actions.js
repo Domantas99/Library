@@ -8,7 +8,7 @@ import {
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
   DELETE_BOOK,
-  DELETE_BOOK_END
+  DELETE_BOOK_END,
 } from "./actionTypes";
 
 export const getBookList = () => ({ type: GET_BOOK_LIST_START });

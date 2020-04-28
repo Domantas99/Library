@@ -1,4 +1,5 @@
 using BookLibrary.Services.Books;
+using BookLibrary.Services.Comments;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.Offices;
 using BookLibrary.Services.Wishlist;
@@ -33,6 +34,7 @@ namespace BookLibrary.Api
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<IBooksService, BooksService>();
+            services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IOfficesService, OfficesService>();
             services.AddScoped<IWishlistService, WishlistService>();
 

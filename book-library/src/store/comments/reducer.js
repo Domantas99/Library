@@ -1,20 +1,29 @@
-import { GET_COMMENTS_END } from "./actionTypes";
+import { GET_COMMENTS_END, GET_BOOK_COMMENTS_END } from "./actionTypes";
 
 const initialState = {
-    comments: [],
-    total: 0
+  comments: [],
+  total: 0,
 };
 
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case GET_COMMENTS_END: {
-            return {
-                ...state, 
-                comments: action.payload.comments,
-                total: action.payload.total
-            }
-        }
-        
-        default: return state;
+  switch (action.type) {
+    case GET_COMMENTS_END: {
+      return {
+        ...state,
+        comments: action.payload.returnResult,
+        total: action.payload.returnResult.length,
+      };
     }
-}
+
+    case GET_BOOK_COMMENTS_END: {
+      return {
+        ...state,
+        comments: action.payload.returnResult,
+        total: action.payload.returnResult.length,
+      };
+    }
+
+    default:
+      return state;
+  }
+};
