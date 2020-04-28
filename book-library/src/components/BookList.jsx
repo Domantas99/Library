@@ -12,7 +12,7 @@ function BookList({
   dataAction,
   addLink = "",
   actionButton,
-  navigate,
+  navigateItems,
 }) {
   const dispatch = useDispatch();
   const [sortField, setSortField] = useState("dateAdded");
@@ -24,7 +24,11 @@ function BookList({
       .sort(getFieldSorter(sort_field, sort_direction))
       .map((element) => {
         return (
-          <BookListItem key={element.id} data={element} navigate={navigate} />
+          <BookListItem
+            key={element.id}
+            data={element}
+            navigate={navigateItems}
+          />
         );
       });
   };
