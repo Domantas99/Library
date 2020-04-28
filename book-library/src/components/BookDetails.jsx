@@ -133,7 +133,7 @@ export default ({ id }) => {
             <BookCommentsSection id={id} />
           </div>
           <div className="reservation-panel">
-            <BookAvailabilitySection bookId={id} />
+            <BookAvailabilitySection book={bookDetails} />
           </div>
         </div>
       ) : (

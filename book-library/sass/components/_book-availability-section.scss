@@ -21,6 +21,8 @@
         &-item {
             background-color: #E8E9ED;
             margin-bottom: 15px;   
+            display: flex;
+            flex-direction: row;
             &-text {
                 &-title {
                     color: black;
