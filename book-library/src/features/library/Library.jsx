@@ -19,6 +19,7 @@ export default () => {
       <BookList
         dataSelector={useSelector((state) => state.library.bookData)}
         dataAction={getBookList}
+        navigateItems
         addLink="/register-book"
         actionButton={
           <ActionItem
