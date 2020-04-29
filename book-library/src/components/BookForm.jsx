@@ -10,38 +10,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { addNewBook } from "../store/library/actions";
-
-const validErrors = (errors) => {
-  let valid = true;
-  Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
-  return valid;
-};
-
-const validInputs = (inputs) => {
-  let valid = true;
-  for (const key in inputs) {
-    if (inputs.hasOwnProperty(key)) {
-      if (
-        key !== "goodreadsSearch" &&
-        key !== "coverImage" &&
-        key !== "bookFormat" &&
-        key !== "bookCategory" &&
-        inputs[key].length < 1
-      ) {
-        valid = false;
-      }
-    }
-  }
-  return valid;
-};
+import { addNewBook, updateBook } from "../store/library/actions";
 
 const BookForm = ({ formTitle, bookDetails, id, offices }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [officeData, setOffices] = useState(offices);
 
-  const [formState, setState] = useState({
+  const [formState, setFormState] = useState({
     goodreadsSearch: "",
     coverImage: bookDetails ? bookDetails.coverPictureUrl || "" : "",
     bookTitle: bookDetails ? bookDetails.title || "" : "",
@@ -72,8 +48,45 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
       bookSeries: "",
       bookPublisher: "",
       bookLanguage: "",
-    },
+    }
   });
+
+  const validate = (key, value) => {
+    if (key !== "goodreadsSearch") {
+      if (key === "bookFormat" || key === "bookCategory") {
+        return value.length > 0 ? "" : "Please select"
+      } else {
+        return value.length < 1 || value.length > 1000
+            ? "field must be filled and can not exceed 1000 characters"
+            : ""
+      }
+    }
+  }
+
+  const validErrors = () => {
+    const errors = {};
+    Object.keys(formState.errors).forEach((key) => errors[key] = validate(key, formState[key]))
+    setFormState({...formState, errors: errors})
+    let valid = true;
+    Object.values(formState.errors).forEach((val) => val.length > 0 && (valid = false));
+    return valid;
+  };
+  
+  const validInputs = () => {
+    let valid = true;
+    for (const key in formState) {
+      if (formState.hasOwnProperty(key)) {
+        if (
+          key !== "goodreadsSearch" &&
+          key !== "coverImage" &&
+          formState[key].length < 1
+        ) {
+          valid = false;
+        }
+      }
+    }
+    return valid;
+  };
 
   useEffect(() => {
     setOffices(offices);
@@ -82,23 +95,19 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    const { errors } = formState;
-
-    if (name !== "goodreadsSearch") {
-      errors[name] =
-        value.length < 1 || value.length > 1000
-          ? "field must be filled and can not exceed 1000 characters"
-          : "";
-    }
-    setState({ ...formState, errors, [name]: value });
+    setFormState({...formState, [name]: value, errors: {...formState.errors, [name]: validate(name, value)}});
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (validErrors(formState.errors) && validInputs(formState)) {
+    if (validErrors() && validInputs()) {
       const book = createBookObject();
-      dispatch(addNewBook(book));
-      id ? history.push(`/library/${id}`) : history.push("/library");
+      if (id) {
+        dispatch(updateBook(id, book));
+        history.push(`/library/${id}`)
+      } else {
+        dispatch(addNewBook(book));
+        history.push("/library");}
     } else {
       alert("Invalid form");
     }
@@ -159,6 +168,12 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
             name="coverImage"
             accept="image/*"
           />
+          {formState.errors.coverImage.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.coverImage}
+            </span>
+          )}
         </div>
 
         <div className="input-wrapper">
@@ -238,10 +253,17 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
             value={formState.bookFormat}
             onChange={handleChange}
           >
+            <option value="" disabled hidden>Select format</option>
             <option value="paperback">Paperback</option>
             <option value="e-book">E-book</option>
             <option value="audiobook">Audiobook</option>
           </select>
+          {formState.errors.bookFormat.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookFormat}
+            </span>
+          )}
         </div>
 
         <div className="input-wrapper">
@@ -338,9 +360,16 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
             value={formState.bookCategory}
             onChange={handleChange}
           >
+            <option value="" disabled hidden>Select category</option>
             <option value="drama">Drama</option>
             <option value="sci-fi">Sci-fi</option>
           </select>
+          {formState.errors.bookCategory.length > 0 && (
+            <span className="error">
+              <br />
+              {formState.errors.bookCategory}
+            </span>
+          )}
         </div>
 
         <div className="copies-wrapper">

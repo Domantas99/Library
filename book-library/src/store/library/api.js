@@ -19,3 +19,7 @@ export const getBookAvailabilityAPI = (id) => {
 export const deleteBookApi = (id) => {
   return httpClient.delete(`books/${id}`);
 };
+
+export const updateBook = (data) => {
+  return httpClient.put(`books/${data.id}`, data.book);
+};

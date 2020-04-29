@@ -9,6 +9,7 @@ import ActionItem from "../../components/ActionItem";
 export default () => {
   const { id } = useParams();
   const history = useHistory();
+  const bookSelector = useSelector((state) => state.library.bookData)
   return id ? (
     <BookDetails id={id} />
   ) : (
@@ -17,7 +18,7 @@ export default () => {
         <h1>Library</h1>
       </div>
       <BookList
-        dataSelector={useSelector((state) => state.library.bookData)}
+        dataSelector={bookSelector}
         dataAction={getBookList}
         navigateItems
         addLink="/register-book"

@@ -9,6 +9,8 @@ import {
   GET_BOOK_AVAILABILITY_END,
   DELETE_BOOK,
   DELETE_BOOK_END,
+  UPDATE_BOOK,
+  UPDATE_BOOK_END,
 } from "./actionTypes";
 
 export const getBookList = () => ({ type: GET_BOOK_LIST_START });
@@ -47,4 +49,13 @@ export const deleteBook = (bookId) => ({
 export const deleteBookEnd = (deletedBook) => ({
   type: DELETE_BOOK_END,
   payload: deletedBook,
+});
+
+export const updateBook = (id, book) => ({
+  type: UPDATE_BOOK,
+  payload: { id, book },
+});
+export const updateBookEnd = (book) => ({
+  type: UPDATE_BOOK_END,
+  payload: book,
 });
