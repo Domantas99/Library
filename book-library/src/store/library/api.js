@@ -4,8 +4,12 @@ export const addBookAPI = (bookObj) => {
   return httpClient.post("books", bookObj);
 };
 
-export const getBookList = () => {
-  return httpClient.get("books");
+export const getBookList = (category) => {
+  let url = "books";
+  if (category) {
+    url += `?category=${category}`;
+  }
+  return httpClient.get(url);
 };
 
 export const getBookDetails = (id) => {

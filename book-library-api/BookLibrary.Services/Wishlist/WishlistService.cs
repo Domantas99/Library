@@ -2,6 +2,7 @@
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Wishlist;
 using BookLibrary.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace BookLibrary.Services.Wishlist
 
         public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist()
         {
-            var wishlist = _context.Wish.Select(x => new WishlistItemDTO() {
+            var wishlist = await _context.Wish.Select(x => new WishlistItemDTO() {
                 Id = x.Book.Id,
                 Title = x.Book.Title,
                 Author = x.Book.Author,
@@ -43,7 +44,7 @@ namespace BookLibrary.Services.Wishlist
                 DateAdded = x.Book.DateAdded,
                 ReleaseDate = x.Book.ReleaseDate,
                 Votes = x.Votes.Users.Count
-            }).ToList();
+            }).ToListAsync();
 
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
