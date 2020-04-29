@@ -7,20 +7,32 @@ import { useDispatch, useSelector } from "react-redux";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
 
-const createBookComponents = (data, sort_field, sort_direction) => {
-  return [...data]
-    .sort(getFieldSorter(sort_field, sort_direction))
-    .map((element) => {
-      return <BookListItem key={element.id} data={element} />;
-    });
-};
- 
-function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
+function BookList({
+  dataSelector,
+  dataAction,
+  addLink = "",
+  actionButton,
+  navigateItems,
+}) {
   const dispatch = useDispatch();
   const activeCategory = useSelector((state) => state.categories.selected);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
+
+  const createBookComponents = (data, sort_field, sort_direction) => {
+    return [...data]
+      .sort(getFieldSorter(sort_field, sort_direction))
+      .map((element) => {
+        return (
+          <BookListItem
+            key={element.id}
+            data={element}
+            navigate={navigateItems}
+          />
+        );
+      });
+  };
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);
