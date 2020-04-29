@@ -1,12 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Categories from "./Categories";
+import { selectCategory } from "../store/categories/actions";
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <img className="sidebar__logo" alt=""/>
+        <img className="sidebar__logo" alt="" />
       </div>
       <ul className="navigation">
         <li>
@@ -27,6 +30,7 @@ export default function Navigation() {
             to="/library"
             className="navigation__item"
             activeClassName="active"
+            onClick={() => dispatch(selectCategory("all"))}
           >
             <div className="navigation__item-header">
               <i className="navigation__item-icon navigation__item-icon--library" />

@@ -25,7 +25,7 @@ export default () => {
       </div>
       <BookList
         dataSelector={useSelector((state) => state.wishlist.bookData)}
-        dataAction={getWishlist}
+        dataAction={getWishlist()}
         addLink="/add-wishlist"
         actionButton={
           <ActionItem
