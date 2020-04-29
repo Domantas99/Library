@@ -13,7 +13,10 @@ import {
   UPDATE_BOOK_END,
 } from "./actionTypes";
 
-export const getBookList = () => ({ type: GET_BOOK_LIST_START });
+export const getBookList = (category) => ({
+  type: GET_BOOK_LIST_START,
+  payload: category,
+});
 export const getBookListEnd = (bookList) => ({
   type: GET_BOOK_LIST_END,
   payload: bookList,

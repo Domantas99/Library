@@ -49,7 +49,7 @@ namespace BookLibrary.Services.Comments
 
         public async Task<ResponseResult<ICollection<BookComment>>> GetComments()
         {
-            var comments = _context.BookComment.ToList();
+            var comments = await _context.BookComment.ToListAsync();
             return new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments };
         }
     }

@@ -31,7 +31,7 @@ import {
 
 export function* getBookListSaga(action) {
   try {
-    const apiResult = yield call(getBookList);
+    const apiResult = yield call(getBookList, action.payload);
     yield put(getBookListEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

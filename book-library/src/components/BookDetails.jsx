@@ -107,15 +107,16 @@ export default ({ id }) => {
                     {bookDetails.publisher}
                   </span>
 
+                  <span className="text-secondary">Category</span>
+                  <span className="book-details__detail">
+                    {bookDetails.category}
+                  </span>
+
                   <span className="text-secondary">ISBN</span>
                   <span className="book-details__detail">
                     {bookDetails.isbn}
                   </span>
 
-                  <span className="text-secondary">Edition Language</span>
-                  <span className="book-details__detail">
-                    {bookDetails.editionLanguage}
-                  </span>
                   <span className="text-secondary">Edition Language</span>
                   <span className="book-details__detail">
                     {bookDetails.editionLanguage}

@@ -24,9 +24,9 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.AddNewBook(book);
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks()
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooksByCategory([FromQuery]string category)
         {
-            return await _booksService.GetBooks();
+            return await _booksService.GetBooks(category);
         }
 
         [HttpGet("filter/{pattern}")]

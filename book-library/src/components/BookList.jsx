@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
 
@@ -16,6 +16,7 @@ function BookList({
   navigateItems,
 }) {
   const dispatch = useDispatch();
+  const activeCategory = useSelector((state) => state.categories.selected);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
@@ -43,8 +44,8 @@ function BookList({
   };
 
   useEffect(() => {
-    dispatch(dataAction());
-  }, [dispatch, dataAction]);
+    dispatch(dataAction);
+  }, [dispatch, activeCategory]);
 
   useEffect(() => {
     setBookComponents(

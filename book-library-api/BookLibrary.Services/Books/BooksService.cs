@@ -73,50 +73,55 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
-            var libraries = _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToList();
+            var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
 
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetBooks()
+        public Task<ResponseResult<ICollection<Book>>> GetBooks(string category)
         {
             var books = BooksWithoutWishes();
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books };
+            if (category != null)
+            {
+                 books = books.Where(a => a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            }
+            
+            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
         }
 
-        public async Task<ResponseResult<ICollection<string>>> GetCategories()
+        public Task<ResponseResult<ICollection<string>>> GetCategories()
         {
             var books = BooksWithoutWishes();
-            var uniqueCategories = books.Select(book => book.Category).Distinct().ToList();
-
-            return new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories };
+            var uniqueCategories = books.Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+            uniqueCategories.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
         }
 
-        public async Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId)
+        public Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId)
         {
             var comments = _context.BookComment.Where(comment => comment.BookId == bookId).ToList();
-            return new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments };
+            return Task.FromResult(new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments });
         }
 
         public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
-            var filteredBooks = _context.Book.Where(book => book.Title.ToLower().Contains(pattern) ||
+            var filteredBooks = await _context.Book.Where(book => book.Title.ToLower().Contains(pattern) ||
                                                             book.Author.ToLower().Contains(pattern) ||
                                                             book.Isbn.ToLower().Contains(pattern))
-                                                            .ToList();
+                                                            .ToListAsync();
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks };
 
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
+        public Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
         {
             var books = BooksWithoutWishes();
 
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() };
+            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() });
         }
 
         private List<Book> BooksWithoutWishes() {

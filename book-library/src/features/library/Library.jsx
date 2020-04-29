@@ -1,12 +1,17 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-wrap-multilines */
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
+import queryString from "query-string";
 import { BookList, BookDetails } from "../../components";
 import { getBookList } from "../../store/library/actions";
 import ActionItem from "../../components/ActionItem";
 
-export default () => {
+export default (props) => {
+  const values = queryString.parse(props.location.search);
+
   const { id } = useParams();
   const history = useHistory();
   const bookSelector = useSelector((state) => state.library.bookData)
@@ -19,7 +24,7 @@ export default () => {
       </div>
       <BookList
         dataSelector={bookSelector}
-        dataAction={getBookList}
+        dataAction={getBookList(values.category)}
         navigateItems
         addLink="/register-book"
         actionButton={
