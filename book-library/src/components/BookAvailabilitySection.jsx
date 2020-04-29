@@ -8,11 +8,13 @@ import { getBookAvailability } from "../store/library/actions";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
 import { addReservation } from "../store/reservations/actions";
+import CantFind from "./CantFind";
 
 export default function BookAvailabilitySection({ book }) {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
   const [ modalState, setModalState ] = useState(false);
+  const [ cantFindModal, setCantFindModalState ] = useState(false);
   const [ activeOffice, setActiveOffice ] = useState(null);
   const [ reservation, setReservation ] = useState(null);
   const [ returnDate, setReturnDate ] = useState("");
@@ -66,7 +68,7 @@ export default function BookAvailabilitySection({ book }) {
           <div className="ba-section-list-item-text-title">{d.office.name} office</div>
           <div className="ba-section-list-item-text-available">{d.count} available</div>
           <div className="ba-section-list-item-text-address">{d.office.fullAddress}</div>
-          <div className="ba-section-list-item-text-other">Can't find a copy?</div>
+          <div className="ba-section-list-item-text-other" onClick={() => setCantFindModalState(true)} >Can't find a copy?</div>
         </div>
       </div>);
     } else {
@@ -89,6 +91,14 @@ export default function BookAvailabilitySection({ book }) {
       {bookInOffices.length > 0 ? (
         <>
           <div className="ba-section-list">
+            <Modal
+              modalState={cantFindModal}
+              exitAction={() => setCantFindModalState(false)}
+              height="250px"
+              width="500px"
+            >
+              <CantFind onExit={() => setCantFindModalState(false)} />
+            </Modal>
             {bookInOffices.map((d) => generateOfficeElement(d))}
             <Modal
               modalState={modalState}
@@ -97,7 +107,7 @@ export default function BookAvailabilitySection({ book }) {
               width="400px"
             >
               { activeOffice && <ReservationModalContent reservation={reservation} returnDate={returnDate} returnDateHandler={setReturnDate} modalHandler={setModalState} submitHandler={handleSubmit}/> }
-            </Modal>        
+            </Modal>
           </div>
           <div className="ba-section-buttons">
             <div>
