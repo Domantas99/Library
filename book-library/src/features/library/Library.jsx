@@ -14,6 +14,7 @@ export default (props) => {
 
   const { id } = useParams();
   const history = useHistory();
+  const bookSelector = useSelector((state) => state.library.bookData)
   return id ? (
     <BookDetails id={id} />
   ) : (
@@ -22,7 +23,7 @@ export default (props) => {
         <h1>Library</h1>
       </div>
       <BookList
-        dataSelector={useSelector((state) => state.library.bookData)}
+        dataSelector={bookSelector}
         dataAction={getBookList(values.category)}
         navigateItems
         addLink="/register-book"

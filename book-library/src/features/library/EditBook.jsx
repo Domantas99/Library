@@ -29,7 +29,6 @@ export default () => {
           offices={offices}
         />
       )}
-      )
     </div>
   ) : (
     <Link to="/">Return home</Link>
