@@ -1,4 +1,4 @@
-import { GET_SEARCHED_BOOKS, GET_SEARCHED_BOOKS_END } from "./actionTypes";
+import { GET_SEARCHED_BOOKS, GET_SEARCHED_BOOKS_END, RESET_SEARCHBAR } from "./actionTypes";
 
 const initialState = {
   filter: "",
@@ -19,6 +19,9 @@ export default (state = initialState, action) => {
         return { ...state, data: result.returnResult };
       }
       break;
+    }
+    case RESET_SEARCHBAR: {
+      return { filter: "", data: [] };
     }
     default: {
       return state;
