@@ -19,8 +19,16 @@ export function* getCommentsSaga(action) {
 
 export function* getBookCommentsSaga(action) {
   try {
-    const apiResult = yield call(getBookComments, action.payload);
-    yield put(getBookCommentsEnd(apiResult));
+    if (action.type === GET_BOOK_COMMENTS_START) {
+      const apiResult = yield call(getBookComments, action.payload);
+      yield put(getBookCommentsEnd(apiResult));
+    } else if (action.type === ADD_COMMENT_END) {
+      const apiResult = yield call(
+        getBookComments,
+        action.payload.returnResult.bookId
+      );
+      yield put(getBookCommentsEnd(apiResult));
+    }
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -39,5 +47,5 @@ export default function* () {
   yield takeLatest(GET_COMMENTS_START, getCommentsSaga);
   yield takeLatest(GET_BOOK_COMMENTS_START, getBookCommentsSaga);
   yield takeLatest(ADD_COMMENT_START, addCommentSaga);
-  yield takeLatest(ADD_COMMENT_END, getCommentsSaga);
+  yield takeLatest(ADD_COMMENT_END, getBookCommentsSaga);
 }

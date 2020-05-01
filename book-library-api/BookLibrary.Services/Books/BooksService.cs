@@ -83,7 +83,7 @@ namespace BookLibrary.Services.Books
             var books = BooksWithoutWishes();
             if (category != null)
             {
-                 books = books.Where(a => a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                 books = books.Where(a => a.Category != null && a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
             
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
