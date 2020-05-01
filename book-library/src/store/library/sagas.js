@@ -96,5 +96,5 @@ export default function* () {
   yield takeLatest(DELETE_BOOK, deleteBookSaga);
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
-  yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
+  yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);
 }
