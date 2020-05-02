@@ -22,5 +22,7 @@ namespace BookLibrary.DataBase.Models
 
         public virtual ICollection<BookCaseComment> BookCaseComment { get; set; }
         public virtual ICollection<Reservation> Reservation { get; set; }
+        public virtual Book Book { get; set; }
+        public virtual Office Office { get; set; }
     }
 }

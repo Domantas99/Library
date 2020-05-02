@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import httpClient from "../../core/httpClient";
 
 const reservations = [
   {
@@ -72,8 +73,8 @@ const reservations = [
   },
 ];
 
-export const getReservationsList = () => {
-  return [...reservations];
+export const getReservationsList = (userId) => {
+  return httpClient.get(`reservations/user/${userId}`);
 };
 
 export const addReservation = (reservation) => {

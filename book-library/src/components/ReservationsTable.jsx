@@ -20,7 +20,7 @@ const ReservationsTable = () => {
     const [tableRows, setTableRows] = useState([]);
 
     useEffect(() => {
-        dispatch(getReservations());
+        dispatch(getReservations(1));
     }, [dispatch]);
 
     const handleChangeSortField = (event) => {
