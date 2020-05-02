@@ -4,7 +4,7 @@ import { getUserApi } from "./api";
 import { GET_USER } from "./actionTypes";
 import { getUserEnd } from "./actions";
 
-export function* getOfficesSaga(action) {
+export function* getUserSaga(action) {
   try {
     const apiResult = yield call(getUserApi, action.payload);
     yield put(getUserEnd(apiResult));
@@ -14,5 +14,5 @@ export function* getOfficesSaga(action) {
 }
 
 export default function* () {
-  yield takeLatest(GET_USER, getOfficesSaga);
+  yield takeLatest(GET_USER, getUserSaga);
 }
