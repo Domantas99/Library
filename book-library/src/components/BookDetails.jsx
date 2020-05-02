@@ -19,7 +19,6 @@ export default ({ id }) => {
 
   function onDelete() {
     setModalState(false);
-    history.push("/library");
     dispatch(deleteBook(bookDetails.id));
   }
 
