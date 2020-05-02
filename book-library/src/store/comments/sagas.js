@@ -29,8 +29,8 @@ export function* getBookCommentsSaga(action) {
 export function* getBookCommentsAfterAddSaga(action) {
   try {
     const apiResult = yield call(
-        getBookComments,
-        action.payload.returnResult.bookId
+      getBookComments,
+      action.payload.returnResult.bookId
     );
     yield put(getBookCommentsEnd(apiResult));
   } catch (e) {

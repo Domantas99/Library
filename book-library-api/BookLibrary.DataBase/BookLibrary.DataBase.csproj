@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20200426205257_book-ondelete-action2.Designer.cs" />
     <Compile Remove="Migrations\20200426205707_aaa.cs" />
     <Compile Remove="Migrations\20200426205707_aaa.Designer.cs" />
+    <Compile Remove="Migrations\20200502124949_Reservation-Dates.cs" />
+    <Compile Remove="Migrations\20200502124949_Reservation-Dates.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

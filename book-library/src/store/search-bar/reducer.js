@@ -1,4 +1,8 @@
-import { GET_SEARCHED_BOOKS, GET_SEARCHED_BOOKS_END, RESET_SEARCHBAR } from "./actionTypes";
+import {
+  GET_SEARCHED_BOOKS,
+  GET_SEARCHED_BOOKS_END,
+  RESET_SEARCHBAR,
+} from "./actionTypes";
 
 const initialState = {
   filter: "",

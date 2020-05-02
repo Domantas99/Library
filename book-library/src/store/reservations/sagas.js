@@ -15,7 +15,7 @@ import {
 
 export function* getReservationsSaga(action) {
   try {
-    const apiResult = yield call(getReservationsList);
+    const apiResult = yield call(getReservationsList, action.payload);
     yield put(getReservationsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

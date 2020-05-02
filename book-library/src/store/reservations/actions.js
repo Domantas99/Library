@@ -7,7 +7,10 @@ import {
   UPDATE_RESERVATION_END,
 } from "./actionTypes";
 
-export const getReservations = () => ({ type: GET_RESERVATIONS_START });
+export const getReservations = (id) => ({
+  type: GET_RESERVATIONS_START,
+  payload: id,
+});
 export const getReservationsEnd = (reservationsList) => ({
   type: GET_RESERVATIONS_END,
   payload: reservationsList,
