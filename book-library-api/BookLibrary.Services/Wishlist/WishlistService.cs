@@ -20,16 +20,48 @@ namespace BookLibrary.Services.Wishlist
         public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist()
         {
             var wishlist = _context.Wish.Select(x => new WishlistItemDTO() {
+                WishId = x.Id,
                 Id = x.Book.Id,
                 Title = x.Book.Title,
                 Author = x.Book.Author,
                 CoverPictureUrl = x.Book.CoverPictureUrl,
                 DateAdded = x.Book.DateAdded,
                 ReleaseDate = x.Book.ReleaseDate,
-                Votes = x.Votes.Users.Count
+                Votes = x.Votes.Count
             }).ToList();
 
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
+        }
+        public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)
+        {
+            bool flag = false;
+            var alreadyExists = _context.UserWish.FirstOrDefault(x => x.WishId == userWish.WishId && x.UserId == userWish.UserId);
+            try
+            {
+                if (alreadyExists != null)
+                {
+                    _context.UserWish.Remove(alreadyExists);
+                }
+                else
+                    _context.UserWish.Add(userWish);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                flag = true;
+            }
+
+            return new ResponseResult<UserWish> { Error = flag, ReturnResult = userWish };
+        }
+        public async Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId)
+        {
+            var voteList = _context.UserWish.Select(x => new VoteItemDTO()
+            {
+                WishId = x.WishId,
+                Vote = x.UserId == userId
+            }).ToList();
+            
+            return new ResponseResult<ICollection<VoteItemDTO>> { Error = false, ReturnResult = voteList };
         }
     }
 }

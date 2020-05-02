@@ -10,15 +10,18 @@ import Modal from "./Modal";
 import WishForm from "./WishForm";
 import { setWishlistModal } from "../store/wishlist/actions";
 
-const createBookComponents = (data, sort_field, sort_direction) => {
+const createBookComponents = (data, sort_field, sort_direction, voteStates) => {
   return [...data]
     .sort(getFieldSorter(sort_field, sort_direction))
     .map((element) => {
-      return <BookListItem key={element.id} data={element} />;
+      return <BookListItem 
+      key={element.id} 
+      data={element}
+      />;
     });
 };
 
-function BookList({ dataSelector, dataAction, addLink = "", actionButton }) {
+function BookList({ dataSelector, dataAction, voteStates, addLink = "", actionButton }) {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.wishlist.modalState);
   const [sortField, setSortField] = useState("dateAdded");

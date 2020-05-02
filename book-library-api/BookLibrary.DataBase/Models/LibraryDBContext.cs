@@ -25,6 +25,7 @@ namespace BookLibrary.DataBase.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Waiting> Waiting { get; set; }
         public virtual DbSet<Wish> Wish { get; set; }
+        public virtual DbSet<UserWish> UserWish { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -228,7 +229,20 @@ namespace BookLibrary.DataBase.Models
                 //    .OnDelete(DeleteBehavior.ClientSetNull)
                 //    .HasConstraintName("FK_Wish_Id");
             });
+            modelBuilder.Entity<UserWish>(entity =>
+            {
+                entity.HasOne(d => d.Wish)
+                    .WithMany(p => p.Votes)
+                    .HasForeignKey(d => d.WishId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserWish_WishId");
 
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserWish)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserWish_UserId");
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

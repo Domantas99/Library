@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from "redux-saga/effects";
-import { getWishlist, addWishAPI } from "./api";
-import { GET_WISHLIST_START, ADD_WISH, ADD_WISH_END } from "./actionTypes";
-import { getWishlistEnd, setWishlistModal, addWishEnd } from "./actions";
+import { getWishlist, addWishAPI, setVoteAPI, getVoteAPI } from "./api";
+import { GET_WISHLIST_START, ADD_WISH, ADD_WISH_END, SET_VOTE, SET_VOTE_END, GET_VOTE, GET_VOTE_END } from "./actionTypes";
+import { getWishlistEnd, setWishlistModal, addWishEnd, setVoteEnd, getVoteEnd } from "./actions";
 
 export function* getWishlistSaga(action) {
   try {
@@ -24,10 +24,30 @@ export function* addWishSaga(action) {
     // stops saga from braking on api error
   }
 }
-
+export function* setVoteSaga(action){
+  try {
+    const apiResult = yield call(setVoteAPI, action.payload);
+    yield put(setVoteEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+    
+  }
+}
+export function* getVoteSaga(action) {
+  try {
+    const apiResult = yield call(getVoteAPI, action.payload);
+    yield put(getVoteEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+    console.log(e);
+  }
+}
 export default function* () {
   yield takeLatest(GET_WISHLIST_START, getWishlistSaga);
   yield takeLatest(ADD_WISH, addWishSaga);
   // Refreshes wishlist
   yield takeLatest(ADD_WISH_END, getWishlistSaga);
+  yield takeLatest(SET_VOTE, setVoteSaga);
+  yield takeLatest(SET_VOTE_END, getWishlistSaga);
+  yield takeLatest(GET_VOTE, getVoteSaga);
 }

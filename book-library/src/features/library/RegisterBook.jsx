@@ -11,7 +11,7 @@ export default () => {
   offices.forEach((o) => (o.count = 0));
   useEffect(() => {
     dispatch(getOffices());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="content-wrapper">

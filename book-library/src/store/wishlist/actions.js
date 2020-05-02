@@ -4,6 +4,10 @@ import {
   SET_WISHLIST_MODAL,
   ADD_WISH,
   ADD_WISH_END,
+  SET_VOTE,
+  SET_VOTE_END,
+  GET_VOTE,
+  GET_VOTE_END
 } from "./actionTypes";
 
 export const getWishlist = () => ({ type: GET_WISHLIST_START });
@@ -22,4 +26,20 @@ export const addWish = (bookWish) => ({
 export const addWishEnd = (bookWish) => ({
   type: ADD_WISH_END,
   payload: bookWish,
+});
+export const setVote = (vote) => ({
+  type: SET_VOTE,
+  payload: vote,
+});
+export const setVoteEnd = (vote) => ({
+  type: SET_VOTE_END,
+  payload: vote,
+});
+export const getVote = (vote) => ({
+  type: GET_VOTE,
+  payload: vote,
+});
+export const getVoteEnd = (vote) => ({
+  type: GET_VOTE_END,
+  payload: vote,
 });
