@@ -41,6 +41,10 @@ namespace BookLibrary.DataBase.Models
                 new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
                 );
 
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, FirstName = "Nathan", LastName = "Roberts", UserName = "Nathaniux123", Email = "nathan.roberts@gmail.com", OfficeId = 1, ProfilePictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU" }
+                );
+
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.Property(e => e.Author).HasMaxLength(250);
@@ -182,7 +186,7 @@ namespace BookLibrary.DataBase.Models
                     .IsRequired()
                     .HasMaxLength(250);
 
-                entity.Property(e => e.GoodReadsAccount).HasMaxLength(250);
+                entity.Property(e => e.ProfilePictureUrl).HasMaxLength(300);
 
                 entity.Property(e => e.LastName)
                     .IsRequired()

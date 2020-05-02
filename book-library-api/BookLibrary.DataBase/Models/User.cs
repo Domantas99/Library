@@ -15,8 +15,9 @@ namespace BookLibrary.DataBase.Models
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public string ProfilePictureUrl { get; set; }
         public int OfficeId { get; set; }
-        public string GoodReadsAccount { get; set; }
 
         public virtual Office Office { get; set; }
         public virtual ICollection<Reservation> Reservation { get; set; }
