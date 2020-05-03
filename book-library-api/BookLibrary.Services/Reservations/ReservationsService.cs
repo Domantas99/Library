@@ -18,6 +18,22 @@ namespace BookLibrary.Services.Reservations
         {
             _context = context;
         }
+
+        public async Task<ResponseResult<Reservation>> AddReservation(Reservation reservation)
+        {
+            bool flag = false;
+            try
+            {
+                _context.Reservation.Add(reservation);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                var a = ex;
+                flag = true;
+            }
+            return new ResponseResult<Reservation> { Error = flag, ReturnResult = reservation };
+        }
+
         public async Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)

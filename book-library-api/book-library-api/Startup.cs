@@ -1,3 +1,4 @@
+using BookLibrary.Services;
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Comments;
 using BookLibrary.Services.Contracts;
@@ -39,6 +40,7 @@ namespace BookLibrary.Api
             services.AddScoped<IOfficesService, OfficesService>();
             services.AddScoped<IReservationsService, ReservationsService>();
             services.AddScoped<IWishlistService, WishlistService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";

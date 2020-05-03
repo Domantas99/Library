@@ -6,13 +6,13 @@ export default function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(getUser(1));
   }, []);
 
   return (
     <div className="user-info">
       <div className="user-info__image">
-        <img src={user?.profilePicture} />
+        <img src={user?.profilePictureUrl} />
       </div>
       <h2 className="user-info__greeting">Hello, {user?.firstName}!</h2>
       <h5 className="text-secondary">{user?.email}</h5>

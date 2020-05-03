@@ -78,8 +78,10 @@ export const getReservationsList = (userId) => {
 };
 
 export const addReservation = (reservation) => {
-  reservations.push({ ...reservation, id: reservations.length + 1 });
-  return reservation;
+  debugger;
+  httpClient.post("reservations", reservation);
+  //reservations.push({ ...reservation, id: reservations.length + 1 });
+  //return reservation;
 };
 
 export const updateReservation = (reservation) => {

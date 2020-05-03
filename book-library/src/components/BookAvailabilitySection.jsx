@@ -17,10 +17,9 @@ export default function BookAvailabilitySection({ book }) {
   const [ cantFindModal, setCantFindModalState ] = useState(false);
   const [ activeOffice, setActiveOffice ] = useState(null);
   const [ reservation, setReservation ] = useState(null);
-  const [ returnDate, setReturnDate ] = useState("");
 
   const handleModalClick = (e) => {
-    setReservation(generateReservation(book, activeOffice, returnDate, 1));
+    setReservation(generateReservation(book, activeOffice, 1));
     setModalState(true);
   }
 
@@ -29,34 +28,37 @@ export default function BookAvailabilitySection({ book }) {
   }
 
   const handleSubmit = (e) => {
-    dispatch(addReservation({...reservation, returnDate: returnDate}));
+    dispatch(addReservation({...reservation}));
     setModalState(false);
   }
 
+
   const generateReservation = (book, office, returnDate, user) => {
     let date = new Date();
-    let dateString = `${date.getFullYear()}-${date.getMonth() < 9 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1)}-${date.getDay() < 9 ? ("0" + (date.getDay())) : (date.getDay())}`;
-    return JSON.parse(JSON.stringify({
-        bookId: book.id,
-        title: book.title,
-        author: book.author,
-        coverPictureUrl: book.coverPictureUrl,
-        releaseDate: book.releaseDate,
-        dateAdded: book.dateAdded,
-        description: book.description,
-        category: book.category,
-        tag: book.tag,
-        format: book.format,
-        numberOfPages: book.numberOfPages,
-        series: book.series,
-        publisher: book.publisher,
-        editionLanguage: book.editionLanguage,
-        goodReadsUrl: book.goodReadsUrl,
-        office: office.name,
-        status: "Borrowed",
-        bookedFrom: dateString,
-        userId: user
-    }));
+    const obj = {book, activeOffice};
+    return obj;
+    // let dateString = `${date.getFullYear()}-${date.getMonth() < 9 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1)}-${date.getDay() < 9 ? ("0" + (date.getDay())) : (date.getDay())}`;
+    // return JSON.parse(JSON.stringify({
+    //     bookId: book.id,
+    //     title: book.title,
+    //     author: book.author,
+    //     coverPictureUrl: book.coverPictureUrl,
+    //     releaseDate: book.releaseDate,
+    //     dateAdded: book.dateAdded,
+    //     description: book.description,
+    //     category: book.category,
+    //     tag: book.tag,
+    //     format: book.format,
+    //     numberOfPages: book.numberOfPages,
+    //     series: book.series,
+    //     publisher: book.publisher,
+    //     editionLanguage: book.editionLanguage,
+    //     goodReadsUrl: book.goodReadsUrl,
+    //     office: office.name,
+    //     status: "Borrowed",
+    //     bookedFrom: dateString,
+    //     userId: user
+    // }));
   }
 
   const generateOfficeElement = (d) => {
@@ -106,7 +108,7 @@ export default function BookAvailabilitySection({ book }) {
               height="auto"
               width="400px"
             >
-              { activeOffice && <ReservationModalContent reservation={reservation} returnDate={returnDate} returnDateHandler={setReturnDate} modalHandler={setModalState} submitHandler={handleSubmit}/> }
+              { activeOffice && <ReservationModalContent reservation={reservation} modalHandler={setModalState} submitHandler={handleSubmit}/> }
             </Modal>
           </div>
           <div className="ba-section-buttons">
