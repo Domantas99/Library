@@ -7,7 +7,7 @@ import ReservationsTableItem from "./ReservationsTableItem";
 
 const createTableRows = (reservations, sort_field, sort_direction) => {
     return [...reservations].sort(getFieldSorter(sort_field, sort_direction)).map(reservation => (
-        <ReservationsTableItem key={reservation.Id} data={reservation}/>
+        <ReservationsTableItem key={reservation.id} data={reservation}/>
     ));
 }
 
@@ -20,7 +20,7 @@ const ReservationsTable = () => {
     const [tableRows, setTableRows] = useState([]);
 
     useEffect(() => {
-        dispatch(getReservations());
+        dispatch(getReservations(1));
     }, [dispatch]);
 
     const handleChangeSortField = (event) => {

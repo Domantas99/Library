@@ -1,32 +1,39 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
-import Modal from "./Modal";
-import WishForm from "./WishForm";
-import { setWishlistModal } from "../store/wishlist/actions";
 
-const createBookComponents = (data, sort_field, sort_direction, voteStates) => {
-  return [...data]
-    .sort(getFieldSorter(sort_field, sort_direction))
-    .map((element) => {
-      return <BookListItem 
-      key={element.id} 
-      data={element}
-      />;
-    });
-};
-
-function BookList({ dataSelector, dataAction, voteStates, addLink = "", actionButton }) {
+function BookList({
+  dataSelector,
+  dataAction,
+  addLink = "",
+  actionButton,
+  navigateItems,
+}) {
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.wishlist.modalState);
+  const activeCategory = useSelector((state) => state.categories.selected);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
+
+  const createBookComponents = (data, sort_field, sort_direction) => {
+    return [...data]
+      .sort(getFieldSorter(sort_field, sort_direction))
+      .map((element) => {
+        return (
+          <BookListItem
+            key={element.id}
+            data={element}
+            navigate={navigateItems}
+          />
+        );
+      });
+  };
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);
@@ -37,8 +44,8 @@ function BookList({ dataSelector, dataAction, voteStates, addLink = "", actionBu
   };
 
   useEffect(() => {
-    dispatch(dataAction());
-  }, [dispatch, dataAction]);
+    dispatch(dataAction);
+  }, [dispatch, activeCategory]);
 
   useEffect(() => {
     setBookComponents(
@@ -48,14 +55,6 @@ function BookList({ dataSelector, dataAction, voteStates, addLink = "", actionBu
 
   return (
     <div className="panel__content">
-      <Modal
-        state={modalState}
-        exitAction={setWishlistModal(false)}
-        height="80%"
-        width="56%"
-      >
-        <WishForm />
-      </Modal>
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}

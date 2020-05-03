@@ -15,7 +15,7 @@ export default function BooksSection({ books, sectionName }) {
       <div className="panel__content book-grid book-section" data-copies="4">
         {books.map((book) => (
           <div key={book.id} className="book-section-block">
-            <BookListItem data={book} />
+            <BookListItem data={book} navigate />
           </div>
         ))}
       </div>

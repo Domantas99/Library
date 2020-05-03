@@ -36,5 +36,11 @@ namespace BookLibrary.Api.Controllers.Wishlist
         {
             return await _wishlistService.ManageVote(userWish);
         }
+
+        [HttpPost("add")]
+        public async Task<ActionResult<ResponseResult<Wish>>> AddNewWish([FromBody]Wish wish)
+        {
+            return await _wishlistService.AddNewWish(wish);
+        }
     }
 }

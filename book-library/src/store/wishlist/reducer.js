@@ -1,6 +1,5 @@
 import {
   GET_WISHLIST_END,
-  SET_WISHLIST_MODAL,
   ADD_WISH_END,
   SET_VOTE_END,
   GET_VOTE_END,
@@ -20,12 +19,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookData: action.payload.returnResult,
-      };
-    }
-    case SET_WISHLIST_MODAL: {
-      return {
-        ...state,
-        modalState: action.payload,
       };
     }
     case ADD_WISH_END: {

@@ -24,9 +24,9 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.AddNewBook(book);
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks()
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooksByCategory([FromQuery]string category)
         {
-            return await _booksService.GetBooks();
+            return await _booksService.GetBooks(category);
         }
 
         [HttpGet("filter/{pattern}")]
@@ -59,10 +59,15 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetBookAvailability(id);
         }
 
-        [HttpPost("add-wish")]
-        public async Task<ActionResult<ResponseResult<Wish>>> AddNewWish ([FromBody]Wish wish)
+        [HttpGet("{id}/comments")]
+        public async Task<ActionResult<ResponseResult<ICollection<BookComment>>>> GetComments(int id)
         {
-            return await _booksService.AddNewWish(wish);
+            return await _booksService.GetComments(id);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResponseResult<Book>>> DeleteBook(int id) {
+            return await _booksService.DeleteBook(id);
         }
     }
 }

@@ -1,0 +1,14 @@
+.confirmation-form {
+    display: flex;
+    flex-direction: column;
+    &-text {
+        padding: 10px;
+        margin: auto;
+    }
+    justify-content: space-between;
+    &-buttons {
+        padding: 10px;;
+        display: flex;
+        justify-content:space-evenly
+    }
+}

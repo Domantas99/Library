@@ -13,5 +13,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist();
         Task<ResponseResult<UserWish>> ManageVote(UserWish userWish);
         Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId);
+        Task<ResponseResult<Wish>> AddNewWish(Wish wish);
     }
 }

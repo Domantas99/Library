@@ -1,10 +1,11 @@
 import {
   GET_BOOK_LIST_END,
   ADD_NEW_BOOK,
-  ADD_NEW_BOOK_END,
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
+  DELETE_BOOK,
+  DELETE_BOOK_END,
 } from "./actionTypes";
 
 const initialState = {
@@ -16,9 +17,15 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_BOOK_LIST_END: {
+      const books = action.payload.returnResult.map((book) => {
+        return {
+          ...book,
+          releaseDate: book.releaseDate.substring(0, 10),
+        };
+      });
       return {
         ...state,
-        bookData: action.payload.returnResult,
+        bookData: books,
       };
     }
     case ADD_NEW_BOOK: {
@@ -26,18 +33,13 @@ export default (state = initialState, action) => {
         ...state,
       };
     }
-    case ADD_NEW_BOOK_END: {
-      const temp = state.bookData;
-      temp.push(action.payload.returnResult);
-      return {
-        ...state,
-        bookData: temp,
-      };
-    }
     case GET_BOOK_DETAILS_END: {
       return {
         ...state,
-        bookDetails: action.payload.returnResult,
+        bookDetails: {
+          ...action.payload.returnResult,
+          releaseDate: action.payload.returnResult.releaseDate.substring(0, 10),
+        },
       };
     }
     case GET_BOOK_AVAILABILITY: {
@@ -50,6 +52,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookAvailability: action.payload.returnResult,
+      };
+    }
+    case DELETE_BOOK: {
+      return {
+        ...state,
+      };
+    }
+    case DELETE_BOOK_END: {
+      const result = action.payload;
+      if (!result.error) {
+        const books = state.bookData.filter((x) => x.result.returnResult.id);
+        return {
+          ...state,
+          bookData: books,
+        };
+      }
+      return {
+        ...state,
       };
     }
 

@@ -6,7 +6,7 @@ export const getWishlist = () => {
 };
 
 export const addWishAPI = (wishObj) => {
-  return httpClient.post('books/add-wish', wishObj);
+  return httpClient.post("wishlist/add", wishObj);
 };
 
 export const setVoteAPI = (vote) => {

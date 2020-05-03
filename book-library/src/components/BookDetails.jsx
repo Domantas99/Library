@@ -1,16 +1,37 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getBookDetails } from "../store/library/actions";
+import { getBookDetails, deleteBook } from "../store/library/actions";
 import BookAvailabilitySection from "./BookAvailabilitySection";
 import BookCommentsSection from "./BookCommentsSection";
+import Modal from "./Modal";
+import ConfirmationForm from "./ConfirmationForm";
 
 export default ({ id }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
-  const history = useHistory();
+  const [confimationData, setConfirmationData] = useState([]);
+  const [modalState, setModalState] = useState(false);
+
+  function onDelete() {
+    setModalState(false);
+    dispatch(deleteBook(bookDetails.id));
+  }
+
+  const archiveConfimationData = {
+    text: "Do you really want to ARCHIVE this book?",
+    onNo: () => setModalState(false),
+    onYes: () => {},
+  };
+  const DeleteConfimationData = {
+    text: "Do you really want to DELETE this book?",
+    onNo: () => setModalState(false),
+    onYes: onDelete,
+  };
 
   useEffect(() => {
     dispatch(getBookDetails(id));
@@ -20,10 +41,32 @@ export default ({ id }) => {
     history.push(`/edit-book/${id}`);
   }
 
+  function onArchiveClick() {
+    setConfirmationData(archiveConfimationData);
+    setModalState(true);
+  }
+
+  function onDeleteClick() {
+    setConfirmationData(DeleteConfimationData);
+    setModalState(true);
+  }
+
   return (
     <div className="panel__content full-width">
       {bookDetails ? (
         <div className="book-details">
+          <Modal
+            modalState={modalState}
+            exitAction={() => setModalState(false)}
+            height="120px"
+            width="400px"
+          >
+            <ConfirmationForm
+              text={confimationData.text}
+              onNoAction={confimationData.onNo}
+              onYesAction={confimationData.onYes}
+            />
+          </Modal>
           <div className="book-details__main">
             <div className="book-details__book">
               <div className="book-details__image">
@@ -35,7 +78,11 @@ export default ({ id }) => {
                   by <span className="text-underlined">{bookDetails.author}</span>
                 </h4>
                 <div className="book-details__description">
-                < p>{bookDetails.description}</p>
+                  <p>{bookDetails.description}</p>
+                </div>
+                <div>
+                  <button onClick={() => onArchiveClick()}>Archive book</button>
+                  <button onClick={() => onDeleteClick()}>Delete book</button>
                 </div>
                 <hr />
                 <h3>Details</h3>
@@ -59,36 +106,34 @@ export default ({ id }) => {
                     {bookDetails.publisher}
                   </span>
 
+                  <span className="text-secondary">Category</span>
+                  <span className="book-details__detail">
+                    {bookDetails.category}
+                  </span>
+
                   <span className="text-secondary">ISBN</span>
-                  <span className="book-details__detail">{bookDetails.isbn}</span>
+                  <span className="book-details__detail">
+                    {bookDetails.isbn}
+                  </span>
 
                   <span className="text-secondary">Edition Language</span>
                   <span className="book-details__detail">
                     {bookDetails.editionLanguage}
                   </span>
-                        <span className="text-secondary">Edition Language</span>
-                        <span className="book-details__detail">{bookDetails.editionLanguage}</span>
 
-                        <span className="text-secondary">Series</span>
-                        <span className="book-details__detail">{bookDetails.series}</span>
-
-                        <span className="text-secondary">Copies available</span>
-                        <span className="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>
-
-                    </div>
-                        <button onClick={handleClick}>
-                            Edit details
-                        </button>
-                    </div>
-                    <div className="reservation-panel">
-                        <h4>Reserve at</h4>
-                    </div>
+                  <span className="text-secondary">Series</span>
+                  <span className="book-details__detail">
+                    {bookDetails.series}
+                  </span>
                 </div>
-            <hr/>
-            <BookCommentsSection id={id}/>
+                <button onClick={handleClick}>Edit details</button>
+              </div>
+            </div>
+            <hr />
+            <BookCommentsSection id={id} />
           </div>
           <div className="reservation-panel">
-            <BookAvailabilitySection bookId={id} />
+            <BookAvailabilitySection book={bookDetails} />
           </div>
         </div>
       ) : (

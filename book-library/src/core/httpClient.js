@@ -21,6 +21,11 @@ class HTTPClient {
     return response.body;
   }
 
+  async delete(path) {
+    const response = await request.delete(this._getUrl(path));
+    return response.body;
+  }
+
   _getUrl(path) {
     return this.baseUrl + path;
   }

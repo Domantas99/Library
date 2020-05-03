@@ -76,3 +76,10 @@ a {
 .text-underlined {
   text-decoration: underline;
 }
+
+.no_forced_size {
+  min-width: unset;
+  min-height: unset;
+  max-width: unset;
+  max-height: unset;
+}

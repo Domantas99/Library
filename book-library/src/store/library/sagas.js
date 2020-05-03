@@ -6,6 +6,8 @@ import {
   addBookAPI,
   getBookDetails,
   getBookAvailabilityAPI,
+  deleteBookApi,
+  updateBook,
 } from "./api";
 import {
   GET_BOOK_LIST_START,
@@ -13,17 +15,23 @@ import {
   GET_BOOK_DETAILS_START,
   ADD_NEW_BOOK_END,
   GET_BOOK_AVAILABILITY,
+  DELETE_BOOK,
+  DELETE_BOOK_END,
+  UPDATE_BOOK,
+  UPDATE_BOOK_END,
 } from "./actionTypes";
 import {
   getBookListEnd,
   addNewBookEnd,
   getBookDetailsEnd,
   getBookAvailabilityEnd,
+  deleteBookEnd,
+  updateBookEnd,
 } from "./actions";
 
 export function* getBookListSaga(action) {
   try {
-    const apiResult = yield call(getBookList);
+    const apiResult = yield call(getBookList, action.payload);
     yield put(getBookListEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
@@ -61,10 +69,33 @@ export function* getBookAvailabilitySaga(action) {
   }
 }
 
+export function* deleteBookSaga(action) {
+  try {
+    const apiResult = yield call(deleteBookApi, action.payload);
+    yield put(deleteBookEnd(apiResult));
+    history.push("/library");
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
+export function* updateBookSaga(action) {
+  try {
+    const apiResult = yield call(updateBook, action.payload);
+    yield put(updateBookEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK, addNewBookSaga);
   yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_AVAILABILITY, getBookAvailabilitySaga);
+  yield takeLatest(DELETE_BOOK, deleteBookSaga);
+  yield takeLatest(DELETE_BOOK_END, getBookListSaga);
+  yield takeLatest(UPDATE_BOOK, updateBookSaga);
+  yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
 }

@@ -2,9 +2,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setWishlistModal, addWish } from "../store/wishlist/actions";
+import { addWish } from "../store/wishlist/actions";
 
-export default function WishForm() {
+export default function WishForm({exitAction}) {
   const dispatch = useDispatch();
   const [bookInfo, setBookInfo] = useState({
     title: "",
@@ -21,7 +21,7 @@ export default function WishForm() {
   };
 
   const onCancelClick = () => {
-    dispatch(setWishlistModal(false));
+    exitAction();
   };
 
   const createBookWishObject = () => {
@@ -41,6 +41,7 @@ export default function WishForm() {
   const onSubmitClick = () => {
     const wish = createBookWishObject();
     dispatch(addWish(wish));
+    exitAction();
   };
 
   return (
