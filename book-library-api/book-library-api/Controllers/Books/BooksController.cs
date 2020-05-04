@@ -24,9 +24,9 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.AddNewBook(book);
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooksByCategory([FromQuery]string category)
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks([FromQuery]string category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors)
         {
-            return await _booksService.GetBooks(category);
+            return await _booksService.GetBooks(category, offices, status, authors);
         }
 
         [HttpGet("filter/{pattern}")]
@@ -45,6 +45,12 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
         {
             return await _booksService.GetCategories();
+        }
+
+        [HttpGet("authors")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetAuthors()
+        {
+            return await _booksService.GetAuthors();
         }
 
         [HttpGet("latest/{count}")]
