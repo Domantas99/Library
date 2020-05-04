@@ -11,8 +11,8 @@ namespace BookLibrary.DataBase.Models
         public int UserId { get; set; }
         public int WishId { get; set; }
         [ForeignKey("WishId")]
-        public virtual ICollection<Wish> Wishes { get; set; }
+        public virtual Wish Wish { get; set; }
         [ForeignKey("UserId")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -1,7 +1,16 @@
-import { GET_WISHLIST_END, ADD_WISH_END } from "./actionTypes";
+import {
+  GET_WISHLIST_END,
+  ADD_WISH_END,
+  SET_VOTE_END,
+  GET_VOTE_END,
+  GET_VOTE
+} from "./actionTypes";
 
 const initialState = {
   bookData: [],
+  modalState: false,
+  voteData: {},
+  voteState: [],
 };
 
 export default (state = initialState, action) => {
@@ -18,6 +27,23 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookData: temp,
+      };
+    }
+    case SET_VOTE_END: {
+      return {
+        ...state,
+        voteData: action.payload,
+      };
+    }
+    case GET_VOTE: {
+      return {
+        ...state
+      }
+    }
+    case GET_VOTE_END: {
+      return {
+        ...state,
+        voteState: action.payload.returnResult,
       };
     }
     default: {
