@@ -77,6 +77,56 @@ export const getReservationsList = (userId) => {
   return httpClient.get(`reservations/user/${userId}`);
 };
 
+export const getBookReservations = (bookId) => {
+  return {
+    errorFlag: false,
+    returnResult: [
+      {
+        id: 1,
+        bookId,
+        office: "Kaunas",
+        status: "Borrowed",
+        bookedFrom: "2020-04-12",
+        returnDate: "2020-05-12",
+        userId: 1,
+        userName: "Jonas Jonaitis",
+        userPictureUrl: "https://randomuser.me/api/portraits/men/78.jpg",
+      },
+      {
+        id: 2,
+        bookId,
+        office: "Vilnius",
+        status: "Borrowed",
+        bookedFrom: "2020-04-12",
+        returnDate: "2020-05-12",
+        userId: 2,
+        userName: "Justas Justaitis",
+        userPictureUrl: "https://randomuser.me/api/portraits/men/31.jpg",
+      },
+      {
+        id: 3,
+        bookId,
+        office: "Kaunas",
+        status: "Waiting",
+        bookedFrom: "2020-04-12",
+        userId: 3,
+        userName: "Lina Linaitė",
+        userPictureUrl: "https://randomuser.me/api/portraits/women/78.jpg",
+      },
+      {
+        id: 4,
+        bookId,
+        office: "Vilnius",
+        status: "Waiting",
+        bookedFrom: "2020-04-12",
+        userId: 4,
+        userName: "Sima Simaitė",
+        userPictureUrl: "https://randomuser.me/api/portraits/women/31.jpg",
+      },
+    ],
+  };
+};
+
 export const addReservation = (reservation) => {
   reservations.push({ ...reservation, id: reservations.length + 1 });
   return reservation;
