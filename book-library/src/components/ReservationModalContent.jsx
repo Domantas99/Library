@@ -7,22 +7,24 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addReservation } from "../store/reservations/actions";
 
-export default ({ reservation, modalHandler, submitHandler }) => {
- 
-  const [returndate, handleDateChange] = useState(formatDate());
+export default ({ reservation, modalHandler }) => {
+  const [returndate, handleDateChange] = useState(
+    reservation.returnDay || formatDate()
+  );
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
   
-
   function onSubmit() {
     const obj = createReservationObj();
     dispatch(addReservation(obj));
+    modalHandler(false);
   }
 
   function createReservationObj() {
     const today = new Date();
-   // const today = date.now();
+
     return {
+      Id: reservation.id || -1,
       UserId,
       PlannedReturnOn: returndate,
       CheckedOutOn: today,

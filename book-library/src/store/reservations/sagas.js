@@ -1,5 +1,6 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { getReservationsList, addReservation, updateReservation } from "./api";
+import history from "../../core/history";
 import {
   GET_RESERVATIONS_START,
   ADD_RESERVATION_START,
@@ -26,6 +27,7 @@ export function* addReservationSaga(action) {
   try {
     const apiResult = yield call(addReservation, action.payload);
     yield put(addReservationEnd(apiResult));
+    history.push("/library");
   } catch (e) {
     // stops saga from braking on api error
   }

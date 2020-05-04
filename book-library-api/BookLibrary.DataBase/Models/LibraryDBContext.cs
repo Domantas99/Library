@@ -161,7 +161,8 @@ namespace BookLibrary.DataBase.Models
 
             modelBuilder.Entity<Reservation>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CheckedInOn).HasColumnType("datetime");
 

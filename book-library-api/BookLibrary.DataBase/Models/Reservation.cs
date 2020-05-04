@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookLibrary.DataBase.Models
 {
     public partial class Reservation
     {
+        [Key]
         public int Id { get; set; }
         public int UserId { get; set; }
         public int BookCaseId { get; set; }

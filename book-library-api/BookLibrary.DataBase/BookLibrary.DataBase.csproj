@@ -31,6 +31,28 @@
     <Compile Remove="Migrations\20200426205707_aaa.Designer.cs" />
     <Compile Remove="Migrations\20200502124949_Reservation-Dates.cs" />
     <Compile Remove="Migrations\20200502124949_Reservation-Dates.Designer.cs" />
+    <Compile Remove="Migrations\20200503094002_added-reservation-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503094002_added-reservation-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503094106_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503094106_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503094415_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503094415_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503094524_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503094524_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503094635_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503094635_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503101025_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503101025_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503101757_added-auto-incr2.cs" />
+    <Compile Remove="Migrations\20200503101757_added-auto-incr2.Designer.cs" />
+    <Compile Remove="Migrations\20200503101912_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503101912_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503160711_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503160711_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503161535_added-auto-incr.cs" />
+    <Compile Remove="Migrations\20200503161535_added-auto-incr.Designer.cs" />
+    <Compile Remove="Migrations\20200503194115_renaming.cs" />
+    <Compile Remove="Migrations\20200503194115_renaming.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
