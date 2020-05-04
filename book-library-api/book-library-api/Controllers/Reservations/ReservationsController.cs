@@ -1,4 +1,5 @@
-﻿using BookLibrary.DTO.Reservations;
+﻿using BookLibrary.DataBase.Models;
+using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,12 @@ namespace BookLibrary.Api.Controllers.Reservations
         public async Task<ActionResult<ResponseResult<ICollection<ReservationsDTO>>>> GetReservationsForUser(int userId)
         {
             return await _reservationsService.GetReservations(userId);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResponseResult<Reservation>>> AddReservation(Reservation reservation)
+        {
+            return await _reservationsService.AddReservation(reservation);
         }
     }
 }

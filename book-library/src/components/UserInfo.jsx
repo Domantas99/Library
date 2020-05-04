@@ -7,7 +7,7 @@ export default function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(getUser(1));
   }, []);
 
   return (

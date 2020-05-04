@@ -18,6 +18,38 @@ namespace BookLibrary.Services.Reservations
         {
             _context = context;
         }
+
+        public async Task<ResponseResult<Reservation>> AddReservation(Reservation reservation)
+        {
+            bool flag = false;
+            try
+            {
+                var reservations = await _context.Reservation.Include(x=>x.BookCase).ToListAsync();
+                int index = reservations.FindIndex(x => x.Id == reservation.Id);
+                if (index >= 0)
+                {
+                    reservations[index].PlannedReturnOn = reservation.PlannedReturnOn;
+                    reservations[index].BookCase.ModifiedOn = DateTime.Today;
+                }
+                else
+                {
+                    var library = await _context.Library.FirstOrDefaultAsync(x => x.BookId == reservation.BookCase.BookId && x.OfficeId == reservation.BookCase.OfficeId);
+                    if (library != null && library.Count > 0)
+                    {
+                        reservation.Id = 0;
+                        _context.Reservation.Add(reservation);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                var a = ex;
+                flag = true;
+            }
+            return new ResponseResult<Reservation> { Error = flag, ReturnResult = reservation };
+        }
+
         public async Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)
@@ -27,10 +59,8 @@ namespace BookLibrary.Services.Reservations
                 response.Add(new ReservationsDTO
                 {
                     Id = reservation.Id,
-                    CoverPictureUrl = reservation.BookCase.Book.CoverPictureUrl,
-                    Title = reservation.BookCase.Book.Title,
-                    Author = reservation.BookCase.Book.Author,
-                    Office = reservation.BookCase.Office.Name,
+                    Book = reservation.BookCase.Book,
+                    Office = reservation.BookCase.Office,
                     BookedFrom = reservation.CheckedOutOn,
                     ReturnDate = reservation.PlannedReturnOn,
                     Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"

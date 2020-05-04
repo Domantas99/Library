@@ -1,3 +1,7 @@
+/* eslint-disable no-else-return */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
@@ -7,80 +11,72 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBookAvailability } from "../store/library/actions";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
-import { addReservation } from "../store/reservations/actions";
 import CantFind from "./CantFind";
 
 export default function BookAvailabilitySection({ book }) {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
-  const [ modalState, setModalState ] = useState(false);
-  const [ cantFindModal, setCantFindModalState ] = useState(false);
-  const [ activeOffice, setActiveOffice ] = useState(null);
-  const [ reservation, setReservation ] = useState(null);
-  const [ returnDate, setReturnDate ] = useState("");
+  const [modalState, setModalState] = useState(false);
+  const [cantFindModal, setCantFindModalState] = useState(false);
+  const [activeOffice, setActiveOffice] = useState(null);
+  const [reservation, setReservation] = useState(null);
 
-  const handleModalClick = (e) => {
-    setReservation(generateReservation(book, activeOffice, returnDate, 1));
+  const handleModalClick = () => {
+    setReservation({ book, activeOffice });
     setModalState(true);
-  }
+  };
 
   const handleOfficeClick = (e, data) => {
     setActiveOffice(data);
-  }
-
-  const handleSubmit = (e) => {
-    dispatch(addReservation({...reservation, returnDate: returnDate}));
-    setModalState(false);
-  }
-
-  const generateReservation = (book, office, returnDate, user) => {
-    let date = new Date();
-    let dateString = `${date.getFullYear()}-${date.getMonth() < 9 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1)}-${date.getDay() < 9 ? ("0" + (date.getDay())) : (date.getDay())}`;
-    return JSON.parse(JSON.stringify({
-        bookId: book.id,
-        title: book.title,
-        author: book.author,
-        coverPictureUrl: book.coverPictureUrl,
-        releaseDate: book.releaseDate,
-        dateAdded: book.dateAdded,
-        description: book.description,
-        category: book.category,
-        tag: book.tag,
-        format: book.format,
-        numberOfPages: book.numberOfPages,
-        series: book.series,
-        publisher: book.publisher,
-        editionLanguage: book.editionLanguage,
-        goodReadsUrl: book.goodReadsUrl,
-        office: office.name,
-        status: "Borrowed",
-        bookedFrom: dateString,
-        userId: user
-    }));
-  }
+  };
 
   const generateOfficeElement = (d) => {
     if (d.count > 0) {
       return (
-      <div className="ba-section-list-item" key={d.office.name}>
-        <input type="radio" name="office" className="no_forced_size" onClick={(e)=> handleOfficeClick(e, {...d.office, count: d.count})}/>
-        <div className="ba-section-office-details">
-          <div className="ba-section-list-item-text-title">{d.office.name} office</div>
-          <div className="ba-section-list-item-text-available">{d.count} available</div>
-          <div className="ba-section-list-item-text-address">{d.office.fullAddress}</div>
-          <div className="ba-section-list-item-text-other" onClick={() => setCantFindModalState(true)} >Can't find a copy?</div>
+        <div className="ba-section-list-item" key={d.office.name}>
+          <input
+            type="radio"
+            name="office"
+            className="no_forced_size"
+            onClick={(e) =>
+              handleOfficeClick(e, { ...d.office, count: d.count })
+            }
+          />
+          <div className="ba-section-office-details">
+            <div className="ba-section-list-item-text-title">
+              {d.office.name} office
+            </div>
+            <div className="ba-section-list-item-text-available">
+              {d.count} available
+            </div>
+            <div className="ba-section-list-item-text-address">
+              {d.office.fullAddress}
+            </div>
+            <div
+              className="ba-section-list-item-text-other"
+              onClick={() => setCantFindModalState(true)}
+            >
+              Can't find a copy?
+            </div>
+          </div>
         </div>
-      </div>);
+      );
     } else {
-    return (
-      <div className="ba-section-list-item" key={d.office.name}>
-        <div className="ba-section-list-item-text-title">{d.office.name} office</div>
-        <div className="ba-section-list-item-text-unavailable">Currently unavailable</div>
-        <div className="ba-section-list-item-text-address">{d.office.fullAddress}</div>
+      return (
+        <div className="ba-section-list-item" key={d.office.name}>
+          <div className="ba-section-list-item-text-title">
+            {d.office.name} office
+          </div>
+          <div className="ba-section-list-item-text-unavailable">
+            Currently unavailable
+          </div>
+          <div className="ba-section-list-item-text-address">
+            {d.office.fullAddress}
+          </div>
         </div>
-      )
+      );
     }
-  }
+  };
 
   useEffect(() => {
     dispatch(getBookAvailability(book.id));
@@ -106,17 +102,29 @@ export default function BookAvailabilitySection({ book }) {
               height="auto"
               width="400px"
             >
-              { activeOffice && <ReservationModalContent reservation={reservation} returnDate={returnDate} returnDateHandler={setReturnDate} modalHandler={setModalState} submitHandler={handleSubmit}/> }
+              {activeOffice && (
+                <ReservationModalContent
+                  reservation={reservation}
+                  modalHandler={setModalState}
+                />
+              )}
             </Modal>
           </div>
           <div className="ba-section-buttons">
             <div>
-            <button className="ba-section-buttons-dark" onClick={handleModalClick} disabled={!activeOffice}>Check Out</button>
+              <button
+                className="ba-section-buttons-dark"
+                onClick={() => handleModalClick()}
+                disabled={!activeOffice}
+              >
+                Check Out
+              </button>
             </div>
           </div>
         </>
-      ): <div>Book is not added</div>
-      }
+      ) : (
+        <div>Book is not added</div>
+      )}
     </div>
   );
 }

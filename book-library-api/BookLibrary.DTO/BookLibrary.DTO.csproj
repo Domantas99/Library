@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookLibrary.DataBase\BookLibrary.DataBase.csproj" />
+  </ItemGroup>
+
 </Project>

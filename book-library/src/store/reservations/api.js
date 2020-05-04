@@ -128,8 +128,7 @@ export const getBookReservations = (bookId) => {
 };
 
 export const addReservation = (reservation) => {
-  reservations.push({ ...reservation, id: reservations.length + 1 });
-  return reservation;
+  httpClient.post("reservations", reservation);
 };
 
 export const updateReservation = (reservation) => {
