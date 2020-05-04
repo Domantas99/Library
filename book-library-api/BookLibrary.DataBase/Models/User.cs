@@ -21,6 +21,6 @@ namespace BookLibrary.DataBase.Models
         public virtual Office Office { get; set; }
         public virtual ICollection<Reservation> Reservation { get; set; }
         public virtual ICollection<Waiting> Waiting { get; set; }
-        public virtual UserWish UserWish { get; set; }
+        public virtual ICollection<UserWish> UserWish { get; set; }
     }
 }

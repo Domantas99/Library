@@ -4,14 +4,16 @@ using BookLibrary.DataBase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200502102914_ChangeUserVotes")]
+    partial class ChangeUserVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,10 +117,6 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("OfficeId");
 
                     b.ToTable("BookCase");
                 });
@@ -331,10 +329,10 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("BookCaseId")
+                    b.Property<int?>("BookCaseId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CheckedInOn")
+                    b.Property<DateTime>("CheckedInOn")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("CheckedOutOn")
@@ -343,7 +341,7 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<DateTime?>("PlannedReturnOn")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -466,21 +464,6 @@ namespace BookLibrary.DataBase.Migrations
                     b.ToTable("Wish");
                 });
 
-            modelBuilder.Entity("BookLibrary.DataBase.Models.BookCase", b =>
-                {
-                    b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookLibrary.DataBase.Models.Office", "Office")
-                        .WithMany()
-                        .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BookLibrary.DataBase.Models.BookCaseComment", b =>
                 {
                     b.HasOne("BookLibrary.DataBase.Models.BookCase", "BookCase")
@@ -539,16 +522,12 @@ namespace BookLibrary.DataBase.Migrations
                     b.HasOne("BookLibrary.DataBase.Models.BookCase", "BookCase")
                         .WithMany("Reservation")
                         .HasForeignKey("BookCaseId")
-                        .HasConstraintName("FK_Reservation_BookCaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasConstraintName("FK_Reservation_BookCaseId");
 
                     b.HasOne("BookLibrary.DataBase.Models.User", "User")
                         .WithMany("Reservation")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Reservation_UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasConstraintName("FK_Reservation_UserId");
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.User", b =>

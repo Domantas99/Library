@@ -6,6 +6,7 @@ namespace BookLibrary.DTO.Wishlist
 {
     public class WishlistItemDTO
     {
+        public int WishId { get; set; }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
