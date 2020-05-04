@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { getBookDetails, deleteBook } from "../store/library/actions";
 import BookAvailabilitySection from "./BookAvailabilitySection";
 import BookCommentsSection from "./BookCommentsSection";
+import BookReservationsSection from "./BookReservationsSection";
 import Modal from "./Modal";
 import ConfirmationForm from "./ConfirmationForm";
 
@@ -129,6 +130,8 @@ export default ({ id }) => {
                 <button onClick={handleClick}>Edit details</button>
               </div>
             </div>
+            <hr />
+            <BookReservationsSection id={id} />
             <hr />
             <BookCommentsSection id={id} />
           </div>
