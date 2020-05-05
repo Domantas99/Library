@@ -134,6 +134,35 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() });
         }
 
+        public async Task<ResponseResult<Book>> UpdateBook(int id, Book book)
+        {
+            bool errorFlag = false;
+            try
+            {
+                book.Id = id;
+                var library = book.Library;
+                book.Library = null;
+                _context.Book.Update(book);
+                await _context.SaveChangesAsync();
+                foreach (var lib in library)
+                {
+                    if (lib.Count > 0)
+                    {
+                        lib.BookId = book.Id;
+                        lib.ModifiedOn = DateTime.Today;
+                        _context.Library.Update(lib);
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                errorFlag = true;
+            }
+
+            return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
+        }
+
         private List<Book> BooksWithoutWishes() {
             var books = _context.Book.ToList();
             var wishes = _context.Wish.Include(w => w.Book).ToList();
