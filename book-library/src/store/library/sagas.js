@@ -54,6 +54,7 @@ export function* addNewBookSaga(action) {
 export function* getBookDetailsSaga(action) {
   try {
     const apiResult = yield call(getBookDetails, action.payload);
+    console.log(apiResult);
     yield put(getBookDetailsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
