@@ -10,7 +10,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     case GET_CATEGORIES: {
       return { ...state };
@@ -19,7 +18,6 @@ export default (state = initialState, action) => {
       return { data: action.payload.returnResult };
     }
     case SELECT_CATEGORY: {
-      debugger
       return {
         ...state,
         selected: action.payload,

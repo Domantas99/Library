@@ -73,6 +73,7 @@ export function* deleteBookSaga(action) {
   try {
     const apiResult = yield call(deleteBookApi, action.payload);
     yield put(deleteBookEnd(apiResult));
+    history.push("/library");
   } catch (e) {
     // stops saga from braking on api error
   }

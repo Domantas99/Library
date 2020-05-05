@@ -25,6 +25,7 @@ namespace BookLibrary.DataBase.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Waiting> Waiting { get; set; }
         public virtual DbSet<Wish> Wish { get; set; }
+        public virtual DbSet<UserWish> UserWish { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +40,10 @@ namespace BookLibrary.DataBase.Models
                 new Office { Id = 3, Name = "London", FullAddress = "8 Devonshire Square, London, EC2M 4PL, United Kingdom" },
                 new Office { Id = 4, Name = "Toronto", FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada" },
                 new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
+                );
+
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, FirstName = "Nathan", LastName = "Roberts", UserName = "Nathaniux123", Email = "nathan.roberts@gmail.com", OfficeId = 1, ProfilePictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU" }
                 );
 
             modelBuilder.Entity<Book>(entity =>
@@ -157,7 +162,8 @@ namespace BookLibrary.DataBase.Models
 
             modelBuilder.Entity<Reservation>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CheckedInOn).HasColumnType("datetime");
 
@@ -182,7 +188,7 @@ namespace BookLibrary.DataBase.Models
                     .IsRequired()
                     .HasMaxLength(250);
 
-                entity.Property(e => e.GoodReadsAccount).HasMaxLength(250);
+                entity.Property(e => e.ProfilePictureUrl).HasMaxLength(300);
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
@@ -228,7 +234,20 @@ namespace BookLibrary.DataBase.Models
                 //    .OnDelete(DeleteBehavior.ClientSetNull)
                 //    .HasConstraintName("FK_Wish_Id");
             });
+            modelBuilder.Entity<UserWish>(entity =>
+            {
+                entity.HasOne(d => d.Wish)
+                    .WithMany(p => p.Votes)
+                    .HasForeignKey(d => d.WishId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserWish_WishId");
 
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserWish)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserWish_UserId");
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

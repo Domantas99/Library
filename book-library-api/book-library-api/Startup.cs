@@ -1,7 +1,9 @@
+using BookLibrary.Services;
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Comments;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.Offices;
+using BookLibrary.Services.Reservations;
 using BookLibrary.Services.Wishlist;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +38,9 @@ namespace BookLibrary.Api
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IOfficesService, OfficesService>();
+            services.AddScoped<IReservationsService, ReservationsService>();
             services.AddScoped<IWishlistService, WishlistService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "wwwroot";

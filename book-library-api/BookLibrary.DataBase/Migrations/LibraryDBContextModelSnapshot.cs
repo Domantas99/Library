@@ -116,6 +116,10 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("OfficeId");
+
                     b.ToTable("BookCase");
                 });
 
@@ -325,12 +329,14 @@ namespace BookLibrary.DataBase.Migrations
             modelBuilder.Entity("BookLibrary.DataBase.Models.Reservation", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BookCaseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BookCaseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CheckedInOn")
+                    b.Property<DateTime?>("CheckedInOn")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("CheckedOutOn")
@@ -339,7 +345,7 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<DateTime?>("PlannedReturnOn")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -358,12 +364,11 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("GoodReadsAccount")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
@@ -374,6 +379,10 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.Property<int>("OfficeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -387,9 +396,19 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.HasIndex("OfficeId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "nathan.roberts@gmail.com",
+                            FirstName = "Nathan",
+                            LastName = "Roberts",
+                            OfficeId = 1,
+                            ProfilePictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU",
+                            UserName = "Nathaniux123"
+                        });
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.UserWish", b =>
@@ -406,6 +425,10 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WishId");
 
                     b.ToTable("UserWish");
                 });
@@ -454,18 +477,28 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("WishId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BookId")
                         .IsUnique()
                         .HasFilter("[BookId] IS NOT NULL");
 
-                    b.HasIndex("WishId");
-
                     b.ToTable("Wish");
+                });
+
+            modelBuilder.Entity("BookLibrary.DataBase.Models.BookCase", b =>
+                {
+                    b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookLibrary.DataBase.Models.Office", "Office")
+                        .WithMany()
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.BookCaseComment", b =>
@@ -526,12 +559,16 @@ namespace BookLibrary.DataBase.Migrations
                     b.HasOne("BookLibrary.DataBase.Models.BookCase", "BookCase")
                         .WithMany("Reservation")
                         .HasForeignKey("BookCaseId")
-                        .HasConstraintName("FK_Reservation_BookCaseId");
+                        .HasConstraintName("FK_Reservation_BookCaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BookLibrary.DataBase.Models.User", "User")
                         .WithMany("Reservation")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Reservation_UserId");
+                        .HasConstraintName("FK_Reservation_UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.User", b =>
@@ -541,10 +578,21 @@ namespace BookLibrary.DataBase.Migrations
                         .HasForeignKey("OfficeId")
                         .HasConstraintName("FK_User_OfficeId")
                         .IsRequired();
+                });
 
-                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "UserWish")
-                        .WithMany("Users")
-                        .HasForeignKey("UserId");
+            modelBuilder.Entity("BookLibrary.DataBase.Models.UserWish", b =>
+                {
+                    b.HasOne("BookLibrary.DataBase.Models.User", "User")
+                        .WithMany("UserWish")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_UserWish_UserId")
+                        .IsRequired();
+
+                    b.HasOne("BookLibrary.DataBase.Models.Wish", "Wish")
+                        .WithMany("Votes")
+                        .HasForeignKey("WishId")
+                        .HasConstraintName("FK_UserWish_WishId")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Waiting", b =>
@@ -567,10 +615,6 @@ namespace BookLibrary.DataBase.Migrations
                     b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
                         .WithOne("Wish")
                         .HasForeignKey("BookLibrary.DataBase.Models.Wish", "BookId");
-
-                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "Votes")
-                        .WithMany("Wishes")
-                        .HasForeignKey("WishId");
                 });
 #pragma warning restore 612, 618
         }

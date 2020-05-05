@@ -41,7 +41,6 @@ export default function Categories() {
           <Link
             to={`/library/?category=${category}`}
             key={encodeURIComponent(category)}
-            activeClassName=" active"
           >
             <li
               className={`navigation__item-secondary ${

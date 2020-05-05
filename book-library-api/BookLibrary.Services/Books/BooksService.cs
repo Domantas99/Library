@@ -74,7 +74,17 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
             var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
+            var bookCases = await _context.BookCase.Where(x => x.BookId == bookId).ToListAsync();
+            for (int i = 0; i < bookCases.Count; i++)
+            {
+                int index = libraries.FindIndex(a => a.BookId == bookCases[i].BookId && a.OfficeId == bookCases[i].OfficeId);
+                if (index >= 0)
+                {
+                    libraries[index].Count -= bookCases[i].Count;
+                }
+            }
 
+            var a = libraries;
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
@@ -83,7 +93,7 @@ namespace BookLibrary.Services.Books
             var books = BooksWithoutWishes();
             if (category != null)
             {
-                 books = books.Where(a => a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                 books = books.Where(a => a.Category != null && a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
             
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
