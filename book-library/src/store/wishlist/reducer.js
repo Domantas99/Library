@@ -3,7 +3,7 @@ import {
   ADD_WISH_END,
   SET_VOTE_END,
   GET_VOTE_END,
-  GET_VOTE
+  GET_VOTE,
 } from "./actionTypes";
 
 const initialState = {
@@ -37,8 +37,8 @@ export default (state = initialState, action) => {
     }
     case GET_VOTE: {
       return {
-        ...state
-      }
+        ...state,
+      };
     }
     case GET_VOTE_END: {
       return {

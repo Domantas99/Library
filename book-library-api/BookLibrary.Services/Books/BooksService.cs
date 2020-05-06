@@ -88,12 +88,12 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(string category, List<string> offices, string status, List<string> authors)
+        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors)
         {
             var books = BooksWithoutWishes();
-            if (category != null)
+            if (categories != null && categories.Count > 0)
             {
-                books = books.Where(a => a.Category != null && a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                books = books.Where(a => a.Category != null && categories.Contains(a.Category)).ToList();
             }
             if (authors.Count > 0) {
                 books = books.Where(a => authors.Contains(a.Author)).ToList();
@@ -116,7 +116,7 @@ namespace BookLibrary.Services.Books
         public Task<ResponseResult<ICollection<string>>> GetCategories()
         {
             var books = BooksWithoutWishes();
-            var uniqueCategories = books.Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+            var uniqueCategories = books.Where(book => book.Category != null).Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueCategories.Sort();
             return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
         }

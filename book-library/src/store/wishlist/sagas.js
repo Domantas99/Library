@@ -1,7 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from "redux-saga/effects";
 import { getWishlist, addWishAPI, setVoteAPI, getVoteAPI } from "./api";
-import { GET_WISHLIST_START, ADD_WISH, ADD_WISH_END, SET_VOTE, SET_VOTE_END, GET_VOTE } from "./actionTypes";
+import {
+  GET_WISHLIST_START,
+  ADD_WISH,
+  ADD_WISH_END,
+  SET_VOTE,
+  SET_VOTE_END,
+  GET_VOTE,
+} from "./actionTypes";
 import { getWishlistEnd, addWishEnd, setVoteEnd, getVoteEnd } from "./actions";
 
 export function* getWishlistSaga(action) {
@@ -23,13 +30,12 @@ export function* addWishSaga(action) {
     // stops saga from braking on api error
   }
 }
-export function* setVoteSaga(action){
+export function* setVoteSaga(action) {
   try {
     const apiResult = yield call(setVoteAPI, action.payload);
     yield put(setVoteEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
-    
   }
 }
 export function* getVoteSaga(action) {
@@ -38,7 +44,6 @@ export function* getVoteSaga(action) {
     yield put(getVoteEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
-    console.log(e);
   }
 }
 export default function* () {

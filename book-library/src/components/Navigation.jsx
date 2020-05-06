@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Categories from "./Categories";
-import { selectCategory } from "../store/categories/actions";
+import { selectCategory } from "../store/library/actions";
 import UserInfo from "./UserInfo";
 
 export default function Navigation() {
@@ -33,7 +33,7 @@ export default function Navigation() {
               to="/library"
               className="navigation__item"
               activeClassName="active"
-              onClick={() => dispatch(selectCategory("all"))}
+              onClick={() => dispatch(selectCategory(null))}
             >
               <div className="navigation__item-header">
                 <i className="navigation__item-icon navigation__item-icon--library" />

@@ -11,7 +11,7 @@ namespace BookLibrary.Services.Contracts
     public interface IBooksService
     {
         Task<ResponseResult<Book>> AddNewBook(Book book);
-        Task<ResponseResult<ICollection<Book>>> GetBooks(string category, List<String> offices, string status, List<string> authors);
+        Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<String> offices, string status, List<string> authors);
         Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
         Task<ResponseResult<Book>> GetBook(int id);
         Task<ResponseResult<ICollection<string>>> GetCategories();

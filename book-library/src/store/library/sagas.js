@@ -8,6 +8,7 @@ import {
   getBookAvailabilityAPI,
   deleteBookApi,
   updateBook,
+  getCategories,
 } from "./api";
 import {
   GET_BOOK_LIST_START,
@@ -19,6 +20,10 @@ import {
   DELETE_BOOK_END,
   UPDATE_BOOK,
   UPDATE_BOOK_END,
+  SET_FILTERS_START,
+  SET_FILTERS_END,
+  GET_CATEGORIES_START,
+  SELECT_CATEGORY,
 } from "./actionTypes";
 import {
   getBookListEnd,
@@ -27,7 +32,11 @@ import {
   getBookAvailabilityEnd,
   deleteBookEnd,
   updateBookEnd,
+  setFilters,
+  setFiltersEnd,
+  getCategoriesEnd,
 } from "./actions";
+import { paramGenerator } from "../../utilities";
 
 export function* getBookListSaga(action) {
   try {
@@ -88,6 +97,39 @@ export function* updateBookSaga(action) {
   }
 }
 
+export function* setFiltersSaga(action) {
+  const params = paramGenerator(action.payload);
+  let newRoute =
+    window.location.pathname.split("?")[0] + params ? `?${params}` : "";
+  if (newRoute.slice(-1) === "/") {
+    newRoute = newRoute.slice(0, -1);
+  }
+  if (newRoute !== window.location.pathname) {
+    history.replace(newRoute);
+  }
+  yield put(setFiltersEnd(action.payload));
+}
+
+export function* getCategoriesSaga(action) {
+  try {
+    const apiResult = yield call(getCategories);
+    yield put(getCategoriesEnd(apiResult));
+  } catch (ex) {
+    //
+  }
+}
+
+export function* selectCategorySaga(action) {
+  if (action.payload != null) {
+    const newCategory = Array.isArray(action.payload)
+      ? action.payload
+      : [action.payload];
+    yield put(setFilters({ category: newCategory }));
+  } else {
+    yield put(setFilters({}));
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getBookListSaga);
@@ -98,4 +140,9 @@ export default function* () {
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
   yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
+  yield takeLatest(SET_FILTERS_START, setFiltersSaga);
+  yield takeLatest(SET_FILTERS_END, getBookListSaga);
+  yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);
+  yield takeLatest(ADD_NEW_BOOK_END, getCategoriesSaga);
+  yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
 }

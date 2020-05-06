@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BookListItem from "./BookListItem";
 import { getFieldSorter } from "../utilities";
 
@@ -14,9 +14,9 @@ function BookList({
   addLink = "",
   actionButton,
   navigateItems,
+  filterComponent
 }) {
   const dispatch = useDispatch();
-  const activeCategory = useSelector((state) => state.categories.selected);
   const [sortField, setSortField] = useState("dateAdded");
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
@@ -44,8 +44,10 @@ function BookList({
   };
 
   useEffect(() => {
-    dispatch(dataAction);
-  }, [dispatch, activeCategory]);
+    if (dataAction) {
+      dispatch(dataAction);
+    }
+  }, []);
 
   useEffect(() => {
     setBookComponents(
@@ -55,6 +57,7 @@ function BookList({
 
   return (
     <div className="panel__content">
+      {filterComponent && filterComponent}
       <select
         id="book-list-sorting-field"
         defaultValue={sortField}

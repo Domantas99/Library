@@ -1,20 +1,28 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import { BookList, BookDetails } from "../../components";
-import { getBookList } from "../../store/library/actions";
+import { getBookList, setFilters } from "../../store/library/actions";
 import ActionItem from "../../components/ActionItem";
+import LibraryFilter from "../../components/LibraryFilter";
+import { useEffect } from "react";
 
 export default (props) => {
+  const dispatch = useDispatch();
   const values = queryString.parse(props.location.search);
-
   const { id } = useParams();
   const history = useHistory();
   const bookSelector = useSelector((state) => state.library.bookData)
+  
+  useEffect(() => {
+    dispatch(setFilters(values));
+  }, []);
+
   return id ? (
     <BookDetails id={id} />
   ) : (
@@ -24,7 +32,7 @@ export default (props) => {
       </div>
       <BookList
         dataSelector={bookSelector}
-        dataAction={getBookList(values.category)}
+        dataAction={getBookList(values)}
         navigateItems
         addLink="/register-book"
         actionButton={
@@ -33,6 +41,7 @@ export default (props) => {
             onClickAction={() => history.push("/register-book")}
           />
         }
+        filterComponent={<LibraryFilter dataAction={getBookList}/>}
       />
     </div>
   );

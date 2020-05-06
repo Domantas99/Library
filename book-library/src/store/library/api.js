@@ -1,13 +1,14 @@
 import httpClient from "../../core/httpClient";
+import { paramGenerator } from "../../utilities";
 
 export const addBookAPI = (bookObj) => {
   return httpClient.post("books", bookObj);
 };
 
-export const getBookList = (category) => {
+export const getBookList = (params) => {
   let url = "books";
-  if (category) {
-    url += `?category=${category}`;
+  if (params) {
+    url += `?${paramGenerator(params)}`;
   }
   return httpClient.get(url);
 };
@@ -26,4 +27,8 @@ export const deleteBookApi = (id) => {
 
 export const updateBook = (data) => {
   return httpClient.put(`books/${data.id}`, data.book);
+};
+
+export const getCategories = () => {
+  return httpClient.get("books/categories");
 };

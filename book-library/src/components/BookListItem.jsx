@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setVote, getVote } from "../store/wishlist/actions";
@@ -26,7 +27,7 @@ export default ({ data, navigate }) => {
   }
   useEffect(() => {
     dispatch(getVote(createVoteObject()));
-  });
+  }, []);
 
   return (
   <div>
