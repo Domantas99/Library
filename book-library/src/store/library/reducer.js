@@ -6,6 +6,7 @@ import {
   GET_BOOK_AVAILABILITY_END,
   DELETE_BOOK,
   DELETE_BOOK_END,
+  UPDATE_BOOK_END,
 } from "./actionTypes";
 
 const initialState = {
@@ -66,6 +67,18 @@ export default (state = initialState, action) => {
         return {
           ...state,
           bookData: books,
+        };
+      }
+      return {
+        ...state,
+      };
+    }
+    case UPDATE_BOOK_END: {
+      const result = action.payload;
+      if (!result.error) {
+        return {
+          ...state,
+          bookDetails: action.payload.returnResult,
         };
       }
       return {

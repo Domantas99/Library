@@ -23,8 +23,8 @@ namespace BookLibrary.DataBase.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "Email", "FirstName", "LastName", "OfficeId", "ProfilePictureUrl", "UserId", "UserName" },
-                values: new object[] { 1, "nathan.roberts@gmail.com", "Nathan", "Roberts", 1, "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU", null, "Nathaniux123" });
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "OfficeId", "ProfilePictureUrl", "UserName" },
+                values: new object[] { 1, "nathan.roberts@gmail.com", "Nathan", "Roberts", 1, "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU", "Nathaniux123" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
