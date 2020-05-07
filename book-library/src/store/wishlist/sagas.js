@@ -29,7 +29,6 @@ export function* setVoteSaga(action){
     yield put(setVoteEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
-    
   }
 }
 export function* getVoteSaga(action) {
@@ -38,7 +37,6 @@ export function* getVoteSaga(action) {
     yield put(getVoteEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
-    console.log(e);
   }
 }
 export default function* () {

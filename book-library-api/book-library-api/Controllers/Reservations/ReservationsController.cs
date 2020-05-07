@@ -32,5 +32,12 @@ namespace BookLibrary.Api.Controllers.Reservations
         {
             return await _reservationsService.AddReservation(reservation);
         }
+
+        [HttpDelete("{reservationId}")]
+        public async Task<ActionResult<ResponseResult<Book>>> CheckInReservation(int reservationId)
+        {
+            return await _reservationsService.CheckInReservation(reservationId);
+        }
+
     }
 }

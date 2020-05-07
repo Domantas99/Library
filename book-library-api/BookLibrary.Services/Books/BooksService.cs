@@ -113,15 +113,16 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments });
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
+        public Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
-            var filteredBooks = await _context.Book.Where(book => book.Title.ToLower().Contains(pattern) ||
+            var books = BooksWithoutWishes();
+            var filteredBooks =  books.Where(book => book.Title.ToLower().Contains(pattern) ||
                                                             book.Author.ToLower().Contains(pattern) ||
                                                             book.Isbn.ToLower().Contains(pattern))
-                                                            .ToListAsync();
+                                                            .ToList();
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks };
+            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks });
 
         }
 

@@ -1,0 +1,43 @@
+.checkInForm {
+    display: flex;
+    flex-direction: column;
+
+    &-content {
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &-img {
+            max-height: 300px;
+            width: 160px;
+        }
+        &-text {
+            &-info {
+                &-title {
+                    font-size: 20px;
+                    padding-bottom: 5px;
+                }
+                &-author {
+                    font-size: 13px;
+                }
+            }
+        }
+        &-comment {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 100px;
+        }
+
+    }
+    &-buttons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 10px;
+        &-confirm {
+            background-color: #4568FB;
+            margin-left: 20px;;
+            color: white;
+        }
+    }
+}

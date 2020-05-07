@@ -7,17 +7,18 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addReservation } from "../store/reservations/actions";
 
-export default ({ reservation, modalHandler }) => {
+export default ({ reservation, onExit, onSubmit }) => {
   const [returndate, handleDateChange] = useState(
     reservation.returnDay || formatDate()
   );
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
   
-  function onSubmit() {
+  function onSubmitClick() {
     const obj = createReservationObj();
     dispatch(addReservation(obj));
-    modalHandler(false);
+    onSubmit();
+    onExit();
   }
 
   function createReservationObj() {
@@ -86,12 +87,12 @@ export default ({ reservation, modalHandler }) => {
       </div>
       <button
         onClick={() => {
-          modalHandler(false);
+          onExit(false);
         }}
       >
         Cancel
       </button>
-      <button onClick={onSubmit} disabled={!reservation}>
+      <button onClick={() => onSubmitClick()} disabled={!reservation}>
         {reservation.book.id ? "Save Changes" : "Confirm Reservation"}
       </button>
     </>

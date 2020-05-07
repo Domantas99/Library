@@ -50,6 +50,27 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Reservation> { Error = flag, ReturnResult = reservation };
         }
 
+        public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
+        {
+            var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
+            Book book = null;
+            try
+            {
+                if (reservation != null)
+                {
+                    var bookCase = await _context.BookCase.Include(x=> x.Book).FirstOrDefaultAsync(x => x.Id == reservation.BookCaseId);
+                    book = bookCase.Book;
+                    _context.BookCase.Remove(bookCase);
+                    _context.Reservation.Remove(reservation);
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e) {
+                var a = e;
+            }
+            return new ResponseResult<Book> { Error = false, ReturnResult = book };
+        }
+
         public async Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)

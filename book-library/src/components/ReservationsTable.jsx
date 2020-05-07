@@ -24,6 +24,7 @@ const createTableRows = (reservations, sort_field, sort_direction) => {
 
 const ReservationsTable = () => {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.userData.id);
   const reservations = useSelector(
     (state) => state.reservations.reservationData
   );
@@ -32,8 +33,8 @@ const ReservationsTable = () => {
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
-    dispatch(getReservations(1));
-  }, [dispatch]);
+    dispatch(getReservations(userId));
+  }, [dispatch, userId]);
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);

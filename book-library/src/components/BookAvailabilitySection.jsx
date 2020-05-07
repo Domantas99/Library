@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-else-return */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -12,12 +14,24 @@ import { getBookAvailability } from "../store/library/actions";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
 import CantFind from "./CantFind";
+import CheckInForm from "./CheckInForm";
+import {
+  getReservations,
+  removeReservation,
+} from "../store/reservations/actions";
 
 export default function BookAvailabilitySection({ book }) {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
+  const userId = useSelector((state) => state.user.userData.id);
+  const allReservations = useSelector(
+    (state) => state.reservations.reservationData
+  );
+
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
+  const [checkInModalState, setCheckInModalState] = useState(false);
+  const [activeReservation, setActiveReservation] = useState(false);
   const [activeOffice, setActiveOffice] = useState(null);
   const [reservation, setReservation] = useState(null);
 
@@ -26,9 +40,38 @@ export default function BookAvailabilitySection({ book }) {
     setModalState(true);
   };
 
+  function checkIfIsReading() {
+    for (let i = 0; i < allReservations.length; i++) {
+      if (allReservations[i].book.id === book.id) {
+        setActiveReservation(allReservations[i]);
+        break;
+      }
+    }
+  }
+
+  const onSubmitClick = () => {
+    setActiveReservation(reservation);
+  };
+
   const handleOfficeClick = (e, data) => {
     setActiveOffice(data);
   };
+
+  function onCheckInSubmitClick() {
+    dispatch(removeReservation(activeReservation.id));
+    setActiveReservation(false);
+    setCheckInModalState(false);
+  }
+
+  useEffect(() => {
+    dispatch(getBookAvailability(book.id));
+    setActiveReservation(false);
+  }, [dispatch, book, userId]);
+
+  useEffect(() => {
+    dispatch(getReservations(userId));
+    checkIfIsReading();
+  }, [dispatch, bookInOffices]);
 
   const generateOfficeElement = (d) => {
     if (d.count > 0) {
@@ -78,52 +121,87 @@ export default function BookAvailabilitySection({ book }) {
     }
   };
 
-  useEffect(() => {
-    dispatch(getBookAvailability(book.id));
-  }, [dispatch, book.id]);
-
   return (
     <div className="ba-section">
-      {bookInOffices.length > 0 ? (
-        <>
-          <div className="ba-section-list">
-            <Modal
-              modalState={cantFindModal}
-              exitAction={() => setCantFindModalState(false)}
-              height="250px"
-              width="500px"
-            >
-              <CantFind onExit={() => setCantFindModalState(false)} />
-            </Modal>
-            {bookInOffices.map((d) => generateOfficeElement(d))}
-            <Modal
-              modalState={modalState}
-              exitAction={() => setModalState(false)}
-              height="auto"
-              width="400px"
-            >
-              {activeOffice && (
-                <ReservationModalContent
-                  reservation={reservation}
-                  modalHandler={setModalState}
-                />
-              )}
-            </Modal>
-          </div>
-          <div className="ba-section-buttons">
+      {!activeReservation ? (
+        <div>
+          {bookInOffices.length > 0 ? (
             <div>
-              <button
-                className="ba-section-buttons-dark"
-                onClick={() => handleModalClick()}
-                disabled={!activeOffice}
-              >
-                Check Out
-              </button>
+              <div className="ba-section-list">
+                <Modal
+                  modalState={cantFindModal}
+                  exitAction={() => setCantFindModalState(false)}
+                  height="250px"
+                  width="500px"
+                >
+                  <CantFind onExit={() => setCantFindModalState(false)} />
+                </Modal>
+                {bookInOffices.map((d) => generateOfficeElement(d))}
+                <Modal
+                  modalState={modalState}
+                  exitAction={() => setModalState(false)}
+                  height="auto"
+                  width="400px"
+                >
+                  {(activeOffice || activeReservation) && (
+                    <ReservationModalContent
+                      reservation={reservation}
+                      onExit={() => setModalState(false)}
+                      onSubmit={() => onSubmitClick()}
+                    />
+                  )}
+                </Modal>
+              </div>
+              <div className="ba-section-buttons">
+                <div>
+                  <button
+                    className="ba-section-buttons-dark"
+                    onClick={() => handleModalClick()}
+                    disabled={!activeOffice}
+                  >
+                    Check Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>Book is not added</div>
+          )}
+        </div>
+      ) : (
+        <div className="ba-section-currentlyReading">
+          <Modal
+            modalState={checkInModalState}
+            exitAction={() => setCheckInModalState(false)}
+            height="400px"
+            width="400px"
+          >
+            <CheckInForm
+              reservation={activeReservation}
+              onCancel={() => setCheckInModalState(false)}
+              onConfirm={() => onCheckInSubmitClick()}
+            />
+          </Modal>
+          <div className="ba-section-currentlyReading-content">
+            <div className="ba-section-currentlyReading-content-text">
+              You are currently reading this book
+            </div>
+            <div className="ba-section-currentlyReading-content-date">
+              {activeReservation.returnDate}
             </div>
           </div>
-        </>
-      ) : (
-        <div>Book is not added</div>
+          <div className="ba-section-buttons">
+            <button
+              className="ba-section-buttons-dark"
+              onClick={() => setCheckInModalState(true)}
+            >
+              Check in
+            </button>
+            <button className="ba-section-buttons-light">
+              Edit reservation
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

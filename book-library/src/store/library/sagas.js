@@ -28,6 +28,7 @@ import {
   deleteBookEnd,
   updateBookEnd,
 } from "./actions";
+import { REMOVE_RESERVATION_END } from "../reservations/actionTypes";
 
 export function* getBookListSaga(action) {
   try {
@@ -98,4 +99,5 @@ export default function* () {
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
   yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
+  yield takeLatest(REMOVE_RESERVATION_END, getBookAvailabilitySaga);
 }

@@ -7,6 +7,8 @@ import {
   ADD_RESERVATION_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
+  REMOVE_RESERVATION_START,
+  REMOVE_RESERVATION_END,
 } from "./actionTypes";
 
 export const getReservations = (id) => ({
@@ -38,3 +40,12 @@ export const updateReservation = (reservation) => ({
   payload: reservation,
 });
 export const updateReservationEnd = () => ({ type: UPDATE_RESERVATION_END });
+
+export const removeReservation = (reservationId) => ({
+  type: REMOVE_RESERVATION_START,
+  payload: reservationId,
+});
+export const removeReservationEnd = (bookId) => ({
+  type: REMOVE_RESERVATION_END,
+  payload: bookId,
+});
