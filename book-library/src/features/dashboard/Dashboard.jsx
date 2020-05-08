@@ -34,6 +34,7 @@ export default function Dashboard() {
           noSort
           dataSelector={latestBooks}
           dataAction={getLatestBooks(4)}
+          navigateItems
         />
       </Panel>
       <div className="dashboard__sidebar">

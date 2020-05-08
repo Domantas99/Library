@@ -29,9 +29,9 @@ export const addNewBookEnd = (response) => ({
   type: ADD_NEW_BOOK_END,
   payload: response,
 });
-export const getBookDetails = (id) => ({
+export const getBookDetails = (bookId, userId) => ({
   type: GET_BOOK_DETAILS_START,
-  payload: +id,
+  payload: { bookId, userId },
 });
 export const getBookDetailsEnd = (details) => ({
   type: GET_BOOK_DETAILS_END,

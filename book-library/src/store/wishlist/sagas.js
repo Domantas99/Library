@@ -29,7 +29,6 @@ export function* setVoteSaga(action){
     yield put(setVoteEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
-    
   }
 }
 export function* getVoteSaga(action) {

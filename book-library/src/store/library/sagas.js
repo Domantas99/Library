@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import history from "../../core/history";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import history from '../../core/history';
 import {
   getBookList,
   addBookAPI,
@@ -8,7 +8,7 @@ import {
   getBookAvailabilityAPI,
   deleteBookApi,
   updateBook,
-} from "./api";
+} from './api';
 import {
   GET_BOOK_LIST_START,
   ADD_NEW_BOOK,
@@ -19,7 +19,7 @@ import {
   DELETE_BOOK_END,
   UPDATE_BOOK,
   UPDATE_BOOK_END,
-} from "./actionTypes";
+} from './actionTypes';
 import {
   getBookListEnd,
   addNewBookEnd,
@@ -27,7 +27,11 @@ import {
   getBookAvailabilityEnd,
   deleteBookEnd,
   updateBookEnd,
-} from "./actions";
+} from './actions';
+import {
+  REMOVE_RESERVATION_END,
+  ADD_RESERVATION_END,
+} from '../reservations/actionTypes';
 
 export function* getBookListSaga(action) {
   try {
@@ -44,7 +48,7 @@ export function* addNewBookSaga(action) {
 
     yield put(addNewBookEnd(apiResult));
     if (!apiResult.error) {
-      history.push("/library");
+      history.push('/library');
     }
   } catch (e) {
     //
@@ -73,7 +77,7 @@ export function* deleteBookSaga(action) {
   try {
     const apiResult = yield call(deleteBookApi, action.payload);
     yield put(deleteBookEnd(apiResult));
-    history.push("/library");
+    history.push('/library');
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -97,5 +101,7 @@ export default function* () {
   yield takeLatest(DELETE_BOOK, deleteBookSaga);
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
-  yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);
+  yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
+  yield takeLatest(REMOVE_RESERVATION_END, getBookDetailsSaga);
+  yield takeLatest(ADD_RESERVATION_END, getBookDetailsSaga);
 }
