@@ -54,6 +54,7 @@ namespace BookLibrary.Services.Reservations
         {
             var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
             Book book = null;
+            bool flag = false;
             try
             {
                 if (reservation != null)
@@ -66,9 +67,9 @@ namespace BookLibrary.Services.Reservations
                 await _context.SaveChangesAsync();
             }
             catch (Exception e) {
-                var a = e;
+                flag = true;
             }
-            return new ResponseResult<Book> { Error = false, ReturnResult = book };
+            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
         }
 
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
