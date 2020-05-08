@@ -6,6 +6,7 @@
 @import "core/mixins";
 @import "svg/sassvg";
 
+@import "core/idons";
 @import "core/typography";
 
 @import "layout/global";
@@ -14,8 +15,9 @@
 @import "layout/header";
 @import "layout/sidebar";
 @import "layout/panel";
+@import "layout/form";
 
-@import "components/book-grid";
+@import "./components/book-grid";
 @import "./components/search-bar";
 @import "./components/search-bar-result-block";
 @import "./components/categories";
@@ -23,11 +25,12 @@
 @import "./components/reservation-panel";
 @import "./components/books-section";
 @import "./components/dashboard";
-@import "./components/currently-reading-section";
-@import "./components/book-availability-section";
+@import "./components/currently-reading";
+@import "./components/book-status";
 @import "./components/book-reservation-section";
 @import "./components/modal";
 @import "./components/wishform";
 @import "./components/confirmation-form";
 @import "./components/cant-find";
 @import "./components/check-in-form";
+@import "./components/book-availability-section";

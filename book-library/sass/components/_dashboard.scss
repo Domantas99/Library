@@ -1,11 +1,12 @@
 .dashboard {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto base(37);
+    grid-column-gap: base(10);
+    grid-row-gap: base(10);
+    width: 100%;
 
-    &-latest {
-        min-width: 700px;
-        width: 70%;
+    &__sidebar {
+        grid-row: span 2;
+        grid-column: 2;
     }
-
 }

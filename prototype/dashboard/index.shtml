@@ -8,7 +8,29 @@
 <!--#include virtual="/includes/layout/sidebar.html" -->
 <div class="page">
     <div class="page__content">
-        <div class="panel panel--size-5">
+        <div class="dashboard">
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>New Books</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="4" >
+                </div>
+            </div>
+            <div class="panel dashboard__sidebar">
+                <div class="panel__header">
+                    <h1>Currently reading</h1>
+                </div>
+                <div class="panel__content">
+
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>New Books</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="4" >
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel__header">
                     <h1>New Books</h1>
@@ -24,16 +46,8 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel--margin-left">
-            <div class="panel__header">
-                <h1>Currently reading</h1>
-            </div>
-            <div class="panel__content">
-
-            </div>
-        </div>
     </div>
 </div>
 <!--#include virtual="/includes/scripts.shtml" -->
 </body>
-</html>
+</html>margin-left

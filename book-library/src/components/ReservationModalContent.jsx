@@ -56,7 +56,7 @@ export default ({ reservation, onExit, onSubmit }) => {
   return (
     <>
       <h2>Check out</h2>
-      <div className="book-details__image">
+      <div className="">
         <img src={reservation.book.coverPictureUrl} alt="" />
       </div>
       <div className="book-details__title">
@@ -65,7 +65,7 @@ export default ({ reservation, onExit, onSubmit }) => {
           by <span className="text-underlined">{reservation.book.author}</span>
         </h4>
       </div>
-      <h2>Reserve at:</h2>
+      <h4>Reserve at:</h4>
       <div className="ba-section-office-details">
         <div className="ba-section-list-item-text-title">
           {reservation.book.name} office

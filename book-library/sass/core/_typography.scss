@@ -27,7 +27,7 @@ $headings-map: (
                 font-size: 14px,
                 font-weight: $font-weight-default,
                 line-height: base(2),
-                margin: 0 0 $base,
+                margin: 0 0 ($base / 2),
         ),
         h5: (
                 color: $color-text,

@@ -10,3 +10,27 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@mixin no-image() {
+  background-image: sassvg('no-image');
+  background-color: $color-background-secondary;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+@mixin book-image($height: base(30)) {
+  width: 100%;
+  height: $height;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: background-color .25s;
+  @include no-image();
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform .25s;
+  }
+}

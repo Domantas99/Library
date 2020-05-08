@@ -19,6 +19,10 @@ import {
   getReservations,
   removeReservation,
 } from "../store/reservations/actions";
+import classNames from 'classnames';
+import RadioButton from './Radio';
+import Button from './Button';
+
 
 export default function BookAvailabilitySection({ bookDetails }) {
   const dispatch = useDispatch();
@@ -26,19 +30,12 @@ export default function BookAvailabilitySection({ bookDetails }) {
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
-  const [activeReservation, setActiveReservation] = useState(false);
   const [activeOffice, setActiveOffice] = useState(null);
-  const [reservation, setReservation] = useState(null);
-  debugger;
+  const [reservation, setReservation]= useState(null);
   const handleModalClick = () => {
     const book = bookDetails.book;
     setReservation({ book, activeOffice });
     setModalState(true);
-  };
-
-
-  const onSubmitClick = () => {
-    setActiveReservation(reservation);
   };
 
   const handleOfficeClick = (e, data) => {
@@ -46,7 +43,6 @@ export default function BookAvailabilitySection({ bookDetails }) {
   };
 
   function onCheckInSubmitClick() {
-    debugger
     dispatch(removeReservation(bookDetails.activeReservation.id, bookDetails.readingUserId));
     setCheckInModalState(false);
   }
@@ -57,51 +53,46 @@ export default function BookAvailabilitySection({ bookDetails }) {
 
 
   const generateOfficeElement = (d) => {
-    if (d.count > 0) {
-      return (
-        <div className="ba-section-list-item" key={d.office.name}>
-          <input
-            type="radio"
-            name="office"
-            className="no_forced_size"
-            onClick={(e) =>
-              handleOfficeClick(e, { ...d.office, count: d.count })
-            }
-          />
-          <div className="ba-section-office-details">
-            <div className="ba-section-list-item-text-title">
-              {d.office.name} office
-            </div>
-            <div className="ba-section-list-item-text-available">
-              {d.count} available
-            </div>
-            <div className="ba-section-list-item-text-address">
-              {d.office.fullAddress}
-            </div>
-            <div
-              className="ba-section-list-item-text-other"
+    const unavailable = !d.count;
+
+    const itemClass = classNames('book-status__item', {
+      'book-status__item--disabled': unavailable,
+    });
+
+    const availableClass = classNames('book-status__text', {
+      'book-status__text--available': !unavailable,
+      'book-status__text--unavailable': unavailable,
+    });
+
+    return (
+      <div className={itemClass} key={d.office.name}>
+        <RadioButton
+          title={<i className="icon icon__office" />}
+          name="office"
+          disabled={unavailable}
+          onClick={(e) => handleOfficeClick(e, { ...d.office, count: d.count })}
+        />
+        <div className="book-status__info">
+          <div className="book-status__text book-status__text--title">
+            {d.office.name} office
+          </div>
+          <div className={availableClass}>
+            {!unavailable ? `${d.count} available` : 'Currently unavailable'}
+          </div>
+          <div className="book-status__text book-status__text--secondary">
+            {d.office.fullAddress}
+          </div>
+          {d.count > 0 && (
+            <a
+              className="book-status__text book-status__text--link"
               onClick={() => setCantFindModalState(true)}
             >
               Can't find a copy?
-            </div>
-          </div>
+            </a>
+          )}
         </div>
-      );
-    } else {
-      return (
-        <div className="ba-section-list-item" key={d.office.name}>
-          <div className="ba-section-list-item-text-title">
-            {d.office.name} office
-          </div>
-          <div className="ba-section-list-item-text-unavailable">
-            Currently unavailable
-          </div>
-          <div className="ba-section-list-item-text-address">
-            {d.office.fullAddress}
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   return (
@@ -126,11 +117,11 @@ export default function BookAvailabilitySection({ bookDetails }) {
                   height="auto"
                   width="400px"
                 >
-                  {(activeOffice || activeReservation) && (
+                  {(activeOffice) && (
                     <ReservationModalContent
                       reservation={reservation}
                       onExit={() => setModalState(false)}
-                      onSubmit={() => onSubmitClick()}
+                      onSubmit={() => ({})}
                     />
                   )}
                 </Modal>

@@ -7,70 +7,71 @@
 <!--#include virtual="/includes/layout/header.html" -->
 <!--#include virtual="/includes/layout/sidebar.html" -->
 <div class="page">
-    <div class="page__content book-details">
-        <div class="book-details__image">
-            <img src="/Content/Images/book_cover_1.jpg"/>
-        </div>
-        <div class="book-details__content">
-            <div class="book-details__title">
-                The Annotated Turing: A Guided Tour Through Alan Turing's Historic Paper on Computability and the Turing Machine
+    <div class="page__content">
+        <div class="book-details">
+            <div class="book-details__image">
+                <img src="/Content/Images/book_cover_1.jpg"/>
             </div>
-            <h4 class="text-secondary">by <span class="text-underlined">Charles Petzold</span></h4>
-            <div class="book-details__description">
-                <p>
-                    Mathematician Alan Turing invented an imaginary computer known as the Turing
-                    Machine; in an age before computers, he explored the concept of what it meant
-                    to be "computable," creating the field of computability theory in the process, a
-                    foundation of present-day computer programming.
-                </p>
-                <p>
-                    The book expands Turing's original 36-page paper with additional background
-                    chapters and extensive annotations; the author elaborates on and clarifies
-                    many of Turing's statements, making the original difficult-to-read document
-                    accessible to present day programmers, computer science majors, math geeks,
-                    and others.
-                </p>
-                <p>
-                    Interwoven into the narrative are the highlights of Turing's own life: his years at
-                    Cambridge and Princeton, his secret work in cryptanalysis during World War II,
-                    his involvement in seminal computer projects, his speculations about artificial
-                    intelligence, his arrest and prosecution for the crime of "gross indecency," and
-                    his early death by apparent suicide at the age of 41. (less)
-                </p>
-            </div>
-            <hr>
-            <h3>Details</h3>
-            <div class="book-details__grid">
-                <span class="text-secondary">Original Title</span>
-                <span class="book-details__detail">
+            <div class="book-details__content">
+                <div class="book-details__title">
+                    The Annotated Turing: A Guided Tour Through Alan Turing's Historic Paper on Computability and the
+                    Turing Machine
+                </div>
+                <h4 class="text-secondary">by <span class="text-underlined">Charles Petzold</span></h4>
+                <div class="book-details__description">
+                    <p>
+                        Mathematician Alan Turing invented an imaginary computer known as the Turing
+                        Machine; in an age before computers, he explored the concept of what it meant
+                        to be "computable," creating the field of computability theory in the process, a
+                        foundation of present-day computer programming.
+                    </p>
+                    <p>
+                        The book expands Turing's original 36-page paper with additional background
+                        chapters and extensive annotations; the author elaborates on and clarifies
+                        many of Turing's statements, making the original difficult-to-read document
+                        accessible to present day programmers, computer science majors, math geeks,
+                        and others.
+                    </p>
+                    <p>
+                        Interwoven into the narrative are the highlights of Turing's own life: his years at
+                        Cambridge and Princeton, his secret work in cryptanalysis during World War II,
+                        his involvement in seminal computer projects, his speculations about artificial
+                        intelligence, his arrest and prosecution for the crime of "gross indecency," and
+                        his early death by apparent suicide at the age of 41. (less)
+                    </p>
+                </div>
+                <hr>
+                <h3>Details</h3>
+                <div class="book-details__grid">
+                    <span class="text-secondary">Original Title</span>
+                    <span class="book-details__detail">
                     Original TitleThe Art of Computer Programming, Volumes 1-3 Boxed Set
                 </span>
 
-                <span class="text-secondary">Format</span>
-                <span class="book-details__detail">Paperback | 528 pages</span>
+                    <span class="text-secondary">Format</span>
+                    <span class="book-details__detail">Paperback | 528 pages</span>
 
-                <span class="text-secondary">Publication date</span>
-                <span class="book-details__detail">22 Jun 2017</span>
+                    <span class="text-secondary">Publication date</span>
+                    <span class="book-details__detail">22 Jun 2017</span>
 
-                <span class="text-secondary">Publisher</span>
-                <span class="book-details__detail">Vintage Publisher</span>
+                    <span class="text-secondary">Publisher</span>
+                    <span class="book-details__detail">Vintage Publisher</span>
 
-                <span class="text-secondary">ISBN</span>
-                <span class="book-details__detail">123456789</span>
+                    <span class="text-secondary">ISBN</span>
+                    <span class="book-details__detail">123456789</span>
 
-                <span class="text-secondary">Edition Language</span>
-                <span class="book-details__detail">English</span>
+                    <span class="text-secondary">Edition Language</span>
+                    <span class="book-details__detail">English</span>
 
-                <span class="text-secondary">Series</span>
-                <span class="book-details__detail">Art of computer programming</span>
+                    <span class="text-secondary">Series</span>
+                    <span class="book-details__detail">Art of computer programming</span>
 
-                <span class="text-secondary">Copies available</span>
-                <span class="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>
+                    <span class="text-secondary">Copies available</span>
+                    <span class="book-details__detail">5 total, Kaunas (3) &middot; Vilnius (1)</span>
 
+                </div>
             </div>
-        </div>
-        <div class="reservation-panel">
-            <h4>Reserve at</h4>
+            <!--#include virtual="/includes/templates/reservation-panel.html" -->
         </div>
     </div>
 </div>

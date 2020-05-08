@@ -69,6 +69,23 @@ a {
   text-decoration: none;
 }
 
+input[type=radio] {
+  position: relative;
+  width: 0;
+  height: 0;
+
+  :before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: base(2);
+    height: base(2);
+    mask-position: 50% 50%;
+    mask-image: sassvg(radio_unchecked);
+  }
+}
+
 .text-secondary {
   color: $color-text-secondary;
 }
@@ -82,4 +99,122 @@ a {
   min-height: unset;
   max-width: unset;
   max-height: unset;
+}
+
+.btn {
+  $this: &;
+  $btn-icons: 'dashboard', 'library', 'wishlist', 'history', 'thumb_up', 'check_circle', 'help', 'logout', 'star', 'edit', 'settings';
+
+  font-weight: bold;
+  cursor: pointer;
+  height: base(5);
+  border-radius: 4px;
+  min-width: base(10);
+  display: flex;
+  width: fit-content;
+  justify-content: center;
+  padding: 0 base(2);
+  align-items: center;
+  transition: border,color,background-color .25s;
+
+  background-color: $color-blue;
+  color: $color-white;
+
+  &:disabled {
+    background-color: $color-background-secondary;
+    color: $color-text-secondary;
+    border: solid 1px $color-border;
+    margin: 0 -1px;
+    cursor: not-allowed;
+  }
+
+  &:hover:enabled,:active:enabled {
+    border: solid 1px $color-blue;
+    margin: 0 -1px;
+    background-color: $color-background-selected;
+    color: $color-blue;
+
+    #{$this}__icon {
+      background-color: $color-blue;
+    }
+  }
+
+  &:active:enabled {
+    border-color: $color-text;
+    color: $color-text;
+
+    #{$this}__icon {
+      background-color: $color-text;
+    }
+  }
+
+  & > :first-child {
+    margin-right: base();
+  }
+
+  &__dark {
+    background-color: $color-text;
+  }
+
+  &__secondary {
+
+    &:hover,:active {
+      background-color: transparent;
+    }
+
+    background: $color-background-secondary;
+    color: $color-text;
+
+    #{$this}__icon {
+      background-color: $color-text;
+    }
+
+    &--action {
+      background: $color-background-button;
+    }
+  }
+
+  &__clear {
+    &:hover,:active {
+      background-color: transparent;
+    }
+
+    background-color: transparent;
+    border: solid 1px $color_border;
+    color: $color-text;
+  }
+
+  &__small {
+    height: base(4);
+  }
+
+  &__mini {
+    height: base(3.5);
+    font-weight: normal;
+  }
+
+  &__wide {
+    width: 100%;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+
+    mask-position: 50% 50%;
+    background-color: $color-white;
+
+    transition: background-color .25s;
+
+    @each $icon in $btn-icons {
+      &--#{$icon} {
+        mask-image: sassvg($icon);
+      }
+    }
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: base(8);
 }
