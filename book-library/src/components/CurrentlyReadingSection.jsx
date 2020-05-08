@@ -1,40 +1,32 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React from 'react';
+import Button from './Button';
 
-export default function CurrentlyReadingSection({ books, title }) {
+export default function CurrentlyReadingSection({ books }) {
   return (
-    <div className="curr-reading-section">
-      <div className="panel__header">
-        <h1 className="curr-reading-section-title">{title}</h1>
-      </div>
-      <div className="panel__content curr-reading-section-list">
-        {books.map((book) => (
-          <div key={book.id} className="curr-reading-section-block">
-            <div className="curr-reading-section-block-info">
-              <div className="curr-reading-section-block-info-image">
-                <img src={book.coverPictureUrl} alt="" />
-              </div>
-              <div className="curr-reading-section-block-info-text">
-                <div className="curr-reading-section-block-info-text-title">
-                  {book.title}
-                </div>
-                <div>{book.author}</div>
-                <div>Rating</div>
-                <div>Return date</div>
-              </div>
+    <ul className="currently-reading">
+      {books.map((book) => (
+        <li key={book.id} className="currently-reading__item">
+          <div className="currently-reading__info">
+            <div className="currently-reading__image">
+              <img src={book.coverPictureUrl} alt="" />
             </div>
-            <div className="curr-reading-section-block-buttons">
-              <button className="curr-reading-section-block-buttons-edit">
-                Edit
-              </button>
-              <button className="curr-reading-section-block-buttons-checkin">
-                Check In
-              </button>
+            <div>
+              <h4 className="currently-reading__title">{book.title}</h4>
+              <h5 className="currently-reading__author">{book.author}</h5>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="currently-reading__actions">
+            <Button secondaryAction small wide>
+              Edit
+            </Button>
+            <Button small wide>
+              Check In
+            </Button>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }

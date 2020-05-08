@@ -2,44 +2,37 @@
   @include heading-style(h4);
   line-height: 20px;
   font-weight: normal;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: minmax(base(13), base(33)) auto base(28.125);
+  grid-template-rows: auto auto;
+  grid-column-gap: base(5);
 
-  &__main {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  &__left-pannel {
+    grid-row: 1 / span 2;
 
-    hr {
-      width: 100%;
-      border: none;
-      margin: base(3) 0;
-      border-bottom: solid 1px $color-border;
+    @media screen and (max-width: 1285px){
+      grid-row: 1;
     }
-
-  }
-
-  &__book {
-    display: flex;
-    flex-direction: row;
   }
 
   &__image {
     display: flex;
-    max-width: base(33);
-    min-width: base(13);
-    border-radius: 6px;
-    overflow: hidden;
-    align-items: baseline;
+    @include book-image(auto)
   }
 
   &__content {
-    margin: 0 base(5);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    min-width: base(40);
-    max-width: base(69);
+
+    &--secondary {
+      grid-row: 2;
+      grid-column: 2;
+
+      @media screen and (max-width: 1285px){
+        grid-column: 1 / span 2;
+      }
+    }
 
     hr {
       width: 100%;
@@ -63,9 +56,14 @@
     grid-template-columns: 33.33% 66.67%;
     grid-column-gap: base(2);
     grid-row-gap: base();
+    margin: base(4) 0;
   }
 
   &__detail {
     font-weight: $font-weight-default;
+  }
+
+  &__side-panel {
+    grid-row: 1 / span 2;
   }
 }

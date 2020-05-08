@@ -8,11 +8,9 @@ export default function ActionItem({ linkTitle, onClickAction }) {
   };
 
   return (
-    <div onClick={() => handleBookOperationClick()} className="book">
-      <div className="book__add">
-        <span className="book__add_plus">+</span>
-        <span className="book__add_text">{linkTitle}</span>
-      </div>
+    <div onClick={() => handleBookOperationClick()} className="book book__add">
+      <span>+</span>
+      <span>{linkTitle}</span>
     </div>
   );
 }

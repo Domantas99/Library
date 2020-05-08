@@ -6,12 +6,15 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getBookAvailability } from "../store/library/actions";
-import Modal from "./Modal";
-import ReservationModalContent from "./ReservationModalContent";
-import CantFind from "./CantFind";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { getBookAvailability } from '../store/library/actions';
+import Modal from './Modal';
+import ReservationModalContent from './ReservationModalContent';
+import CantFind from './CantFind';
+import RadioButton from './Radio';
+import Button from './Button';
 
 export default function BookAvailabilitySection({ book }) {
   const dispatch = useDispatch();
@@ -31,51 +34,46 @@ export default function BookAvailabilitySection({ book }) {
   };
 
   const generateOfficeElement = (d) => {
-    if (d.count > 0) {
-      return (
-        <div className="ba-section-list-item" key={d.office.name}>
-          <input
-            type="radio"
-            name="office"
-            className="no_forced_size"
-            onClick={(e) =>
-              handleOfficeClick(e, { ...d.office, count: d.count })
-            }
-          />
-          <div className="ba-section-office-details">
-            <div className="ba-section-list-item-text-title">
-              {d.office.name} office
-            </div>
-            <div className="ba-section-list-item-text-available">
-              {d.count} available
-            </div>
-            <div className="ba-section-list-item-text-address">
-              {d.office.fullAddress}
-            </div>
-            <div
-              className="ba-section-list-item-text-other"
+    const unavailable = !d.count;
+
+    const itemClass = classNames('book-status__item', {
+      'book-status__item--disabled': unavailable,
+    });
+
+    const availableClass = classNames('book-status__text', {
+      'book-status__text--available': !unavailable,
+      'book-status__text--unavailable': unavailable,
+    });
+
+    return (
+      <div className={itemClass} key={d.office.name}>
+        <RadioButton
+          title={<i className="icon icon__office" />}
+          name="office"
+          disabled={unavailable}
+          onClick={(e) => handleOfficeClick(e, { ...d.office, count: d.count })}
+        />
+        <div className="book-status__info">
+          <div className="book-status__text book-status__text--title">
+            {d.office.name} office
+          </div>
+          <div className={availableClass}>
+            {!unavailable ? `${d.count} available` : 'Currently unavailable'}
+          </div>
+          <div className="book-status__text book-status__text--secondary">
+            {d.office.fullAddress}
+          </div>
+          {d.count > 0 && (
+            <a
+              className="book-status__text book-status__text--link"
               onClick={() => setCantFindModalState(true)}
             >
               Can't find a copy?
-            </div>
-          </div>
+            </a>
+          )}
         </div>
-      );
-    } else {
-      return (
-        <div className="ba-section-list-item" key={d.office.name}>
-          <div className="ba-section-list-item-text-title">
-            {d.office.name} office
-          </div>
-          <div className="ba-section-list-item-text-unavailable">
-            Currently unavailable
-          </div>
-          <div className="ba-section-list-item-text-address">
-            {d.office.fullAddress}
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -83,48 +81,48 @@ export default function BookAvailabilitySection({ book }) {
   }, [dispatch, book.id]);
 
   return (
-    <div className="ba-section">
-      {bookInOffices.length > 0 ? (
-        <>
-          <div className="ba-section-list">
-            <Modal
-              modalState={cantFindModal}
-              exitAction={() => setCantFindModalState(false)}
-              height="250px"
-              width="500px"
-            >
-              <CantFind onExit={() => setCantFindModalState(false)} />
-            </Modal>
+    <>
+      <div className="book-status">
+        {bookInOffices.length > 0 ? (
+          <>
+            <h4>Reserve At</h4>
             {bookInOffices.map((d) => generateOfficeElement(d))}
-            <Modal
-              modalState={modalState}
-              exitAction={() => setModalState(false)}
-              height="auto"
-              width="400px"
-            >
-              {activeOffice && (
-                <ReservationModalContent
-                  reservation={reservation}
-                  modalHandler={setModalState}
-                />
-              )}
-            </Modal>
-          </div>
-          <div className="ba-section-buttons">
-            <div>
-              <button
-                className="ba-section-buttons-dark"
+            <div className="book-status__buttons">
+              <Button
                 onClick={() => handleModalClick()}
                 disabled={!activeOffice}
+                wide
               >
                 Check Out
-              </button>
+              </Button>
             </div>
-          </div>
-        </>
-      ) : (
-        <div>Book is not added</div>
-      )}
-    </div>
+          </>
+        ) : (
+          <h4>Book is not added</h4>
+        )}
+      </div>
+      <Modal
+        modalState={cantFindModal}
+        exitAction={() => setCantFindModalState(false)}
+        height="250px"
+        width="500px"
+      >
+        <CantFind onExit={() => setCantFindModalState(false)} />
+      </Modal>
+
+      <Modal
+        modalState={modalState}
+        exitAction={() => setModalState(false)}
+        height="auto"
+        width="400px"
+      >
+        {activeOffice && (
+          <ReservationModalContent
+            reservation={reservation}
+            modalHandler={setModalState}
+          />
+        )}
+      </Modal>
+    </>
   );
 }

@@ -4,21 +4,12 @@
   flex-grow: 1;
   flex-direction: column;
   align-items: stretch;
-  margin-bottom: base(10);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 
   @each $size in $panel-sizes {
     &--size-#{$size} {
       display: flex;
       flex-grow: $size;
     }
-  }
-
-  &--margin-left {
-    margin-left: base(10);
   }
 
   &__header {
