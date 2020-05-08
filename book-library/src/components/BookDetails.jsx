@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -17,10 +18,10 @@ export default ({ id }) => {
   const bookDetails = useSelector((state) => state.library.bookDetails);
   const [confimationData, setConfirmationData] = useState([]);
   const [modalState, setModalState] = useState(false);
-
+  const userId = useSelector((state) => state.user.userData.id);
   function onDelete() {
     setModalState(false);
-    dispatch(deleteBook(bookDetails.id));
+    dispatch(deleteBook(bookDetails.book.id));
   }
 
   const archiveConfimationData = {
@@ -35,8 +36,8 @@ export default ({ id }) => {
   };
 
   useEffect(() => {
-    dispatch(getBookDetails(id));
-  }, [dispatch, id]);
+    dispatch(getBookDetails(id, userId));
+  }, [dispatch, id, userId]);
 
   function handleClick() {
     history.push(`/edit-book/${id}`);
@@ -71,12 +72,12 @@ export default ({ id }) => {
           <div className="book-details__main">
             <div className="book-details__book">
               <div className="book-details__image">
-                <img src={bookDetails.coverPictureUrl} alt="" />
+                <img src={bookDetails.book.coverPictureUrl} alt="" />
               </div>
               <div className="book-details__content">
-                <div className="book-details__title">{bookDetails.title}</div>
+                <div className="book-details__title">{bookDetails.book.title}</div>
                 <h4 className="text-secondary">
-                  by <span className="text-underlined">{bookDetails.author}</span>
+                  by <span className="text-underlined">{bookDetails.book.author}</span>
                 </h4>
                 <div className="book-details__description">
                   <p>{bookDetails.description}</p>
@@ -95,36 +96,36 @@ export default ({ id }) => {
 
                   <span className="text-secondary">Format</span>
                   <span className="book-details__detail">
-                    {bookDetails.format} | {bookDetails.numberOfPages} pages
+                    {bookDetails.format} | {bookDetails.book.numberOfPages} pages
                   </span>
                   <span className="text-secondary">Publication date</span>
                   <span className="book-details__detail">
-                    {bookDetails.releaseDate}
+                    {bookDetails.book.releaseDate}
                   </span>
 
                   <span className="text-secondary">Publisher</span>
                   <span className="book-details__detail">
-                    {bookDetails.publisher}
+                    {bookDetails.book.publisher}
                   </span>
 
                   <span className="text-secondary">Category</span>
                   <span className="book-details__detail">
-                    {bookDetails.category}
+                    {bookDetails.book.category}
                   </span>
 
                   <span className="text-secondary">ISBN</span>
                   <span className="book-details__detail">
-                    {bookDetails.isbn}
+                    {bookDetails.book.isbn}
                   </span>
 
                   <span className="text-secondary">Edition Language</span>
                   <span className="book-details__detail">
-                    {bookDetails.editionLanguage}
+                    {bookDetails.book.editionLanguage}
                   </span>
 
                   <span className="text-secondary">Series</span>
                   <span className="book-details__detail">
-                    {bookDetails.series}
+                    {bookDetails.book.series}
                   </span>
                 </div>
                 <button onClick={handleClick}>Edit details</button>
@@ -136,7 +137,7 @@ export default ({ id }) => {
             <BookCommentsSection id={id} />
           </div>
           <div className="reservation-panel">
-            <BookAvailabilitySection book={bookDetails} />
+            <BookAvailabilitySection bookDetails={bookDetails} />
           </div>
         </div>
       ) : (

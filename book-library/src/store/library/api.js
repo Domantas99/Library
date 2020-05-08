@@ -12,8 +12,10 @@ export const getBookList = (category) => {
   return httpClient.get(url);
 };
 
-export const getBookDetails = (id) => {
-  return httpClient.get(`books/${id}`);
+export const getBookDetails = (ids) => {
+  return httpClient.get(
+    `books/book-details/?bookId=${ids.bookId}&userId=${ids.userId}`
+  );
 };
 
 export const getBookAvailabilityAPI = (id) => {

@@ -22,7 +22,7 @@ namespace BookLibrary.Api.Controllers.Reservations
 
         //TODO: Maybe this would be better if it was in a users/{id}/reservations route? Something to consider once we actually implement users.
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<ResponseResult<ICollection<ReservationsDTO>>>> GetReservationsForUser(int userId)
+        public async Task<ActionResult<ResponseResult<ICollection<ReservationDTO>>>> GetReservationsForUser(int userId)
         {
             return await _reservationsService.GetReservations(userId);
         }

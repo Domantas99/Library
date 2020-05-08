@@ -45,7 +45,9 @@ export function* getBookReservationsSaga(action) {
 export function* addReservationSaga(action) {
   try {
     const apiResult = yield call(addReservation, action.payload);
-    yield put(addReservationEnd(apiResult));
+    const { bookId } = apiResult.returnResult.bookCase;
+    const { userId } = apiResult.returnResult;
+    yield put(addReservationEnd({ bookId, userId }));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -63,7 +65,12 @@ export function* updateReservationSaga(action) {
 export function* removeReservationSaga(action) {
   try {
     const apiResult = yield call(removeReservationAPI, action.payload);
-    yield put(removeReservationEnd(apiResult.returnResult.id));
+    yield put(
+      removeReservationEnd({
+        bookId: apiResult.returnResult.id,
+        userId: action.userId,
+      })
+    );
   } catch (e) {
     // stops saga from braking on api error
   }

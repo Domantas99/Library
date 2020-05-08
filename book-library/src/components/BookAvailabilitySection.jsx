@@ -20,34 +20,22 @@ import {
   removeReservation,
 } from "../store/reservations/actions";
 
-export default function BookAvailabilitySection({ book }) {
+export default function BookAvailabilitySection({ bookDetails }) {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
-  const userId = useSelector((state) => state.user.userData.id);
-  const allReservations = useSelector(
-    (state) => state.reservations.reservationData
-  );
-
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [activeReservation, setActiveReservation] = useState(false);
   const [activeOffice, setActiveOffice] = useState(null);
   const [reservation, setReservation] = useState(null);
-
+  debugger;
   const handleModalClick = () => {
+    const book = bookDetails.book;
     setReservation({ book, activeOffice });
     setModalState(true);
   };
 
-  function checkIfIsReading() {
-    for (let i = 0; i < allReservations.length; i++) {
-      if (allReservations[i].book.id === book.id) {
-        setActiveReservation(allReservations[i]);
-        break;
-      }
-    }
-  }
 
   const onSubmitClick = () => {
     setActiveReservation(reservation);
@@ -58,20 +46,15 @@ export default function BookAvailabilitySection({ book }) {
   };
 
   function onCheckInSubmitClick() {
-    dispatch(removeReservation(activeReservation.id));
-    setActiveReservation(false);
+    debugger
+    dispatch(removeReservation(bookDetails.activeReservation.id, bookDetails.readingUserId));
     setCheckInModalState(false);
   }
 
   useEffect(() => {
-    dispatch(getBookAvailability(book.id));
-    setActiveReservation(false);
-  }, [dispatch, book, userId]);
+    dispatch(getBookAvailability(bookDetails?.book.id));
+  }, [dispatch, bookDetails]);
 
-  useEffect(() => {
-    dispatch(getReservations(userId));
-    checkIfIsReading();
-  }, [dispatch, bookInOffices]);
 
   const generateOfficeElement = (d) => {
     if (d.count > 0) {
@@ -123,7 +106,7 @@ export default function BookAvailabilitySection({ book }) {
 
   return (
     <div className="ba-section">
-      {!activeReservation ? (
+      {bookDetails.isUserCurrentlyReading===false ? (
         <div>
           {bookInOffices.length > 0 ? (
             <div>
@@ -177,7 +160,7 @@ export default function BookAvailabilitySection({ book }) {
             width="400px"
           >
             <CheckInForm
-              reservation={activeReservation}
+              reservation={bookDetails.activeReservation}
               onCancel={() => setCheckInModalState(false)}
               onConfirm={() => onCheckInSubmitClick()}
             />
@@ -187,7 +170,7 @@ export default function BookAvailabilitySection({ book }) {
               You are currently reading this book
             </div>
             <div className="ba-section-currentlyReading-content-date">
-              {activeReservation.returnDate}
+              {bookDetails.activeReservation.returnDate.substring(0, 10)}
             </div>
           </div>
           <div className="ba-section-buttons">

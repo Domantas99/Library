@@ -11,7 +11,10 @@ import {
 
 const initialState = {
   bookData: [],
-  bookDetails: [],
+  bookDetails: {
+    book: [],
+    isUserCurrentlyReading: false,
+  },
   bookAvailability: [],
 };
 
@@ -35,11 +38,13 @@ export default (state = initialState, action) => {
       };
     }
     case GET_BOOK_DETAILS_END: {
+      const result = action.payload.returnResult;
+      const returnedBook = result.book;
       return {
         ...state,
         bookDetails: {
-          ...action.payload.returnResult,
-          releaseDate: action.payload.returnResult.releaseDate.substring(0, 10),
+          ...result,
+          book: { ...returnedBook },
         },
       };
     }

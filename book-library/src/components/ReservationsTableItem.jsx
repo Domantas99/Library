@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
 import { removeReservation } from "../store/reservations/actions";
@@ -11,14 +11,16 @@ export default ({ data }) => {
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
+  const userId = useSelector((state) => state.user.userData.id);
+
   const handleModalClick = () => {
     setModalState(true);
   };
 
   const onConfirmClick = () => {
-    dispatch(removeReservation(data.id));
+    dispatch(removeReservation(data.id, userId));
     setCheckInModalState(false);
-  }
+  };
 
   return (
     <tr key={data.id}>

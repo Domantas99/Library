@@ -71,13 +71,13 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Book> { Error = false, ReturnResult = book };
         }
 
-        public async Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user)
+        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)
                 .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).ToListAsync();
-            var response = new List<ReservationsDTO>();
+            var response = new List<ReservationDTO>();
             foreach (Reservation reservation in reservations) {
-                response.Add(new ReservationsDTO
+                response.Add(new ReservationDTO
                 {
                     Id = reservation.Id,
                     Book = reservation.BookCase.Book,
@@ -87,7 +87,7 @@ namespace BookLibrary.Services.Reservations
                     Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"
                 });
             }
-            return new ResponseResult<ICollection<ReservationsDTO>> { Error = false, ReturnResult = response};
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response};
         }
     }
 }
