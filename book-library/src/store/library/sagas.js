@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import history from "../../core/history";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import history from '../../core/history';
 import {
   getBookList,
   addBookAPI,
@@ -9,7 +9,7 @@ import {
   deleteBookApi,
   updateBook,
   getCategories,
-} from "./api";
+} from './api';
 import {
   GET_BOOK_LIST_START,
   ADD_NEW_BOOK,
@@ -24,7 +24,7 @@ import {
   SET_FILTERS_END,
   GET_CATEGORIES_START,
   SELECT_CATEGORY,
-} from "./actionTypes";
+} from './actionTypes';
 import {
   getBookListEnd,
   addNewBookEnd,
@@ -35,8 +35,8 @@ import {
   setFilters,
   setFiltersEnd,
   getCategoriesEnd,
-} from "./actions";
-import { paramGenerator } from "../../utilities";
+} from './actions';
+import { paramGenerator } from '../../utilities';
 
 export function* getBookListSaga(action) {
   try {
@@ -53,7 +53,7 @@ export function* addNewBookSaga(action) {
 
     yield put(addNewBookEnd(apiResult));
     if (!apiResult.error) {
-      history.push("/library");
+      history.push('/library');
     }
   } catch (e) {
     //
@@ -82,7 +82,7 @@ export function* deleteBookSaga(action) {
   try {
     const apiResult = yield call(deleteBookApi, action.payload);
     yield put(deleteBookEnd(apiResult));
-    history.push("/library");
+    history.push('/library');
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -100,8 +100,8 @@ export function* updateBookSaga(action) {
 export function* setFiltersSaga(action) {
   const params = paramGenerator(action.payload);
   let newRoute =
-    window.location.pathname.split("?")[0] + params ? `?${params}` : "";
-  if (newRoute.slice(-1) === "/") {
+    window.location.pathname.split('?')[0] + params ? `?${params}` : '';
+  if (newRoute.slice(-1) === '/') {
     newRoute = newRoute.slice(0, -1);
   }
   if (newRoute !== window.location.pathname) {
@@ -139,10 +139,10 @@ export default function* () {
   yield takeLatest(DELETE_BOOK, deleteBookSaga);
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
-  yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
   yield takeLatest(SET_FILTERS_START, setFiltersSaga);
   yield takeLatest(SET_FILTERS_END, getBookListSaga);
   yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getCategoriesSaga);
   yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
+  yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);
 }

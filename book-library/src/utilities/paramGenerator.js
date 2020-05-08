@@ -1,4 +1,5 @@
 const trim = (obj) =>
+  // eslint-disable-next-line no-unused-vars
   Object.fromEntries(Object.entries(obj).filter(([_, v]) => v.length));
 
 // Ensures that any loose variables in parameters object are converted to 1-length arrays.
@@ -21,7 +22,7 @@ export const format = (params) => {
 
 export default (params) => {
   if (!Object.keys(params).length > 0) {
-    return "";
+    return '';
   }
   return Object.entries(format(params))
     .map(([key, list]) => {
@@ -30,7 +31,7 @@ export default (params) => {
           return value ? `${key}=${value}` : null;
         })
         .filter((value) => value !== null)
-        .join("&");
+        .join('&');
     })
-    .join("&");
+    .join('&');
 };

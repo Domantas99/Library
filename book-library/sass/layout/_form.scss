@@ -1,0 +1,46 @@
+.form {
+  &__input {
+    position: relative;
+
+    input[type=radio], input[type=checkbox] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      min-width: unset;
+      min-height: unset;
+      max-width: unset;
+      max-height: unset;
+    }
+  }
+
+  &__radio {
+    $this: &;
+    cursor: pointer;
+    user-select: none;
+    padding-left: base(4);
+    display: flex;
+    max-height: base(2.5);
+    justify-content: flex-start;
+    align-items: center;
+
+    input:checked ~ .fake {
+      background-color: $color-blue;
+      mask-image: sassvg(radio_checked);
+    }
+
+    .fake {
+      position: absolute;
+      width: base(2);
+      height: base(2);
+      top: 0;
+      left: 0;
+      bottom: 0;
+      margin: auto;
+      background-color: $color-text;
+
+      mask-position: 50% 50%;
+      mask-image: sassvg(radio_unchecked);
+    }
+  }
+}

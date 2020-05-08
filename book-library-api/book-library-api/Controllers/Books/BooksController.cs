@@ -23,6 +23,11 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] Book book) {
             return await _booksService.AddNewBook(book);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ResponseResult<Book>>> UpdateBook(int id, [FromBody] Book book)
+        {
+            return await _booksService.UpdateBook(id, book);
+        }
         [HttpGet]
         public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors)
         {

@@ -4,8 +4,8 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/button-has-type */
-import React from "react";
-import * as ModalReact from "react-modal";
+import React from 'react';
+import * as ModalReact from 'react-modal';
 
 export default function Modal({
   modalState,
@@ -14,28 +14,25 @@ export default function Modal({
   height,
   width,
 }) {
-
-  const onExitClick = () => {
-    exitAction()
-  };
-
   return (
     <ModalReact
       isOpen={modalState}
       style={{
         overlay: {
-          backgroundColor: "rgba(255, 255, 255, 0.55)",
+          backgroundColor: 'rgba(255, 255, 255, 0.55)',
         },
         content: {
           width,
           height,
-          margin: "auto",
-          backgroundColor: "white",
+          margin: 'auto',
+          backgroundColor: 'white',
         },
       }}
       ariaHideApp={false}
+      onRequestClose={exitAction}
+      shouldCloseOnOverlayClick
     >
-      <div className="modal-exit" onClick={() => onExitClick()}>
+      <div className="modal-exit" onClick={exitAction}>
         X
       </div>
       {children}

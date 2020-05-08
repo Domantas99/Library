@@ -1,0 +1,17 @@
+.icon {
+  $this: &;
+  width: base(2.5);
+  height: base(2.5);
+  background-size: base(2.5);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+  $icons: 'office';
+
+  @each $icon in $icons {
+    &__#{$icon} {
+      background-image: sassvg($icon);
+
+    }
+  }
+}

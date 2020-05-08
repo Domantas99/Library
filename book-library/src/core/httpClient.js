@@ -21,6 +21,15 @@ class HTTPClient {
     return response.body;
   }
 
+  async put(path, data) {
+    const response = await request
+      .put(this._getUrl(path))
+      .set("Content-Type", "application/json")
+      .send(data);
+
+    return response.body;
+  }
+
   async delete(path) {
     const response = await request.delete(this._getUrl(path));
     return response.body;

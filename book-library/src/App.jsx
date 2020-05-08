@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Library, RegisterBook, Wishlist, Reservations, EditBook } from "./features";
 import { SearchBar, Navigation } from "./components";
-import Dashboard from "./features/dashboard/dashboard";
+import Dashboard from "./features/dashboard/Dashboard";
 
 function App() {
   return (

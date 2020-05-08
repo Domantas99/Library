@@ -10,8 +10,9 @@ import {
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
   SELECT_CATEGORY,
-} from "./actionTypes";
-import { paramGenerator, paramFormatter } from "../../utilities";
+  UPDATE_BOOK_END,
+} from './actionTypes';
+import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
   bookData: [],
@@ -74,6 +75,18 @@ export default (state = initialState, action) => {
         return {
           ...state,
           bookData: books,
+        };
+      }
+      return {
+        ...state,
+      };
+    }
+    case UPDATE_BOOK_END: {
+      const result = action.payload;
+      if (!result.error) {
+        return {
+          ...state,
+          bookDetails: action.payload.returnResult,
         };
       }
       return {
