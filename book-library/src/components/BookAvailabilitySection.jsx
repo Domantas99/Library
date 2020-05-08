@@ -64,6 +64,8 @@ export default function BookAvailabilitySection({ book }) {
             {d.office.fullAddress}
           </div>
           {d.count > 0 && (
+            // TODO there may be a better way to do this?
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <a
               className="book-status__text book-status__text--link"
               onClick={() => setCantFindModalState(true)}

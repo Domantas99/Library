@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import BookListItem from './BookListItem';
@@ -59,24 +60,28 @@ function BookList({
     <div className="book-grid">
       {!noSort && (
         <div className="book-grid__header">
-          {filterComponent && filterComponent}
-          <select
-            id="book-list-sorting-field"
-            defaultValue={sortField}
-            onChange={handleChangeSortField}
-          >
-            <option value="title">Title</option>
-            <option value="releaseDate">Release Date</option>
-            <option value="dateAdded">Date Added</option>
-          </select>
-          <select
-            id="book-list-sorting-direction"
-            defaultValue={`${sortDirection}`}
-            onChange={handleChangeSortDirection}
-          >
-            <option value="1">Ascending</option>
-            <option value="-1">Descending</option>
-          </select>
+          <div className="book-grid__header-filters">
+            {filterComponent && filterComponent}
+          </div>
+          <div className="book-grid__header-sorter">
+            <select
+              id="book-list-sorting-field"
+              defaultValue={sortField}
+              onChange={handleChangeSortField}
+            >
+              <option value="title">Title</option>
+              <option value="releaseDate">Release Date</option>
+              <option value="dateAdded">Date Added</option>
+            </select>
+            <select
+              id="book-list-sorting-direction"
+              defaultValue={`${sortDirection}`}
+              onChange={handleChangeSortDirection}
+            >
+              <option value="1">Ascending</option>
+              <option value="-1">Descending</option>
+            </select>
+          </div>
         </div>
       )}
       {!!addLink && !!actionButton && actionButton}

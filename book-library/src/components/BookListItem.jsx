@@ -45,6 +45,7 @@ export default ({ data, navigate }) => {
       </div>
       {data.votes !== undefined && (
         <Button small dark={voted} onClick={handleClick}>
+          {/* TODO fix the classes on this */}
           {data.votes}
         </Button>
       )}
