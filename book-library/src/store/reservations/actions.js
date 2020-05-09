@@ -7,7 +7,7 @@ import {
   ADD_RESERVATION_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const getReservations = (id) => ({
   type: GET_RESERVATIONS_START,

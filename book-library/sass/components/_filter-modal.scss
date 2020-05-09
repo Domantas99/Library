@@ -1,0 +1,22 @@
+.filter-modal {
+
+    &__body {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__menu {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        width: 80%;
+    }
+
+    &__categories, &__options {
+        display: flex;
+        flex-direction: column;
+        width: 33%;
+        overflow: auto;
+    }
+
+}

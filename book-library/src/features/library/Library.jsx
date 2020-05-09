@@ -24,6 +24,8 @@ export default ({ location }) => {
     />
   );
 
+  const filter = <LibraryFilter dataAction={getBookList} />;
+
   useEffect(() => {
     dispatch(setFilters(values));
   }, []);
@@ -37,7 +39,7 @@ export default ({ location }) => {
         dataAction={getBookList(values)}
         navigateItems
         addLink="/register-book"
-        filterComponent={<LibraryFilter dataAction={getBookList} />}
+        filterComponent={filter}
         actionButton={actionButton}
       />
     </Panel>

@@ -7,7 +7,7 @@ import {
   SET_VOTE_END,
   GET_VOTE,
   GET_VOTE_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const getWishlist = () => ({ type: GET_WISHLIST_START });
 export const getWishlistEnd = (wishlist) => ({

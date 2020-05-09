@@ -16,7 +16,7 @@ import {
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
   SELECT_CATEGORY,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const getBookList = (params) => ({
   type: GET_BOOK_LIST_START,

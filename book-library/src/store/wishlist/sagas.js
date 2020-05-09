@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import { getWishlist, addWishAPI, setVoteAPI, getVoteAPI } from "./api";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import { getWishlist, addWishAPI, setVoteAPI, getVoteAPI } from './api';
 import {
   GET_WISHLIST_START,
   ADD_WISH,
@@ -8,8 +8,8 @@ import {
   SET_VOTE,
   SET_VOTE_END,
   GET_VOTE,
-} from "./actionTypes";
-import { getWishlistEnd, addWishEnd, setVoteEnd, getVoteEnd } from "./actions";
+} from './actionTypes';
+import { getWishlistEnd, addWishEnd, setVoteEnd, getVoteEnd } from './actions';
 
 export function* getWishlistSaga(action) {
   try {

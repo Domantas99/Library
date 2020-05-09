@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import request from "superagent";
+import request from 'superagent';
 
 class HTTPClient {
   constructor() {
-    this.baseUrl = "http://localhost:5000/api/";
+    this.baseUrl = 'http://localhost:5000/api/';
   }
 
   async get(path) {
@@ -15,7 +15,7 @@ class HTTPClient {
   async post(path, data) {
     const response = await request
       .post(this._getUrl(path))
-      .set("Content-Type", "application/json")
+      .set('Content-Type', 'application/json')
       .send(data);
 
     return response.body;
@@ -24,7 +24,7 @@ class HTTPClient {
   async put(path, data) {
     const response = await request
       .put(this._getUrl(path))
-      .set("Content-Type", "application/json")
+      .set('Content-Type', 'application/json')
       .send(data);
 
     return response.body;

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import httpClient from "../../core/httpClient";
+import httpClient from '../../core/httpClient';
 
 export const getOfficesAPI = () => {
-  return httpClient.get("offices");
+  return httpClient.get('offices');
 };

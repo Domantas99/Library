@@ -5,7 +5,7 @@ import {
   GET_BOOK_COMMENTS_END,
   ADD_COMMENT_START,
   ADD_COMMENT_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const getComments = () => ({ type: GET_COMMENTS_START });
 export const getCommentsEnd = (comments) => ({

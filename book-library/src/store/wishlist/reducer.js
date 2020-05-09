@@ -4,7 +4,7 @@ import {
   SET_VOTE_END,
   GET_VOTE_END,
   GET_VOTE,
-} from "./actionTypes";
+} from './actionTypes';
 
 const initialState = {
   bookData: [],

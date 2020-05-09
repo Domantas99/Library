@@ -1,12 +1,12 @@
-import httpClient from "../../core/httpClient";
-import { paramGenerator } from "../../utilities";
+import httpClient from '../../core/httpClient';
+import { paramGenerator } from '../../utilities';
 
 export const addBookAPI = (bookObj) => {
-  return httpClient.post("books", bookObj);
+  return httpClient.post('books', bookObj);
 };
 
 export const getBookList = (params) => {
-  let url = "books";
+  let url = 'books';
   if (params) {
     url += `?${paramGenerator(params)}`;
   }
@@ -30,5 +30,5 @@ export const updateBook = (data) => {
 };
 
 export const getCategories = () => {
-  return httpClient.get("books/categories");
+  return httpClient.get('books/categories');
 };
