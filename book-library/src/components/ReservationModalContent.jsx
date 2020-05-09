@@ -3,9 +3,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addReservation } from "../store/reservations/actions";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addReservation } from '../store/reservations/actions';
 
 export default ({ reservation, modalHandler }) => {
   const [returndate, handleDateChange] = useState(
@@ -13,7 +13,7 @@ export default ({ reservation, modalHandler }) => {
   );
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
-  
+
   function onSubmit() {
     const obj = createReservationObj();
     dispatch(addReservation(obj));
@@ -49,7 +49,7 @@ export default ({ reservation, modalHandler }) => {
     if (month.length < 2) month = `0${month}`;
     if (day.length < 2) day = `0${day}`;
 
-    return [year, month, day].join("-");
+    return [year, month, day].join('-');
   }
 
   return (
@@ -92,7 +92,7 @@ export default ({ reservation, modalHandler }) => {
         Cancel
       </button>
       <button onClick={onSubmit} disabled={!reservation}>
-        {reservation.book.id ? "Save Changes" : "Confirm Reservation"}
+        {reservation.book.id ? 'Save Changes' : 'Confirm Reservation'}
       </button>
     </>
   );

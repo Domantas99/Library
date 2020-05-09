@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAuthors, setFilters } from '../store/library/actions';
@@ -9,15 +9,18 @@ import { getOffices } from '../store/office/actions';
 import Button from './Button';
 
 const FilterModalContent = ({ filters, labels, modalHandler }) => {
-  const filtersRef = useRef(filters);
+  const [newFilters, setNewFilters] = useState({ ...filters });
   const dispatch = useDispatch();
   const [filterMenu, setFilterMenu] = useState([]);
+  // These will be the actual elements for filtering
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [statusFilters, setStatusFilters] = useState([]);
   const [officeFilters, setOfficeFilters] = useState([]);
   const [authorFilters, setAuthorFilters] = useState([]);
+  // These two trach which is the currently active filtering category
   const [activeFilter, setActiveFilter] = useState('');
   const [activeFilterOptions, setActiveFilterOptions] = useState([]);
+  // These generate pills for all active filters
   const [activeFilterComponents, setActiveFilterComponents] = useState([]);
   const [checkedBoxes, setCheckedBoxes] = useState([]);
   const categories = useSelector((state) => state.library.categories);
@@ -31,32 +34,36 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
   const [searchText, setSearchText] = useState('');
   const [searchBarEnabled, setSearchBarEnabled] = useState(false);
 
-  const filterIsActive = (key, filter) => {
-    return filtersRef.current[key] && filtersRef.current[key].includes(filter);
-  };
+  // Callbacks all over because of stale state issues.
+  const filterIsActive = useCallback(
+    (key, filter) => {
+      return newFilters[key] && newFilters[key].includes(filter);
+    },
+    [newFilters]
+  );
 
   const removeFilter = useCallback(
     (key, filter) => {
-      const newFilters = { ...filtersRef.current };
-      newFilters[key] = newFilters[key].filter((item) => item !== filter);
-      dispatch(setFilters(newFilters));
+      const nextFilters = { ...newFilters };
+      nextFilters[key] = nextFilters[key].filter((item) => item !== filter);
+      setNewFilters(nextFilters);
     },
-    [dispatch]
+    [newFilters]
   );
 
   const addFilter = useCallback(
     (key, filter) => {
-      const newFilters = { ...filtersRef.current };
-      if (newFilters[key]) {
-        if (!Object.values(newFilters[key]).includes(filter)) {
-          newFilters[key] = [...newFilters[key], filter];
-        } else return;
+      const nextFilters = { ...newFilters };
+      if (nextFilters[key]) {
+        if (!Object.values(nextFilters[key]).includes(filter)) {
+          nextFilters[key] = [...nextFilters[key], filter];
+        }
       } else {
-        newFilters[key] = [filter];
+        nextFilters[key] = [filter];
       }
-      dispatch(setFilters(newFilters));
+      setNewFilters(nextFilters);
     },
-    [dispatch]
+    [newFilters]
   );
 
   const handleFilterChange = useCallback(
@@ -67,7 +74,7 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
         addFilter(category, filter);
       }
     },
-    [addFilter, removeFilter]
+    [addFilter, removeFilter, filterIsActive]
   );
 
   const generateCategoryFilterItem = useCallback(
@@ -96,7 +103,7 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
 
     setCategoryFilters(generateCategoryFilters());
   }, [
-    filters,
+    newFilters,
     checkedBoxes,
     filteredCategories,
     dispatch,
@@ -111,7 +118,13 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
     };
 
     setStatusFilters(generateStatusFilters());
-  }, [filters, statuses, checkedBoxes, dispatch, generateCategoryFilterItem]);
+  }, [
+    newFilters,
+    statuses,
+    checkedBoxes,
+    dispatch,
+    generateCategoryFilterItem,
+  ]);
 
   useEffect(() => {
     const generateOfficeFilters = () => {
@@ -122,7 +135,7 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
 
     setOfficeFilters(generateOfficeFilters());
   }, [
-    filters,
+    newFilters,
     labels,
     checkedBoxes,
     filteredOffices,
@@ -139,58 +152,41 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
 
     setAuthorFilters(generateAuthorFilters());
   }, [
-    filters,
+    newFilters,
     checkedBoxes,
     filteredAuthors,
     dispatch,
     generateCategoryFilterItem,
   ]);
 
+  const generateCategoryButton = useCallback(
+    (category) => {
+      return (
+        <Button
+          key={category}
+          onClick={() => {
+            setActiveFilter(category);
+          }}
+        >
+          {`${labels[category]}${
+            newFilters[category] ? ` ${newFilters[category].length}` : ' 0'
+          }`}
+        </Button>
+      );
+    },
+    [labels, newFilters]
+  );
+
   useEffect(() => {
     const generateFilterMenu = () => {
       return (
         <div className="filter-modal__categories">
-          <Button
-            onClick={() => {
-              setActiveFilter('category');
-            }}
-          >
-            {`${labels.category}${
-              filters.category ? ` ${filters.category.length}` : ''
-            }`}
-          </Button>
-          <Button
-            onClick={() => {
-              setActiveFilter('status');
-            }}
-          >
-            {`${labels.status}${
-              filters.status ? ` ${filters.status.length}` : ''
-            }`}
-          </Button>
-          <Button
-            onClick={() => {
-              setActiveFilter('offices');
-            }}
-          >
-            {`${labels.offices}${
-              filters.offices ? ` ${filters.offices.length}` : ''
-            }`}
-          </Button>
-          <Button
-            onClick={() => {
-              setActiveFilter('authors');
-            }}
-          >
-            {`${labels.authors}${
-              filters.authors ? ` ${filters.authors.length}` : ''
-            }`}
-          </Button>
+          {Object.keys(labels).map(generateCategoryButton)}
         </div>
       );
     };
     setFilterMenu(generateFilterMenu());
-  }, [labels, categoryFilters, filters]);
+  }, [labels, categoryFilters, newFilters, generateCategoryButton]);
 
   useEffect(() => {
     setFilteredCategories(
@@ -252,8 +248,46 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
   ]);
 
   useEffect(() => {
+    const countTotalSelections = () => {
+      return Object.values(newFilters)
+        .map((value) => value.length)
+        .reduce((prev, curr) => {
+          return prev + curr;
+        }, 0);
+    };
+    const generateActiveFilterComponents = () => {
+      return (
+        <div className="filter-modal__active">
+          <span>{`${countTotalSelections()} SELECTED`}</span>
+          {Object.keys(labels).map((category) => {
+            const pills = newFilters[category]
+              ? Object.values(newFilters[category]).map((filter) => {
+                  return (
+                    <Button
+                      key={`${category}-${filter}`}
+                      onClick={() => removeFilter(category, filter)}
+                    >
+                      {`${labels[category]}: ${filter}`}
+                    </Button>
+                  );
+                })
+              : [];
+            return (
+              <div key={category}>
+                <span>{labels[category]}</span>
+                {pills}
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+    setActiveFilterComponents(generateActiveFilterComponents());
+  }, [newFilters, labels, removeFilter]);
+
+  useEffect(() => {
     const handleCheckboxes = () => {
-      return Object.entries(filtersRef.current)
+      return Object.entries(newFilters)
         .map(([category, list]) => {
           return list.map((filter) => {
             return `checkbox-${category}-${filter}`;
@@ -261,14 +295,18 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
         })
         .flat();
     };
-    filtersRef.current = filters;
     setCheckedBoxes(handleCheckboxes());
-  }, [filters]);
+  }, [newFilters]);
 
   useEffect(() => {
     dispatch(getOffices());
     dispatch(getAuthors());
   }, [dispatch]);
+
+  const onSubmit = () => {
+    dispatch(setFilters(newFilters));
+    modalHandler(false);
+  };
 
   return (
     <div className="filter-modal__body">
@@ -285,7 +323,10 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
         </div>
         {activeFilterComponents}
       </div>
-      <Button onClick={() => modalHandler(false)}>Done</Button>
+      <div className="filter-modal__buttons">
+        <Button onClick={() => modalHandler(false)}>Cancel</Button>
+        <Button onClick={onSubmit}>Apply</Button>
+      </div>
     </div>
   );
 };
