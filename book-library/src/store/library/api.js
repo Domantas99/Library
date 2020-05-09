@@ -32,3 +32,7 @@ export const updateBook = (data) => {
 export const getCategories = () => {
   return httpClient.get('books/categories');
 };
+
+export const getAuthors = () => {
+  return httpClient.get('books/authors');
+}

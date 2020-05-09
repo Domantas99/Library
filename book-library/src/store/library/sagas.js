@@ -9,6 +9,7 @@ import {
   deleteBookApi,
   updateBook,
   getCategories,
+  getAuthors,
 } from './api';
 import {
   GET_BOOK_LIST_START,
@@ -24,6 +25,7 @@ import {
   SET_FILTERS_END,
   GET_CATEGORIES_START,
   SELECT_CATEGORY,
+  GET_AUTHORS_START,
 } from './actionTypes';
 import {
   getBookListEnd,
@@ -35,6 +37,7 @@ import {
   setFilters,
   setFiltersEnd,
   getCategoriesEnd,
+  getAuthorsEnd,
 } from './actions';
 import { paramGenerator } from '../../utilities';
 
@@ -130,6 +133,15 @@ export function* selectCategorySaga(action) {
   }
 }
 
+export function* getAuthorsSaga(action) {
+  try {
+    const apiResult = yield call(getAuthors);
+    yield put(getAuthorsEnd(apiResult));
+  } catch (ex) {
+    //
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getBookListSaga);
@@ -145,4 +157,5 @@ export default function* () {
   yield takeLatest(ADD_NEW_BOOK_END, getCategoriesSaga);
   yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
   yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);
+  yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
 }

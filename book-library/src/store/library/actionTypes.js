@@ -15,3 +15,5 @@ export const SET_FILTERS_END = 'library/SET_FILTERS_END';
 export const GET_CATEGORIES_START = 'library/GET_CATEGORIES_START';
 export const GET_CATEGORIES_END = 'library/GET_CATEGORIES_END';
 export const SELECT_CATEGORY = 'library/SELECT_CATEGORY';
+export const GET_AUTHORS_START = 'library/GET_AUTHORS_START';
+export const GET_AUTHORS_END = 'library/GET_AUTHORS_END';

@@ -17,6 +17,7 @@ const LibraryFilter = ({ dataAction }) => {
 
   const filterNames = {
     category: 'Category',
+    status: 'Status',
     offices: 'Office',
     authors: 'Author',
   };

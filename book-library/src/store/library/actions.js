@@ -16,6 +16,8 @@ import {
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
   SELECT_CATEGORY,
+  GET_AUTHORS_START,
+  GET_AUTHORS_END,
 } from './actionTypes';
 
 export const getBookList = (params) => ({
@@ -88,4 +90,13 @@ export const getCategoriesEnd = (categories) => ({
 export const selectCategory = (category) => ({
   type: SELECT_CATEGORY,
   payload: category,
+});
+
+export const getAuthors = () => ({
+  type: GET_AUTHORS_START,
+});
+
+export const getAuthorsEnd = (authors) => ({
+  type: GET_AUTHORS_END,
+  payload: authors,
 });
