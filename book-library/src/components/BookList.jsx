@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BookListItem from './BookListItem';
 import { getFieldSorter } from '../utilities';
+import { getOffices } from '../store/office/actions';
 
 function BookList({
   dataSelector,
@@ -20,7 +21,7 @@ function BookList({
   const [sortField, setSortField] = useState('dateAdded');
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
-
+  const offices = useSelector((state)=> state.office.offices);
   const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data]
       .sort(getFieldSorter(sort_field, sort_direction))
@@ -30,6 +31,7 @@ function BookList({
             key={element.id}
             data={element}
             navigate={navigateItems}
+            offices={offices}
           />
         );
       });
@@ -42,6 +44,10 @@ function BookList({
   const handleChangeSortDirection = (event) => {
     setSortDirection(event.target.value);
   };
+
+  useEffect(() => {
+    dispatch(getOffices());
+  }, dispatch)
 
   useEffect(() => {
     dispatch(dataAction);

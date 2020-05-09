@@ -6,7 +6,9 @@ import {
   SET_VOTE,
   SET_VOTE_END,
   GET_VOTE,
-  GET_VOTE_END
+  GET_VOTE_END,
+  MOVE_WISH_TO_LIBRARY,
+  MOVE_WISH_TO_LIBRARY_END
 } from "./actionTypes";
 
 export const getWishlist = () => ({ type: GET_WISHLIST_START });
@@ -37,4 +39,12 @@ export const getVote = (vote) => ({
 export const getVoteEnd = (vote) => ({
   type: GET_VOTE_END,
   payload: vote,
+});
+export const moveWishToLibrary = (book) => ({
+  type: MOVE_WISH_TO_LIBRARY,
+  payload: book,
+});
+export const moveWishToLibraryEnd = (book) => ({
+  type: MOVE_WISH_TO_LIBRARY_END,
+  payload: book,
 });

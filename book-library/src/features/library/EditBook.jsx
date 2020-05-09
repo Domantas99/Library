@@ -23,8 +23,8 @@ export default () => {
     <div className="content-wrapper">
       {bookDetails && bookDetails.length !== 0 && (
         <BookForm
-          formTitle="Edit"
-          bookDetails={bookDetails}
+          formTitle="Book editing"
+          bookDetails={bookDetails.book}
           id={id}
           offices={offices}
         />
