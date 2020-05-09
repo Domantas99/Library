@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
+using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -40,10 +41,10 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetFilteredBooks(pattern);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseResult<Book>>> GetBook(int id)
+        [HttpGet("book-details")]
+        public async Task<ActionResult<ResponseResult<BookDetailsDTO>>> GetBook([FromQuery] int bookId, [FromQuery] int userId)
         {
-            return await _booksService.GetBook(id);
+            return await _booksService.GetBook(bookId, userId);
         }
 
         [HttpGet("categories")]

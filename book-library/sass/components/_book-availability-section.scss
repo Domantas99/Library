@@ -1,0 +1,65 @@
+.ba-section {  
+    &-buttons {
+        display: flex;
+        flex-direction: column;
+        &-dark {
+            color: white;
+            background-color: #050237;
+            width: 100%;
+            margin: 10px 0px;
+        }
+        &-light {
+            color: #050237;
+            background-color: #E8E9ED;
+            width: 100%;
+        }
+    }
+
+    &-list {
+        &-item {
+            background-color: #E8E9ED;
+            margin-bottom: 15px;   
+            display: flex;
+            flex-direction: row;
+            &-text {
+                &-title {
+                    color: black;
+                    font-weight: 600
+                }
+                &-available {
+                    color: #3BA77A;
+                    font-weight: 600
+                }
+                &-unavailable {
+                    color: #EF5067;
+                    font-weight: 600
+                }
+                &-address {
+                    color: #B0B0C1;
+                }
+                &-other {
+                    color: #4D6EFA;
+                    font-weight: 600
+                }
+            }
+        }
+    }
+    &-currentlyReading {
+        &-content {
+            border: 1px solid #050237;
+            background-color: rgb(233, 233, 233);
+            box-sizing: border-box;
+            border-radius: 6px;
+            &-text {
+                font-weight: 600;
+                font-size: 15px;
+            }
+            &-date {
+                font-weight: 600;
+                font-size: 14px;
+                color: #3BA77A;
+            }
+            padding: 30px 10px;
+        }
+    }
+}

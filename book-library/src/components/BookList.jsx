@@ -4,9 +4,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import BookListItem from './BookListItem';
 import { getFieldSorter } from '../utilities';
+import { getOffices } from '../store/office/actions';
 
 function BookList({
   dataSelector,
@@ -21,7 +22,7 @@ function BookList({
   const [sortField, setSortField] = useState('dateAdded');
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
-
+  const offices = useSelector((state)=> state.office.offices);
   const createBookComponents = (data, sort_field, sort_direction) => {
     return [...data]
       .sort(getFieldSorter(sort_field, sort_direction))
@@ -31,6 +32,7 @@ function BookList({
             key={element.id}
             data={element}
             navigate={navigateItems}
+            offices={offices}
           />
         );
       });
@@ -45,10 +47,12 @@ function BookList({
   };
 
   useEffect(() => {
-    if (dataAction) {
-      dispatch(dataAction);
-    }
-  }, []);
+    dispatch(getOffices());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(dataAction);
+  }, [dispatch]);
 
   useEffect(() => {
     setBookComponents(

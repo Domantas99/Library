@@ -50,13 +50,35 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Reservation> { Error = flag, ReturnResult = reservation };
         }
 
-        public async Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user)
+        public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
+        {
+            var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
+            Book book = null;
+            bool flag = false;
+            try
+            {
+                if (reservation != null)
+                {
+                    var bookCase = await _context.BookCase.Include(x=> x.Book).FirstOrDefaultAsync(x => x.Id == reservation.BookCaseId);
+                    book = bookCase.Book;
+                    _context.BookCase.Remove(bookCase);
+                    _context.Reservation.Remove(reservation);
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e) {
+                flag = true;
+            }
+            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
+        }
+
+        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)
                 .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).ToListAsync();
-            var response = new List<ReservationsDTO>();
+            var response = new List<ReservationDTO>();
             foreach (Reservation reservation in reservations) {
-                response.Add(new ReservationsDTO
+                response.Add(new ReservationDTO
                 {
                     Id = reservation.Id,
                     Book = reservation.BookCase.Book,
@@ -66,7 +88,7 @@ namespace BookLibrary.Services.Reservations
                     Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"
                 });
             }
-            return new ResponseResult<ICollection<ReservationsDTO>> { Error = false, ReturnResult = response};
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response};
         }
     }
 }

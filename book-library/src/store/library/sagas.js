@@ -39,6 +39,10 @@ import {
   getCategoriesEnd,
   getAuthorsEnd,
 } from './actions';
+import {
+  REMOVE_RESERVATION_END,
+  ADD_RESERVATION_END,
+} from '../reservations/actionTypes';
 import { paramGenerator } from '../../utilities';
 
 export function* getBookListSaga(action) {
@@ -84,8 +88,8 @@ export function* getBookAvailabilitySaga(action) {
 export function* deleteBookSaga(action) {
   try {
     const apiResult = yield call(deleteBookApi, action.payload);
-    yield put(deleteBookEnd(apiResult));
     history.push('/library');
+    yield put(deleteBookEnd(apiResult)); 
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -158,4 +162,6 @@ export default function* () {
   yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
   yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);
   yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
+  yield takeLatest(REMOVE_RESERVATION_END, getBookDetailsSaga);
+  yield takeLatest(ADD_RESERVATION_END, getBookDetailsSaga);
 }

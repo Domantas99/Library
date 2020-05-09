@@ -14,9 +14,11 @@ namespace BookLibrary.Services.Wishlist
     public class WishlistService : IWishlistService
     {
         private readonly LibraryDBContext _context;
-        public WishlistService(LibraryDBContext context)
+        private readonly IBooksService _booksService;
+        public WishlistService(LibraryDBContext context, IBooksService booksService)
         {
             _context = context;
+            _booksService = booksService;
         }
 
         public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
@@ -79,6 +81,26 @@ namespace BookLibrary.Services.Wishlist
             }).ToList();
             
             return new ResponseResult<ICollection<VoteItemDTO>> { Error = false, ReturnResult = voteList };
+        }
+
+        public async Task<ResponseResult<Book>> MoveWishToLibrary(Book book)
+        {
+            bool flag = false;
+            try
+            {
+                var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
+                var userwishes = _context.UserWish.Where(w => w.WishId == wishToRemove.Id);
+                _context.UserWish.RemoveRange(userwishes);
+                _context.Wish.Remove(wishToRemove);
+                await _booksService.UpdateBook(book.Id, book);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                flag = true;
+            }
+
+            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
         }
     }
 }

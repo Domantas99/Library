@@ -7,7 +7,9 @@ import {
   ADD_RESERVATION_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
-} from './actionTypes';
+  REMOVE_RESERVATION_START,
+  REMOVE_RESERVATION_END,
+} from "./actionTypes";
 
 export const getReservations = (id) => ({
   type: GET_RESERVATIONS_START,
@@ -31,10 +33,23 @@ export const addReservation = (reservation) => ({
   type: ADD_RESERVATION_START,
   payload: reservation,
 });
-export const addReservationEnd = () => ({ type: ADD_RESERVATION_END });
+export const addReservationEnd = (ids) => ({
+  type: ADD_RESERVATION_END,
+  payload: ids,
+});
 
 export const updateReservation = (reservation) => ({
   type: UPDATE_RESERVATION_START,
   payload: reservation,
 });
 export const updateReservationEnd = () => ({ type: UPDATE_RESERVATION_END });
+
+export const removeReservation = (reservationId, userId) => ({
+  type: REMOVE_RESERVATION_START,
+  payload: reservationId,
+  userId,
+});
+export const removeReservationEnd = (ids) => ({
+  type: REMOVE_RESERVATION_END,
+  payload: ids,
+});

@@ -15,7 +15,7 @@ export default () => {
 
   return (
     <div className="content-wrapper">
-      <BookForm formTitle="Register" offices={offices} />
+      <BookForm formTitle="Register new book" offices={offices} />
     </div>
   );
 };

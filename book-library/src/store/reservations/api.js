@@ -128,7 +128,7 @@ export const getBookReservations = (bookId) => {
 };
 
 export const addReservation = (reservation) => {
-  httpClient.post('reservations', reservation);
+  return httpClient.post("reservations", reservation);
 };
 
 export const updateReservation = (reservation) => {
@@ -136,4 +136,8 @@ export const updateReservation = (reservation) => {
     reservations.findIndex((element) => element.id === reservation.id)
   ] = reservation;
   return reservation;
+};
+
+export const removeReservationAPI = (reservationId) => {
+  return httpClient.delete(`reservations/${reservationId}`);
 };
