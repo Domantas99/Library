@@ -4,20 +4,23 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { setVote, getVote } from "../store/wishlist/actions";
+import Modal from "../components/Modal";
+import BookForm from "./BookForm";
 
-export default ({ data, navigate }) => {
+export default ({ data, navigate, offices }) => {
   const dispatch = useDispatch();
-  const user = 1;
+  const userId = useSelector((state) => state.user.userData.id);
   const voteStates = useSelector((state) => state.wishlist.voteState);
   const voted = voteStates.find((x) => x.wishId === data.wishId);
   const history = useHistory();
+  const [moveWishToBookModal, setMoveWishToBookModal] = useState(false)
 
   const createVoteObject = () => {
     return {
-      UserId: user,
+      UserId: userId,
       WishId: data.wishId,
     };
   };
@@ -43,13 +46,28 @@ export default ({ data, navigate }) => {
         <span className="book__author">{data.author}</span>
       </div>
       {data.votes !== undefined && (
-        <button
-          style={voted ? { backgroundColor: "#4568FB" } : {}}
-          onClick={handleClick}
-        >
-          {data.votes}
-        </button>
+        <div>
+          <Modal
+           modalState={moveWishToBookModal}
+           exitAction={()=> setMoveWishToBookModal(false)}
+          >
+            <BookForm formTitle="Add wish to library"
+              bookDetails={data}
+              id={data.wishId}
+              offices={offices}
+              moveToWishAction={()=>setMoveWishToBookModal(false)}
+            ></BookForm>
+          </Modal>
+          <button
+            style={voted ? { backgroundColor: "#4568FB" } : {}}
+            onClick={handleClick}
+          >
+            {data.votes}
+          </button>
+          <button onClick={()=> setMoveWishToBookModal(true)}>Move</button>
+         </div>
       )}
+     
     </div>
   );
 };

@@ -160,8 +160,11 @@ export default function BookAvailabilitySection({ bookDetails }) {
             <div className="ba-section-currentlyReading-content-text">
               You are currently reading this book
             </div>
-            <div className="ba-section-currentlyReading-content-date">
+            <div>
+              Return date:
+            <span className="ba-section-currentlyReading-content-date">
               {bookDetails.activeReservation.returnDate.substring(0, 10)}
+            </span>
             </div>
           </div>
           <div className="ba-section-buttons">
