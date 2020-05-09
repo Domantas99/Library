@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookLibrary.DataBase.Models
 {
@@ -14,8 +15,10 @@ namespace BookLibrary.DataBase.Models
         public int BookId { get; set; }
         public int OfficeId { get; set; }
         public int Count { get; set; }
+        [Column(TypeName = "Date")]
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
+        [Column(TypeName = "Date")]
         public DateTime? ModifiedOn { get; set; }
         public int? ModifiedBy { get; set; }
 

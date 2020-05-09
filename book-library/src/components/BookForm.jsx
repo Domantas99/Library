@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addNewBook, updateBook } from "../store/library/actions";
+import { moveWishToLibrary } from "../store/wishlist/actions";
 
 const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => {
   const history = useHistory();
@@ -99,27 +100,25 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
   };
 
   const handleSubmit = (event) => {
-    debugger;
     event.preventDefault();
     if (validErrors() && validInputs()) {
       const book = createBookObject();
-      debugger;
       if (formTitle==="Register new book") {
-        dispatch(updateBook(id, book));
-        history.push(`/library/${id}`)
-      } else if (formTitle==="Edit") {
         dispatch(addNewBook(book));
+        history.push(`/library/${id}`)
+      } else if (formTitle==="Book editing") {
+        dispatch(updateBook(id, book));
         history.push("/library");
       }
       else if (formTitle==="Add wish to library") {
-        // mano naujas
+        const obj = {...book, id: bookDetails.id };
+        dispatch(moveWishToLibrary(obj));
         moveToWishAction();
-       // history.push("/library");}
+      }
     }
     else {
       alert("Invalid form");
     }
-  }
   };
 
   const handleNumberOfCopiesChange = (event) => {

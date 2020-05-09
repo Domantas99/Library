@@ -24,7 +24,7 @@ export default () => {
       {bookDetails && bookDetails.length !== 0 && (
         <BookForm
           formTitle="Book editing"
-          bookDetails={bookDetails}
+          bookDetails={bookDetails.book}
           id={id}
           offices={offices}
         />

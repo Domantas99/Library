@@ -76,8 +76,8 @@ export function* getBookAvailabilitySaga(action) {
 export function* deleteBookSaga(action) {
   try {
     const apiResult = yield call(deleteBookApi, action.payload);
-    yield put(deleteBookEnd(apiResult));
     history.push('/library');
+    yield put(deleteBookEnd(apiResult)); 
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -101,7 +101,6 @@ export default function* () {
   yield takeLatest(DELETE_BOOK, deleteBookSaga);
   yield takeLatest(DELETE_BOOK_END, getBookListSaga);
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
-  yield takeLatest(UPDATE_BOOK_END, getBookListSaga);
   yield takeLatest(REMOVE_RESERVATION_END, getBookDetailsSaga);
   yield takeLatest(ADD_RESERVATION_END, getBookDetailsSaga);
 }

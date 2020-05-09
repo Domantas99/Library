@@ -396,6 +396,8 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.HasIndex("OfficeId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("User");
 
                     b.HasData(
@@ -425,10 +427,6 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WishId");
 
                     b.ToTable("UserWish");
                 });
@@ -477,11 +475,16 @@ namespace BookLibrary.DataBase.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("WishId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookId")
                         .IsUnique()
                         .HasFilter("[BookId] IS NOT NULL");
+
+                    b.HasIndex("WishId");
 
                     b.ToTable("Wish");
                 });
@@ -578,21 +581,10 @@ namespace BookLibrary.DataBase.Migrations
                         .HasForeignKey("OfficeId")
                         .HasConstraintName("FK_User_OfficeId")
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("BookLibrary.DataBase.Models.UserWish", b =>
-                {
-                    b.HasOne("BookLibrary.DataBase.Models.User", "User")
-                        .WithMany("UserWish")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_UserWish_UserId")
-                        .IsRequired();
-
-                    b.HasOne("BookLibrary.DataBase.Models.Wish", "Wish")
-                        .WithMany("Votes")
-                        .HasForeignKey("WishId")
-                        .HasConstraintName("FK_UserWish_WishId")
-                        .IsRequired();
+                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "UserWish")
+                        .WithMany("Users")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Waiting", b =>
@@ -615,6 +607,10 @@ namespace BookLibrary.DataBase.Migrations
                     b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
                         .WithOne("Wish")
                         .HasForeignKey("BookLibrary.DataBase.Models.Wish", "BookId");
+
+                    b.HasOne("BookLibrary.DataBase.Models.UserWish", "Votes")
+                        .WithMany("Wishes")
+                        .HasForeignKey("WishId");
                 });
 #pragma warning restore 612, 618
         }

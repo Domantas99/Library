@@ -16,3 +16,7 @@ export const setVoteAPI = (vote) => {
 export const getVoteAPI = (vote) => {
   return httpClient.get(`wishlist/vote/?userId=${vote.UserId}&wishId=${vote.WishId}`);
 };
+
+export const moveWishToLibraryAPI = (book) => {
+  return httpClient.post("wishlist/move-to-library", book);
+};

@@ -67,7 +67,6 @@ export default ({ data, navigate, offices }) => {
           <button onClick={()=> setMoveWishToBookModal(true)}>Move</button>
          </div>
       )}
-     
     </div>
   );
 };

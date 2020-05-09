@@ -42,5 +42,12 @@ namespace BookLibrary.Api.Controllers.Wishlist
         {
             return await _wishlistService.AddNewWish(wish);
         }
+
+        [HttpPost("move-to-library")]
+        public async Task<ActionResult<ResponseResult<Book>>> MoveWishToLibrary([FromBody]Book book)
+        {
+            return await _wishlistService.MoveWishToLibrary(book);
+        }
+
     }
 }
