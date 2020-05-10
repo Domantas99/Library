@@ -17,7 +17,7 @@ export default function Categories() {
 
   return (
     <ul className="navigation__item-content">
-      <NavLink to="/register-book" key="register-new">
+      <NavLink to="/library/register-book" key="register-new">
         <li className="navigation__item-secondary">+ Register new book</li>
       </NavLink>
       <li>

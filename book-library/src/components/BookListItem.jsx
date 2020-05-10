@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, {useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -18,19 +18,21 @@ export default ({ data, navigate, offices }) => {
   const history = useHistory();
   const [moveWishToBookModal, setMoveWishToBookModal] = useState(false)
 
-  const createVoteObject = () => {
+  const createVoteObject = useCallback(() => {
     return {
       UserId: userId,
       WishId: data.wishId,
     };
-  };
+  },[userId, data]);
+
   function handleClick() {
     const vote = createVoteObject();
     dispatch(setVote(vote));
   }
   useEffect(() => {
+    
     dispatch(getVote(createVoteObject()));
-  }, [dispatch]);
+  }, [createVoteObject, dispatch]);
 
   return (
     <div>

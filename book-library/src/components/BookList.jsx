@@ -22,20 +22,6 @@ function BookList({
   const [sortDirection, setSortDirection] = useState(-1);
   const [bookComponents, setBookComponents] = useState([]);
   const offices = useSelector((state)=> state.office.offices);
-  const createBookComponents = (data, sort_field, sort_direction) => {
-    return [...data]
-      .sort(getFieldSorter(sort_field, sort_direction))
-      .map((element) => {
-        return (
-          <BookListItem
-            key={element.id}
-            data={element}
-            navigate={navigateItems}
-            offices={offices}
-          />
-        );
-      });
-  };
 
   const handleChangeSortField = (event) => {
     setSortField(event.target.value);
@@ -47,17 +33,32 @@ function BookList({
 
   useEffect(() => {
     dispatch(getOffices());
-  }, dispatch)
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(dataAction);
-  }, [dispatch, activeCategory]);
+  }, [dispatch, activeCategory, dataAction]);
 
   useEffect(() => {
+    const createBookComponents = (data, sort_field, sort_direction) => {
+      return [...data]
+        .sort(getFieldSorter(sort_field, sort_direction))
+        .map((element) => {
+          return (
+            <BookListItem
+              key={element.id}
+              data={element}
+              navigate={navigateItems}
+              offices={offices}
+            />
+          );
+        });
+    };
+
     setBookComponents(
       createBookComponents(dataSelector, sortField, sortDirection)
     );
-  }, [dataSelector, sortDirection, sortField]);
+  }, [dataSelector, navigateItems, offices, sortDirection, sortField]);
 
   return (
     <div className="book-grid">

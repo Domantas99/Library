@@ -17,7 +17,7 @@ export default ({ location }) => {
   const actionButton = (
     <ActionItem
       linkTitle="Register new book"
-      onClickAction={() => history.push('/register-book')}
+      onClickAction={() => history.push('/library/register-book')}
     />
   );
 
@@ -29,7 +29,7 @@ export default ({ location }) => {
         dataSelector={bookSelector}
         dataAction={getBookList(values.category)}
         navigateItems
-        addLink="/register-book"
+        addLink="/library/register-book"
         actionButton={actionButton}
       />
     </Panel>
