@@ -41,9 +41,19 @@ namespace BookLibrary.DataBase.Models
                 new Office { Id = 4, Name = "Toronto", FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada" },
                 new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
                 );
-
+        
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, FirstName = "Nathan", LastName = "Roberts", UserName = "Nathaniux123", Email = "nathan.roberts@gmail.com", OfficeId = 1, ProfilePictureUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqU9vOT5KpsmRjJMa7rj_NYuWWhJcB3qWAL21QtcH9ZNXuhQZO&usqp=CAU" }
+                new User { 
+                    Id = 1, 
+                    FullName = "Nathan Roberts", 
+                    UserName = "Nathaniux123", 
+                    Email = "nathan.roberts@gmail.com", 
+                    OfficeId = 1, 
+                    ProfilePictureUrl = "https://randomuser.me/api/portraits/men/94.jpg",
+                    GoodReadsAccount= "https://www.goodreads.com/",
+                    PhoneNumber="+3701234567",
+                    Role="Full-Stack Developer"
+                }
                 );
 
             modelBuilder.Entity<Book>(entity =>
@@ -184,15 +194,11 @@ namespace BookLibrary.DataBase.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.FirstName)
+                entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(250);
 
                 entity.Property(e => e.ProfilePictureUrl).HasMaxLength(300);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(250);
 
                 entity.Property(e => e.UserName)
                     .IsRequired()

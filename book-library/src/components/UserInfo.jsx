@@ -6,16 +6,18 @@ import { getUser } from "../store/user/actions";
 export default function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
+  debugger
   useEffect(() => {
+    debugger
     dispatch(getUser(1));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="user-info">
       <div className="user-info__image">
-        <img src={user?.profilePicture} alt=""/>
+        <img src={user?.profilePictureUrl} alt=""/>
       </div>
-      <h2 className="user-info__greeting">Hello, {user?.firstName}!</h2>
+      <h2 className="user-info__greeting">Hello, {user?.fullName}!</h2>
       <h5 className="text-secondary">{user?.email}</h5>
       <h5 className="text-secondary">{user?.office?.name} office</h5>
     </div>

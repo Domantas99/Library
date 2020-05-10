@@ -22,7 +22,7 @@ namespace BookLibrary.Services
         public async Task<ResponseResult<User>> GetUser(int id)
         {
             bool flag = false;
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) {
                 flag = true;
             }
