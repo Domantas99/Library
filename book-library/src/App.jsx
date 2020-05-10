@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { Library, RegisterBook, Wishlist, Reservations, EditBook } from "./features";
 import { SearchBar, Navigation } from "./components";
 import Dashboard from "./features/dashboard/Dashboard";
+import UserSettings from "./features/user-settings/user-settings";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/wishlist" component={Wishlist} />
             <Route path="/reservations" component={Reservations} />
             <Route path="/edit-book/:id?" component={EditBook} />
+            <Route path="/user-settings" component={UserSettings} />
             <Redirect exact from="/" to="/library" />
           </Switch>
         </div>

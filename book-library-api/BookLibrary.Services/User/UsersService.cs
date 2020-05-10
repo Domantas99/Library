@@ -22,12 +22,25 @@ namespace BookLibrary.Services
         public async Task<ResponseResult<User>> GetUser(int id)
         {
             bool flag = false;
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) {
                 flag = true;
             }
             return new ResponseResult<User> { Error = flag, ReturnResult = user };
         }
 
+        public async Task<ResponseResult<User>> UpdateUser(User user)
+        {
+            bool flag = false;
+            try
+            {
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                flag = true;
+            }
+            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+        }
     }
 }

@@ -69,6 +69,12 @@ export default function Navigation() {
             </NavLink>
           </li>
         </ul>
+        <div className="navigation__item">
+          <NavLink  to="user-settings">
+            <button>Manage my account</button>
+          </NavLink>
+        </div>
+
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ import BookForm from "./BookForm";
 
 export default ({ data, navigate, offices }) => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.userData.id);
+  const userId = useSelector((state) => state.user.userData?.id);
   const voteStates = useSelector((state) => state.wishlist.voteState);
   const voted = voteStates.find((x) => x.wishId === data.wishId);
   const history = useHistory();
