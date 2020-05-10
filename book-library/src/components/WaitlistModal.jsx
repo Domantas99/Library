@@ -26,7 +26,7 @@ export default ({ waiting, modalHandler }) => {
       CreatedOn: today,
       BookCase: {
         BookId: waiting.book.id,
-        OfficeId: waiting.activeOffice.id,
+        OfficeId: waiting.activeOffice.id || waiting.userOffice,
         CreatedOn: today,
         CreatedBy: UserId,
       },
@@ -36,7 +36,7 @@ export default ({ waiting, modalHandler }) => {
   return (
     <>
       <h2>Enter waitlist</h2>
-      <div className="book-details__image">
+      <div className="">
         <img src={waiting.book.coverPictureUrl} alt="" />
       </div>
       <div className="book-details__title">

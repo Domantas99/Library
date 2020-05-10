@@ -11,8 +11,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addNewBook, updateBook } from "../store/library/actions";
+import { moveWishToLibrary } from "../store/wishlist/actions";
 
-const BookForm = ({ formTitle, bookDetails, id, offices }) => {
+const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [officeData, setOffices] = useState(offices);
@@ -102,13 +103,20 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
     event.preventDefault();
     if (validErrors() && validInputs()) {
       const book = createBookObject();
-      if (id) {
-        dispatch(updateBook(id, book));
-        history.push(`/library/${id}`)
-      } else {
+      if (formTitle==="Register new book") {
         dispatch(addNewBook(book));
-        history.push("/library");}
-    } else {
+        history.push(`/library/${id}`)
+      } else if (formTitle==="Book editing") {
+        dispatch(updateBook(id, book));
+        history.push("/library");
+      }
+      else if (formTitle==="Add wish to library") {
+        const obj = {...book, id: bookDetails.id };
+        dispatch(moveWishToLibrary(obj));
+        moveToWishAction();
+      }
+    }
+    else {
       alert("Invalid form");
     }
   };
@@ -150,7 +158,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices }) => {
   };
   return (
     <div className="form-wrapper">
-      <h1 className="form-title">{formTitle} Book</h1>
+      <h1 className="form-title">{formTitle}</h1>
       <form onSubmit={handleSubmit} noValidate>
         <div className="input-wrapper">
           <label htmlFor="goodreadsSearch">FIND IN GOODREADS</label>

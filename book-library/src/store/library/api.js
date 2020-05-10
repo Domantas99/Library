@@ -1,19 +1,22 @@
-import httpClient from "../../core/httpClient";
+import httpClient from '../../core/httpClient';
+import { paramGenerator } from '../../utilities';
 
 export const addBookAPI = (bookObj) => {
-  return httpClient.post("books", bookObj);
+  return httpClient.post('books', bookObj);
 };
 
-export const getBookList = (category) => {
-  let url = "books";
-  if (category) {
-    url += `?category=${category}`;
+export const getBookList = (params) => {
+  let url = 'books';
+  if (params) {
+    url += `?${paramGenerator(params)}`;
   }
   return httpClient.get(url);
 };
 
-export const getBookDetails = (id) => {
-  return httpClient.get(`books/${id}`);
+export const getBookDetails = (ids) => {
+  return httpClient.get(
+    `books/book-details/?bookId=${ids.bookId}&userId=${ids.userId}`
+  );
 };
 
 export const getBookAvailabilityAPI = (id) => {
@@ -27,3 +30,11 @@ export const deleteBookApi = (id) => {
 export const updateBook = (data) => {
   return httpClient.put(`books/${data.id}`, data.book);
 };
+
+export const getCategories = () => {
+  return httpClient.get('books/categories');
+};
+
+export const getAuthors = () => {
+  return httpClient.get('books/authors');
+}

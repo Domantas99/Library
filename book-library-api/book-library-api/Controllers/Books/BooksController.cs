@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
+using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,9 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.UpdateBook(id, book);
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooksByCategory([FromQuery]string category)
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors)
         {
-            return await _booksService.GetBooks(category);
+            return await _booksService.GetBooks(category, offices, status, authors);
         }
 
         [HttpGet("filter/{pattern}")]
@@ -40,16 +41,22 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetFilteredBooks(pattern);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseResult<Book>>> GetBook(int id)
+        [HttpGet("book-details")]
+        public async Task<ActionResult<ResponseResult<BookDetailsDTO>>> GetBook([FromQuery] int bookId, [FromQuery] int userId)
         {
-            return await _booksService.GetBook(id);
+            return await _booksService.GetBook(bookId, userId);
         }
 
         [HttpGet("categories")]
         public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
         {
             return await _booksService.GetCategories();
+        }
+
+        [HttpGet("authors")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetAuthors()
+        {
+            return await _booksService.GetAuthors();
         }
 
         [HttpGet("latest/{count}")]

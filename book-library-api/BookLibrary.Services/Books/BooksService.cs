@@ -1,4 +1,5 @@
 ﻿using BookLibrary.DataBase.Models;
+using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +14,10 @@ namespace BookLibrary.Services.Books
     public class BooksService : IBooksService
     {
         private readonly LibraryDBContext _context;
-        public BooksService(LibraryDBContext context) {
+        private readonly IReservationsService _reservationsService;
+        public BooksService(LibraryDBContext context, IReservationsService reservationsService) {
             _context = context;
+            _reservationsService = reservationsService;
         }
 
         public async Task<ResponseResult<Book>> AddNewBook(Book book)
@@ -59,16 +62,20 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<Book> { Error = false, ReturnResult = bookToDelete };
         }
 
-        public async Task<ResponseResult<Book>> GetBook(int id)
+        public async Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId)
         {
-            bool errFlag = false;
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
-            if (book == null)
-            {
-                errFlag = true;
-            }
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == bookId);
+            var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
+            var reservation = userReservations.FirstOrDefault(x => x.Book.Id == bookId);
+            bool isCurrentlyReading = false;
 
-            return new ResponseResult<Book> { Error = errFlag, ReturnResult = book };
+            if (reservation != null)
+            {
+                isCurrentlyReading = true;
+            }
+            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, ReadingUserId = userId, ActiveReservation= reservation };
+
+            return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }
 
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
@@ -88,23 +95,45 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(string category)
+        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors)
         {
             var books = BooksWithoutWishes();
-            if (category != null)
+            if (categories != null && categories.Count > 0)
             {
-                 books = books.Where(a => a.Category != null && a.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                books = books.Where(a => a.Category != null && categories.Contains(a.Category)).ToList();
             }
-            
+            if (authors.Count > 0) {
+                books = books.Where(a => authors.Contains(a.Author)).ToList();
+            }
+            if (offices.Count > 0) {
+                var booksInOffices = _context.Library.Where(a => offices.Contains(a.Office.Name)).Select(a => a.Book.Id).Distinct();
+                books = books.Where(a => booksInOffices.Contains(a.Id)).ToList();
+            }
+            if (!(status == null)) {
+                if (status.ToLower() == "available")
+                {
+                    books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count > 0).ToList();
+                } else if (status.ToLower() == "unavailable"){
+                    books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count == 0).ToList();
+                }
+            }
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
         }
 
         public Task<ResponseResult<ICollection<string>>> GetCategories()
         {
             var books = BooksWithoutWishes();
-            var uniqueCategories = books.Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+            var uniqueCategories = books.Where(book => book.Category != null).Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueCategories.Sort();
             return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+        }
+
+        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        {
+            var books = BooksWithoutWishes();
+            var uniqueAuthors = books.Select(book => book.Author).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+            uniqueAuthors.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
         }
 
         public Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId)
@@ -113,15 +142,16 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments });
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
+        public Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
-            var filteredBooks = await _context.Book.Where(book => book.Title.ToLower().Contains(pattern) ||
+            var books = BooksWithoutWishes();
+            var filteredBooks =  books.Where(book => book.Title.ToLower().Contains(pattern) ||
                                                             book.Author.ToLower().Contains(pattern) ||
                                                             book.Isbn.ToLower().Contains(pattern))
-                                                            .ToListAsync();
+                                                            .ToList();
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks };
+            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks });
 
         }
 

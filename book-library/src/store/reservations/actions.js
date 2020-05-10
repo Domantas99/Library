@@ -8,7 +8,9 @@ import {
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
   ADD_WAITING_START,
-  ADD_WAITING_END
+  ADD_WAITING_END,
+  REMOVE_RESERVATION_START,
+  REMOVE_RESERVATION_END,
 } from "./actionTypes";
 
 export const getReservations = (id) => ({
@@ -33,7 +35,10 @@ export const addReservation = (reservation) => ({
   type: ADD_RESERVATION_START,
   payload: reservation,
 });
-export const addReservationEnd = () => ({ type: ADD_RESERVATION_END });
+export const addReservationEnd = (ids) => ({
+  type: ADD_RESERVATION_END,
+  payload: ids,
+});
 
 export const updateReservation = (reservation) => ({
   type: UPDATE_RESERVATION_START,
@@ -48,4 +53,13 @@ export const addWaiting = (waiting) => ({
 
 export const addWaitingEnd = () => ({ 
   type: ADD_WAITING_END,
+});
+export const removeReservation = (reservationId, userId) => ({
+  type: REMOVE_RESERVATION_START,
+  payload: reservationId,
+  userId,
+});
+export const removeReservationEnd = (ids) => ({
+  type: REMOVE_RESERVATION_END,
+  payload: ids,
 });

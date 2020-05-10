@@ -44,4 +44,22 @@
             }
         }
     }
+    &-currentlyReading {
+        &-content {
+            border: 1px solid #050237;
+            background-color: rgb(233, 233, 233);
+            box-sizing: border-box;
+            border-radius: 6px;
+            &-text {
+                font-weight: 600;
+                font-size: 15px;
+            }
+            &-date {
+                font-weight: 600;
+                font-size: 14px;
+                color: #3BA77A;
+            }
+            padding: 30px 10px;
+        }
+    }
 }

@@ -1,11 +1,11 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import history from "../../core/history";
 import {
   getReservationsList,
   addReservation,
   updateReservation,
   getBookReservations,
-  addWaiting
+  addWaiting,
+  removeReservationAPI,
 } from "./api";
 
 import {
@@ -16,7 +16,8 @@ import {
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
   ADD_WAITING_START,
-  ADD_WAITING_END
+  ADD_WAITING_END,
+  REMOVE_RESERVATION_START,
 } from "./actionTypes";
 import {
   getReservationsEnd,
@@ -24,6 +25,7 @@ import {
   updateReservationEnd,
   getBookReservationsEnd,
   addWaitingEnd,
+  removeReservationEnd,
 } from "./actions";
 
 export function* getReservationsSaga(action) {
@@ -47,8 +49,9 @@ export function* getBookReservationsSaga(action) {
 export function* addReservationSaga(action) {
   try {
     const apiResult = yield call(addReservation, action.payload);
-    yield put(addReservationEnd(apiResult));
-    history.push("/library");
+    const { bookId } = apiResult.returnResult.bookCase;
+    const { userId } = apiResult.returnResult;
+    yield put(addReservationEnd({ bookId, userId }));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -71,6 +74,19 @@ export function* addWaitingSaga(action) {
     // stops saga from braking on api error
   }
 }
+export function* removeReservationSaga(action) {
+  try {
+    const apiResult = yield call(removeReservationAPI, action.payload);
+    yield put(
+      removeReservationEnd({
+        bookId: apiResult.returnResult.id,
+        userId: action.userId,
+      })
+    );
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
 
 export default function* () {
   yield takeLatest(GET_RESERVATIONS_START, getReservationsSaga);
@@ -81,4 +97,5 @@ export default function* () {
   yield takeLatest(UPDATE_RESERVATION_END, getReservationsSaga);
   yield takeLatest(ADD_WAITING_START, addWaitingSaga);
   yield takeLatest(ADD_WAITING_END, getBookReservations);
+  yield takeLatest(REMOVE_RESERVATION_START, removeReservationSaga);
 }

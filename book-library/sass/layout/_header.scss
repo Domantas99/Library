@@ -10,6 +10,7 @@
   top: 0;
   width: 100%;
   background: $color-background;
+  z-index: 10;
 }
 
 .search {
@@ -90,11 +91,10 @@
   }
 
   &__image {
+    @include book-image(base(6));
     min-width: base(4);
     width: base(4);
-    height: base(6);
     border-radius: 4px;
-    background-color: $color-white;
   }
 
   &__text {

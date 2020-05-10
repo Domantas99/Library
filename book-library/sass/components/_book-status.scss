@@ -1,0 +1,56 @@
+.book-status {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-row-gap: base(2);
+
+    &__item {
+        border: solid 1px $color-border;
+        border-radius: 6px;
+        padding: base(2) base();
+
+        &--disabled {
+            background-color: $color-background-secondary;
+        }
+    }
+
+    &__info {
+        margin-top: base();
+        padding-left: base(4);
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__text {
+        @include heading-style(h4);
+        font-weight: bold;
+
+        &--available {
+            color: $color-green;
+        }
+
+        &--unavailable {
+            color: $color-red;
+        }
+
+        &--secondary {
+            margin: base() 0 base(2) 0;
+            font-weight: normal;
+            color: $color-text-secondary;
+        }
+
+        &--link {
+            color: $color-blue;
+            cursor: pointer;
+        }
+    }
+
+
+    &__buttons {
+        .btn {
+            margin-bottom: base();
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

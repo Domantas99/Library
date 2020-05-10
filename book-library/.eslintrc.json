@@ -23,18 +23,17 @@
     },
     "plugins": [
         "react",
+        "react-hooks",
         "prettier"
     ],
     "rules": {
-        "prettier/prettier":["warn", {
-            "endOfLine":"auto",
-            "semi": true
-        }],
+        "prettier/prettier":"warn",
         "no-unused-vars":"warn",
         "no-console":"error",
         "no-debugger":"error",
         "func-names":"off",
         "consistent-return":"off",
-        "import/no-named-as-default": 0
+        "import/no-named-as-default": 0,
+        
     }
 }

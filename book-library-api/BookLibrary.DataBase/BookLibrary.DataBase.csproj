@@ -53,6 +53,16 @@
     <Compile Remove="Migrations\20200503161535_added-auto-incr.Designer.cs" />
     <Compile Remove="Migrations\20200503194115_renaming.cs" />
     <Compile Remove="Migrations\20200503194115_renaming.Designer.cs" />
+    <Compile Remove="Migrations\20200509094925_added-date-collumn-type.cs" />
+    <Compile Remove="Migrations\20200509094925_added-date-collumn-type.Designer.cs" />
+    <Compile Remove="Migrations\20200509095453_added-date-collumn-type.cs" />
+    <Compile Remove="Migrations\20200509095453_added-date-collumn-type.Designer.cs" />
+    <Compile Remove="Migrations\20200509095724_added-date-collumn-type.cs" />
+    <Compile Remove="Migrations\20200509095724_added-date-collumn-type.Designer.cs" />
+    <Compile Remove="Migrations\20200509110344_added-date-collumn-type.cs" />
+    <Compile Remove="Migrations\20200509110344_added-date-collumn-type.Designer.cs" />
+    <Compile Remove="Migrations\20200509111540_added-date-collumn-type.cs" />
+    <Compile Remove="Migrations\20200509111540_added-date-collumn-type.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

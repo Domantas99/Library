@@ -3,21 +3,22 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addReservation } from "../store/reservations/actions";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addReservation } from '../store/reservations/actions';
 
-export default ({ reservation, modalHandler }) => {
+export default ({ reservation, onExit, onSubmit }) => {
   const [returndate, handleDateChange] = useState(
     reservation.returnDay || formatDate()
   );
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
   
-  function onSubmit() {
+  function onSubmitClick() {
     const obj = createReservationObj();
     dispatch(addReservation(obj));
-    modalHandler(false);
+    onSubmit();
+    onExit();
   }
 
   function createReservationObj() {
@@ -49,13 +50,13 @@ export default ({ reservation, modalHandler }) => {
     if (month.length < 2) month = `0${month}`;
     if (day.length < 2) day = `0${day}`;
 
-    return [year, month, day].join("-");
+    return [year, month, day].join('-');
   }
 
   return (
     <>
       <h2>Check out</h2>
-      <div className="book-details__image">
+      <div className="">
         <img src={reservation.book.coverPictureUrl} alt="" />
       </div>
       <div className="book-details__title">
@@ -64,7 +65,7 @@ export default ({ reservation, modalHandler }) => {
           by <span className="text-underlined">{reservation.book.author}</span>
         </h4>
       </div>
-      <h2>Reserve at:</h2>
+      <h4>Reserve at:</h4>
       <div className="ba-section-office-details">
         <div className="ba-section-list-item-text-title">
           {reservation.book.name} office
@@ -84,14 +85,15 @@ export default ({ reservation, modalHandler }) => {
           onChange={(e) => handleDateChange(e.target.value)}
         />
       </div>
+      {/* TODO We'll need to fix these buttons too. */}
       <button
         onClick={() => {
-          modalHandler(false);
+          onExit(false);
         }}
       >
         Cancel
       </button>
-      <button onClick={onSubmit} disabled={!reservation}>
+      <button onClick={() => onSubmitClick()} disabled={!reservation}>
         {reservation.book.id ? "Save Changes" : "Confirm Reservation"}
       </button>
     </>

@@ -6,13 +6,26 @@ import {
   GET_BOOK_AVAILABILITY_END,
   DELETE_BOOK,
   DELETE_BOOK_END,
+  SET_FILTERS_START,
+  GET_CATEGORIES_START,
+  GET_CATEGORIES_END,
+  SELECT_CATEGORY,
   UPDATE_BOOK_END,
-} from "./actionTypes";
+  GET_AUTHORS_END,
+} from './actionTypes';
+import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
+  authors: [],
   bookData: [],
-  bookDetails: [],
+  bookDetails: {
+    book: [],
+    isUserCurrentlyReading: false,
+  },
   bookAvailability: [],
+  filters: {},
+  categories: [],
+  activeCategory: null,
 };
 
 export default (state = initialState, action) => {
@@ -35,11 +48,13 @@ export default (state = initialState, action) => {
       };
     }
     case GET_BOOK_DETAILS_END: {
+      const result = action.payload.returnResult;
+      const returnedBook = result.book;
       return {
         ...state,
         bookDetails: {
-          ...action.payload.returnResult,
-          releaseDate: action.payload.returnResult.releaseDate.substring(0, 10),
+          ...result,
+          book: { ...returnedBook },
         },
       };
     }
@@ -83,6 +98,49 @@ export default (state = initialState, action) => {
       }
       return {
         ...state,
+      };
+    }
+
+    case SET_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.filters)) {
+        return state;
+      }
+      let nextActiveCategory = null;
+      if (newFilters.category) {
+        if (newFilters.category.length === 1) {
+          [nextActiveCategory] = newFilters.category;
+        }
+      }
+      return {
+        ...state,
+        filters: newFilters,
+        activeCategory: nextActiveCategory,
+      };
+    }
+
+    case GET_CATEGORIES_START: {
+      return { ...state };
+    }
+
+    case GET_CATEGORIES_END: {
+      return {
+        ...state,
+        categories: action.payload.returnResult,
+      };
+    }
+
+    case SELECT_CATEGORY: {
+      return {
+        ...state,
+        activeCategory: action.payload,
+      };
+    }
+
+    case GET_AUTHORS_END: {
+      return {
+        ...state,
+        authors: action.payload.returnResult,
       };
     }
 

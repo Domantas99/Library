@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BookLibrary.DTO.Reservations
 {
-    public class ReservationsDTO
+    public class ReservationDTO
     {
         public int Id { get; set; }
         public string CoverPictureUrl { get; set; }

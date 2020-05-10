@@ -22,7 +22,7 @@ namespace BookLibrary.Api.Controllers.Reservations
 
         //TODO: Maybe this would be better if it was in a users/{id}/reservations route? Something to consider once we actually implement users.
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<ResponseResult<ICollection<ReservationsDTO>>>> GetReservationsForUser(int userId)
+        public async Task<ActionResult<ResponseResult<ICollection<ReservationDTO>>>> GetReservationsForUser(int userId)
         {
             return await _reservationsService.GetReservations(userId);
         }
@@ -32,10 +32,17 @@ namespace BookLibrary.Api.Controllers.Reservations
         {
             return await _reservationsService.AddReservation(reservation);
         }
+
         [HttpPost("waiting")]
         public async Task<ActionResult<ResponseResult<Waiting>>> AddWaiting(Waiting waiting)
         {
             return await _reservationsService.AddWaiting(waiting);
+        }
+
+        [HttpDelete("{reservationId}")]
+        public async Task<ActionResult<ResponseResult<Book>>> CheckInReservation(int reservationId)
+        {
+            return await _reservationsService.CheckInReservation(reservationId);
         }
     }
 }

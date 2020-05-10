@@ -2,7 +2,7 @@ import {
   GET_SEARCHED_BOOKS,
   GET_SEARCHED_BOOKS_END,
   RESET_SEARCHBAR,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const getSearchedBooks = (pattern) => ({
   type: GET_SEARCHED_BOOKS,

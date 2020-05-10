@@ -10,8 +10,9 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IReservationsService
     {
-        public Task<ResponseResult<ICollection<ReservationsDTO>>> GetReservations(int user);
-        public Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
-        public Task<ResponseResult<Waiting>> AddWaiting(Waiting waiting);
+        Task<ResponseResult<Waiting>> AddWaiting(Waiting waiting);
+        Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user);
+        Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
+        Task<ResponseResult<Book>> CheckInReservation(int reservationId);
     }
 }

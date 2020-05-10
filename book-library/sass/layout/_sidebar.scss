@@ -64,9 +64,10 @@
     cursor: pointer;
     padding: 0 base(2);
     min-height: base(5.5);
+    transition: background-color,box-shadow .25s;
 
     &:hover, &.active {
-      background: $color-background-selected;
+      background-color: $color-background-selected;
       color: $color-blue;
       box-shadow: inset -2px 0px 0px $color-blue;
 
@@ -85,16 +86,27 @@
     flex-direction: row;
     align-items: center;
     min-height: base(5.5);
+    transition: color .25s;
   }
 
   &__item-content {
     @include no-list-style();
-    display: none;
+    display: flex;
+    min-height: 0;
+    max-height: 0;
+    height: 0;
+    overflow: hidden;
     flex-direction: column;
-    padding: base(2) 0;
+    padding: 0 base(2);
+    background: $color-background-selected;
+    color: $color-blue;
+    box-shadow: inset -2px 0px 0px $color-blue;
+    transition: max-height, padding .25s;
 
     .active + &{
-      display: flex;
+      max-height: base(100);
+      height: auto;
+      padding: base(2);
     }
   }
 
@@ -103,22 +115,21 @@
     width: 20px;
     height: 20px;
 
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
+    mask-position: 50% 50%;
     background-color: $color-text;
+
+    transition: background-color .25s;
 
     @each $icon in $nav-icons {
       &--#{$icon} {
         mask-image: sassvg($icon);
-        -webkit-mask-image: sassvg($icon);
       }
     }
   }
 
   &__item-split {
-    width: 100%;
-    border-bottom: solid 1px $color-text-secondary;
-    margin: base() 0;
+    border-bottom: solid 1px $color-border;
+    margin: base() base(2) base() base(2) + 20px;
   }
 
   &__item-secondary {
