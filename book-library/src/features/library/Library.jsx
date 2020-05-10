@@ -20,7 +20,7 @@ export default ({ location }) => {
   const actionButton = (
     <ActionItem
       linkTitle="Register new book"
-      onClickAction={() => history.push('/register-book')}
+      onClickAction={() => history.push('/library/register-book')}
     />
   );
 
@@ -38,7 +38,7 @@ export default ({ location }) => {
         dataSelector={bookSelector}
         dataAction={getBookList(values)}
         navigateItems
-        addLink="/register-book"
+        addLink="/library/register-book"
         filterComponent={filter}
         actionButton={actionButton}
       />

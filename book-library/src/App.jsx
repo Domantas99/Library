@@ -15,9 +15,9 @@ function App() {
         <div className="page__content">
           <Switch>
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/library/register-book" component={RegisterBook} />
             <Route path="/library/:id?" component={Library} />
             <Route path="/wishlist" component={Wishlist} />
-            <Route path="/register-book" component={RegisterBook} />
             <Route path="/reservations" component={Reservations} />
             <Route path="/edit-book/:id?" component={EditBook} />
             <Redirect exact from="/" to="/library" />
