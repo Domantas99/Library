@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-import httpClient from "../../core/httpClient";
+import httpClient from '../../core/httpClient';
 
 export const getWishlist = () => {
   return httpClient.get('wishlist');
 };
 
 export const addWishAPI = (wishObj) => {
-  return httpClient.post("wishlist/add", wishObj);
+  return httpClient.post('wishlist/add', wishObj);
 };
 
 export const setVoteAPI = (vote) => {
@@ -14,7 +14,9 @@ export const setVoteAPI = (vote) => {
 };
 
 export const getVoteAPI = (vote) => {
-  return httpClient.get(`wishlist/vote/?userId=${vote.UserId}&wishId=${vote.WishId}`);
+  return httpClient.get(
+    `wishlist/vote/?userId=${vote.UserId}&wishId=${vote.WishId}`
+  );
 };
 
 export const moveWishToLibraryAPI = (book) => {

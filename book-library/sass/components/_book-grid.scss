@@ -10,6 +10,17 @@
   &__header {
     grid-row: 1;
     grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+
+    &-filters {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &-sorter {
+      margin-left: auto;
+    }
   }
 }
 

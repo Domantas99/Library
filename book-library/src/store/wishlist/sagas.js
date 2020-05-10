@@ -23,7 +23,7 @@ export function* addWishSaga(action) {
     // stops saga from braking on api error
   }
 }
-export function* setVoteSaga(action){
+export function* setVoteSaga(action) {
   try {
     const apiResult = yield call(setVoteAPI, action.payload);
     yield put(setVoteEnd(apiResult));

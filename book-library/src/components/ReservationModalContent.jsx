@@ -3,9 +3,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addReservation } from "../store/reservations/actions";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addReservation } from '../store/reservations/actions';
 
 export default ({ reservation, onExit, onSubmit }) => {
   const [returndate, handleDateChange] = useState(
@@ -50,7 +50,7 @@ export default ({ reservation, onExit, onSubmit }) => {
     if (month.length < 2) month = `0${month}`;
     if (day.length < 2) day = `0${day}`;
 
-    return [year, month, day].join("-");
+    return [year, month, day].join('-');
   }
 
   return (
@@ -85,6 +85,7 @@ export default ({ reservation, onExit, onSubmit }) => {
           onChange={(e) => handleDateChange(e.target.value)}
         />
       </div>
+      {/* TODO We'll need to fix these buttons too. */}
       <button
         onClick={() => {
           onExit(false);

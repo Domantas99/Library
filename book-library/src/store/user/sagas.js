@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import { getUserApi } from "./api";
-import { GET_USER } from "./actionTypes";
-import { getUserEnd } from "./actions";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import { getUserApi } from './api';
+import { GET_USER } from './actionTypes';
+import { getUserEnd } from './actions';
 
 export function* getUserSaga(action) {
   try {

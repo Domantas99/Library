@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
-import { getCategories, selectCategory } from "../store/categories/actions";
+import { getCategoriesStart, selectCategory } from "../store/library/actions";
 
 export default function Categories() {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.categories.data);
-  const activeCategory = useSelector((state) => state.categories.selected);
+  const categories = useSelector((state) => state.library.categories);
+  const activeCategory = useSelector((state) => state.library.activeCategory);
 
   useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
+    dispatch(getCategoriesStart());
+  }, []);
 
   return (
     <ul className="navigation__item-content">
@@ -26,11 +27,11 @@ export default function Categories() {
       <NavLink
         to="/library"
         key="all"
-        onClick={() => dispatch(selectCategory("all"))}
+        onClick={() => dispatch(selectCategory(null))}
       >
         <li
           className={`navigation__item-secondary ${
-            activeCategory === "all" && " active"
+            activeCategory === null && " active"
           }`}
         >
           All books

@@ -1,4 +1,4 @@
-import { GET_COMMENTS_END, GET_BOOK_COMMENTS_END } from "./actionTypes";
+import { GET_COMMENTS_END, GET_BOOK_COMMENTS_END } from './actionTypes';
 
 const initialState = {
   comments: [],

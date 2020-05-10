@@ -35,6 +35,7 @@ namespace BookLibrary.DataBase.Models
         public virtual Wish Wish { get; set; }
         public virtual ICollection<BookComment> BookComment { get; set; }
         public virtual ICollection<BookWish> BookWish { get; set; }
+        [System.Runtime.Serialization.IgnoreDataMember]
         public virtual ICollection<Library> Library { get; set; }
         public virtual ICollection<Waiting> Waiting { get; set; }
     }
