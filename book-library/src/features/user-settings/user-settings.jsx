@@ -8,7 +8,7 @@ export default function UserSettings() {
     const user = useSelector((state) => state.user.userData);
     useEffect(() => {
       dispatch(getUser(1));
-    }, [dispatch]);
+    }, [dispatch, user?.id]);
     
   return (
     <>

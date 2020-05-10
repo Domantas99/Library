@@ -6,9 +6,8 @@ import { getUser } from "../store/user/actions";
 export default function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
-  debugger
+  
   useEffect(() => {
-    debugger
     dispatch(getUser(1));
   }, [dispatch]);
 

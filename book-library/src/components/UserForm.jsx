@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { getOffices } from "../store/office/actions";
+import { updateUser } from '../store/user/actions';
 
 export default function UserForm({user}) {
     const dispatch = useDispatch();
@@ -10,25 +11,27 @@ export default function UserForm({user}) {
     const handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
-        if(name==="officeName") {
-            let tempOffice = userInfo.office;
-            tempOffice.name = value; 
-            setUserInfo({...userInfo, office: tempOffice})
+        if(name==="officeId") {
+            setUserInfo({...userInfo, officeId: value, office: offices[value-1]})
         } else {
         setUserInfo({...userInfo, [name]: value});
         }
         console.log(userInfo);
-      };
+    };
+
     useEffect(() => {
       setUserInfo(user);
       dispatch(getOffices())
     }, [user])
-    console.log(offices)
+
+    function OnSaveClick() {
+        dispatch(updateUser(userInfo));
+    }
 
     return (
         <div>
             <div>
-                <img src={userInfo.profilePictureUrl}></img>
+                <img src={userInfo?.profilePictureUrl}></img>
             </div>
             <div>
                 <div>            
@@ -37,7 +40,7 @@ export default function UserForm({user}) {
                         <br/>
                         <input
                             type="text"
-                            value={userInfo.profilePictureUrl}
+                            value={userInfo?.profilePictureUrl}
                             name="profilePictureUrl"
                             onChange={handleChange}
                         />
@@ -49,7 +52,7 @@ export default function UserForm({user}) {
                         <br/>
                         <input
                             type="text"
-                            value={userInfo.fullName}
+                            value={userInfo?.fullName}
                             name="fullName"
                             onChange={handleChange}
                         />
@@ -62,17 +65,17 @@ export default function UserForm({user}) {
                         <br/>
                         <input
                             type="text"
-                            value={userInfo.role}
+                            value={userInfo?.role}
                             name="role"
                             onChange={handleChange}
                         />
                     </div>
 
                     <div className="input-wrapper">
-                        <label htmlFor="bookTitle">DEFAULT OFFICE</label>
+                        <label htmlFor="officeId">DEFAULT OFFICE</label>
                         <br/>
                         <select
-                            value={userInfo.officeId}
+                            value={userInfo?.officeId}
                             name="officeId"
                             onChange={handleChange}
                         >
@@ -87,29 +90,43 @@ export default function UserForm({user}) {
 
                 <div>
                     <div className="input-wrapper">
-                        <label htmlFor="bookTitle">EMAIL ADDRESS</label>
+                        <label htmlFor="email">EMAIL ADDRESS</label>
                         <br/>
                         <input
                             type="text"
-                            value={userInfo.email}
-                            name="fullName"
+                            value={userInfo?.email}
+                            name="email"
                             onChange={handleChange}
                         />
                     </div>
 
                     <div className="input-wrapper">
-                        <label htmlFor="bookTitle">PHONE</label>
+                        <label htmlFor="phoneNumber">PHONE</label>
                         <br/>
                         <input
                             type="text"
-                            value={userInfo.phoneNumber}
-                            name="fullName"
+                            value={userInfo?.phoneNumber}
+                            name="phoneNumber"
                             onChange={handleChange}
                         />
                     </div>
                 </div>
+
+                <div>
+                    <div className="input-wrapper">
+                        <label htmlFor="goodReadsAccount">GOOD READS ACCOUNT</label>
+                        <br/>
+                        <input
+                            type="text"
+                            value={userInfo?.goodReadsAccount}
+                            name="goodReadsAccount"
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>   
+        
             </div>
-            <button>Save changes</button>
+            <button onClick={() => OnSaveClick()}>Save changes</button>
         </div>
     )
 }

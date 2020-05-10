@@ -27,5 +27,11 @@ namespace BookLibrary.Api.Controllers.Users
             return await _usersService.GetUser(id);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<ResponseResult<User>>> UpdateUser(User user)
+        {
+            return await _usersService.UpdateUser(user);
+        }
+
     }
 }

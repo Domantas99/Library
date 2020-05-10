@@ -29,5 +29,18 @@ namespace BookLibrary.Services
             return new ResponseResult<User> { Error = flag, ReturnResult = user };
         }
 
+        public async Task<ResponseResult<User>> UpdateUser(User user)
+        {
+            bool flag = false;
+            try
+            {
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) {
+                flag = true;
+            }
+            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+        }
     }
 }
