@@ -2,9 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
-import React, {useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { setVote, getVote } from "../store/wishlist/actions";
 import Modal from "../components/Modal";
@@ -60,7 +59,7 @@ export default ({ data, navigate, offices }) => {
               moveToWishAction={()=>setMoveWishToBookModal(false)}
             ></BookForm>
           </Modal>
-          <button
+          <button //TODO This and the next should be updated to the new Button component.
             style={voted ? { backgroundColor: "#4568FB" } : {}}
             onClick={handleClick}
           >

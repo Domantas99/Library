@@ -2,17 +2,17 @@ import {
   GET_SEARCHED_BOOKS,
   GET_SEARCHED_BOOKS_END,
   RESET_SEARCHBAR,
-} from "./actionTypes";
+} from './actionTypes';
 
 const initialState = {
-  filter: "",
+  filter: '',
   data: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_SEARCHED_BOOKS: {
-      if (action.payload === "") {
+      if (action.payload === '') {
         return { data: [], filter: action.payload };
       }
       return { ...state, filter: action.payload };
@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
       break;
     }
     case RESET_SEARCHBAR: {
-      return { filter: "", data: [] };
+      return { filter: '', data: [] };
     }
     default: {
       return state;

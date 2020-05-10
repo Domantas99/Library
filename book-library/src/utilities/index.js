@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import getFieldSorter from "./fieldSorter";
+import getFieldSorter from './fieldSorter';
+import paramGenerator, { format as paramFormatter } from './paramGenerator';
 
-export { getFieldSorter };
+export { getFieldSorter, paramGenerator, paramFormatter };

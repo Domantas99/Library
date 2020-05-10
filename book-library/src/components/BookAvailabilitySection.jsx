@@ -16,12 +16,10 @@ import ReservationModalContent from "./ReservationModalContent";
 import CantFind from "./CantFind";
 import CheckInForm from "./CheckInForm";
 import {
-  getReservations,
   removeReservation,
 } from "../store/reservations/actions";
 import classNames from 'classnames';
 import RadioButton from './Radio';
-import Button from './Button';
 
 
 export default function BookAvailabilitySection({ bookDetails }) {
@@ -83,6 +81,8 @@ export default function BookAvailabilitySection({ bookDetails }) {
             {d.office.fullAddress}
           </div>
           {d.count > 0 && (
+            // TODO there may be a better way to do this?
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <a
               className="book-status__text book-status__text--link"
               onClick={() => setCantFindModalState(true)}

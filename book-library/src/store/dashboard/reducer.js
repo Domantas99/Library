@@ -3,7 +3,7 @@ import {
   GET_LATEST_BOOKS_END,
   GET_CURRENTLY_READING_BOOKS,
   GET_CURRENTLY_READING_BOOKS_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 const initialState = {
   latestBooks: [],
