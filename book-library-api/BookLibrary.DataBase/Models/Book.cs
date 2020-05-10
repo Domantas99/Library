@@ -11,7 +11,6 @@ namespace BookLibrary.DataBase.Models
             BookComment = new HashSet<BookComment>();
             BookWish = new HashSet<BookWish>();
             Library = new HashSet<Library>();
-            Waiting = new HashSet<Waiting>();
         }
 
         public int Id { get; set; }
@@ -36,6 +35,5 @@ namespace BookLibrary.DataBase.Models
         public virtual ICollection<BookComment> BookComment { get; set; }
         public virtual ICollection<BookWish> BookWish { get; set; }
         public virtual ICollection<Library> Library { get; set; }
-        public virtual ICollection<Waiting> Waiting { get; set; }
     }
 }

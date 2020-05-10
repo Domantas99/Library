@@ -5,6 +5,7 @@ import {
   addReservation,
   updateReservation,
   getBookReservations,
+  addWaiting
 } from "./api";
 
 import {
@@ -14,12 +15,15 @@ import {
   ADD_RESERVATION_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
+  ADD_WAITING_START,
+  ADD_WAITING_END
 } from "./actionTypes";
 import {
   getReservationsEnd,
   addReservationEnd,
   updateReservationEnd,
   getBookReservationsEnd,
+  addWaitingEnd,
 } from "./actions";
 
 export function* getReservationsSaga(action) {
@@ -59,6 +63,15 @@ export function* updateReservationSaga(action) {
   }
 }
 
+export function* addWaitingSaga(action) {
+  try {
+    const apiResult = yield call(addWaiting, action.payload);
+    yield put(addWaitingEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_RESERVATIONS_START, getReservationsSaga);
   yield takeLatest(GET_BOOK_RESERVATIONS_START, getBookReservationsSaga);
@@ -66,4 +79,6 @@ export default function* () {
   yield takeLatest(ADD_RESERVATION_END, getReservationsSaga);
   yield takeLatest(UPDATE_RESERVATION_START, updateReservationSaga);
   yield takeLatest(UPDATE_RESERVATION_END, getReservationsSaga);
+  yield takeLatest(ADD_WAITING_START, addWaitingSaga);
+  yield takeLatest(ADD_WAITING_END, getBookReservations);
 }

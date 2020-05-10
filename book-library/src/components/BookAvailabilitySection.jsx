@@ -12,18 +12,25 @@ import { getBookAvailability } from "../store/library/actions";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
 import CantFind from "./CantFind";
+import WaitlistModal from "./WaitlistModal";
 
-export default function BookAvailabilitySection({ book }) {
+export default function BookAvailabilitySection({ book, handleScrollClick }) {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
+  const [waitingModal, setWaitingModal] = useState(false);
   const [activeOffice, setActiveOffice] = useState(null);
   const [reservation, setReservation] = useState(null);
 
   const handleModalClick = () => {
     setReservation({ book, activeOffice });
     setModalState(true);
+  };
+
+  const handleWaitingModalClick = () => {
+    setReservation({ book, activeOffice });
+    setWaitingModal(true);
   };
 
   const handleOfficeClick = (e, data) => {
@@ -64,14 +71,24 @@ export default function BookAvailabilitySection({ book }) {
     } else {
       return (
         <div className="ba-section-list-item" key={d.office.name}>
-          <div className="ba-section-list-item-text-title">
-            {d.office.name} office
-          </div>
-          <div className="ba-section-list-item-text-unavailable">
-            Currently unavailable
-          </div>
-          <div className="ba-section-list-item-text-address">
-            {d.office.fullAddress}
+          <input
+            type="radio"
+            name="office"
+            className="no_forced_size"
+            onClick={(e) =>
+              handleOfficeClick(e, { ...d.office, count: d.count })
+            }
+          />
+          <div className="ba-section-office-details">
+            <div className="ba-section-list-item-text-title">
+              {d.office.name} office
+            </div>
+            <div className="ba-section-list-item-text-unavailable">
+              Currently unavailable
+            </div>
+            <div className="ba-section-list-item-text-address">
+              {d.office.fullAddress}
+            </div>
           </div>
         </div>
       );
@@ -109,7 +126,40 @@ export default function BookAvailabilitySection({ book }) {
                 />
               )}
             </Modal>
+            <Modal
+              modalState={waitingModal}
+              exitAction={() => setWaitingModal(false)}
+              height="auto"
+              width="400px"
+            >
+              {activeOffice && (
+                <WaitlistModal
+                  waiting={reservation}
+                  modalHandler={setWaitingModal}
+                />
+              )}
+            </Modal>
           </div>
+          { activeOffice && activeOffice.count < 1 ?
+          <div className="ba-section-buttons">
+            <div>
+              <button
+                className="ba-section-buttons-dark"
+                onClick={() => handleWaitingModalClick()}
+                disabled={!activeOffice}
+              >
+                Enter waitlist
+              </button>
+              <button
+                className="ba-section-buttons-dark"
+                onClick={() => handleScrollClick()}
+                disabled={!activeOffice}
+              >
+                Who else waiting?
+              </button>
+            </div>
+          </div>
+          :
           <div className="ba-section-buttons">
             <div>
               <button
@@ -121,6 +171,7 @@ export default function BookAvailabilitySection({ book }) {
               </button>
             </div>
           </div>
+          }
         </>
       ) : (
         <div>Book is not added</div>

@@ -18,6 +18,14 @@ export default ({ id }) => {
   const [confimationData, setConfirmationData] = useState([]);
   const [modalState, setModalState] = useState(false);
 
+  const ref = React.createRef();
+ 
+  const handleScrollClick = () =>
+    ref.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+
   function onDelete() {
     setModalState(false);
     dispatch(deleteBook(bookDetails.id));
@@ -131,12 +139,12 @@ export default ({ id }) => {
               </div>
             </div>
             <hr />
-            <BookReservationsSection id={id} />
+            <BookReservationsSection id={id} reffer={ref} />
             <hr />
             <BookCommentsSection id={id} />
           </div>
           <div className="reservation-panel">
-            <BookAvailabilitySection book={bookDetails} />
+            <BookAvailabilitySection book={bookDetails} handleScrollClick={handleScrollClick} />
           </div>
         </div>
       ) : (

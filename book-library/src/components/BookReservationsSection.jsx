@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookReservations } from "../store/reservations/actions";
 
-export default ({id}) => {
+export default ({id, reffer}) => {
 
     const dispatch = useDispatch();
     const reservations = useSelector(state => state.reservations.bookReservationData);
@@ -82,7 +82,7 @@ export default ({id}) => {
             }
             {waiting ?
                 <>
-                    <div className="book-reservation__list">
+                    <div className="book-reservation__list" ref={reffer}>
                         <h3 className="book-reservation__list-title">Waitlist</h3>
                         {waiting}
                     </div>

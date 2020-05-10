@@ -32,5 +32,10 @@ namespace BookLibrary.Api.Controllers.Reservations
         {
             return await _reservationsService.AddReservation(reservation);
         }
+        [HttpPost("waiting")]
+        public async Task<ActionResult<ResponseResult<Waiting>>> AddWaiting(Waiting waiting)
+        {
+            return await _reservationsService.AddWaiting(waiting);
+        }
     }
 }

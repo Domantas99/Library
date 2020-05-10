@@ -137,3 +137,7 @@ export const updateReservation = (reservation) => {
   ] = reservation;
   return reservation;
 };
+
+export const addWaiting = (waiting) => {
+  httpClient.post("reservations/waiting", waiting);
+};

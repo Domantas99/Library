@@ -209,11 +209,11 @@ namespace BookLibrary.DataBase.Models
             {
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Book)
+                entity.HasOne(d => d.BookCase)
                     .WithMany(p => p.Waiting)
-                    .HasForeignKey(d => d.BookId)
+                    .HasForeignKey(d => d.BookCaseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Waiting_BookId");
+                    .HasConstraintName("FK_Waiting_BookCaseId");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Waiting)
