@@ -11,11 +11,18 @@ import {
   DELETE_BOOK_END,
   UPDATE_BOOK,
   UPDATE_BOOK_END,
-} from "./actionTypes";
+  SET_FILTERS_START,
+  SET_FILTERS_END,
+  GET_CATEGORIES_START,
+  GET_CATEGORIES_END,
+  SELECT_CATEGORY,
+  GET_AUTHORS_START,
+  GET_AUTHORS_END,
+} from './actionTypes';
 
-export const getBookList = (category) => ({
+export const getBookList = (params) => ({
   type: GET_BOOK_LIST_START,
-  payload: category,
+  payload: params,
 });
 export const getBookListEnd = (bookList) => ({
   type: GET_BOOK_LIST_END,
@@ -61,4 +68,35 @@ export const updateBook = (id, book) => ({
 export const updateBookEnd = (book) => ({
   type: UPDATE_BOOK_END,
   payload: book,
+});
+
+export const setFilters = (filters) => ({
+  type: SET_FILTERS_START,
+  payload: filters,
+});
+
+export const setFiltersEnd = (filters) => ({
+  type: SET_FILTERS_END,
+  payload: filters,
+});
+
+export const getCategoriesStart = () => ({ type: GET_CATEGORIES_START });
+
+export const getCategoriesEnd = (categories) => ({
+  type: GET_CATEGORIES_END,
+  payload: categories,
+});
+
+export const selectCategory = (category) => ({
+  type: SELECT_CATEGORY,
+  payload: category,
+});
+
+export const getAuthors = () => ({
+  type: GET_AUTHORS_START,
+});
+
+export const getAuthorsEnd = (authors) => ({
+  type: GET_AUTHORS_END,
+  payload: authors,
 });

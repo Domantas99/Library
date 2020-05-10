@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import { getOfficesAPI } from "./api";
-import { GET_OFFICES } from "./actionTypes";
-import { getOfficesEnd } from "./actions";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import { getOfficesAPI } from './api';
+import { GET_OFFICES } from './actionTypes';
+import { getOfficesEnd } from './actions';
 
 export function* getOfficesSaga(action) {
   try {

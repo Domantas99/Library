@@ -1,12 +1,12 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put } from 'redux-saga/effects';
 import {
   GET_COMMENTS_START,
   GET_BOOK_COMMENTS_START,
   ADD_COMMENT_START,
   ADD_COMMENT_END,
-} from "./actionTypes";
-import { getComments, getBookComments, addComment } from "./api";
-import { getCommentsEnd, getBookCommentsEnd, addCommentEnd } from "./actions";
+} from './actionTypes';
+import { getComments, getBookComments, addComment } from './api';
+import { getCommentsEnd, getBookCommentsEnd, addCommentEnd } from './actions';
 
 export function* getCommentsSaga(action) {
   try {

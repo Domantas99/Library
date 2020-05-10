@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { takeLatest, call, put } from "redux-saga/effects";
-import history from "../../core/history";
-import { getLatestBooksAPI, getCurrentlyReadingBooksAPI } from "./api";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import history from '../../core/history';
+import { getLatestBooksAPI, getCurrentlyReadingBooksAPI } from './api';
 import {
   GET_LATEST_BOOKS,
   GET_LATEST_BOOKS_END,
   GET_CURRENTLY_READING_BOOKS,
   GET_CURRENTLY_READING_BOOKS_END,
-} from "./actionTypes";
-import { getLatestBooksEnd, getCurrentlyReadingBooksEnd } from "./actions";
+} from './actionTypes';
+import { getLatestBooksEnd, getCurrentlyReadingBooksEnd } from './actions';
 
 export function* getLatestBooksSaga(action) {
   try {

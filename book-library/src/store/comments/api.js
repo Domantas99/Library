@@ -1,7 +1,7 @@
-import httpClient from "../../core/httpClient";
+import httpClient from '../../core/httpClient';
 
 export const getComments = () => {
-  return httpClient.get("comments");
+  return httpClient.get('comments');
 };
 
 export const getBookComments = (book) => {
@@ -9,5 +9,5 @@ export const getBookComments = (book) => {
 };
 
 export const addComment = (comment) => {
-  return httpClient.post("comments", comment);
+  return httpClient.post('comments', comment);
 };

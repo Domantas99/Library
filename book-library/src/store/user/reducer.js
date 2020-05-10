@@ -1,4 +1,4 @@
-import { GET_USER, GET_USER_END } from "./actionTypes";
+import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
   userData: [],

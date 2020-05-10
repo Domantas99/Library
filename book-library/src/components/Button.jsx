@@ -45,7 +45,7 @@ Button.propTypes = {
   dark: PropTypes.bool,
   mini: PropTypes.bool,
   disabled: PropTypes.bool,
-  children: PropTypes.oneOf([
+  children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
