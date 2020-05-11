@@ -4,14 +4,16 @@ using BookLibrary.DataBase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200509144833_added-user-props")]
+    partial class addeduserprops
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,7 +445,7 @@ namespace BookLibrary.DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BookCaseId")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -454,7 +456,7 @@ namespace BookLibrary.DataBase.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookCaseId");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -600,10 +602,10 @@ namespace BookLibrary.DataBase.Migrations
 
             modelBuilder.Entity("BookLibrary.DataBase.Models.Waiting", b =>
                 {
-                    b.HasOne("BookLibrary.DataBase.Models.BookCase", "BookCase")
+                    b.HasOne("BookLibrary.DataBase.Models.Book", "Book")
                         .WithMany("Waiting")
-                        .HasForeignKey("BookCaseId")
-                        .HasConstraintName("FK_Waiting_BookCaseId")
+                        .HasForeignKey("BookId")
+                        .HasConstraintName("FK_Waiting_BookId")
                         .IsRequired();
 
                     b.HasOne("BookLibrary.DataBase.Models.User", "User")

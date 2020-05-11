@@ -10,5 +10,6 @@ namespace BookLibrary.Services.Contracts
     public interface IUsersService
     {
         Task<ResponseResult<User>> GetUser(int id);
+        Task<ResponseResult<User>> UpdateUser(User user);
     }
 }
