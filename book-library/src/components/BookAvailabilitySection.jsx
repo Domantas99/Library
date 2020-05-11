@@ -14,7 +14,6 @@ import { getBookAvailability } from "../store/library/actions";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
 import CantFind from "./CantFind";
-import WaitlistModal from "./WaitlistModal";
 import CheckInForm from "./CheckInForm";
 import {
   removeReservation,
@@ -26,28 +25,25 @@ import RadioButton from './Radio';
 export default function BookAvailabilitySection({
   bookDetails, 
   handleScrollClick, 
-  setUnavailableInMyOffice }) {
+  setUnavailableInMyOffice,
+  activeOffice, 
+  setActiveOffice,
+  openWaitingModal}) {
 
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
   const userOffice = useSelector((state) => state.user.userData.officeId);
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
-  const [waitingModal, setWaitingModal] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
-  const [activeOffice, setActiveOffice] = useState(null);
   const [reservation, setReservation]= useState(null);
+
+  setUnavailableInMyOffice(false);
 
   const handleModalClick = () => {
     const book = bookDetails.book;
     setReservation({ book, activeOffice });
     setModalState(true);
-  };
-
-  const handleWaitingModalClick = () => {
-    const book = bookDetails.book;
-    setReservation({ book, activeOffice });
-    setWaitingModal(true);
   };
 
   const handleOfficeClick = (e, data) => {
@@ -65,7 +61,7 @@ export default function BookAvailabilitySection({
 
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
-    if (unavailable && userOffice === d.office.id){
+    if (unavailable && userOffice === d.office.id && bookDetails.isUserCurrentlyReading===false){
       setUnavailableInMyOffice(true);
     };
     const itemClass = classNames('book-status__item', {
@@ -139,26 +135,13 @@ export default function BookAvailabilitySection({
                   />
                   )}
                 </Modal>
-                <Modal
-                  modalState={waitingModal}
-                  exitAction={() => {setWaitingModal(false)}}
-                  height="auto"
-                  width="400px"
-                >
-                  {activeOffice && (
-                    <WaitlistModal
-                      waiting={reservation}
-                      modalHandler={setWaitingModal}
-                    />
-                  )}
-                </Modal>
               </div>
               { activeOffice && activeOffice.count < 1 ?
               <div className="ba-section-buttons">
                 <div>
                   <button
                     className="ba-section-buttons-dark"
-                    onClick={() => handleWaitingModalClick()}
+                    onClick={() => openWaitingModal()}
                     disabled={!activeOffice}
                   >
                     Enter waitlist

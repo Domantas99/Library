@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBookReservations } from '../store/reservations/actions';
 import Button from './Button';
 
-export default ({ id, reffer, unavailableInMyOffice, setWaitingModalState }) => {
+export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
   const dispatch = useDispatch();
   const reservations = useSelector(
     (state) => state.reservations.bookReservationData
@@ -128,7 +128,7 @@ export default ({ id, reffer, unavailableInMyOffice, setWaitingModalState }) => 
         <></>
       )}
       {unavailableInMyOffice && (
-      <Button mini dark>
+      <Button mini dark onClick={openWaitingModal}>
         Join Waitlist
       </Button>)}
     </>

@@ -7,14 +7,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addWaiting } from "../store/reservations/actions";
 
-export default ({ waiting, modalHandler }) => {
+export default ({ waiting, closeModal }) => {
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
   
   function onSubmit() {
     const obj = createWaitingObj();
     dispatch(addWaiting(obj));
-    modalHandler(false);
+    closeModal();
   }
 
   function createWaitingObj() {
@@ -26,7 +26,7 @@ export default ({ waiting, modalHandler }) => {
       CreatedOn: today,
       BookCase: {
         BookId: waiting.book.id,
-        OfficeId: waiting.activeOffice.id || waiting.userOffice,
+        OfficeId: waiting.office,
         CreatedOn: today,
         CreatedBy: UserId,
       },
@@ -48,7 +48,7 @@ export default ({ waiting, modalHandler }) => {
       <p>There are no available copies at your office. Join a waiting list and get notified once the book becomes available</p>
       <button
         onClick={() => {
-          modalHandler(false);
+          closeModal();
         }}
       >
         Cancel

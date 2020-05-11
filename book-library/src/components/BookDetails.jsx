@@ -10,6 +10,7 @@ import BookAvailabilitySection from './BookAvailabilitySection';
 import BookCommentsSection from './BookCommentsSection';
 import BookReservationsSection from './BookReservationsSection';
 import Modal from './Modal';
+import WaitlistModal from "./WaitlistModal";
 import ConfirmationForm from './ConfirmationForm';
 import Button from './Button';
 import BookDetailsGrid from './BookDetailsGrid';
@@ -18,9 +19,14 @@ export default ({ id }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
+  const book = bookDetails.book;
+  const userOffice = useSelector((state) => state.user.userData.officeId);
   const [confimationData, setConfirmationData] = useState([]);
   const [modalState, setModalState] = useState(false);
   const [unavailableInMyOffice, setUnavailableInMyOffice] = useState(false);
+  const [waitingModal, setWaitingModal] = useState(false);
+  const [waiting, setWaiting] = useState({book, userOffice})
+  const [activeOffice, setActiveOffice] = useState(null);
 
   const ref = React.createRef();
  
@@ -28,7 +34,23 @@ export default ({ id }) => {
     ref.current.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
-    });
+  });
+
+  const createWaitingObj = () => {
+    return {
+      book: bookDetails.book,
+      office: activeOffice || userOffice
+    };
+  };
+
+  const openWaitingModal = () => {
+    setWaiting(createWaitingObj());
+    setWaitingModal(true);
+  };
+
+  const closeWaitingModal = () => {
+    setWaitingModal(false);
+  }
 
   const userId = useSelector((state) => state.user.userData.id);
   
@@ -104,6 +126,7 @@ export default ({ id }) => {
             id={id} 
             reffer={ref} 
             unavailableInMyOffice={unavailableInMyOffice}
+            openWaitingModal={openWaitingModal}
           />
           <hr />
           <BookCommentsSection id={id} />
@@ -114,6 +137,9 @@ export default ({ id }) => {
             bookDetails={bookDetails}
             handleScrollClick={handleScrollClick}
             setUnavailableInMyOffice={setUnavailableInMyOffice}
+            activeOffice={activeOffice}
+            setActiveOffice={setActiveOffice}
+            openWaitingModal={openWaitingModal}
           />
         </div>
       </div>
@@ -128,6 +154,19 @@ export default ({ id }) => {
           onNoAction={confimationData.onNo}
           onYesAction={confimationData.onYes}
         />
+      </Modal>
+      <Modal
+        modalState={waitingModal}
+        exitAction={() => {setWaitingModal(false)}}
+        height="auto"
+        width="400px"
+      >
+        {(
+          <WaitlistModal
+            waiting={waiting}
+            closeModal={closeWaitingModal}
+          />
+        )}
       </Modal>
     </>
   );
