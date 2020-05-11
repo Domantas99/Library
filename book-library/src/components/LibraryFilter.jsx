@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setFilters } from '../store/library/actions';
@@ -12,6 +12,8 @@ import FilterModalContent from './FilterModalContent';
 const LibraryFilter = ({ dataAction }) => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.library.filters);
+  const [sortField, setSortField] = useState('DateAdded');
+  const [sortDirection, setSortDirection] = useState(-1);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
 
@@ -22,10 +24,14 @@ const LibraryFilter = ({ dataAction }) => {
     authors: 'Author',
   };
 
+  const generateSortedFilters = useCallback(() => {
+    return {...filters, sortField: [sortField], sortDirection: [sortDirection]}
+  }, [filters, sortField, sortDirection]); 
+
   const removeFilter = (key, filter) => {
     const newFilters = { ...filters };
     newFilters[key] = newFilters[key].filter((item) => item !== filter);
-    dispatch(setFilters(newFilters));
+    dispatch(setFilters(generateSortedFilters()));
   };
 
   const createFilterPill = (key, filter) => {
@@ -44,6 +50,14 @@ const LibraryFilter = ({ dataAction }) => {
     setModalState(true);
   };
 
+  const handleChangeSortField = (event) => {
+    setSortField(event.target.value);
+  };
+
+  const handleChangeSortDirection = (event) => {
+    setSortDirection(event.target.value);
+  };
+
   const createFilterElements = () => {
     const elements = [];
     Object.keys(filters).forEach((key) => {
@@ -59,8 +73,8 @@ const LibraryFilter = ({ dataAction }) => {
   };
 
   useEffect(() => {
-    dispatch(dataAction(filters));
-  }, [filters]);
+    dispatch(dataAction(generateSortedFilters()));
+  }, [filters, sortField, sortDirection]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());
@@ -70,6 +84,23 @@ const LibraryFilter = ({ dataAction }) => {
     <>
       {filterElements}
       <Button onClick={() => handleModalClick()}>Add Filters</Button>
+      <select
+              id="book-list-sorting-field"
+              defaultValue={sortField}
+              onChange={handleChangeSortField}
+            >
+              <option value="Title">Title</option>
+              <option value="ReleaseDate">Release Date</option>
+              <option value="DateAdded">Date Added</option>
+            </select>
+            <select
+              id="book-list-sorting-direction"
+              defaultValue={`${sortDirection}`}
+              onChange={handleChangeSortDirection}
+            >
+              <option value="1">Ascending</option>
+              <option value="-1">Descending</option>
+            </select>
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}

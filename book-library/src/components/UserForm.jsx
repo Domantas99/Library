@@ -22,6 +22,7 @@ export default function UserForm({user}) {
     useEffect(() => {
       setUserInfo(user);
       dispatch(getOffices())
+      /* eslint-disable react-hooks/exhaustive-deps */
     }, [user])
 
     function OnSaveClick() {
@@ -31,7 +32,7 @@ export default function UserForm({user}) {
     return (
         <div>
             <div>
-                <img src={userInfo?.profilePictureUrl}></img>
+                <img src={userInfo?.profilePictureUrl} alt=""></img>
             </div>
             <div>
                 <div>            

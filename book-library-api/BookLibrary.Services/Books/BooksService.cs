@@ -95,7 +95,7 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors)
+        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string sortField="DateAdded", int sortDirection=-1)
         {
             var books = BooksWithoutWishes();
             if (categories != null && categories.Count > 0)
@@ -113,9 +113,24 @@ namespace BookLibrary.Services.Books
                 if (status.ToLower() == "available")
                 {
                     books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count > 0).ToList();
-                } else if (status.ToLower() == "unavailable"){
+                } else if (status.ToLower() == "unavailable")
+                {
                     books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count == 0).ToList();
                 }
+            }
+            try
+            {
+                if (sortDirection > 0)
+                {
+                    books = books.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+                else if (sortDirection < 0)
+                {
+                    books = books.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+            }
+            catch (NullReferenceException e) {
+                //Probably means sort field isn't set properly. Note it's case sensitive.
             }
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
         }
