@@ -22,14 +22,24 @@ import classNames from 'classnames';
 import RadioButton from './Radio';
 
 
-export default function BookAvailabilitySection({ bookDetails }) {
+export default function BookAvailabilitySection({
+  bookDetails, 
+  handleScrollClick, 
+  setUnavailableInMyOffice,
+  activeOffice, 
+  setActiveOffice,
+  openWaitingModal}) {
+
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
+  const userOffice = useSelector((state) => state.user.userData.officeId);
   const [modalState, setModalState] = useState(false);
   const [cantFindModal, setCantFindModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
-  const [activeOffice, setActiveOffice] = useState(null);
   const [reservation, setReservation]= useState(null);
+
+  setUnavailableInMyOffice(false);
+
   const handleModalClick = () => {
     const book = bookDetails.book;
     setReservation({ book, activeOffice });
@@ -49,10 +59,11 @@ export default function BookAvailabilitySection({ bookDetails }) {
     dispatch(getBookAvailability(bookDetails?.book.id));
   }, [dispatch, bookDetails]);
 
-
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
-
+    if (unavailable && userOffice === d.office.id && bookDetails.isUserCurrentlyReading===false){
+      setUnavailableInMyOffice(true);
+    };
     const itemClass = classNames('book-status__item', {
       'book-status__item--disabled': unavailable,
     });
@@ -67,7 +78,6 @@ export default function BookAvailabilitySection({ bookDetails }) {
         <RadioButton
           title={<i className="icon icon__office" />}
           name="office"
-          disabled={unavailable}
           onClick={(e) => handleOfficeClick(e, { ...d.office, count: d.count })}
         />
         <div className="book-status__info">
@@ -118,14 +128,34 @@ export default function BookAvailabilitySection({ bookDetails }) {
                   width="400px"
                 >
                   {(activeOffice) && (
-                    <ReservationModalContent
-                      reservation={reservation}
-                      onExit={() => setModalState(false)}
-                      onSubmit={() => ({})}
-                    />
+                  <ReservationModalContent
+                    reservation={reservation}
+                    onExit={() => setModalState(false)}
+                    onSubmit={() => ({})}
+                  />
                   )}
                 </Modal>
               </div>
+              { activeOffice && activeOffice.count < 1 ?
+              <div className="ba-section-buttons">
+                <div>
+                  <button
+                    className="ba-section-buttons-dark"
+                    onClick={() => openWaitingModal()}
+                    disabled={!activeOffice}
+                  >
+                    Enter waitlist
+                  </button>
+                  <button
+                    className="ba-section-buttons-light"
+                    onClick={() => handleScrollClick()}
+                    disabled={!activeOffice}
+                  >
+                    Who else waiting?
+                  </button>
+                </div>
+              </div>
+              :
               <div className="ba-section-buttons">
                 <div>
                   <button
@@ -133,16 +163,16 @@ export default function BookAvailabilitySection({ bookDetails }) {
                     onClick={() => handleModalClick()}
                     disabled={!activeOffice}
                   >
-                    Check Out
+                    Check out
                   </button>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div>Book is not added</div>
-          )}
-        </div>
-      ) : (
+              } 
+          </div>)
+          :
+          <div>Book is not added</div>}
+          </div>)
+          : (
         <div className="ba-section-currentlyReading">
           <Modal
             modalState={checkInModalState}

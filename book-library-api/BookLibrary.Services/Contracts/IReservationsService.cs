@@ -10,6 +10,7 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IReservationsService
     {
+        Task<ResponseResult<Waiting>> AddWaiting(Waiting waiting);
         Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user);
         Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
         Task<ResponseResult<Book>> CheckInReservation(int reservationId);

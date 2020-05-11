@@ -50,6 +50,33 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Reservation> { Error = flag, ReturnResult = reservation };
         }
 
+        public async Task<ResponseResult<Waiting>> AddWaiting(Waiting waiting)
+        {
+            bool flag = false;
+            try
+            {
+                var existing = await _context.Waiting.FirstOrDefaultAsync(x => x.UserId == waiting.UserId && x.BookCase.BookId == waiting.BookCase.BookId);
+
+                if (existing == null)
+                {
+                    var library = await _context.Library.FirstOrDefaultAsync(x => x.BookId == waiting.BookCase.BookId && x.OfficeId == waiting.BookCase.OfficeId);
+                    if (library != null && library.Count > 0)
+                    {
+                        waiting.Id = 0;
+                        _context.Waiting.Add(waiting);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+                flag = true;
+            }
+            return new ResponseResult<Waiting> { Error = flag, ReturnResult = waiting };
+        }
+
         public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
         {
             var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
