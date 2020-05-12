@@ -29,9 +29,9 @@ export default ({ data, navigate, offices }) => {
     dispatch(setVote(vote));
   }
   useEffect(() => {
-    
     dispatch(getVote(createVoteObject()));
-  }, [createVoteObject, dispatch]);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div>
