@@ -110,13 +110,14 @@ namespace BookLibrary.Services.Reservations
                 {
                     var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == waiting.BookCaseId);
                     book = bookCase.Book;
-                    _context.BookCase.Remove(bookCase);
                     _context.Waiting.Remove(waiting);
+                    _context.BookCase.Remove(bookCase);
                 }
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 flag = true;
             }
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
