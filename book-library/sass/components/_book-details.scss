@@ -66,4 +66,11 @@
   &__side-panel {
     grid-row: 1 / span 2;
   }
+
+  &-moreContent {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+  }
 }
