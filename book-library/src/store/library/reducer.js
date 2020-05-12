@@ -19,7 +19,7 @@ const initialState = {
   authors: [],
   bookData: [],
   bookDetails: {
-    book: [],
+    book: {},
     isUserCurrentlyReading: false,
   },
   bookAvailability: [],
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
         ...state,
         bookDetails: {
           ...result,
-          book: { ...returnedBook },
+          book: { ...returnedBook, releaseDate: returnedBook.releaseDate.substring(0, 10) },
         },
       };
     }

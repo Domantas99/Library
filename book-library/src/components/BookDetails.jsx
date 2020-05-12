@@ -93,13 +93,13 @@ export default ({ id }) => {
       <div className="book-details">
         <div className="book-details__left-pannel">
           <div className="book-details__image">
-            <img src={bookDetails.book.coverPictureUrl} alt="" />
+            <img src={bookDetails.book?.coverPictureUrl} alt="" />
           </div>
         </div>
         <div className="book-details__content">
-          <div className="book-details__title">{bookDetails.book.title}</div>
+          <div className="book-details__title">{bookDetails.book?.title}</div>
           <h4 className="text-secondary">
-            by <span className="text-underlined">{bookDetails.author}</span>
+            by <span className="text-underlined">{bookDetails.book?.author}</span>
           </h4>
           <div>
             <Button small clear onClick={onArchiveClick}>
@@ -113,10 +113,10 @@ export default ({ id }) => {
         </div>
         <div className="book-details__content book-details__content--secondary">
           <div className="book-details__description">
-            <p>{bookDetails.book.description}</p>
+            <p>{bookDetails.book?.description}</p>
           </div>
           <hr />
-          <BookDetailsGrid bookDetails={bookDetails.book} />
+          {bookDetails?.book && <BookDetailsGrid bookDetails={bookDetails.book} />}
           <Button dark mini onClick={handleClick}>
             <i className="btn__icon btn__icon--edit" />
             Edit details

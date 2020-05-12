@@ -64,7 +64,7 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId)
         {
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == bookId);
+            var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
             var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
             var reservation = userReservations.FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
@@ -178,9 +178,25 @@ namespace BookLibrary.Services.Books
                 {
                     if (lib.Count > 0)
                     {
-                        lib.BookId = book.Id;
-                        lib.ModifiedOn = DateTime.Today;
-                        _context.Library.Update(lib);
+                        var oldLib = _context.Library.Where(x => x.BookId == id && x.OfficeId == lib.OfficeId).FirstOrDefault();
+                        if (oldLib != null)
+                        {
+                            oldLib.ModifiedOn = DateTime.Today;
+                            oldLib.Count = lib.Count;
+                        }
+                        else {
+                            lib.BookId = id;
+                            lib.ModifiedOn = null;
+                            lib.CreatedOn = DateTime.Today;
+                            _context.Library.Add(lib);
+                        }
+                    }
+                    else {
+                        var oldLib = _context.Library.Where(x => x.BookId == id && x.OfficeId == lib.OfficeId).FirstOrDefault();
+                        if (oldLib != null)
+                        {
+                            _context.Library.Remove(oldLib);
+                        }
                     }
                 }
                 await _context.SaveChangesAsync();
