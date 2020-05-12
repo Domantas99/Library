@@ -13,75 +13,93 @@ import { useHistory } from "react-router-dom";
 import { addNewBook, updateBook } from "../store/library/actions";
 import { moveWishToLibrary } from "../store/wishlist/actions";
 
-const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => {
+const BookForm = ({
+  formTitle,
+  bookDetails,
+  id,
+  offices,
+  moveToWishAction,
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [officeData, setOffices] = useState(offices);
+  /* eslint-disable no-unused-vars */
+  const [requiredFields, setRequiredFields] = useState([
+    "bookTitle",
+    "bookAuthor",
+    "bookIsbn",
+    "bookFormat",
+    "bookDate",
+  ]);
 
-  const [formState, setFormState] = useState({
-    goodreadsSearch: "",
-    coverImage: bookDetails ? bookDetails.coverPictureUrl || "" : "",
-    bookTitle: bookDetails ? bookDetails.title || "" : "",
-    bookAuthor: bookDetails ? bookDetails.author || "" : "",
-    bookDescription: bookDetails ? bookDetails.description || "" : "",
-    bookIsbn: bookDetails ? bookDetails.isbn || "" : "",
-    bookFormat: bookDetails ? bookDetails.format || "Paperback" : "",
-    bookPages: bookDetails ? bookDetails.pageNumber || 0 : 0,
-    bookDate: bookDetails ? bookDetails.releaseDate || "" : "",
-    bookPublisher: bookDetails ? bookDetails.publisher || "Not Defined" : "",
-    bookLanguage: bookDetails ? bookDetails.editionLanguage || "" : "",
-    bookSeries: bookDetails ? bookDetails.series || "" : "",
-    bookCategory: bookDetails ? bookDetails.category || "" : "",
-    bookTag: bookDetails
-      ? bookDetails.tag || "tempTagPlaceholder"
-      : "tempTagPlaceholder",
-    errors: {
-      coverImage: "",
-      bookTitle: "",
-      bookIsbn: "",
-      bookAuthor: "",
-      bookDescription: "",
-      bookCategory: "",
-      bookTag: "",
-      bookFormat: "",
-      bookPages: "",
-      bookDate: "",
-      bookSeries: "",
-      bookPublisher: "",
-      bookLanguage: "",
-    }
-  });
+  const [formState, setFormState] = useState({ errors: {} });
+
+  useEffect(() => {
+    setFormState({
+      goodreadsSearch: "",
+      coverImage: bookDetails ? bookDetails.coverPictureUrl || "" : "",
+      bookTitle: bookDetails ? bookDetails.title || "" : "",
+      bookAuthor: bookDetails ? bookDetails.author || "" : "",
+      bookDescription: bookDetails ? bookDetails.description || "" : "",
+      bookIsbn: bookDetails ? bookDetails.isbn || "" : "",
+      bookFormat: bookDetails ? bookDetails.format || "Paperback" : "",
+      bookPages: bookDetails ? bookDetails.numberOfPages || 0 : 0,
+      bookDate: bookDetails ? bookDetails.releaseDate || "" : "",
+      bookPublisher: bookDetails ? bookDetails.publisher || "Not Defined" : "",
+      bookLanguage: bookDetails ? bookDetails.editionLanguage || "" : "",
+      bookSeries: bookDetails ? bookDetails.series || "" : "",
+      bookCategory: bookDetails ? bookDetails.category || "" : "",
+      bookTag: bookDetails
+        ? bookDetails.tag || "tempTagPlaceholder"
+        : "tempTagPlaceholder",
+      errors: {
+        coverImage: "",
+        bookTitle: "",
+        bookIsbn: "",
+        bookAuthor: "",
+        bookDescription: "",
+        bookCategory: "",
+        bookTag: "",
+        bookFormat: "",
+        bookPages: "",
+        bookDate: "",
+        bookSeries: "",
+        bookPublisher: "",
+        bookLanguage: "",
+      },
+    });
+  }, [bookDetails]);
 
   const validate = (key, value) => {
-    if (key !== "goodreadsSearch") {
-      if (key === "bookFormat" || key === "bookCategory") {
-        return value.length > 0 ? "" : "Please select"
+    if (requiredFields.includes(key)) {
+      if (key === "bookFormat" || key === "bookDate") {
+        return value.length > 0 ? "" : "Please select";
       } else {
         return value.length < 1 || value.length > 1000
-            ? "field must be filled and can not exceed 1000 characters"
-            : ""
+          ? "field must be filled and can not exceed 1000 characters"
+          : "";
       }
     }
-  }
+  };
 
   const validErrors = () => {
     const errors = {};
-    Object.keys(formState.errors).forEach((key) => errors[key] = validate(key, formState[key]))
-    setFormState({...formState, errors: errors})
+    Object.keys(formState.errors).forEach(
+      (key) => (errors[key] = validate(key, formState[key]))
+    );
+    setFormState({ ...formState, errors: errors });
     let valid = true;
-    Object.values(formState.errors).forEach((val) => val.length > 0 && (valid = false));
+    Object.entries(formState.errors).forEach(
+      (key, val) => key in requiredFields && val.length > 0 && (valid = false)
+    );
     return valid;
   };
-  
+
   const validInputs = () => {
     let valid = true;
     for (const key in formState) {
       if (formState.hasOwnProperty(key)) {
-        if (
-          key !== "goodreadsSearch" &&
-          key !== "coverImage" &&
-          formState[key].length < 1
-        ) {
+        if (requiredFields.includes(key) && formState[key].length < 1) {
           valid = false;
         }
       }
@@ -96,27 +114,29 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    setFormState({...formState, [name]: value, errors: {...formState.errors, [name]: validate(name, value)}});
+    setFormState({
+      ...formState,
+      [name]: value,
+      errors: { ...formState.errors, [name]: validate(name, value) },
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validErrors() && validInputs()) {
       const book = createBookObject();
-      if (formTitle==="Register new book") {
+      if (formTitle === "Register new book") {
         dispatch(addNewBook(book));
-        history.push(`/library/${id}`)
-      } else if (formTitle==="Book editing") {
+        history.push(`/library/${id}`);
+      } else if (formTitle === "Book editing") {
         dispatch(updateBook(id, book));
         history.push("/library");
-      }
-      else if (formTitle==="Add wish to library") {
-        const obj = {...book, id: bookDetails.id };
+      } else if (formTitle === "Add wish to library") {
+        const obj = { ...book, id: bookDetails.id };
         dispatch(moveWishToLibrary(obj));
         moveToWishAction();
       }
-    }
-    else {
+    } else {
       alert("Invalid form");
     }
   };
@@ -134,8 +154,9 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
 
   const createBookObject = () => {
     const library = [];
-    officeData.forEach((o) => library.push({ OfficeId: o.id, Count: o.count }));
-
+    officeData.forEach((o) => {
+      library.push({ OfficeId: o.id, Count: o.count });
+    });
     const book = {
       Title: formState.bookTitle,
       Isbn: formState.bookIsbn,
@@ -144,7 +165,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
       Category: formState.bookCategory,
       Tag: formState.bookTag,
       Format: formState.bookFormat,
-      NumberOfPages: +formState.bookPages,
+      NumberOfPages: formState.bookPages,
       Series: formState.bookSeries,
       Publisher: formState.bookPublisher,
       EditionLanguage: formState.bookLanguage,
@@ -176,7 +197,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             name="coverImage"
             accept="image/*"
           />
-          {formState.errors.coverImage.length > 0 && (
+          {formState.errors.coverImage?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.coverImage}
@@ -193,7 +214,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             name="bookTitle"
             onChange={handleChange}
           />
-          {formState.errors.bookTitle.length > 0 && (
+          {formState.errors.bookTitle?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookTitle}
@@ -210,7 +231,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             name="bookAuthor"
             onChange={handleChange}
           />
-          {formState.errors.bookAuthor.length > 0 && (
+          {formState.errors.bookAuthor?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookAuthor}
@@ -228,7 +249,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             rows="10"
             onChange={handleChange}
           />
-          {formState.errors.bookDescription.length > 0 && (
+          {formState.errors.bookDescription?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookDescription}
@@ -245,7 +266,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookIsbn}
             onChange={handleChange}
           />
-          {formState.errors.bookIsbn.length > 0 && (
+          {formState.errors.bookIsbn?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookIsbn}
@@ -261,12 +282,14 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookFormat}
             onChange={handleChange}
           >
-            <option value="" disabled hidden>Select format</option>
+            <option value="" disabled hidden>
+              Select format
+            </option>
             <option value="paperback">Paperback</option>
             <option value="e-book">E-book</option>
             <option value="audiobook">Audiobook</option>
           </select>
-          {formState.errors.bookFormat.length > 0 && (
+          {formState.errors.bookFormat?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookFormat}
@@ -284,7 +307,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookPages}
             onChange={handleChange}
           />
-          {formState.errors.bookPages.length > 0 && (
+          {formState.errors.bookPages?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookPages}
@@ -301,10 +324,10 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookDate}
             onChange={handleChange}
           />
-          {formState.errors.bookPages.length > 0 && (
+          {formState.errors.bookDate?.length > 0 && (
             <span className="error">
               <br />
-              {formState.errors.bookPages}
+              {formState.errors.bookDate}
             </span>
           )}
         </div>
@@ -318,7 +341,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookPublisher}
             onChange={handleChange}
           />
-          {formState.errors.bookPublisher.length > 0 && (
+          {formState.errors.bookPublisher?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookPublisher}
@@ -335,7 +358,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookLanguage}
             onChange={handleChange}
           />
-          {formState.errors.bookLanguage.length > 0 && (
+          {formState.errors.bookLanguage?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookLanguage}
@@ -352,7 +375,7 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookSeries}
             onChange={handleChange}
           />
-          {formState.errors.bookSeries.length > 0 && (
+          {formState.errors.bookSeries?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookSeries}
@@ -368,11 +391,13 @@ const BookForm = ({ formTitle, bookDetails, id, offices, moveToWishAction }) => 
             value={formState.bookCategory}
             onChange={handleChange}
           >
-            <option value="" disabled hidden>Select category</option>
+            <option value="" disabled hidden>
+              Select category
+            </option>
             <option value="drama">Drama</option>
             <option value="sci-fi">Sci-fi</option>
           </select>
-          {formState.errors.bookCategory.length > 0 && (
+          {formState.errors.bookCategory?.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookCategory}
