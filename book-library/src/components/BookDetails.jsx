@@ -27,6 +27,7 @@ export default ({ id }) => {
   const [waitingModal, setWaitingModal] = useState(false);
   const [waiting, setWaiting] = useState({book, userOffice})
   const [activeOffice, setActiveOffice] = useState(null);
+  const [moreBtnState, setMoreBtnState] = useState(false);
 
   const ref = React.createRef();
  
@@ -90,7 +91,7 @@ export default ({ id }) => {
 
   return (
     <>
-      <div className="book-details">
+      <div onClick={() => moreBtnState && setMoreBtnState(false)} className="book-details">
         <div className="book-details__left-pannel">
           <div className="book-details__image">
             <img src={bookDetails.book?.coverPictureUrl} alt="" />
@@ -102,13 +103,19 @@ export default ({ id }) => {
             by <span className="text-underlined">{bookDetails.book?.author}</span>
           </h4>
           <div>
-            <Button small clear onClick={onArchiveClick}>
-              Archive book
-            </Button>
-            <Button small clear onClick={onDeleteClick}>
-              Delete book
-            </Button>
-            <Button mini secondary><i className="btn__icon btn__icon--settings" />More</Button>
+            <Button onClick={() => setMoreBtnState(!moreBtnState)} mini secondary><i className="btn__icon btn__icon--settings" />More</Button>
+            {
+              moreBtnState && (
+              <div className="book-details-moreContent">
+                <Button  small clear onClick={onArchiveClick}>
+                  Archive book
+                </Button>
+                <Button small clear onClick={onDeleteClick}>
+                  Delete book
+                </Button>
+              </div>)
+            }
+            
           </div>
         </div>
         <div className="book-details__content book-details__content--secondary">
