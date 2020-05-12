@@ -3,6 +3,8 @@ import {
   GET_BOOK_RESERVATIONS_END,
   REMOVE_RESERVATION_START,
   REMOVE_RESERVATION_END,
+  REMOVE_WAITING_START,
+  REMOVE_WAITING_END
 } from "./actionTypes";
 
 const initialState = {
@@ -56,6 +58,19 @@ export default (state = initialState, action) => {
       };
     }
     case REMOVE_RESERVATION_END: {
+      return {
+        ...state,
+      };
+    }
+    case REMOVE_WAITING_START: {
+      return {
+        ...state,
+        reservationData: state.reservationData.filter(
+          (x) => x.id !== action.payload
+        ),
+      };
+    }
+    case REMOVE_WAITING_END: {
       return {
         ...state,
       };

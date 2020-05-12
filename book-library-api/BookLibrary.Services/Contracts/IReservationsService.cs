@@ -14,5 +14,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user);
         Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
         Task<ResponseResult<Book>> CheckInReservation(int reservationId);
+        Task<ResponseResult<Book>> RemoveWaiting(int waitingId);
     }
 }

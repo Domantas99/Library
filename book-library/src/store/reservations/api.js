@@ -139,8 +139,12 @@ export const updateReservation = (reservation) => {
 };
 
 export const addWaiting = (waiting) => {
-  httpClient.post("reservations/waiting", waiting);
-}
+  return httpClient.post("reservations/waiting", waiting);
+};
+
+export const removeWaiting = (waitingId) => {
+  return httpClient.delete(`reservations/waiting/${waitingId}`)
+};
 
 export const removeReservationAPI = (reservationId) => {
   return httpClient.delete(`reservations/${reservationId}`);

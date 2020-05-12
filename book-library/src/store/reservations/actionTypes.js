@@ -14,5 +14,9 @@ export const UPDATE_RESERVATION_END = "reservations/UPDATE_RESERVATION_END";
 
 export const ADD_WAITING_START = "reservations/ADD_WAITING_START";
 export const ADD_WAITING_END = "reservations/ADD_WAITING_END";
+
+export const REMOVE_WAITING_START = "reservations/REMOVE_WAITING_START";
+export const REMOVE_WAITING_END = "reservations/REMOVE_WAITING_END";
+
 export const REMOVE_RESERVATION_START = "reservations/REMOVE_RESERVATION_START";
 export const REMOVE_RESERVATION_END = "reservations/REMOVE_RESERVATION_END";

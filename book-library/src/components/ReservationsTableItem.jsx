@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
-import { removeReservation } from "../store/reservations/actions";
+import { removeReservation, removeWaiting } from "../store/reservations/actions";
 import CheckInForm from "./CheckInForm";
 
 export default ({ data }) => {
@@ -20,6 +20,10 @@ export default ({ data }) => {
   const onConfirmClick = () => {
     dispatch(removeReservation(data.id, userId));
     setCheckInModalState(false);
+  };
+
+  const onLeaveWaitlist = () => {
+    dispatch(removeWaiting(data.id, userId));
   };
 
   return (
@@ -48,7 +52,11 @@ export default ({ data }) => {
         {data.status === "Borrowed" ? (
           <span>Borrowed</span>
         ) : (
+          data.status === "Requested" ? (
           <span>Requested</span>
+          ) : (
+            <span>Waiting</span>
+          ) 
         )}
       </td>
       <td>{data.bookedFrom}</td>
@@ -70,9 +78,9 @@ export default ({ data }) => {
           <button onClick={() => handleModalClick()}>Edit</button>
           <button onClick={() => setCheckInModalState(true)}>Check In</button>
         </td>
-      ) : (
+      ) : (data.status === "Waiting" &&
         <td>
-          <button>Leave waitlist</button>
+          <button onClick={onLeaveWaitlist}>Leave waitlist</button>
         </td>
       )}
     </tr>
