@@ -38,8 +38,6 @@ export default function BookAvailabilitySection({
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [reservation, setReservation]= useState(null);
 
-  setUnavailableInMyOffice(false);
-
   const handleModalClick = () => {
     const book = bookDetails.book;
     setReservation({ book, activeOffice });
@@ -56,7 +54,9 @@ export default function BookAvailabilitySection({
   }
 
   useEffect(() => {
-    dispatch(getBookAvailability(bookDetails?.book.id));
+    if (bookDetails?.book){
+      dispatch(getBookAvailability(bookDetails?.book?.id));
+    }
   }, [dispatch, bookDetails]);
 
   const generateOfficeElement = (d) => {
@@ -193,7 +193,7 @@ export default function BookAvailabilitySection({
             <div>
               Return date:
             <span className="ba-section-currentlyReading-content-date">
-              {bookDetails.activeReservation.returnDate.substring(0, 10)}
+              {bookDetails?.activeReservation?.returnDate.substring(0, 10)}
             </span>
             </div>
           </div>

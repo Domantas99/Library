@@ -12,12 +12,15 @@ export default () => {
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
   const offices = useSelector((state) => state.office.offices);
-  offices.forEach((o) => (o.count = 0));
+  offices.forEach((o) => {
+    o.count = bookDetails?.book?.library?.find(x => x.officeId === o.id)?.count || 0;
+  });
 
   useEffect(() => {
-    dispatch(getBookDetails(id));
+    dispatch(getBookDetails(id, 1));
     dispatch(getOffices());
-  }, [dispatch, id]);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [id]);
 
   return id ? (
     <div className="content-wrapper">
