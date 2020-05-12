@@ -135,7 +135,7 @@ namespace BookLibrary.Services.Reservations
                     Office = reservation.BookCase.Office,
                     BookedFrom = reservation.CheckedOutOn,
                     ReturnDate = reservation.PlannedReturnOn,
-                    Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"
+                    Status = reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed"
                 });
             }
 
