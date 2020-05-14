@@ -15,6 +15,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user);
         Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
         Task<ResponseResult<Book>> CheckInReservation(int reservationId);
-        Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize);
+        Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize, string sort);
     }
 }

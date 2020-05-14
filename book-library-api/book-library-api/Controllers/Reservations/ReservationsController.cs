@@ -28,9 +28,9 @@ namespace BookLibrary.Api.Controllers.Reservations
         }
 
         [HttpGet()]
-        public async Task<ActionResult<ResponseResult<PagedList<ReservationDTO>>>> GetTeamReservations([FromQuery] int page=1, [FromQuery] int pageSize=10) 
+        public async Task<ActionResult<ResponseResult<PagedList<ReservationDTO>>>> GetTeamReservations([FromQuery] int page=1, [FromQuery] int pageSize=10, [FromQuery] string sort = "recent") 
         {
-            return await _reservationsService.GetTeamReservations(page, pageSize);
+            return await _reservationsService.GetTeamReservations(page, pageSize, sort);
         }
 
         [HttpPost]

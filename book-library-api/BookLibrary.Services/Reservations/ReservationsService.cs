@@ -13,6 +13,7 @@ namespace BookLibrary.Services.Reservations
 {
     public class ReservationsService : IReservationsService
     {
+        private const string sort_recent = "recent";
         private readonly LibraryDBContext _context;
         public ReservationsService(LibraryDBContext context)
         {
@@ -113,9 +114,16 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response };
         }
 
-        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize)
+        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize, string sort)
         {
             var reservations = await _context.Reservation.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
+            switch (sort) {
+                case sort_recent:
+                    {
+                        reservations.Sort((a, b) => Nullable.Compare(a.BookedFrom, b.BookedFrom));
+                        break;
+                    }
+            }
             var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
             return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage };
         }
