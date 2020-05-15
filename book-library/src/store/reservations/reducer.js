@@ -4,7 +4,7 @@ import {
   GET_BOOK_RESERVATIONS_END,
   REMOVE_RESERVATION_START,
   REMOVE_RESERVATION_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 const initialState = {
   reservationData: [],
@@ -26,10 +26,10 @@ export default (state = initialState, action) => {
           ...reservation,
           bookedFrom: reservation.bookedFrom
             ? reservation.bookedFrom.substring(0, 10)
-            : "",
+            : '',
           returnDate: reservation.returnDate
             ? reservation.returnDate.substring(0, 10)
-            : "",
+            : '',
         };
       });
       return {
@@ -44,10 +44,10 @@ export default (state = initialState, action) => {
           ...reservation,
           bookedFrom: reservation.bookedFrom
             ? reservation.bookedFrom.substring(0, 10)
-            : "",
+            : '',
           returnDate: reservation.returnDate
             ? reservation.returnDate.substring(0, 10)
-            : "",
+            : '',
         };
       });
       return {
@@ -68,10 +68,10 @@ export default (state = initialState, action) => {
           ...reservation,
           bookedFrom: reservation.bookedFrom
             ? reservation.bookedFrom.substring(0, 10)
-            : "",
+            : '',
           returnDate: reservation.returnDate
             ? reservation.returnDate.substring(0, 10)
-            : "",
+            : '',
         };
       });
       return {
