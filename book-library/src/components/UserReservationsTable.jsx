@@ -8,10 +8,7 @@ const createTableRows = (reservations, sort_field, sort_direction) => {
   return [...reservations]
     .sort(getFieldSorter(sort_field, sort_direction))
     .map((reservation) => (
-      <ReservationsTableItem
-        key={reservation.id}
-        data={reservation}
-      />
+      <ReservationsTableItem key={reservation.id} data={reservation} />
     ));
 };
 

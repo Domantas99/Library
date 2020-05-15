@@ -9,7 +9,13 @@ import {
 const initialState = {
   reservationData: [],
   bookReservationData: [],
-  teamReservationData: [],
+  teamReservationData: {
+    reservations: [],
+    hasNextPage: false,
+    hasPreviousPage: false,
+    totalPages: 1,
+    items: 0,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -46,7 +52,13 @@ export default (state = initialState, action) => {
       });
       return {
         ...state,
-        teamReservationData: reservations,
+        teamReservationData: {
+          reservations: reservations,
+          hasNextPage: action.payload.hasNextPage,
+          hasPreviousPage: action.payload.hasPreviousPage,
+          totalPages: action.payload.totalPages,
+          items: action.payload.items,
+        },
       };
     }
 

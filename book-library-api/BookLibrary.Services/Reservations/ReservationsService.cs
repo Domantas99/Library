@@ -125,7 +125,7 @@ namespace BookLibrary.Services.Reservations
                     }
             }
             var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
-            return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage };
+            return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }
     }
 }

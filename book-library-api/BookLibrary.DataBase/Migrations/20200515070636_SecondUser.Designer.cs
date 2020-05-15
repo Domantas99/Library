@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookLibrary.DataBase.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    [Migration("20200513122622_AddSecondUser")]
-    partial class AddSecondUser
+    [Migration("20200515070636_SecondUser")]
+    partial class SecondUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -413,6 +413,18 @@ namespace BookLibrary.DataBase.Migrations
                             ProfilePictureUrl = "https://randomuser.me/api/portraits/men/94.jpg",
                             Role = "Full-Stack Developer",
                             UserName = "Nathaniux123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "gmail@bean.mr",
+                            FullName = "Mr. Bean",
+                            GoodReadsAccount = "https://www.goodreads.com/",
+                            OfficeId = 1,
+                            PhoneNumber = "+3707654321",
+                            ProfilePictureUrl = "https://vignette.wikia.nocookie.net/mrbean/images/4/4b/Mr_beans_holiday_ver2.jpg/revision/latest?cb=20181130033425",
+                            Role = "Full-Time Disaster",
+                            UserName = "Beanz"
                         });
                 });
 
