@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import httpClient from '../../core/httpClient';
+import { paramGenerator } from '../../utilities';
 
 const reservations = [
   {
@@ -77,6 +78,15 @@ export const getReservationsList = (userId) => {
   return httpClient.get(`reservations/user/${userId}`);
 };
 
+export const getTeamReservations = (params) => {
+  let url = 'reservations';
+  if (params) {
+    url += `?${paramGenerator(params)}`;
+  }
+  return httpClient.get(url);
+};
+
+//TODO This needs to be real API data.
 export const getBookReservations = (bookId) => {
   return {
     errorFlag: false,
@@ -128,9 +138,10 @@ export const getBookReservations = (bookId) => {
 };
 
 export const addReservation = (reservation) => {
-  return httpClient.post("reservations", reservation);
+  return httpClient.post('reservations', reservation);
 };
 
+//TODO This needs to be a real API method.
 export const updateReservation = (reservation) => {
   reservations[
     reservations.findIndex((element) => element.id === reservation.id)
@@ -139,8 +150,8 @@ export const updateReservation = (reservation) => {
 };
 
 export const addWaiting = (waiting) => {
-  httpClient.post("reservations/waiting", waiting);
-}
+  httpClient.post('reservations/waiting', waiting);
+};
 
 export const removeReservationAPI = (reservationId) => {
   return httpClient.delete(`reservations/${reservationId}`);

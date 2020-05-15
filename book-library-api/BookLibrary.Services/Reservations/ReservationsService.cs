@@ -13,6 +13,7 @@ namespace BookLibrary.Services.Reservations
 {
     public class ReservationsService : IReservationsService
     {
+        private const string sort_recent = "recent";
         private readonly LibraryDBContext _context;
         public ReservationsService(LibraryDBContext context)
         {
@@ -24,7 +25,7 @@ namespace BookLibrary.Services.Reservations
             bool flag = false;
             try
             {
-                var reservations = await _context.Reservation.Include(x=>x.BookCase).ToListAsync();
+                var reservations = await _context.Reservation.Include(x => x.BookCase).ToListAsync();
                 int index = reservations.FindIndex(x => x.Id == reservation.Id);
                 if (index >= 0)
                 {
@@ -43,7 +44,8 @@ namespace BookLibrary.Services.Reservations
 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 var a = ex;
                 flag = true;
             }
@@ -86,14 +88,15 @@ namespace BookLibrary.Services.Reservations
             {
                 if (reservation != null)
                 {
-                    var bookCase = await _context.BookCase.Include(x=> x.Book).FirstOrDefaultAsync(x => x.Id == reservation.BookCaseId);
+                    var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == reservation.BookCaseId);
                     book = bookCase.Book;
                     _context.BookCase.Remove(bookCase);
                     _context.Reservation.Remove(reservation);
                 }
                 await _context.SaveChangesAsync();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 flag = true;
             }
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
@@ -102,20 +105,27 @@ namespace BookLibrary.Services.Reservations
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)
-                .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).ToListAsync();
+                .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).ToListAsync();
             var response = new List<ReservationDTO>();
-            foreach (Reservation reservation in reservations) {
-                response.Add(new ReservationDTO
-                {
-                    Id = reservation.Id,
-                    Book = reservation.BookCase.Book,
-                    Office = reservation.BookCase.Office,
-                    BookedFrom = reservation.CheckedOutOn,
-                    ReturnDate = reservation.PlannedReturnOn,
-                    Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"
-                });
+            foreach (Reservation reservation in reservations)
+            {
+                response.Add((ReservationDTO)reservation);
             }
-            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response};
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response };
+        }
+
+        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize, string sort)
+        {
+            var reservations = await _context.Reservation.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
+            switch (sort) {
+                case sort_recent:
+                    {
+                        reservations.Sort((a, b) => Nullable.Compare(a.BookedFrom, b.BookedFrom));
+                        break;
+                    }
+            }
+            var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
+            return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }
     }
 }

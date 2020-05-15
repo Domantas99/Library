@@ -7,10 +7,11 @@ import ReservationModalContent from "./ReservationModalContent";
 import { removeReservation } from "../store/reservations/actions";
 import CheckInForm from "./CheckInForm";
 
-export default ({ data }) => {
+const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
+  //TODO: This will have interesting results if we use it as an admin.
   const userId = useSelector((state) => state.user.userData.id);
 
   const handleModalClick = () => {
@@ -36,13 +37,17 @@ export default ({ data }) => {
           onConfirm={() => onConfirmClick()}
         />
       </Modal>
+      {data.user && (
+        <td>
+          <span>{data.user.fullName}</span>
+        </td>)}
       <td>
         <img src={data.book.coverPictureUrl} alt="" />
         <span>{data.book.title}</span>
         <span>{data.book.author}</span>
       </td>
       <td>
-        <span>{data.activeOffice.name}</span>
+        <span>{data.office.name}</span>
       </td>
       <td>
         {data.status === "Borrowed" ? (
@@ -78,3 +83,5 @@ export default ({ data }) => {
     </tr>
   );
 };
+
+export default ReservationsTableItem;

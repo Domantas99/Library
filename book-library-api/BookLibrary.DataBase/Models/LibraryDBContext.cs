@@ -53,6 +53,17 @@ namespace BookLibrary.DataBase.Models
                     GoodReadsAccount= "https://www.goodreads.com/",
                     PhoneNumber="+3701234567",
                     Role="Full-Stack Developer"
+                }, new User
+                {
+                    Id = 2,
+                    FullName = "Mr. Bean",
+                    UserName = "Beanz",
+                    Email = "gmail@bean.mr",
+                    OfficeId = 1,
+                    ProfilePictureUrl = "https://vignette.wikia.nocookie.net/mrbean/images/4/4b/Mr_beans_holiday_ver2.jpg/revision/latest?cb=20181130033425",
+                    GoodReadsAccount = "https://www.goodreads.com/",
+                    PhoneNumber = "+3707654321",
+                    Role = "Full-Time Disaster"
                 }
                 );
 
