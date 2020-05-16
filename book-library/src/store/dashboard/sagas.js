@@ -1,14 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../core/history';
-import { getLatestBooksAPI, getCurrentlyReadingBooksAPI } from './api';
+import { getLatestBooksAPI, getCurrentlyReadingBooksAPI, getRecommendedBooksAPI } from './api';
 import {
   GET_LATEST_BOOKS,
   GET_LATEST_BOOKS_END,
   GET_CURRENTLY_READING_BOOKS,
   GET_CURRENTLY_READING_BOOKS_END,
+  GET_RECOMMENDED_BOOKS,
 } from './actionTypes';
-import { getLatestBooksEnd, getCurrentlyReadingBooksEnd } from './actions';
+import { getLatestBooksEnd, getCurrentlyReadingBooksEnd, getRecommendedBooksEnd } from './actions';
 
 export function* getLatestBooksSaga(action) {
   try {
@@ -28,7 +29,17 @@ export function* getCurrentlyReadingBooksSaga(action) {
   }
 }
 
+export function* getRecommendedBooksSaga(action) {
+  try {
+    const apiResult = yield call(getRecommendedBooksAPI, action.payload);
+    yield put(getRecommendedBooksEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_LATEST_BOOKS, getLatestBooksSaga);
   yield takeLatest(GET_CURRENTLY_READING_BOOKS, getCurrentlyReadingBooksSaga);
+  yield takeLatest(GET_RECOMMENDED_BOOKS, getRecommendedBooksSaga);
 }

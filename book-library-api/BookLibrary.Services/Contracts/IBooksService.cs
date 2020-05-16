@@ -22,5 +22,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId);
         Task<ResponseResult<Book>> DeleteBook(int id);
         Task<ResponseResult<ICollection<string>>> GetAuthors();
+        Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count);
     }
 }

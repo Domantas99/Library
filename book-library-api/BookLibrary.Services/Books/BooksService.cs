@@ -233,5 +233,60 @@ namespace BookLibrary.Services.Books
             }
             return books;
         }
+
+        public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
+        {
+            var allBooks = _context.Book.ToList();
+
+            var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
+            allBooks = allBooks.Except(reservations).ToList();
+
+            var userCategories = reservations.Select(x => x.Category).Distinct().ToList();
+            var userAuthors = reservations.Select(x => x.Author).Distinct().ToList();
+
+            int categoriesCount = userCategories.Count;
+            int authorsCount = userAuthors.Count;
+
+            int takeCount = 1;
+            if (authorsCount <= count)
+            {
+                takeCount = count / authorsCount;
+            }
+            if (takeCount > 3) {
+                takeCount = 3;
+            }
+
+            List<Book> recommended = new List<Book>();
+            for (int i = 0; i < userAuthors.Count; i++)
+            {
+                var b = allBooks.Where(x => x.Author == userAuthors.ElementAt(i)).Take(takeCount);
+                recommended.AddRange(b);
+            }
+            allBooks = allBooks.Except(recommended).ToList();
+
+            if (recommended.Count < count)
+            {
+                int diff = count - recommended.Count;
+                takeCount = diff / categoriesCount + 1;      
+
+                for (int i = 0; i < userCategories.Count; i++)
+                {
+                    var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
+                    recommended.AddRange(recB);
+                }
+                allBooks = allBooks.Except(recommended).ToList();
+                if (recommended.Count < count)
+                {
+                    recommended.AddRange(allBooks);
+                }
+                if (recommended.Count < count)
+                {
+                    recommended.AddRange(_context.Book.Except(recommended));
+                }
+            }
+            recommended = recommended.Take(count).ToList();
+
+            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
+        }
     }
 }

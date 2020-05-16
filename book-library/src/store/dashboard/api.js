@@ -5,6 +5,12 @@ export const getLatestBooksAPI = (numberOfBooks) => {
   return httpClient.get(`books/latest/${numberOfBooks}`);
 };
 
+export const getRecommendedBooksAPI = (details) => {
+  return httpClient.get(
+    `books/recommended/?userId=${details.userId}&count=${details.count}`
+  );
+};
+
 export const getCurrentlyReadingBooksAPI = () => {
   return [
     {
