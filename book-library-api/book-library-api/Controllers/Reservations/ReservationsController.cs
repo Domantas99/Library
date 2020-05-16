@@ -50,5 +50,11 @@ namespace BookLibrary.Api.Controllers.Reservations
         {
             return await _reservationsService.CheckInReservation(reservationId);
         }
+
+        [HttpGet("currently-reading/{userId}")]
+        public async Task<ActionResult<ResponseResult<ICollection<Reservation>>>> GetUserCurrentlyReadingReservedBooks(int userId)
+        {
+            return await _reservationsService.GetUserCurrentlyReadingReservedBooks(userId);
+        }
     }
 }

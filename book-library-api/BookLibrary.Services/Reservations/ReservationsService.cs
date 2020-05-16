@@ -124,5 +124,25 @@ namespace BookLibrary.Services.Reservations
             var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
             return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }
+
+        public async Task<ResponseResult<ICollection<Reservation>>> GetUserCurrentlyReadingReservedBooks(int userId)
+        {
+            try
+            {
+                var reservations = _context.Reservation
+                    .Include(a => a.BookCase)
+                        .ThenInclude(b => b.Book)
+                            .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                                .ToList();
+                return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
+            }
+            catch (Exception e) {
+                var a = e;
+                return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = null };
+            }
+
+            
+        }
+ 
     }
 }
