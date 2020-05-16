@@ -24,9 +24,15 @@ const LibraryFilter = ({ dataAction }) => {
     authors: 'Author',
   };
 
+  const unrendered = ['sortField', 'sortDirection'];
+
   const generateSortedFilters = useCallback(() => {
-    return {...filters, sortField: [sortField], sortDirection: [sortDirection]}
-  }, [filters, sortField, sortDirection]); 
+    return {
+      ...filters,
+      sortField: [sortField],
+      sortDirection: [sortDirection],
+    };
+  }, [filters, sortField, sortDirection]);
 
   const removeFilter = (key, filter) => {
     const newFilters = { ...filters };
@@ -61,12 +67,14 @@ const LibraryFilter = ({ dataAction }) => {
   const createFilterElements = () => {
     const elements = [];
     Object.keys(filters).forEach((key) => {
-      if (Array.isArray(filters[key])) {
-        filters[key].forEach((filter) => {
-          elements.push(createFilterPill(key, filter));
-        });
-      } else {
-        elements.push(createFilterPill(key, filters[key]));
+      if (!unrendered.includes(key)) {
+        if (Array.isArray(filters[key])) {
+          filters[key].forEach((filter) => {
+            elements.push(createFilterPill(key, filter));
+          });
+        } else {
+          elements.push(createFilterPill(key, filters[key]));
+        }
       }
     });
     return elements;
@@ -85,22 +93,22 @@ const LibraryFilter = ({ dataAction }) => {
       {filterElements}
       <Button onClick={() => handleModalClick()}>Add Filters</Button>
       <select
-              id="book-list-sorting-field"
-              defaultValue={sortField}
-              onChange={handleChangeSortField}
-            >
-              <option value="Title">Title</option>
-              <option value="ReleaseDate">Release Date</option>
-              <option value="DateAdded">Date Added</option>
-            </select>
-            <select
-              id="book-list-sorting-direction"
-              defaultValue={`${sortDirection}`}
-              onChange={handleChangeSortDirection}
-            >
-              <option value="1">Ascending</option>
-              <option value="-1">Descending</option>
-            </select>
+        id="book-list-sorting-field"
+        defaultValue={sortField}
+        onChange={handleChangeSortField}
+      >
+        <option value="Title">Title</option>
+        <option value="ReleaseDate">Release Date</option>
+        <option value="DateAdded">Date Added</option>
+      </select>
+      <select
+        id="book-list-sorting-direction"
+        defaultValue={`${sortDirection}`}
+        onChange={handleChangeSortDirection}
+      >
+        <option value="1">Ascending</option>
+        <option value="-1">Descending</option>
+      </select>
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}
