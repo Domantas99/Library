@@ -239,7 +239,7 @@ namespace BookLibrary.Services.Books
             var allBooks = _context.Book.ToList();
 
             var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
-            allBooks.Except(reservations);
+            allBooks = allBooks.Except(reservations).ToList();
 
             var userCategories = reservations.Select(x => x.Category).Distinct().ToList();
             var userAuthors = reservations.Select(x => x.Author).Distinct().ToList();
@@ -256,14 +256,13 @@ namespace BookLibrary.Services.Books
                 takeCount = 3;
             }
 
-
             List<Book> recommended = new List<Book>();
             for (int i = 0; i < userAuthors.Count; i++)
             {
                 var b = allBooks.Where(x => x.Author == userAuthors.ElementAt(i)).Take(takeCount);
                 recommended.AddRange(b);
             }
-            allBooks.Except(recommended);
+            allBooks = allBooks.Except(recommended).ToList();
 
             if (recommended.Count < count)
             {
@@ -274,19 +273,18 @@ namespace BookLibrary.Services.Books
                 {
                     var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
                     recommended.AddRange(recB);
-                    allBooks.Except(recB);
                 }
-
+                allBooks = allBooks.Except(recommended).ToList();
                 if (recommended.Count < count)
                 {
                     recommended.AddRange(allBooks);
                 }
                 if (recommended.Count < count)
                 {
-                    diff = count - recommended.Count;
-                    recommended.AddRange(_context.Book.Take(diff));
+                    recommended.AddRange(_context.Book.Except(recommended));
                 }
             }
+            recommended = recommended.Take(count).ToList();
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
         }

@@ -35,10 +35,10 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetBooks(category, offices, status, authors, sortField, sortDirection);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetRecommendedBooks([FromQuery] int userId, int count) 
+        [HttpGet("recommended")]
+        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
         {
-            return null;
+            return await _booksService.GetUserRecommendedBooks(userId, count);
         }
 
         [HttpGet("filter/{pattern}")]
