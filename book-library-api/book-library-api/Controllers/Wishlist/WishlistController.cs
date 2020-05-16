@@ -22,9 +22,9 @@ namespace BookLibrary.Api.Controllers.Wishlist
             _wishlistService = wishlistService;
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<WishlistItemDTO>>>> GetWishlist()
+        public async Task<ActionResult<ResponseResult<ICollection<WishlistItemDTO>>>> GetWishlist([FromQuery]List<string> category, [FromQuery] List<string> authors, [FromQuery] string sortField, [FromQuery] int sortDirection)
         {
-            return await _wishlistService.GetWishlist();
+            return await _wishlistService.GetWishlist(category, authors, sortField, sortDirection);
         }
         [HttpGet("vote")]
         public async Task<ActionResult<ResponseResult<ICollection<VoteItemDTO>>>> GetVote([FromQuery] int userId)

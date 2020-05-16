@@ -36,19 +36,33 @@ namespace BookLibrary.Services.Wishlist
             return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist()
+        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sortField = "DateAdded", int sortDirection = -1)
         {
-            var wishlist = await _context.Wish.Select(x => new WishlistItemDTO() {
-                WishId = x.Id,
-                Id = x.Book.Id,
-                Title = x.Book.Title,
-                Author = x.Book.Author,
-                CoverPictureUrl = x.Book.CoverPictureUrl,
-                DateAdded = x.Book.DateAdded,
-                ReleaseDate = x.Book.ReleaseDate,
-                Votes = x.Votes.Count
-            }).ToListAsync();
-
+            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
+            if (categories != null && categories.Count > 0)
+            {
+                wishes = wishes.Where(a => a.Book.Category != null && categories.Contains(a.Book.Category)).ToList();
+            }
+            if (authors.Count > 0)
+            {
+                wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
+            }
+            try
+            {
+                if (sortDirection > 0)
+                {
+                    wishes = wishes.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+                else if (sortDirection < 0)
+                {
+                    wishes = wishes.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                //Probably means sort field isn't set properly. Note it's case sensitive.
+            }
+            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
         public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)

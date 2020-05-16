@@ -80,7 +80,7 @@ export const setFiltersEnd = (filters) => ({
   payload: filters,
 });
 
-export const getCategoriesStart = () => ({ type: GET_CATEGORIES_START });
+export const getCategories = () => ({ type: GET_CATEGORIES_START });
 
 export const getCategoriesEnd = (categories) => ({
   type: GET_CATEGORIES_END,

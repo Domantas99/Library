@@ -10,7 +10,7 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IWishlistService
     {
-        Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist();
+        Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sortField, int sortDirection);
         Task<ResponseResult<UserWish>> ManageVote(UserWish userWish);
         Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId);
         Task<ResponseResult<Wish>> AddNewWish(Wish wish);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookLibrary.DataBase.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,5 +15,16 @@ namespace BookLibrary.DTO.Wishlist
         public DateTime DateAdded { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Votes { get; set; }
+
+        public static explicit operator WishlistItemDTO(Wish wish) => new WishlistItemDTO {
+            WishId = wish.Id,
+            Id = wish.Book.Id,
+            Title = wish.Book.Title,
+            Author = wish.Book.Author,
+            CoverPictureUrl = wish.Book.CoverPictureUrl,
+            DateAdded = wish.Book.DateAdded,
+            ReleaseDate = wish.Book.ReleaseDate,
+            Votes = wish.Votes.Count
+        };
     }
 }
