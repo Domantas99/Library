@@ -2,9 +2,9 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
+import _ from 'lodash';
 import { getCategories, selectCategory } from '../store/library/actions';
 
 const Categories = () => {

@@ -25,7 +25,7 @@ export const getVoteAPI = (vote) => {
 };
 
 export const moveWishToLibraryAPI = (book) => {
-  return httpClient.post("wishlist/move-to-library", book);
+  return httpClient.post('wishlist/move-to-library', book);
 };
 
 export const getCategories = () => {
@@ -34,4 +34,4 @@ export const getCategories = () => {
 
 export const getAuthors = () => {
   return httpClient.get('wishlist/authors');
-}
+};

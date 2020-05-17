@@ -24,6 +24,11 @@ const Library = ({ location }) => {
   const history = useHistory();
   const bookSelector = useSelector((state) => state.library.bookData);
   const filterSelector = useSelector((state) => state.library.filters);
+  const categories = useSelector((state) => state.library.categories);
+  const offices = useSelector((state) => state.office.offices);
+  const authors = useSelector((state) => state.library.authors);
+  /* eslint-disable no-unused-vars */
+  const [excludedFilters, _] = useState(['sortField', 'sortDirection']);
   const actionButton = (
     <ActionItem
       linkTitle="Register new book"
@@ -48,12 +53,6 @@ const Library = ({ location }) => {
       values: ['Available', 'Unavailable'],
     },
   });
-
-  const categories = useSelector((state) => state.library.categories);
-  const offices = useSelector((state) => state.office.offices);
-  const authors = useSelector((state) => state.library.authors);
-  /* eslint-disable no-unused-vars */
-  const [excludedFilters, _] = useState(['sortField', 'sortDirection']);
 
   useEffect(() => {
     const generateFilterMap = () => {
@@ -96,13 +95,15 @@ const Library = ({ location }) => {
         dataAction={getBookList(values)}
         navigateItems
         addLink="/library/register-book"
-        filterComponent={<Filter
-          dataAction={getBookList}
-          filterSelector={filterSelector}
-          filterMap={filterMap}
-          excludedFilters={excludedFilters}
-          setFilterAction={setFilters}
-        />}
+        filterComponent={
+          <Filter
+            dataAction={getBookList}
+            filterSelector={filterSelector}
+            filterMap={filterMap}
+            excludedFilters={excludedFilters}
+            setFilterAction={setFilters}
+          />
+        }
         actionButton={actionButton}
       />
     </Panel>

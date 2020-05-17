@@ -1,20 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { BookList } from '../../components';
-import { getAuthors,
-  getCategories,getWishlist, setFilters } from '../../store/wishlist/actions';
+import {
+  getAuthors,
+  getCategories,
+  getWishlist,
+  setFilters,
+} from '../../store/wishlist/actions';
 import ActionItem from '../../components/ActionItem';
 import Filter from '../../components/Filter';
 import Modal from '../../components/Modal';
-import WishForm from '../../components/WishForm';
 import Panel from '../../components/Panel';
+import WishForm from '../../components/WishForm';
 
 const Wishlist = (location) => {
   const dispatch = useDispatch();
   const values = queryString.parse(location.search);
   const wishSelector = useSelector((state) => state.wishlist.bookData);
   const filterSelector = useSelector((state) => state.wishlist.filters);
+  const categories = useSelector((state) => state.wishlist.categories);
+  const authors = useSelector((state) => state.wishlist.authors);
+  /* eslint-disable no-unused-vars */
+  const [excludedFilters, _] = useState(['sortField', 'sortDirection']);
   const [modalState, setModalState] = useState(false);
 
   const actionButton = (
@@ -34,11 +43,6 @@ const Wishlist = (location) => {
       values: [],
     },
   });
-
-  const categories = useSelector((state) => state.wishlist.categories);
-  const authors = useSelector((state) => state.wishlist.authors);
-  /* eslint-disable no-unused-vars */
-  const [excludedFilters, _] = useState(['sortField', 'sortDirection']);
 
   useEffect(() => {
     const generateFilterMap = () => {
@@ -73,13 +77,15 @@ const Wishlist = (location) => {
           dataSelector={wishSelector}
           dataAction={getWishlist(values)}
           addLink="/add-wishlist"
-          filterComponent={<Filter
-            dataAction={getWishlist}
-            filterMap={filterMap}
-            filterSelector={filterSelector}
-            excludedFilters={excludedFilters}
-            setFilterAction={setFilters}
-          />}
+          filterComponent={
+            <Filter
+              dataAction={getWishlist}
+              filterMap={filterMap}
+              filterSelector={filterSelector}
+              excludedFilters={excludedFilters}
+              setFilterAction={setFilters}
+            />
+          }
           actionButton={actionButton}
         />
       </Panel>

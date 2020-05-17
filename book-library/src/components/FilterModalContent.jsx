@@ -6,7 +6,12 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
 
-const FilterModalContent = ({ filters, filterMap, setFilterAction, modalHandler }) => {
+const FilterModalContent = ({
+  filters,
+  filterMap,
+  setFilterAction,
+  modalHandler,
+}) => {
   const [newFilters, setNewFilters] = useState({ ...filters });
   const dispatch = useDispatch();
   const [filterMenu, setFilterMenu] = useState([]);

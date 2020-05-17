@@ -5,10 +5,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
-import Modal from './Modal';
 import FilterModalContent from './FilterModalContent';
+import Modal from './Modal';
 
-const Filter = ({ dataAction, filterSelector, filterMap, excludedFilters, setFilterAction }) => {
+const Filter = ({
+  dataAction,
+  filterSelector,
+  filterMap,
+  excludedFilters,
+  setFilterAction,
+}) => {
   const dispatch = useDispatch();
   const [sortField, setSortField] = useState('DateAdded');
   const [sortDirection, setSortDirection] = useState(-1);
@@ -123,12 +129,20 @@ const Filter = ({ dataAction, filterSelector, filterMap, excludedFilters, setFil
 
 Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
-  filterMap: PropTypes.shape({
+  filterMap: PropTypes.objectOf(PropTypes.shape({
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     values: PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     ).isRequired,
-  }).isRequired,
+  })).isRequired,
+  filterSelector: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      ),
+    ])
+  ),
   setFilterAction: PropTypes.func.isRequired,
 };
 
