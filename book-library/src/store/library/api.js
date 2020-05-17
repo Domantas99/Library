@@ -2,6 +2,7 @@ import httpClient from '../../core/httpClient';
 import { paramGenerator } from '../../utilities';
 
 export const addBookAPI = (bookObj) => {
+  console.log(bookObj);
   return httpClient.post('books', bookObj);
 };
 
