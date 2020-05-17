@@ -81,17 +81,19 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
             var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
-            var bookCases = await _context.BookCase.Where(x => x.BookId == bookId).ToListAsync();
-            for (int i = 0; i < bookCases.Count; i++)
+            var reservations = await _context.Reservation.Include(a=>a.BookCase).ThenInclude(b=>b.Book).Where(x => x.BookCase.BookId == bookId).ToListAsync();
+            
+            for (int i = 0; i < reservations.Count; i++)
             {
-                int index = libraries.FindIndex(a => a.BookId == bookCases[i].BookId && a.OfficeId == bookCases[i].OfficeId);
+                int index = libraries.FindIndex(a => a.BookId == reservations[i].BookCase.BookId && 
+                                                a.OfficeId == reservations[i].BookCase.OfficeId &&
+                                                reservations[i].CheckedInOn == null);
                 if (index >= 0)
                 {
-                    libraries[index].Count -= bookCases[i].Count;
+                    libraries[index].Count -= reservations[i].BookCase.Count;
                 }
             }
 
-            var a = libraries;
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 

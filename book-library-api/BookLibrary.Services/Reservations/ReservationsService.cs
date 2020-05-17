@@ -81,7 +81,7 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
         {
-            var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
+            var reservation = await _context.Reservation.Include(a => a.BookCase).ThenInclude(b => b.Book).FirstOrDefaultAsync(x => x.Id == reservationId);
             Book book = null;
             bool flag = false;
             try
@@ -89,6 +89,7 @@ namespace BookLibrary.Services.Reservations
                 if (reservation != null)
                 {
                     reservation.CheckedInOn = DateTime.Today;
+                    book = reservation.BookCase.Book;
                 }
                 await _context.SaveChangesAsync();
             }
@@ -124,5 +125,17 @@ namespace BookLibrary.Services.Reservations
             var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
             return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }
+
+        public async Task<ResponseResult<ICollection<Reservation>>> GetUserCurrentlyReadingReservedBooks(int userId)
+        {
+            var reservations = _context.Reservation
+                .Include(a => a.BookCase)
+                    .ThenInclude(b => b.Book)
+                        .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                            .ToList();
+
+            return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
+        }
+ 
     }
 }
