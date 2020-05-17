@@ -81,7 +81,7 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
         {
-            var reservation = await _context.Reservation.FirstOrDefaultAsync(x => x.Id == reservationId);
+            var reservation = await _context.Reservation.Include(a => a.BookCase).ThenInclude(b => b.Book).FirstOrDefaultAsync(x => x.Id == reservationId);
             Book book = null;
             bool flag = false;
             try
@@ -89,6 +89,7 @@ namespace BookLibrary.Services.Reservations
                 if (reservation != null)
                 {
                     reservation.CheckedInOn = DateTime.Today;
+                    book = reservation.BookCase.Book;
                 }
                 await _context.SaveChangesAsync();
             }

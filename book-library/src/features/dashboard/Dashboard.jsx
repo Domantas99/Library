@@ -21,7 +21,7 @@ export default function Dashboard() {
   );
 
   useEffect(() => {
-    dispatch(getCurrentlyReadingBooks());
+    dispatch(getCurrentlyReadingBooks({userId: 1}));
   }, [dispatch]);
 
   const seeAllLink = (
@@ -51,15 +51,18 @@ export default function Dashboard() {
           />
         </Panel>
       </div>
-      
-      <div className="dashboard__sidebar">
-        <Panel title="Currently Reading" className="sticky">
-          <CurrentlyReadingSection
-            title="Currently Reading"
-            books={currentlyReadingBooks}
-          />
-        </Panel>
-      </div>
+      {
+        currentlyReadingBooks.length > 0 && (
+          <div className="dashboard__sidebar">
+            <Panel title="Currently Reading" className="sticky">
+              <CurrentlyReadingSection
+                title="Currently Reading"
+                reservations={currentlyReadingBooks}
+              />
+            </Panel>
+          </div>
+        )  
+      }
     </div>
   );
 }

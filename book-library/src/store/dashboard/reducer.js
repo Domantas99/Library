@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
       return state;
     }
     case GET_CURRENTLY_READING_BOOKS_END: {
-      return { ...state, currentlyReadingBooks: action.payload };
+      return { ...state, currentlyReadingBooks: action.payload.returnResult };
     }
     default: {
       return state;

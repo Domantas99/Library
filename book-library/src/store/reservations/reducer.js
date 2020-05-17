@@ -9,6 +9,7 @@ import {
 const initialState = {
   reservationData: [],
   bookReservationData: [],
+  currentlyReading: [],
   teamReservationData: {
     reservations: [],
     hasNextPage: false,

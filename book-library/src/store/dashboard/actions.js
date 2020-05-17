@@ -15,8 +15,9 @@ export const getLatestBooksEnd = (books) => ({
   type: GET_LATEST_BOOKS_END,
   payload: books,
 });
-export const getCurrentlyReadingBooks = () => ({
+export const getCurrentlyReadingBooks = ({userId}) => ({
   type: GET_CURRENTLY_READING_BOOKS,
+  payload: { userId }
 });
 export const getCurrentlyReadingBooksEnd = (books) => ({
   type: GET_CURRENTLY_READING_BOOKS_END,
