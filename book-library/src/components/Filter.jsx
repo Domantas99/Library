@@ -2,48 +2,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  getAuthors,
-  getCategories,
-  setFilters,
-} from '../store/library/actions';
-import { getOffices } from '../store/office/actions';
 import Button from './Button';
 import Modal from './Modal';
 import FilterModalContent from './FilterModalContent';
 
-const LibraryFilter = ({ dataAction }) => {
+const Filter = ({ dataAction, filterSelector, filterMap, excludedFilters, setFilterAction }) => {
   const dispatch = useDispatch();
-  const filters = useSelector((state) => state.library.filters);
   const [sortField, setSortField] = useState('DateAdded');
   const [sortDirection, setSortDirection] = useState(-1);
-  const [filterMap, setFilterMap] = useState({
-    category: {
-      label: 'Category',
-      values: [],
-    },
-    authors: {
-      label: 'Author',
-      values: [],
-    },
-    offices: {
-      label: 'Office',
-      values: [],
-    },
-    status: {
-      label: 'Status',
-      values: ['Available', 'Unavailable'],
-    },
-  });
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
-  /* eslint-disable no-unused-vars */
-  const [excludedFilters, _] = useState(['sortField', 'sortDirection']);
-  const categories = useSelector((state) => state.library.categories);
-  const offices = useSelector((state) => state.office.offices);
-  const authors = useSelector((state) => state.library.authors);
 
   const generateSortedFilters = useCallback(
     (newFilters) => {
@@ -57,12 +27,12 @@ const LibraryFilter = ({ dataAction }) => {
   );
 
   const removeFilter = (key, filter) => {
-    const newFilters = { ...filters };
+    const newFilters = { ...filterSelector };
     newFilters[key] = newFilters[key].filter((item) => item !== filter);
     if (!newFilters[key]) {
       delete newFilters[key];
     }
-    dispatch(setFilters(generateSortedFilters(newFilters)));
+    dispatch(setFilterAction(generateSortedFilters(newFilters)));
   };
 
   const createFilterPill = (key, filter) => {
@@ -91,14 +61,14 @@ const LibraryFilter = ({ dataAction }) => {
 
   const createFilterElements = () => {
     const elements = [];
-    Object.keys(filters).forEach((key) => {
+    Object.keys(filterSelector).forEach((key) => {
       if (!excludedFilters.includes(key)) {
-        if (Array.isArray(filters[key])) {
-          filters[key].forEach((filter) => {
+        if (Array.isArray(filterSelector[key])) {
+          filterSelector[key].forEach((filter) => {
             elements.push(createFilterPill(key, filter));
           });
         } else {
-          elements.push(createFilterPill(key, filters[key]));
+          elements.push(createFilterPill(key, filterSelector[key]));
         }
       }
     });
@@ -106,40 +76,12 @@ const LibraryFilter = ({ dataAction }) => {
   };
 
   useEffect(() => {
-    dispatch(dataAction(generateSortedFilters(filters)));
-  }, [filters, sortField, sortDirection]);
+    dispatch(dataAction(generateSortedFilters(filterSelector)));
+  }, [filterSelector, sortField, sortDirection]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());
-  }, [filters]);
-
-  useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getOffices());
-    dispatch(getAuthors());
-  }, []);
-
-  useEffect(() => {
-    const generateFilterMap = () => {
-      return {
-        category: {
-          label: 'Category',
-          values: categories,
-        },
-        authors: {
-          label: 'Author',
-          values: authors,
-        },
-        offices: {
-          label: 'Office',
-          values: offices.map((office) => office.name),
-        },
-        status: filterMap.status,
-      };
-    };
-
-    setFilterMap(generateFilterMap());
-  }, [categories, offices, authors]);
+  }, [filterSelector]);
 
   return (
     <>
@@ -169,17 +111,25 @@ const LibraryFilter = ({ dataAction }) => {
         width="80%"
       >
         <FilterModalContent
-          filters={filters}
+          filters={filterSelector}
           filterMap={filterMap}
           modalHandler={setModalState}
+          setFilterAction={setFilterAction}
         />
       </Modal>
     </>
   );
 };
 
-LibraryFilter.propTypes = {
+Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
+  filterMap: PropTypes.shape({
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    values: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    ).isRequired,
+  }).isRequired,
+  setFilterAction: PropTypes.func.isRequired,
 };
 
-export default LibraryFilter;
+export default Filter;

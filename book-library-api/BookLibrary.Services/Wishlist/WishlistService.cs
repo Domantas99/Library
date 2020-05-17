@@ -47,22 +47,22 @@ namespace BookLibrary.Services.Wishlist
             {
                 wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
             }
+            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
             try
             {
                 if (sortDirection > 0)
                 {
-                    wishes = wishes.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                    wishlist = wishlist.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
                 }
                 else if (sortDirection < 0)
                 {
-                    wishes = wishes.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                    wishlist = wishlist.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
                 }
             }
             catch (NullReferenceException e)
             {
                 //Probably means sort field isn't set properly. Note it's case sensitive.
             }
-            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
         public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)
@@ -115,6 +115,20 @@ namespace BookLibrary.Services.Wishlist
             }
 
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
+        }
+
+        public Task<ResponseResult<ICollection<string>>> GetCategories()
+        {
+            var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
+            uniqueCategories.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+        }
+
+        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        {
+            var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
+            uniqueAuthors.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
         }
     }
 }

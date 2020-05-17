@@ -4,10 +4,18 @@ import {
   SET_VOTE_END,
   GET_VOTE_END,
   GET_VOTE,
+  SET_FILTERS_START,
+  GET_CATEGORIES_START,
+  GET_CATEGORIES_END,
+  GET_AUTHORS_END,
 } from './actionTypes';
+import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
+  authors: [],
   bookData: [],
+  categories: [],
+  filters: [],
   modalState: false,
   voteData: {},
   voteState: [],
@@ -44,6 +52,33 @@ export default (state = initialState, action) => {
       return {
         ...state,
         voteState: action.payload.returnResult,
+      };
+    }
+    case SET_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.filters)) {
+        return state;
+      }
+      return {
+        ...state,
+        filters: newFilters,
+      };
+    }
+    case GET_CATEGORIES_START: {
+      return { ...state };
+    }
+
+    case GET_CATEGORIES_END: {
+      return {
+        ...state,
+        categories: action.payload.returnResult,
+      };
+    }
+
+    case GET_AUTHORS_END: {
+      return {
+        ...state,
+        authors: action.payload.returnResult,
       };
     }
     default: {

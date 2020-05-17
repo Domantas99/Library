@@ -49,5 +49,17 @@ namespace BookLibrary.Api.Controllers.Wishlist
             return await _wishlistService.MoveWishToLibrary(book);
         }
 
+        [HttpGet("categories")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
+        {
+            return await _wishlistService.GetCategories();
+        }
+
+        [HttpGet("authors")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetAuthors()
+        {
+            return await _wishlistService.GetAuthors();
+        }
+
     }
 }

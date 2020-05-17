@@ -8,10 +8,16 @@ import {
   GET_VOTE,
   GET_VOTE_END,
   MOVE_WISH_TO_LIBRARY,
-  MOVE_WISH_TO_LIBRARY_END
+  MOVE_WISH_TO_LIBRARY_END,
+  SET_FILTERS_START,
+  GET_AUTHORS_START,
+  GET_AUTHORS_END,
+  GET_CATEGORIES_START,
+  GET_CATEGORIES_END,
+  SET_FILTERS_END,
 } from "./actionTypes";
 
-export const getWishlist = () => ({ type: GET_WISHLIST_START });
+export const getWishlist = (params) => ({ type: GET_WISHLIST_START, payload: params });
 export const getWishlistEnd = (wishlist) => ({
   type: GET_WISHLIST_END,
   payload: wishlist,
@@ -47,4 +53,29 @@ export const moveWishToLibrary = (book) => ({
 export const moveWishToLibraryEnd = (book) => ({
   type: MOVE_WISH_TO_LIBRARY_END,
   payload: book,
+});
+export const setFilters = (filters) => ({
+  type: SET_FILTERS_START,
+  payload: filters,
+});
+
+export const setFiltersEnd = (filters) => ({
+  type: SET_FILTERS_END,
+  payload: filters,
+});
+
+export const getCategories = () => ({ type: GET_CATEGORIES_START });
+
+export const getCategoriesEnd = (categories) => ({
+  type: GET_CATEGORIES_END,
+  payload: categories,
+});
+
+export const getAuthors = () => ({
+  type: GET_AUTHORS_START,
+});
+
+export const getAuthorsEnd = (authors) => ({
+  type: GET_AUTHORS_END,
+  payload: authors,
 });

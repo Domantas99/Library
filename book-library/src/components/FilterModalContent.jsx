@@ -4,10 +4,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setFilters } from '../store/library/actions';
 import Button from './Button';
 
-const FilterModalContent = ({ filters, filterMap, modalHandler }) => {
+const FilterModalContent = ({ filters, filterMap, setFilterAction, modalHandler }) => {
   const [newFilters, setNewFilters] = useState({ ...filters });
   const dispatch = useDispatch();
   const [filterMenu, setFilterMenu] = useState([]);
@@ -193,7 +192,7 @@ const FilterModalContent = ({ filters, filterMap, modalHandler }) => {
   }, [newFilters]);
 
   const onSubmit = () => {
-    dispatch(setFilters(newFilters));
+    dispatch(setFilterAction(newFilters));
     modalHandler(false);
   };
 
@@ -229,6 +228,7 @@ FilterModalContent.propTypes = {
       PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     ),
   }).isRequired,
+  setFilterAction: PropTypes.func.isRequired,
   modalHandler: PropTypes.func.isRequired,
 };
 
