@@ -3,11 +3,13 @@ import {
   GET_LATEST_BOOKS_END,
   GET_CURRENTLY_READING_BOOKS,
   GET_CURRENTLY_READING_BOOKS_END,
+  GET_RECOMMENDED_BOOKS_END
 } from './actionTypes';
 
 const initialState = {
   latestBooks: [],
   currentlyReadingBooks: [],
+  recommendedBooks: [],
 };
 
 export default (state = initialState, action) => {
@@ -19,6 +21,13 @@ export default (state = initialState, action) => {
       const result = action.payload;
       if (!result.error) {
         return { ...state, latestBooks: result.returnResult };
+      }
+      break;
+    }
+    case GET_RECOMMENDED_BOOKS_END: {
+      const result = action.payload;
+      if (!result.error) {
+        return { ...state, recommendedBooks: result.returnResult };
       }
       break;
     }

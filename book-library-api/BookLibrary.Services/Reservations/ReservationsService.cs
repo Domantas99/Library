@@ -88,10 +88,7 @@ namespace BookLibrary.Services.Reservations
             {
                 if (reservation != null)
                 {
-                    var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == reservation.BookCaseId);
-                    book = bookCase.Book;
-                    _context.BookCase.Remove(bookCase);
-                    _context.Reservation.Remove(reservation);
+                    reservation.CheckedInOn = DateTime.Today;
                 }
                 await _context.SaveChangesAsync();
             }
@@ -104,7 +101,7 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
-            var reservations = await _context.Reservation.Where(x => x.UserId == user)
+            var reservations = await _context.Reservation.Where(x => x.UserId == user && x.CheckedInOn == null)
                 .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).ToListAsync();
             var response = new List<ReservationDTO>();
             foreach (Reservation reservation in reservations)
