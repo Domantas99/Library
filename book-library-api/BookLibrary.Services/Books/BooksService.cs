@@ -81,7 +81,6 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
             var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
-            var bookCases = await _context.BookCase.Include(a=>a.Reservation).Where(x => x.BookId == bookId).ToListAsync();
             var reservations = await _context.Reservation.Include(a=>a.BookCase).ThenInclude(b=>b.Book).Where(x => x.BookCase.BookId == bookId).ToListAsync();
             
             for (int i = 0; i < reservations.Count; i++)
