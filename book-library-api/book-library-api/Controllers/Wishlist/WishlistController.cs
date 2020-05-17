@@ -22,9 +22,9 @@ namespace BookLibrary.Api.Controllers.Wishlist
             _wishlistService = wishlistService;
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<WishlistItemDTO>>>> GetWishlist()
+        public async Task<ActionResult<ResponseResult<ICollection<WishlistItemDTO>>>> GetWishlist([FromQuery]List<string> category, [FromQuery] List<string> authors, [FromQuery] string sortField, [FromQuery] int sortDirection)
         {
-            return await _wishlistService.GetWishlist();
+            return await _wishlistService.GetWishlist(category, authors, sortField, sortDirection);
         }
         [HttpGet("vote")]
         public async Task<ActionResult<ResponseResult<ICollection<VoteItemDTO>>>> GetVote([FromQuery] int userId)
@@ -47,6 +47,18 @@ namespace BookLibrary.Api.Controllers.Wishlist
         public async Task<ActionResult<ResponseResult<Book>>> MoveWishToLibrary([FromBody]Book book)
         {
             return await _wishlistService.MoveWishToLibrary(book);
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
+        {
+            return await _wishlistService.GetCategories();
+        }
+
+        [HttpGet("authors")]
+        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetAuthors()
+        {
+            return await _wishlistService.GetAuthors();
         }
 
     }

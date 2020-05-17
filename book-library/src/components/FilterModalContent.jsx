@@ -2,37 +2,25 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAuthors, setFilters } from '../store/library/actions';
-import { getOffices } from '../store/office/actions';
 import Button from './Button';
 
-const FilterModalContent = ({ filters, labels, modalHandler }) => {
+const FilterModalContent = ({
+  filters,
+  filterMap,
+  setFilterAction,
+  modalHandler,
+}) => {
   const [newFilters, setNewFilters] = useState({ ...filters });
   const dispatch = useDispatch();
   const [filterMenu, setFilterMenu] = useState([]);
-  // These will be the actual elements for filtering
-  const [categoryFilters, setCategoryFilters] = useState([]);
-  const [statusFilters, setStatusFilters] = useState([]);
-  const [officeFilters, setOfficeFilters] = useState([]);
-  const [authorFilters, setAuthorFilters] = useState([]);
-  // These two trach which is the currently active filtering category
   const [activeFilter, setActiveFilter] = useState('');
-  const [activeFilterOptions, setActiveFilterOptions] = useState([]);
-  // These generate pills for all active filters
   const [activeFilterComponents, setActiveFilterComponents] = useState([]);
   const [checkedBoxes, setCheckedBoxes] = useState([]);
-  const categories = useSelector((state) => state.library.categories);
-  // eslint-disable-next-line no-unused-vars
-  const [statuses, setStatuses] = useState(['Available', 'Unavailable']);
-  const offices = useSelector((state) => state.office.offices);
-  const authors = useSelector((state) => state.library.authors);
-  const [filteredCategories, setFilteredCategories] = useState([]);
-  const [filteredOffices, setFilteredOffices] = useState([]);
-  const [filteredAuthors, setFilteredAuthors] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState({});
+  const [categorizedFilters, setCategorizedFilters] = useState({});
   const [searchText, setSearchText] = useState('');
-  const [searchBarEnabled, setSearchBarEnabled] = useState(false);
 
   // Callbacks all over because of stale state issues.
   const filterIsActive = useCallback(
@@ -78,7 +66,7 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
   );
 
   const generateCategoryFilterItem = useCallback(
-    ([category, filter]) => {
+    (category, filter) => {
       return (
         <div key={`${category}-${filter}`}>
           <input
@@ -95,162 +83,72 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
   );
 
   useEffect(() => {
-    const generateCategoryFilters = () => {
-      return filteredCategories
-        .map((category) => ['category', category])
-        .map(generateCategoryFilterItem);
+    const generateCategorizedFilters = () => {
+      return Object.entries(filteredOptions).reduce(
+        (prev, [filterCategory, filterValues]) => {
+          prev[filterCategory] = filterValues.map((value) =>
+            generateCategoryFilterItem(filterCategory, value)
+          );
+          return prev;
+        },
+        {}
+      );
     };
-
-    setCategoryFilters(generateCategoryFilters());
+    setCategorizedFilters(generateCategorizedFilters());
   }, [
     newFilters,
     checkedBoxes,
-    filteredCategories,
-    dispatch,
-    generateCategoryFilterItem,
-  ]);
-
-  useEffect(() => {
-    const generateStatusFilters = () => {
-      return statuses
-        .map((status) => ['status', status])
-        .map(generateCategoryFilterItem);
-    };
-
-    setStatusFilters(generateStatusFilters());
-  }, [
-    newFilters,
-    statuses,
-    checkedBoxes,
-    dispatch,
-    generateCategoryFilterItem,
-  ]);
-
-  useEffect(() => {
-    const generateOfficeFilters = () => {
-      return filteredOffices
-        .map((office) => ['offices', office.name])
-        .map(generateCategoryFilterItem);
-    };
-
-    setOfficeFilters(generateOfficeFilters());
-  }, [
-    newFilters,
-    labels,
-    checkedBoxes,
-    filteredOffices,
-    dispatch,
-    generateCategoryFilterItem,
-  ]);
-
-  useEffect(() => {
-    const generateAuthorFilters = () => {
-      return filteredAuthors
-        .map((author) => ['authors', author])
-        .map(generateCategoryFilterItem);
-    };
-
-    setAuthorFilters(generateAuthorFilters());
-  }, [
-    newFilters,
-    checkedBoxes,
-    filteredAuthors,
+    filteredOptions,
     dispatch,
     generateCategoryFilterItem,
   ]);
 
   const generateCategoryButton = useCallback(
-    (category) => {
+    ([filterCategory, filterObj]) => {
       return (
         <Button
-          key={category}
+          key={filterCategory}
           onClick={() => {
-            setActiveFilter(category);
+            setActiveFilter(filterCategory);
           }}
         >
-          {`${labels[category]}${
-            newFilters[category] ? ` ${newFilters[category].length}` : ' 0'
+          {`${filterObj.label}${
+            newFilters[filterCategory]
+              ? ` ${newFilters[filterCategory].length}`
+              : ' 0'
           }`}
         </Button>
       );
     },
-    [labels, newFilters]
+    [newFilters]
   );
 
   useEffect(() => {
     const generateFilterMenu = () => {
       return (
         <div className="filter-modal__categories">
-          {Object.keys(labels).map(generateCategoryButton)}
+          {Object.entries(filterMap).map(generateCategoryButton)}
         </div>
       );
     };
     setFilterMenu(generateFilterMenu());
-  }, [labels, categoryFilters, newFilters, generateCategoryButton]);
+  }, [filterMap, newFilters, generateCategoryButton]);
 
   useEffect(() => {
-    setFilteredCategories(
-      categories.filter((category) =>
-        category.toLowerCase().includes(searchText.toLowerCase())
-      )
+    setFilteredOptions(
+      Object.entries(filterMap).reduce((prev, [filterCategory, filterObj]) => {
+        prev[filterCategory] = filterObj.values.filter((value) =>
+          value.toLowerCase().includes(searchText.toLowerCase())
+        );
+        return prev;
+      }, {})
     );
-  }, [categories, searchText]);
-
-  useEffect(() => {
-    setFilteredOffices(
-      offices.filter((office) =>
-        `${office.name} ${office.fullAddress}`
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      )
-    );
-  }, [offices, searchText]);
-
-  useEffect(() => {
-    setFilteredAuthors(
-      authors.filter((author) =>
-        author.toLowerCase().includes(searchText.toLowerCase())
-      )
-    );
-  }, [authors, searchText]);
-
-  useEffect(() => {
-    switch (activeFilter) {
-      case 'category': {
-        setSearchBarEnabled(true);
-        setActiveFilterOptions(categoryFilters);
-        break;
-      }
-      case 'status': {
-        setSearchBarEnabled(false);
-        setActiveFilterOptions(statusFilters);
-        break;
-      }
-      case 'offices': {
-        setSearchBarEnabled(true);
-        setActiveFilterOptions(officeFilters);
-        break;
-      }
-      case 'authors': {
-        setSearchBarEnabled(true);
-        setActiveFilterOptions(authorFilters);
-        break;
-      }
-      default:
-        setActiveFilterOptions([]);
-    }
-  }, [
-    activeFilter,
-    categoryFilters,
-    statusFilters,
-    officeFilters,
-    authorFilters,
-  ]);
+  }, [filterMap, searchText]);
 
   useEffect(() => {
     const countTotalSelections = () => {
-      return Object.values(newFilters)
-        .map((value) => value.length)
+      return Object.entries(newFilters)
+        .map((key, value) => (filterMap[key] ? value.length : 0))
         .reduce((prev, curr) => {
           return prev + curr;
         }, 0);
@@ -259,22 +157,22 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
       return (
         <div className="filter-modal__active">
           <span>{`${countTotalSelections()} SELECTED`}</span>
-          {Object.keys(labels).map((category) => {
-            const pills = newFilters[category]
-              ? Object.values(newFilters[category]).map((filter) => {
+          {Object.entries(filterMap).map(([filterCategory, filterObj]) => {
+            const pills = newFilters[filterCategory]
+              ? Object.values(newFilters[filterCategory]).map((filter) => {
                   return (
                     <Button
-                      key={`${category}-${filter}`}
-                      onClick={() => removeFilter(category, filter)}
+                      key={`${filterCategory}-${filter}`}
+                      onClick={() => removeFilter(filterCategory, filter)}
                     >
-                      {`${labels[category]}: ${filter}`}
+                      {`${filterObj.label}: ${filter}`}
                     </Button>
                   );
                 })
               : [];
             return (
-              <div key={category}>
-                <span>{labels[category]}</span>
+              <div key={filterCategory}>
+                <span>{filterObj.label}</span>
                 {pills}
               </div>
             );
@@ -283,7 +181,7 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
       );
     };
     setActiveFilterComponents(generateActiveFilterComponents());
-  }, [newFilters, labels, removeFilter]);
+  }, [newFilters, filterMap, removeFilter]);
 
   useEffect(() => {
     const handleCheckboxes = () => {
@@ -298,13 +196,8 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
     setCheckedBoxes(handleCheckboxes());
   }, [newFilters]);
 
-  useEffect(() => {
-    dispatch(getOffices());
-    dispatch(getAuthors());
-  }, [dispatch]);
-
   const onSubmit = () => {
-    dispatch(setFilters(newFilters));
+    dispatch(setFilterAction(newFilters));
     modalHandler(false);
   };
 
@@ -316,10 +209,9 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
           <input
             type="text"
             placeholder="Search"
-            className={searchBarEnabled ? '' : 'hidden'}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          {activeFilterOptions}
+          {categorizedFilters[activeFilter]}
         </div>
         {activeFilterComponents}
       </div>
@@ -332,8 +224,16 @@ const FilterModalContent = ({ filters, labels, modalHandler }) => {
 };
 
 FilterModalContent.propTypes = {
-  filters: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-  labels: PropTypes.objectOf(PropTypes.string).isRequired,
+  filters: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+  ).isRequired,
+  filterMap: PropTypes.shape({
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    values: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    ),
+  }).isRequired,
+  setFilterAction: PropTypes.func.isRequired,
   modalHandler: PropTypes.func.isRequired,
 };
 

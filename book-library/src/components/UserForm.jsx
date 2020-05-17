@@ -16,7 +16,6 @@ export default function UserForm({user}) {
         } else {
         setUserInfo({...userInfo, [name]: value});
         }
-        console.log(userInfo);
     };
 
     useEffect(() => {
