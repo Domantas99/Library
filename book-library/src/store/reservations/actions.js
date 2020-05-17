@@ -1,6 +1,8 @@
 import {
   GET_RESERVATIONS_START,
   GET_RESERVATIONS_END,
+  GET_TEAM_RESERVATIONS_START,
+  GET_TEAM_RESERVATIONS_END,
   GET_BOOK_RESERVATIONS_START,
   GET_BOOK_RESERVATIONS_END,
   ADD_RESERVATION_START,
@@ -22,6 +24,15 @@ export const getReservations = (id) => ({
 export const getReservationsEnd = (reservationsList) => ({
   type: GET_RESERVATIONS_END,
   payload: reservationsList,
+});
+
+export const getTeamReservations = (page, pageSize, sort) => ({
+  type: GET_TEAM_RESERVATIONS_START,
+  payload: { page, pageSize, sort },
+});
+export const getTeamReservationsEnd = (reservations) => ({
+  type: GET_TEAM_RESERVATIONS_END,
+  payload: reservations,
 });
 
 export const getBookReservations = (id) => ({
@@ -53,7 +64,7 @@ export const addWaiting = (waiting) => ({
   payload: waiting,
 });
 
-export const addWaitingEnd = () => ({ 
+export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
 

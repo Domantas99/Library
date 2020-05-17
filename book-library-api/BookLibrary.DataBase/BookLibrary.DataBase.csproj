@@ -63,6 +63,10 @@
     <Compile Remove="Migrations\20200509110344_added-date-collumn-type.Designer.cs" />
     <Compile Remove="Migrations\20200509111540_added-date-collumn-type.cs" />
     <Compile Remove="Migrations\20200509111540_added-date-collumn-type.Designer.cs" />
+    <Compile Remove="Migrations\20200513122622_AddSecondUser.cs" />
+    <Compile Remove="Migrations\20200513122622_AddSecondUser.Designer.cs" />
+    <Compile Remove="Migrations\20200515070413_SecondUser.cs" />
+    <Compile Remove="Migrations\20200515070413_SecondUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

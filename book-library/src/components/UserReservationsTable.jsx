@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { getReservations } from "../store/reservations/actions";
 import { getFieldSorter } from "../utilities";
@@ -9,16 +8,7 @@ const createTableRows = (reservations, sort_field, sort_direction) => {
   return [...reservations]
     .sort(getFieldSorter(sort_field, sort_direction))
     .map((reservation) => (
-      <ReservationsTableItem
-        key={reservation.id}
-        data={{
-          book: reservation.book,
-          activeOffice: reservation.office,
-          status: reservation.status,
-          id: reservation.id,
-          returnDay: reservation.returnDate,
-        }}
-      />
+      <ReservationsTableItem key={reservation.id} data={reservation} />
     ));
 };
 

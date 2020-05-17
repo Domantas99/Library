@@ -12,7 +12,7 @@ namespace BookLibrary.Services.Contracts
     public interface IBooksService
     {
         Task<ResponseResult<Book>> AddNewBook(Book book);
-        Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<String> offices, string status, List<string> authors);
+        Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<String> offices, string status, List<string> authors, string sortField, int sortDirection);
         Task<ResponseResult<Book>> UpdateBook(int id, Book book);
         Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
         Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId);
@@ -22,5 +22,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId);
         Task<ResponseResult<Book>> DeleteBook(int id);
         Task<ResponseResult<ICollection<string>>> GetAuthors();
+        Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count);
     }
 }

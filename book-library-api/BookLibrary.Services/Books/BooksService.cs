@@ -64,7 +64,7 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId)
         {
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == bookId);
+            var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
             var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
             var reservation = userReservations.Where(x => x.Status != "Waiting").FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
@@ -81,21 +81,23 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
             var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
-            var bookCases = await _context.BookCase.Where(x => x.BookId == bookId).ToListAsync();
-            for (int i = 0; i < bookCases.Count; i++)
+            var reservations = await _context.Reservation.Include(a=>a.BookCase).ThenInclude(b=>b.Book).Where(x => x.BookCase.BookId == bookId).ToListAsync();
+            
+            for (int i = 0; i < reservations.Count; i++)
             {
-                int index = libraries.FindIndex(a => a.BookId == bookCases[i].BookId && a.OfficeId == bookCases[i].OfficeId);
+                int index = libraries.FindIndex(a => a.BookId == reservations[i].BookCase.BookId && 
+                                                a.OfficeId == reservations[i].BookCase.OfficeId &&
+                                                reservations[i].CheckedInOn == null);
                 if (index >= 0)
                 {
-                    libraries[index].Count -= bookCases[i].Count;
+                    libraries[index].Count -= reservations[i].BookCase.Count;
                 }
             }
 
-            var a = libraries;
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors)
+        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string sortField="DateAdded", int sortDirection=-1)
         {
             var books = BooksWithoutWishes();
             if (categories != null && categories.Count > 0)
@@ -113,9 +115,24 @@ namespace BookLibrary.Services.Books
                 if (status.ToLower() == "available")
                 {
                     books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count > 0).ToList();
-                } else if (status.ToLower() == "unavailable"){
+                } else if (status.ToLower() == "unavailable")
+                {
                     books = books.Where(a => GetBookAvailability(a.Id).Result.ReturnResult.Count == 0).ToList();
                 }
+            }
+            try
+            {
+                if (sortDirection > 0)
+                {
+                    books = books.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+                else if (sortDirection < 0)
+                {
+                    books = books.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+            }
+            catch (NullReferenceException e) {
+                //Probably means sort field isn't set properly. Note it's case sensitive.
             }
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
         }
@@ -178,9 +195,25 @@ namespace BookLibrary.Services.Books
                 {
                     if (lib.Count > 0)
                     {
-                        lib.BookId = book.Id;
-                        lib.ModifiedOn = DateTime.Today;
-                        _context.Library.Update(lib);
+                        var oldLib = _context.Library.Where(x => x.BookId == id && x.OfficeId == lib.OfficeId).FirstOrDefault();
+                        if (oldLib != null)
+                        {
+                            oldLib.ModifiedOn = DateTime.Today;
+                            oldLib.Count = lib.Count;
+                        }
+                        else {
+                            lib.BookId = id;
+                            lib.ModifiedOn = null;
+                            lib.CreatedOn = DateTime.Today;
+                            _context.Library.Add(lib);
+                        }
+                    }
+                    else {
+                        var oldLib = _context.Library.Where(x => x.BookId == id && x.OfficeId == lib.OfficeId).FirstOrDefault();
+                        if (oldLib != null)
+                        {
+                            _context.Library.Remove(oldLib);
+                        }
                     }
                 }
                 await _context.SaveChangesAsync();
@@ -201,6 +234,61 @@ namespace BookLibrary.Services.Books
                 books.Remove(wishes[i].Book);
             }
             return books;
+        }
+
+        public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
+        {
+            var allBooks = _context.Book.ToList();
+
+            var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
+            allBooks = allBooks.Except(reservations).ToList();
+
+            var userCategories = reservations.Select(x => x.Category).Distinct().ToList();
+            var userAuthors = reservations.Select(x => x.Author).Distinct().ToList();
+
+            int categoriesCount = userCategories.Count;
+            int authorsCount = userAuthors.Count;
+
+            int takeCount = 1;
+            if (authorsCount <= count)
+            {
+                takeCount = count / authorsCount;
+            }
+            if (takeCount > 3) {
+                takeCount = 3;
+            }
+
+            List<Book> recommended = new List<Book>();
+            for (int i = 0; i < userAuthors.Count; i++)
+            {
+                var b = allBooks.Where(x => x.Author == userAuthors.ElementAt(i)).Take(takeCount);
+                recommended.AddRange(b);
+            }
+            allBooks = allBooks.Except(recommended).ToList();
+
+            if (recommended.Count < count)
+            {
+                int diff = count - recommended.Count;
+                takeCount = diff / categoriesCount + 1;      
+
+                for (int i = 0; i < userCategories.Count; i++)
+                {
+                    var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
+                    recommended.AddRange(recB);
+                }
+                allBooks = allBooks.Except(recommended).ToList();
+                if (recommended.Count < count)
+                {
+                    recommended.AddRange(allBooks);
+                }
+                if (recommended.Count < count)
+                {
+                    recommended.AddRange(_context.Book.Except(recommended));
+                }
+            }
+            recommended = recommended.Take(count).ToList();
+
+            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
         }
     }
 }

@@ -27,6 +27,12 @@ namespace BookLibrary.Api.Controllers.Reservations
             return await _reservationsService.GetReservations(userId);
         }
 
+        [HttpGet()]
+        public async Task<ActionResult<ResponseResult<PagedList<ReservationDTO>>>> GetTeamReservations([FromQuery] int page=1, [FromQuery] int pageSize=10, [FromQuery] string sort = "recent") 
+        {
+            return await _reservationsService.GetTeamReservations(page, pageSize, sort);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ResponseResult<Reservation>>> AddReservation(Reservation reservation)
         {
@@ -48,6 +54,12 @@ namespace BookLibrary.Api.Controllers.Reservations
         public async Task<ActionResult<ResponseResult<Book>>> CheckInReservation(int reservationId)
         {
             return await _reservationsService.CheckInReservation(reservationId);
+        }
+
+        [HttpGet("currently-reading/{userId}")]
+        public async Task<ActionResult<ResponseResult<ICollection<Reservation>>>> GetUserCurrentlyReadingReservedBooks(int userId)
+        {
+            return await _reservationsService.GetUserCurrentlyReadingReservedBooks(userId);
         }
     }
 }
