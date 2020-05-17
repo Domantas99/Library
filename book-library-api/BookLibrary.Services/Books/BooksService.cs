@@ -91,11 +91,10 @@ namespace BookLibrary.Services.Books
                                                 reservations[i].CheckedInOn == null);
                 if (index >= 0)
                 {
-                    libraries[index].Count -= bookCases[i].Count;
+                    libraries[index].Count -= reservations[i].BookCase.Count;
                 }
             }
 
-            var a = libraries;
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 

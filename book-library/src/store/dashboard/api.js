@@ -12,6 +12,5 @@ export const getRecommendedBooksAPI = (details) => {
 };
 
 export const getCurrentlyReadingBooksAPI = ({userId}) => {
-  debugger
   return httpClient.get(`reservations/currently-reading/${userId}`);
 };

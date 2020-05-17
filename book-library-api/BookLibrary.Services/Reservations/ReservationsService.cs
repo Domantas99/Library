@@ -128,21 +128,13 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<ResponseResult<ICollection<Reservation>>> GetUserCurrentlyReadingReservedBooks(int userId)
         {
-            try
-            {
-                var reservations = _context.Reservation
-                    .Include(a => a.BookCase)
-                        .ThenInclude(b => b.Book)
-                            .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
-                                .ToList();
-                return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
-            }
-            catch (Exception e) {
-                var a = e;
-                return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = null };
-            }
+            var reservations = _context.Reservation
+                .Include(a => a.BookCase)
+                    .ThenInclude(b => b.Book)
+                        .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                            .ToList();
 
-            
+            return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
         }
  
     }
