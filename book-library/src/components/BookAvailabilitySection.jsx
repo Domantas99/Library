@@ -37,8 +37,10 @@ export default function BookAvailabilitySection({
   const [cantFindModal, setCantFindModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [reservation, setReservation]= useState(null);
-
+  const [reservationModalMode, setReservationModalMode ]= useState(false);
+  
   const handleModalClick = () => {
+    setReservationModalMode(false);
     const book = bookDetails.book;
     setReservation({ book, activeOffice });
     setModalState(true);
@@ -111,6 +113,21 @@ export default function BookAvailabilitySection({
 
   return (
     <div className="ba-section">
+       <Modal
+                  modalState={modalState}
+                  exitAction={() => setModalState(false)}
+                  height="auto"
+                  width="400px"
+                >
+                  {(activeOffice || bookDetails.activeReservation) && (
+                  <ReservationModalContent
+                    Edit={reservationModalMode}
+                    reservation={reservationModalMode===false ? reservation : bookDetails.activeReservation}
+                    onExit={() => setModalState(false)}
+                    onSubmit={() => ({})}
+                  />
+                  )}
+                </Modal>
       {bookDetails.isUserCurrentlyReading===false ? (
         <div>
           {bookInOffices.length > 0 ? (
@@ -125,20 +142,7 @@ export default function BookAvailabilitySection({
                   <CantFind onExit={() => setCantFindModalState(false)} />
                 </Modal>
                 {bookInOffices.map((d) => generateOfficeElement(d))}
-                <Modal
-                  modalState={modalState}
-                  exitAction={() => setModalState(false)}
-                  height="auto"
-                  width="400px"
-                >
-                  {(activeOffice) && (
-                  <ReservationModalContent
-                    reservation={reservation}
-                    onExit={() => setModalState(false)}
-                    onSubmit={() => ({})}
-                  />
-                  )}
-                </Modal>
+               
               </div>
               { activeOffice && activeOffice.count < 1 ?
               <div className="ba-section-buttons">
@@ -208,7 +212,11 @@ export default function BookAvailabilitySection({
             >
               Check in
             </button>
-            <button className="ba-section-buttons-light">
+            <button 
+              onClick={() => {setModalState(true)
+                setReservationModalMode(true)
+              } }
+              className="ba-section-buttons-light">
               Edit reservation
             </button>
           </div>

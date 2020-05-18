@@ -74,8 +74,8 @@ const reservations = [
   },
 ];
 
-export const getReservationsList = (userId) => {
-  return httpClient.get(`reservations/user/${userId}`);
+export const getReservationsList = (ids) => {
+  return httpClient.get(`reservations/user/${ids.userId}`);
 };
 
 export const getTeamReservations = (params) => {
