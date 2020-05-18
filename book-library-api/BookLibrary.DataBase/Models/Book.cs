@@ -52,6 +52,7 @@ namespace BookLibrary.DataBase.Models
         public virtual Wish Wish { get; set; }
         public virtual ICollection<BookComment> BookComment { get; set; }
         public virtual ICollection<BookWish> BookWish { get; set; }
+        [DataMember]
         public virtual ICollection<Library> Library { get; set; }
     }
 }

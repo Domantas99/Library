@@ -96,7 +96,7 @@ namespace BookLibrary.Services.Books
             {
                 isCurrentlyReading = true;
             }
-            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, ReadingUserId = userId, ActiveReservation= reservation };
+            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, ReadingUserId = userId, ActiveReservation= reservation, Library=book.Library };
 
             return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }
