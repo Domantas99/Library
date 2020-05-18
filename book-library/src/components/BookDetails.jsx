@@ -74,7 +74,7 @@ export default ({ id }) => {
   }
 
   const archiveConfimationData = {
-    text: `Do you really want to ${book.isArchived===true ? 'UN': ''}ARCHIVE this book?`,
+    text: `Do you really want to ${book?.isArchived===true ? 'UN': ''}ARCHIVE this book?`,
     onNo: () => setModalState(false),
     onYes: onArchive,
   };
