@@ -59,11 +59,15 @@ export default function BookAvailabilitySection({
     }
   }, [dispatch, bookDetails]);
 
+  useEffect(() => {
+    const officeC = bookInOffices.find(x=>x.id===userOffice);
+    if (officeC?.count===0 && bookDetails.isUserCurrentlyReading===false){
+      setUnavailableInMyOffice(true);
+    };
+  }, [bookInOffices, setUnavailableInMyOffice, userOffice, bookDetails]);
+
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
-    if (unavailable && userOffice === d.office.id && bookDetails.isUserCurrentlyReading===false){
-      setUnavailableInMyOffice();
-    };
     const itemClass = classNames('book-status__item', {
       'book-status__item--disabled': unavailable,
     });
