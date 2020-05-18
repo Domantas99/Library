@@ -38,7 +38,7 @@ export default function BookAvailabilitySection({
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [reservation, setReservation]= useState(null);
   const [reservationModalMode, setReservationModalMode ]= useState(false);
-  debugger
+  
   const handleModalClick = () => {
     setReservationModalMode(false);
     const book = bookDetails.book;

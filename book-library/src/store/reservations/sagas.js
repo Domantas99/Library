@@ -64,6 +64,7 @@ export function* addReservationSaga(action) {
     const { bookId } = apiResult.returnResult.bookCase;
     const { userId } = apiResult.returnResult;
     yield put(addReservationEnd({ bookId, userId }));
+    yield put(addReservationEnd({ bookId, userId }));
   } catch (e) {
     // stops saga from braking on api error
   }

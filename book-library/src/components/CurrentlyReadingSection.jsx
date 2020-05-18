@@ -6,19 +6,26 @@ import { useDispatch } from 'react-redux';
 import { removeReservation } from '../store/reservations/actions';
 import Modal from './Modal';
 import CheckInForm from './CheckInForm';
+import ReservationModalContent from './ReservationModalContent';
 
 export default function CurrentlyReadingSection({ reservations }) {
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
-  const [checkInReservation, setCheckInReservation] = useState({});
+  const [editModalState, setEditModalState] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState({});
+ 
   function onCheckInClick(reservation) {
-    //;
-    setCheckInReservation(reservation);
+    setSelectedReservation(reservation);
     setModalState(true);
   }
 
+  function onEditReservationClick(reservation) {
+    setSelectedReservation(reservation);
+    setEditModalState(true);
+  }
+
   function onFormConfirm() {
-    dispatch(removeReservation(checkInReservation.id, 1))
+    dispatch(removeReservation(selectedReservation.id, 1))
     setModalState(false);
   }
 
@@ -31,9 +38,22 @@ export default function CurrentlyReadingSection({ reservations }) {
         width="400px"
         >
         <CheckInForm 
-          reservation={checkInReservation.bookCase}
+          reservation={selectedReservation.bookCase}
           onCancel={() => setModalState(false)}
           onConfirm={() => onFormConfirm()}
+        />
+      </Modal>
+
+      <Modal
+        modalState={editModalState}
+        exitAction={() => setEditModalState(false)}
+        height="auto"
+        width="400px"
+      >
+        <ReservationModalContent
+         Edit={true}
+         reservation={selectedReservation}
+         onExit={() => setEditModalState(false)}
         />
       </Modal>
       {reservations.map((res) => (
@@ -45,11 +65,11 @@ export default function CurrentlyReadingSection({ reservations }) {
             <div>
               <h4 className="currently-reading__title">{res.bookCase.book.title}</h4>
               <h5 className="currently-reading__author">{res.bookCase.book.author}</h5>
-              <h5 className="currently-reading__author">Return date: {res.plannedReturnOn.slice(0, -12)}</h5>
+              <h5 className="currently-reading__author">Return date: {res.plannedReturnOn.substring(0, 10)}</h5>
             </div>
           </div>
           <div className="currently-reading__actions">
-            <Button secondaryAction small wide>
+            <Button onClick={() => onEditReservationClick(res)}  secondaryAction small wide>
               Edit
             </Button>
             <Button onClick={() => onCheckInClick(res)} small wide>
