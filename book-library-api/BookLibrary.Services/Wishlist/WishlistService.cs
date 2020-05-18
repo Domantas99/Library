@@ -15,6 +15,13 @@ namespace BookLibrary.Services.Wishlist
     {
         private readonly LibraryDBContext _context;
         private readonly IBooksService _booksService;
+
+        private const string sort_recent = "recent";
+        private const string sort_oldest = "oldest";
+        private const string sort_title_asc = "titleaz";
+        private const string sort_title_dsc = "titleza";
+        private const string sort_author_asc = "authoraz";
+        private const string sort_author_dsc = "authorza";
         public WishlistService(LibraryDBContext context, IBooksService booksService)
         {
             _context = context;
@@ -36,7 +43,7 @@ namespace BookLibrary.Services.Wishlist
             return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sortField = "DateAdded", int sortDirection = -1)
+        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sort)
         {
             var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
             if (categories != null && categories.Count > 0)
@@ -48,20 +55,38 @@ namespace BookLibrary.Services.Wishlist
                 wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
             }
             var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
-            try
+            switch (sort)
             {
-                if (sortDirection > 0)
-                {
-                    wishlist = wishlist.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
-                }
-                else if (sortDirection < 0)
-                {
-                    wishlist = wishlist.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
-                }
-            }
-            catch (NullReferenceException e)
-            {
-                //Probably means sort field isn't set properly. Note it's case sensitive.
+                case sort_recent:
+                    {
+                        wishlist = wishlist.OrderByDescending(book => book.ReleaseDate).ToList();
+                        break;
+                    }
+                case sort_oldest:
+                    {
+                        wishlist = wishlist.OrderBy(book => book.ReleaseDate).ToList();
+                        break;
+                    }
+                case sort_title_asc:
+                    {
+                        wishlist = wishlist.OrderBy(book => book.Title).ToList();
+                        break;
+                    }
+                case sort_title_dsc:
+                    {
+                        wishlist = wishlist.OrderByDescending(book => book.Title).ToList();
+                        break;
+                    }
+                case sort_author_asc:
+                    {
+                        wishlist = wishlist.OrderBy(book => book.Author).ToList();
+                        break;
+                    }
+                case sort_author_dsc:
+                    {
+                        wishlist = wishlist.OrderByDescending(book => book.Author).ToList();
+                        break;
+                    }
             }
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
