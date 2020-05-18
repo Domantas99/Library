@@ -5,9 +5,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addReservation } from '../store/reservations/actions';
+import { addReservation, updateReservation } from '../store/reservations/actions';
 
-export default ({ reservation, onExit, onSubmit }) => {
+export default ({ reservation, onExit, onSubmit, Edit }) => {
+  debugger;
   const [returndate, handleDateChange] = useState(
     reservation.returnDay || formatDate()
   );
@@ -16,14 +17,20 @@ export default ({ reservation, onExit, onSubmit }) => {
   
   function onSubmitClick() {
     const obj = createReservationObj();
-    dispatch(addReservation(obj));
+    debugger
+  //  if(Edit) {
+     // dispatch(updateReservation(obj));
+  //  } else {
+      dispatch(addReservation(obj));
+  //  }
+    
     onSubmit();
     onExit();
   }
 
   function createReservationObj() {
     const today = new Date();
-
+    debugger
     return {
       Id: reservation.id || -1,
       UserId,
@@ -31,7 +38,7 @@ export default ({ reservation, onExit, onSubmit }) => {
       CheckedOutOn: today,
       BookCase: {
         BookId: reservation.book.id,
-        OfficeId: reservation.activeOffice.id,
+        OfficeId: reservation.activeOffice?.id || reservation.office.id,
         Count: 1,
         CreatedOn: today,
         CreatedBy: UserId,
@@ -55,7 +62,7 @@ export default ({ reservation, onExit, onSubmit }) => {
 
   return (
     <>
-      <h2>Check out</h2>
+      <h2>{Edit===true? "Edit reservation" : "Check out"}</h2>
       <div className="">
         <img src={reservation.book.coverPictureUrl} alt="" />
       </div>
@@ -68,13 +75,16 @@ export default ({ reservation, onExit, onSubmit }) => {
       <h4>Reserve at:</h4>
       <div className="ba-section-office-details">
         <div className="ba-section-list-item-text-title">
-          {reservation.book.name} office
+          {reservation?.activeOffice?.name || reservation.office.name } office
         </div>
-        <div className="ba-section-list-item-text-available">
-          {reservation.activeOffice.count} available
-        </div>
+        { Edit === false && (
+          <div className="ba-section-list-item-text-available">
+            {reservation.activeOffice.count} available
+          </div>
+          )
+        }
         <div className="ba-section-list-item-text-address">
-          {reservation.activeOffice.fullAddress}
+          {reservation?.activeOffice?.fullAddress || reservation.office.fullAddress }
         </div>
         <label htmlFor="reservedUntil">Reserve until:</label>
         <input
