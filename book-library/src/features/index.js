@@ -1,5 +1,5 @@
 import { Library, RegisterBook, EditBook } from './library';
 import { Wishlist } from './wishlist';
-import { Reservations } from './reservations';
+import { TeamReservations, UserReservations } from './reservations';
 
-export { Wishlist, Library, RegisterBook, Reservations, EditBook };
+export { Wishlist, Library, RegisterBook, TeamReservations, UserReservations, EditBook };

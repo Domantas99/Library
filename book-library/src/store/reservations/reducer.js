@@ -5,13 +5,16 @@ import {
   REMOVE_RESERVATION_START,
   REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
-  REMOVE_WAITING_END
+  REMOVE_WAITING_END,
+  SET_TEAM_FILTERS_START,
 } from "./actionTypes";
+import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
-  reservationData: [],
   bookReservationData: [],
   currentlyReading: [],
+  reservationData: [],
+  teamFilters: {},
   teamReservationData: {
     reservations: [],
     hasNextPage: false,
@@ -91,11 +94,13 @@ export default (state = initialState, action) => {
         ),
       };
     }
+
     case REMOVE_RESERVATION_END: {
       return {
         ...state,
       };
     }
+
     case REMOVE_WAITING_START: {
       return {
         ...state,
@@ -104,9 +109,21 @@ export default (state = initialState, action) => {
         ),
       };
     }
+
     case REMOVE_WAITING_END: {
       return {
         ...state,
+      };
+    }
+
+    case SET_TEAM_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.teamFilters)) {
+        return state;
+      }
+      return {
+        ...state,
+        teamFilters: newFilters,
       };
     }
 

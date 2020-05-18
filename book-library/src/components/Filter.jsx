@@ -43,6 +43,15 @@ const Filter = ({
 
   const createFilterPill = (key, filter) => {
     return (
+      filter === Object(filter) ?
+      <Button
+      mini
+      key={`${key}-${filter.value}`}
+      onClick={() => removeFilter(key, filter.value)}
+    >
+      {`${filterMap[key].label}: ${filter.text}`}
+    </Button>
+      :
       <Button
         mini
         key={`${key}-${filter}`}
@@ -120,9 +129,12 @@ const Filter = ({
 Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
   filterMap: PropTypes.objectOf(PropTypes.shape({
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    label: PropTypes.string.isRequired,
     values: PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+        text: PropTypes.string.isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      })])
     ).isRequired,
   })).isRequired,
   sortMap: PropTypes.arrayOf(PropTypes.shape({

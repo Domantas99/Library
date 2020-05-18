@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BookLibrary.Services.Reservations
@@ -14,6 +13,15 @@ namespace BookLibrary.Services.Reservations
     public class ReservationsService : IReservationsService
     {
         private const string sort_recent = "recent";
+        private const string sort_oldest = "oldest";
+        private const string sort_title_asc = "titleaz";
+        private const string sort_title_dsc = "titleza";
+        private const string sort_author_asc = "authoraz";
+        private const string sort_author_dsc = "authorza";
+        private const string sort_bookedfrom_asc = "fromasc";
+        private const string sort_bookedfrom_dsc = "fromdsc";
+        private const string sort_returndate_asc = "returnasc";
+        private const string sort_returndate_dsc = "returndsc";
         private readonly LibraryDBContext _context;
         public ReservationsService(LibraryDBContext context)
         {
@@ -124,44 +132,107 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
         }
 
+        private List<ReservationDTO> resultSort(List<ReservationDTO> list, string sort)
+        {
+            switch (sort)
+            {
+                case sort_recent:
+                    {
+                        return list.OrderByDescending(reservation => reservation.Book.ReleaseDate).ToList();
+                    }
+                case sort_oldest:
+                    {
+                        return list.OrderBy(reservation => reservation.Book.ReleaseDate).ToList();
+                    }
+                case sort_title_asc:
+                    {
+                        return list.OrderBy(reservation => reservation.Book.Title).ToList();
+                    }
+                case sort_title_dsc:
+                    {
+                        return list.OrderByDescending(reservation => reservation.Book.Title).ToList();
+                    }
+                case sort_author_asc:
+                    {
+                        return list.OrderBy(reservation => reservation.Book.Author).ToList();
+                    }
+                case sort_author_dsc:
+                    {
+                        return list.OrderByDescending(reservation => reservation.Book.Author).ToList();
+                    }
+                case sort_bookedfrom_asc:
+                    {
+                        return list.OrderBy(reservation => reservation.BookedFrom).ToList();
+                    }
+                case sort_bookedfrom_dsc:
+                    {
+                        return list.OrderByDescending(reservation => reservation.BookedFrom).ToList();
+                    }
+                case sort_returndate_asc:
+                    {
+                        return list.OrderBy(reservation => reservation.ReturnDate).ToList();
+                    }
+                case sort_returndate_dsc:
+                    {
+                        return list.OrderByDescending(reservation => reservation.ReturnDate).ToList();
+                    }
+                default:
+                    {
+                        return list;
+                    }
+            }
+        }
+
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user && x.CheckedInOn == null)
-                .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x=>(ReservationDTO)x).ToListAsync();
+                .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
             var waitings = await _context.Waiting.Where(x => x.UserId == user)
-                .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Select(x=>(ReservationDTO)x).ToListAsync();
+                .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
             var response = reservations.Concat(waitings).ToList();
 
-            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response};
-            
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response };
+
         }
 
-        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize, string sort)
+
+        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<int> users, int page, int pageSize, string sort)
         {
             var reservations = await _context.Reservation.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
-            switch (sort) {
-                case sort_recent:
-                    {
-                        reservations.Sort((a, b) => Nullable.Compare(a.BookedFrom, b.BookedFrom));
-                        break;
-                    }
+            var waitings = await _context.Waiting.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
+            var results = reservations.Concat(waitings).ToList();
+            if (category != null && category.Count > 0) {
+                results = results.Where(x => category.Contains(x.Book.Category)).ToList();
             }
-            var response = PagedList<ReservationDTO>.CreateFrom(reservations, page, pageSize);
+            if (offices != null && offices.Count > 0) {
+                results = results.Where(x => offices.Contains(x.Office.Name)).ToList();
+            }
+            if (status != null && status.Count > 0) {
+                results = results.Where(x => status.Contains(x.Status)).ToList();
+            }
+            if (authors != null && authors.Count > 0) {
+                results = results.Where(x => authors.Contains(x.Book.Author)).ToList();
+            }
+            if (users != null && users.Count > 0) {
+                results = results.Where(x => users.Contains(x.User.Id)).ToList();
+            }
+            resultSort(results, sort);
+            var response = PagedList<ReservationDTO>.CreateFrom(results, page, pageSize);
             return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }
 
         public async Task<ResponseResult<ICollection<Reservation>>> GetUserCurrentlyReadingReservedBooks(int userId)
         {
-            var reservations = _context.Reservation
+            var reservations = await _context.Reservation
                 .Include(a => a.BookCase)
                     .ThenInclude(b => b.Book)
                         .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
-                            .ToList();
+                            .ToListAsync();
 
             return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
         }
- 
+
     }
 }

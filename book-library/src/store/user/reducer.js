@@ -2,6 +2,10 @@ import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
   userData: [],
+  users: [
+    { id: 1, fullName: 'Nathaniel Roberts' },
+    { id: 2, fullName: 'Mr Bean' },
+  ], //TODO need users list implemented
 };
 
 export default (state = initialState, action) => {
