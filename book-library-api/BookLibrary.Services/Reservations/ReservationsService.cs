@@ -131,8 +131,9 @@ namespace BookLibrary.Services.Reservations
             var reservations = _context.Reservation
                 .Include(a => a.BookCase)
                     .ThenInclude(b => b.Book)
-                        .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
-                            .ToList();
+                        .Include(o => o.BookCase.Office)
+                            .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                                .ToList();
 
             return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
         }
