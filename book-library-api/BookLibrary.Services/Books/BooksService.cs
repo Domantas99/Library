@@ -20,21 +20,44 @@ namespace BookLibrary.Services.Books
             _reservationsService = reservationsService;
         }
 
-        public async Task<ResponseResult<Book>> AddNewBook(Book book)
+        public async Task<ResponseResult<Book>> AddNewBook(AddBookDTO bookDto)
         {
             bool errorFlag = false;
+            Book book = new Book();
             try
             {
-                var library = book.Library;
-                book.Library = null;
+                var library = bookDto.Library;
+                book = new Book
+                {
+                    Title = bookDto.Title,
+                    Isbn = bookDto.Isbn,
+                    Author = bookDto.Author,
+                    Description = bookDto.Description,
+                    Category = bookDto.Category,
+                    Tag = bookDto.Tag,
+                    Format = bookDto.Format,
+                    NumberOfPages = bookDto.NumberOfPages,
+                    Series = bookDto.Series,
+                    Publisher = bookDto.Publisher,
+                    EditionLanguage = bookDto.EditionLanguage,
+                    CoverPictureUrl = bookDto.CoverPictureUrl,
+                    GoodReadsUrl = bookDto.GoodReadsUrl,
+                    DateAdded = bookDto.DateAdded,
+                    ReleaseDate = bookDto.ReleaseDate
+                };
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
-                foreach (var lib in library) {
-                    if (lib.Count > 0)
+                foreach (var libr in library) {
+                    if (libr.Count > 0)
                     {
-                        lib.BookId = book.Id;
-                        lib.ModifiedOn = null;
-                        lib.CreatedOn = DateTime.Today;
+                        Library lib = new Library
+                        {
+                            BookId = book.Id,
+                            ModifiedOn = null,
+                            CreatedOn = DateTime.Today,
+                            OfficeId = libr.OfficeId,
+                            Count = libr.Count
+                        };
                         _context.Library.Add(lib);
                     }
                 }
@@ -87,8 +110,7 @@ namespace BookLibrary.Services.Books
                     isAnyoneReading = true;
                 }
             }
-
-            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, IsAnyoneReading=isAnyoneReading, ReadingUserId = userId, ActiveReservation= reservation };
+            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, IsAnyoneReading=isAnyoneReading, ReadingUserId = userId, ActiveReservation= reservation, Library = book.Library };
 
             return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }

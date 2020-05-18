@@ -13,7 +13,7 @@ export default () => {
   const bookDetails = useSelector((state) => state.library.bookDetails);
   const offices = useSelector((state) => state.office.offices);
   offices.forEach((o) => {
-    o.count = bookDetails?.book?.library?.find(x => x.officeId === o.id)?.count || 0;
+    o.count = bookDetails?.library?.find(x => x.officeId === o.id)?.count || 0;
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default () => {
 
   return id ? (
     <div className="content-wrapper">
-      {bookDetails && bookDetails.length !== 0 && (
+      {bookDetails && offices.length !== 0 && bookDetails.length !== 0 && (
         <BookForm
           formTitle="Book editing"
           bookDetails={bookDetails.book}

@@ -386,17 +386,12 @@ const BookForm = ({
         <div className="input-wrapper">
           <label htmlFor="bookCategory">CATEGORY</label>
           <br />
-          <select
+          <input
+            type="text"
             name="bookCategory"
             value={formState.bookCategory}
             onChange={handleChange}
-          >
-            <option value="" disabled hidden>
-              Select category
-            </option>
-            <option value="drama">Drama</option>
-            <option value="sci-fi">Sci-fi</option>
-          </select>
+          />
           {formState.errors.bookCategory?.length > 0 && (
             <span className="error">
               <br />
