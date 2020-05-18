@@ -76,14 +76,28 @@ namespace BookLibrary.Services.Books
         {
             var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
             var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
-            var reservation = userReservations.FirstOrDefault(x => x.Book.Id == bookId);
+            var reservation = userReservations.Where(x => x.Status != "Waiting").FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
+
+
+            bool isAnyoneReading = false;
 
             if (reservation != null)
             {
                 isCurrentlyReading = true;
+                isAnyoneReading = true;
             }
-            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, ReadingUserId = userId, ActiveReservation = reservation };
+    
+            if (isCurrentlyReading == false)
+            {
+                var allReservations = _context.Reservation.Where(r => r.CheckedInOn == null);
+                var anyActiveReservation = allReservations.FirstOrDefault(x => x.BookCase.BookId == bookId);
+                if (anyActiveReservation != null)
+                {
+                    isAnyoneReading = true;
+                }
+            }
+            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, IsAnyoneReading=isAnyoneReading, ReadingUserId = userId, ActiveReservation= reservation };
 
             return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }
@@ -196,9 +210,10 @@ namespace BookLibrary.Services.Books
         {
             pattern = pattern.ToLower();
             var books = BooksWithoutWishes();
-            var filteredBooks = books.Where(book => book.Title.ToLower().Contains(pattern) ||
-                                                           book.Author.ToLower().Contains(pattern) ||
-                                                           book.Isbn.ToLower().Contains(pattern))
+            var filteredBooks =  books.Where(book => (book.Title.ToLower().Contains(pattern) ||
+                                                            book.Author.ToLower().Contains(pattern) ||
+                                                            book.Isbn.ToLower().Contains(pattern)) &&
+                                                            book.IsArchived == false)
                                                             .ToList();
 
             return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks });
@@ -326,6 +341,19 @@ namespace BookLibrary.Services.Books
             recommended = recommended.Take(count).ToList();
 
             return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
+        }
+
+        public async Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived)
+        {
+            var book = await _context.Book.FirstOrDefaultAsync(x => x.Id == bookId);
+            if (book != null)
+            {
+                book.IsArchived = isArchived;
+                _context.Book.Update(book);
+                await _context.SaveChangesAsync();
+            }
+
+            return new ResponseResult<Book> { Error = false, ReturnResult = book };
         }
     }
 }

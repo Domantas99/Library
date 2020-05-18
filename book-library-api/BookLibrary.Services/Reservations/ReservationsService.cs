@@ -100,16 +100,42 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
         }
 
+        public async Task<ResponseResult<Book>> RemoveWaiting(int waitingId)
+        {
+            var waiting = await _context.Waiting.FirstOrDefaultAsync(x => x.Id == waitingId);
+            Book book = null;
+            bool flag = false;
+            try
+            {
+                if (waiting != null)
+                {
+                    var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == waiting.BookCaseId);
+                    book = bookCase.Book;
+                    _context.Waiting.Remove(waiting);
+                    _context.BookCase.Remove(bookCase);
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                flag = true;
+            }
+            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
+        }
+
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user && x.CheckedInOn == null)
-                .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).ToListAsync();
-            var response = new List<ReservationDTO>();
-            foreach (Reservation reservation in reservations)
-            {
-                response.Add((ReservationDTO)reservation);
-            }
-            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response };
+                .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x=>(ReservationDTO)x).ToListAsync();
+
+            var waitings = await _context.Waiting.Where(x => x.UserId == user)
+                .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Select(x=>(ReservationDTO)x).ToListAsync();
+
+            var response = reservations.Concat(waitings).ToList();
+
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response};
+            
         }
 
         public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(int page, int pageSize, string sort)

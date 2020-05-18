@@ -23,5 +23,6 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<Book>> DeleteBook(int id);
         Task<ResponseResult<ICollection<string>>> GetAuthors();
         Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count);
+        Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived);
     }
 }

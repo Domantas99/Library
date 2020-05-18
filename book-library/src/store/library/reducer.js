@@ -12,6 +12,7 @@ import {
   SELECT_CATEGORY,
   UPDATE_BOOK_END,
   GET_AUTHORS_END,
+  SET_BOOK_ARCHIVE_STATUS,
 } from './actionTypes';
 import { paramGenerator, paramFormatter } from '../../utilities';
 
@@ -141,6 +142,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         authors: action.payload.returnResult,
+      };
+    }
+    case SET_BOOK_ARCHIVE_STATUS: {
+      return {
+        ...state
       };
     }
 

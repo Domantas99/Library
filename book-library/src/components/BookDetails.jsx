@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getBookDetails, deleteBook } from '../store/library/actions';
+import { getBookDetails, deleteBook, setBookArchiveState } from '../store/library/actions';
 import BookAvailabilitySection from './BookAvailabilitySection';
 import BookCommentsSection from './BookCommentsSection';
 import BookReservationsSection from './BookReservationsSection';
@@ -40,7 +40,7 @@ export default ({ id }) => {
   const createWaitingObj = () => {
     return {
       book: bookDetails.book,
-      office: activeOffice || userOffice
+      office: activeOffice ? activeOffice.id : userOffice
     };
   };
 
@@ -57,13 +57,26 @@ export default ({ id }) => {
   
   function onDelete() {
     setModalState(false);
-    dispatch(deleteBook(bookDetails.book.id));
+    if (bookDetails.isAnyoneReading===false) {
+      dispatch(deleteBook(bookDetails.book.id));
+    } else {
+    alert("You cannot delete checked-in book");
+    }
+  }
+
+  function onArchive() {
+    setModalState(false);
+    if (bookDetails.isAnyoneReading===false) {
+      dispatch(setBookArchiveState(book.id ,!book.isArchived, 1));
+    } else {
+    alert("You cannot archive checked-in book");
+    }
   }
 
   const archiveConfimationData = {
-    text: 'Do you really want to ARCHIVE this book?',
+    text: `Do you really want to ${book.isArchived===true ? 'UN': ''}ARCHIVE this book?`,
     onNo: () => setModalState(false),
-    onYes: () => {},
+    onYes: onArchive,
   };
   const DeleteConfirmationData = {
     text: 'Do you really want to DELETE this book?',
@@ -98,7 +111,7 @@ export default ({ id }) => {
           </div>
         </div>
         <div className="book-details__content">
-          <div className="book-details__title">{bookDetails.book?.title}</div>
+          <div className="book-details__title">{bookDetails.book?.isArchived===true && "[Archived]"} {bookDetails.book?.title}</div>
           <h4 className="text-secondary">
             by <span className="text-underlined">{bookDetails.book?.author}</span>
           </h4>
@@ -108,7 +121,7 @@ export default ({ id }) => {
               moreBtnState && (
               <div className="book-details-moreContent">
                 <Button  small clear onClick={onArchiveClick}>
-                  Archive book
+                  { (bookDetails.book?.isArchived === true ? "Una" : "A") + "rchive book" }
                 </Button>
                 <Button small clear onClick={onDeleteClick}>
                   Delete book
@@ -143,7 +156,7 @@ export default ({ id }) => {
           <BookAvailabilitySection
             bookDetails={bookDetails}
             handleScrollClick={handleScrollClick}
-            setUnavailableInMyOffice={setUnavailableInMyOffice}
+            setUnavailableInMyOffice={() => setUnavailableInMyOffice(true)}
             activeOffice={activeOffice}
             setActiveOffice={setActiveOffice}
             openWaitingModal={openWaitingModal}
