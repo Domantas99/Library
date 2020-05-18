@@ -44,6 +44,8 @@ namespace BookLibrary.DataBase.Models
         [DataMember]
         public string GoodReadsUrl { get; set; }
         [DataMember]
+        public bool IsArchived { get; set; } = false;
+        [DataMember]
         [Column(TypeName ="Date")]
         public DateTime DateAdded { get; set; }
         [DataMember]

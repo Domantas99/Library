@@ -43,7 +43,7 @@ export default ({ data, navigate, offices }) => {
         <div className="book__image">
           <img src={data.coverPictureUrl} alt="" />
         </div>
-        <span className="book__title">{data.title}</span>
+  <span className="book__title">{(data.isArchived===true ? "[Archived]": "") + data.title}</span>
         <span className="book__author">{data.author}</span>
       </div>
       {data.votes !== undefined && (

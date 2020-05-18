@@ -13,5 +13,6 @@ namespace BookLibrary.DTO.Books
         public bool IsUserCurrentlyReading { get; set; }
         public ReservationDTO ActiveReservation { get; set; }
         public ICollection<Library> Library { get; set; }
+        public bool IsAnyoneReading { get; set; }
     }
 }

@@ -6,6 +6,7 @@ import {
   getBookReservations,
   addWaiting,
   removeReservationAPI,
+  removeWaiting,
   getTeamReservations,
 } from "./api";
 
@@ -19,6 +20,8 @@ import {
   ADD_WAITING_START,
   ADD_WAITING_END,
   REMOVE_RESERVATION_START,
+  REMOVE_WAITING_START,
+  REMOVE_WAITING_END,
   GET_TEAM_RESERVATIONS_START,
 } from "./actionTypes";
 import {
@@ -29,6 +32,7 @@ import {
   getBookReservationsEnd,
   addWaitingEnd,
   removeReservationEnd,
+  removeWaitingEnd,
 } from "./actions";
 
 export function* getReservationsSaga(action) {
@@ -100,6 +104,20 @@ export function* removeReservationSaga(action) {
   }
 }
 
+export function* removeWaitingSaga(action) {
+  try {
+    const apiResult = yield call(removeWaiting, action.payload);
+    yield put(
+      removeWaitingEnd({
+        bookId: apiResult.returnResult.id,
+        userId: action.userId,
+      })
+    );
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_RESERVATIONS_START, getReservationsSaga);
   yield takeLatest(GET_TEAM_RESERVATIONS_START, getTeamReservationsSaga);
@@ -111,4 +129,6 @@ export default function* () {
   yield takeLatest(ADD_WAITING_START, addWaitingSaga);
   yield takeLatest(ADD_WAITING_END, getBookReservations);
   yield takeLatest(REMOVE_RESERVATION_START, removeReservationSaga);
+  yield takeLatest(REMOVE_WAITING_START, removeWaitingSaga);
+  yield takeLatest(REMOVE_WAITING_END, getReservationsSaga);
 }

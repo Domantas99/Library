@@ -10,6 +10,7 @@ import {
   updateBook,
   getCategories,
   getAuthors,
+  setBookArchiveStatusAPI,
 } from './api';
 import {
   GET_BOOK_LIST_START,
@@ -26,6 +27,8 @@ import {
   GET_CATEGORIES_START,
   SELECT_CATEGORY,
   GET_AUTHORS_START,
+  SET_BOOK_ARCHIVE_STATUS_END,
+  SET_BOOK_ARCHIVE_STATUS,
 } from './actionTypes';
 import {
   getBookListEnd,
@@ -38,6 +41,8 @@ import {
   setFiltersEnd,
   getCategoriesEnd,
   getAuthorsEnd,
+  setBookArchiveState,
+  setBookArchiveStateEnd,
 } from './actions';
 import {
   REMOVE_RESERVATION_END,
@@ -146,6 +151,15 @@ export function* getAuthorsSaga(action) {
   }
 }
 
+export function* setBookArchiveStateSaga(action) {
+  try {
+    const apiResult = yield call(setBookArchiveStatusAPI, action.payload);
+    yield put(setBookArchiveStateEnd(action.payload.bookId, action.payload.userId));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getBookListSaga);
@@ -164,4 +178,6 @@ export default function* () {
   yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
   yield takeLatest(REMOVE_RESERVATION_END, getBookDetailsSaga);
   yield takeLatest(ADD_RESERVATION_END, getBookDetailsSaga);
+  yield takeLatest(SET_BOOK_ARCHIVE_STATUS, setBookArchiveStateSaga);
+  yield takeLatest(SET_BOOK_ARCHIVE_STATUS_END, getBookDetailsSaga);
 }

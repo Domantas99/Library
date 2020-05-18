@@ -39,3 +39,7 @@ export const getCategories = () => {
 export const getAuthors = () => {
   return httpClient.get('books/authors');
 }
+
+export const setBookArchiveStatusAPI = (data) => {
+  return httpClient.post(`books/archive-book/?bookId=${data.bookId}&status=${data.status}`);
+}

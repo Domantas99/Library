@@ -36,19 +36,33 @@ namespace BookLibrary.Services.Wishlist
             return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist()
+        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sortField = "DateAdded", int sortDirection = -1)
         {
-            var wishlist = await _context.Wish.Select(x => new WishlistItemDTO() {
-                WishId = x.Id,
-                Id = x.Book.Id,
-                Title = x.Book.Title,
-                Author = x.Book.Author,
-                CoverPictureUrl = x.Book.CoverPictureUrl,
-                DateAdded = x.Book.DateAdded,
-                ReleaseDate = x.Book.ReleaseDate,
-                Votes = x.Votes.Count
-            }).ToListAsync();
-
+            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
+            if (categories != null && categories.Count > 0)
+            {
+                wishes = wishes.Where(a => a.Book.Category != null && categories.Contains(a.Book.Category)).ToList();
+            }
+            if (authors.Count > 0)
+            {
+                wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
+            }
+            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
+            try
+            {
+                if (sortDirection > 0)
+                {
+                    wishlist = wishlist.OrderBy(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+                else if (sortDirection < 0)
+                {
+                    wishlist = wishlist.OrderByDescending(s => s.GetType().GetProperty(sortField).GetValue(s)).ToList();
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                //Probably means sort field isn't set properly. Note it's case sensitive.
+            }
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
         public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)
@@ -101,6 +115,20 @@ namespace BookLibrary.Services.Wishlist
             }
 
             return new ResponseResult<Book> { Error = flag, ReturnResult = book };
+        }
+
+        public Task<ResponseResult<ICollection<string>>> GetCategories()
+        {
+            var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
+            uniqueCategories.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+        }
+
+        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        {
+            var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
+            uniqueAuthors.Sort();
+            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
         }
     }
 }

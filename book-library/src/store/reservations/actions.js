@@ -13,6 +13,8 @@ import {
   ADD_WAITING_END,
   REMOVE_RESERVATION_START,
   REMOVE_RESERVATION_END,
+  REMOVE_WAITING_START,
+  REMOVE_WAITING_END
 } from "./actionTypes";
 
 export const getReservations = (id) => ({
@@ -65,6 +67,17 @@ export const addWaiting = (waiting) => ({
 export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
+
+export const removeWaiting = (waitingId, userId) => ({
+  type: REMOVE_WAITING_START,
+  payload: waitingId,
+  userId,
+});
+export const removeWaitingEnd = (ids) => ({
+  type: REMOVE_WAITING_END,
+  payload: ids,
+});
+
 export const removeReservation = (reservationId, userId) => ({
   type: REMOVE_RESERVATION_START,
   payload: reservationId,

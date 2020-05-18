@@ -2,42 +2,43 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setFilters } from '../store/library/actions';
 import Button from './Button';
-import Modal from './Modal';
 import FilterModalContent from './FilterModalContent';
+import Modal from './Modal';
 
-const LibraryFilter = ({ dataAction }) => {
+const Filter = ({
+  dataAction,
+  filterSelector,
+  filterMap,
+  excludedFilters,
+  setFilterAction,
+}) => {
   const dispatch = useDispatch();
-  const filters = useSelector((state) => state.library.filters);
   const [sortField, setSortField] = useState('DateAdded');
   const [sortDirection, setSortDirection] = useState(-1);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
 
-  const filterNames = {
-    category: 'Category',
-    status: 'Status',
-    offices: 'Office',
-    authors: 'Author',
-  };
-
-  const unrendered = ['sortField', 'sortDirection'];
-
-  const generateSortedFilters = useCallback(() => {
-    return {
-      ...filters,
-      sortField: [sortField],
-      sortDirection: [sortDirection],
-    };
-  }, [filters, sortField, sortDirection]);
+  const generateSortedFilters = useCallback(
+    (newFilters) => {
+      return {
+        ...newFilters,
+        sortField: [sortField],
+        sortDirection: [sortDirection],
+      };
+    },
+    [sortField, sortDirection]
+  );
 
   const removeFilter = (key, filter) => {
-    const newFilters = { ...filters };
+    const newFilters = { ...filterSelector };
     newFilters[key] = newFilters[key].filter((item) => item !== filter);
-    dispatch(setFilters(generateSortedFilters()));
+    if (!newFilters[key]) {
+      delete newFilters[key];
+    }
+    dispatch(setFilterAction(generateSortedFilters(newFilters)));
   };
 
   const createFilterPill = (key, filter) => {
@@ -47,7 +48,7 @@ const LibraryFilter = ({ dataAction }) => {
         key={`${key}-${filter}`}
         onClick={() => removeFilter(key, filter)}
       >
-        {`${filterNames[key]}: ${filter}`}
+        {`${filterMap[key].label}: ${filter}`}
       </Button>
     );
   };
@@ -66,14 +67,14 @@ const LibraryFilter = ({ dataAction }) => {
 
   const createFilterElements = () => {
     const elements = [];
-    Object.keys(filters).forEach((key) => {
-      if (!unrendered.includes(key)) {
-        if (Array.isArray(filters[key])) {
-          filters[key].forEach((filter) => {
+    Object.keys(filterSelector).forEach((key) => {
+      if (!excludedFilters.includes(key)) {
+        if (Array.isArray(filterSelector[key])) {
+          filterSelector[key].forEach((filter) => {
             elements.push(createFilterPill(key, filter));
           });
         } else {
-          elements.push(createFilterPill(key, filters[key]));
+          elements.push(createFilterPill(key, filterSelector[key]));
         }
       }
     });
@@ -81,12 +82,12 @@ const LibraryFilter = ({ dataAction }) => {
   };
 
   useEffect(() => {
-    dispatch(dataAction(generateSortedFilters()));
-  }, [filters, sortField, sortDirection]);
+    dispatch(dataAction(generateSortedFilters(filterSelector)));
+  }, [filterSelector, sortField, sortDirection]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());
-  }, [filters]);
+  }, [filterSelector]);
 
   return (
     <>
@@ -116,17 +117,33 @@ const LibraryFilter = ({ dataAction }) => {
         width="80%"
       >
         <FilterModalContent
-          filters={filters}
-          labels={filterNames}
+          filters={filterSelector}
+          filterMap={filterMap}
           modalHandler={setModalState}
+          setFilterAction={setFilterAction}
         />
       </Modal>
     </>
   );
 };
 
-LibraryFilter.propTypes = {
+Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
+  filterMap: PropTypes.objectOf(PropTypes.shape({
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    values: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    ).isRequired,
+  })).isRequired,
+  filterSelector: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      PropTypes.arrayOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      ),
+    ])
+  ),
+  setFilterAction: PropTypes.func.isRequired,
 };
 
-export default LibraryFilter;
+export default Filter;

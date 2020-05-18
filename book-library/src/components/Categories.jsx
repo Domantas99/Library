@@ -1,19 +1,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Link } from "react-router-dom";
-import { getCategoriesStart, selectCategory } from "../store/library/actions";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Link } from 'react-router-dom';
+import _ from 'lodash';
+import { getCategories, selectCategory } from '../store/library/actions';
 
-export default function Categories() {
+const Categories = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.library.categories);
   const activeCategory = useSelector((state) => state.library.activeCategory);
 
   useEffect(() => {
-    dispatch(getCategoriesStart());
+    dispatch(getCategories());
   }, []);
 
   return (
@@ -31,7 +31,7 @@ export default function Categories() {
       >
         <li
           className={`navigation__item-secondary ${
-            activeCategory === null && " active"
+            activeCategory === null && ' active'
           }`}
         >
           All books
@@ -45,7 +45,7 @@ export default function Categories() {
           >
             <li
               className={`navigation__item-secondary ${
-                activeCategory === category && " active"
+                activeCategory === category && ' active'
               }`}
               onClick={() => dispatch(selectCategory(category))}
             >
@@ -55,4 +55,6 @@ export default function Categories() {
         ))}
     </ul>
   );
-}
+};
+
+export default Categories;
