@@ -127,7 +127,7 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
       ) : (
         <></>
       )}
-      {unavailableInMyOffice && (
+      {unavailableInMyOffice===true && (
       <Button mini dark onClick={openWaitingModal}>
         Join Waitlist
       </Button>)}

@@ -4,13 +4,11 @@ import history from '../../core/history';
 import { getLatestBooksAPI, getCurrentlyReadingBooksAPI, getRecommendedBooksAPI } from './api';
 import {
   GET_LATEST_BOOKS,
-  GET_LATEST_BOOKS_END,
   GET_CURRENTLY_READING_BOOKS,
-  GET_CURRENTLY_READING_BOOKS_END,
   GET_RECOMMENDED_BOOKS,
 } from './actionTypes';
 import { getLatestBooksEnd, getCurrentlyReadingBooksEnd, getRecommendedBooksEnd } from './actions';
-import { REMOVE_RESERVATION_END } from '../reservations/actionTypes';
+import { REMOVE_RESERVATION_END, ADD_RESERVATION_END } from '../reservations/actionTypes';
 
 export function* getLatestBooksSaga(action) {
   try {
@@ -42,6 +40,7 @@ export function* getRecommendedBooksSaga(action) {
 export default function* () {
   yield takeLatest(GET_LATEST_BOOKS, getLatestBooksSaga);
   yield takeLatest(GET_CURRENTLY_READING_BOOKS, getCurrentlyReadingBooksSaga);
+  yield takeLatest(ADD_RESERVATION_END, getCurrentlyReadingBooksSaga);
   yield takeLatest(REMOVE_RESERVATION_END, getCurrentlyReadingBooksSaga);
   yield takeLatest(GET_RECOMMENDED_BOOKS, getRecommendedBooksSaga);
 

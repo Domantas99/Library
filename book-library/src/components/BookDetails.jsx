@@ -40,7 +40,7 @@ export default ({ id }) => {
   const createWaitingObj = () => {
     return {
       book: bookDetails.book,
-      office: activeOffice || userOffice
+      office: activeOffice ? activeOffice.id : userOffice
     };
   };
 
