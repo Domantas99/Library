@@ -387,10 +387,7 @@ const BookForm = ({
           <label htmlFor="bookCategory">CATEGORY</label>
           <br />
           <input
-<<<<<<< HEAD
-=======
             type="text"
->>>>>>> 584b36500aae666e8bf50c32e78d2daf1e3e1473
             name="bookCategory"
             value={formState.bookCategory}
             onChange={handleChange}
