@@ -87,5 +87,12 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<Book>>> DeleteBook(int id) {
             return await _booksService.DeleteBook(id);
         }
+
+        [HttpGet("archive-book")]
+        public async Task<ActionResult<ResponseResult<Book>>> SetBookArchiveState([FromQuery]int bookId, [FromQuery]bool status)
+        {
+            return await _booksService.SetBookArchiveStatus(bookId, status);
+        }
+
     }
 }

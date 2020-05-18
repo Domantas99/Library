@@ -18,6 +18,8 @@ import {
   SET_FILTERS_END,
   UPDATE_BOOK,
   UPDATE_BOOK_END,
+  SET_BOOK_ARCHIVE_STATUS,
+  SET_BOOK_ARCHIVE_STATUS_END,
 } from './actionTypes';
 
 export const addNewBook = (bookObj) => ({
@@ -102,4 +104,15 @@ export const updateBook = (id, book) => ({
 export const updateBookEnd = (book) => ({
   type: UPDATE_BOOK_END,
   payload: book,
+});
+
+export function setBookArchiveState (bookId, status, userId) {
+  return {
+  type: SET_BOOK_ARCHIVE_STATUS,
+  payload: { bookId, status, userId },
+}};
+
+export const setBookArchiveStateEnd = (bookId, userId ) => ({
+  type: SET_BOOK_ARCHIVE_STATUS_END,
+  payload: { bookId, userId },
 });

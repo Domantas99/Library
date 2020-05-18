@@ -158,10 +158,10 @@ export default function BookAvailabilitySection({
               :
               <div className="ba-section-buttons">
                 <div>
-                  <button
+                  <button // Todo add style when book isArchived
                     className="ba-section-buttons-dark"
                     onClick={() => handleModalClick()}
-                    disabled={!activeOffice}
+                    disabled={!activeOffice || bookDetails.book?.isArchived === true}
                   >
                     Check out
                   </button>
