@@ -88,7 +88,7 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.DeleteBook(id);
         }
 
-        [HttpGet("archive-book")]
+        [HttpPost("archive-book")]
         public async Task<ActionResult<ResponseResult<Book>>> SetBookArchiveState([FromQuery]int bookId, [FromQuery]bool status)
         {
             return await _booksService.SetBookArchiveStatus(bookId, status);

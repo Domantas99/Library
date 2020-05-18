@@ -40,5 +40,5 @@ export const getAuthors = () => {
 }
 
 export const setBookArchiveStatusAPI = (data) => {
-  return httpClient.get(`books/archive-book/?bookId=${data.bookId}&status=${data.status}`);
+  return httpClient.post(`books/archive-book/?bookId=${data.bookId}&status=${data.status}`);
 }
