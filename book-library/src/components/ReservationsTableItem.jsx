@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 import ReservationModalContent from "./ReservationModalContent";
-import { removeReservation } from "../store/reservations/actions";
+import { removeReservation, removeWaiting } from "../store/reservations/actions";
 import CheckInForm from "./CheckInForm";
 
 const ReservationsTableItem = ({ data }) => {
@@ -21,6 +21,10 @@ const ReservationsTableItem = ({ data }) => {
   const onConfirmClick = () => {
     dispatch(removeReservation(data.id, userId));
     setCheckInModalState(false);
+  };
+
+  const onLeaveWaitlist = () => {
+    dispatch(removeWaiting(data.id, userId));
   };
 
   return (
@@ -50,11 +54,7 @@ const ReservationsTableItem = ({ data }) => {
         <span>{data.office.name}</span>
       </td>
       <td>
-        {data.status === "Borrowed" ? (
-          <span>Borrowed</span>
-        ) : (
-          <span>Requested</span>
-        )}
+        <span>{data.status}</span>
       </td>
       <td>{data.bookedFrom}</td>
       <td>{data.returnDate}</td>
@@ -75,9 +75,9 @@ const ReservationsTableItem = ({ data }) => {
           <button onClick={() => handleModalClick()}>Edit</button>
           <button onClick={() => setCheckInModalState(true)}>Check In</button>
         </td>
-      ) : (
+      ) : (data.status === "Waiting" &&
         <td>
-          <button>Leave waitlist</button>
+          <button onClick={onLeaveWaitlist}>Leave waitlist</button>
         </td>
       )}
     </tr>

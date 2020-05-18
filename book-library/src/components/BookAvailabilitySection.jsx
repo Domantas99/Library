@@ -62,7 +62,7 @@ export default function BookAvailabilitySection({
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
     if (unavailable && userOffice === d.office.id && bookDetails.isUserCurrentlyReading===false){
-      setUnavailableInMyOffice(true);
+      setUnavailableInMyOffice();
     };
     const itemClass = classNames('book-status__item', {
       'book-status__item--disabled': unavailable,
@@ -141,14 +141,14 @@ export default function BookAvailabilitySection({
                 <div>
                   <button
                     className="ba-section-buttons-dark"
-                    onClick={() => openWaitingModal()}
+                    onClick={openWaitingModal}
                     disabled={!activeOffice}
                   >
                     Enter waitlist
                   </button>
                   <button
                     className="ba-section-buttons-light"
-                    onClick={() => handleScrollClick()}
+                    onClick={handleScrollClick}
                     disabled={!activeOffice}
                   >
                     Who else waiting?

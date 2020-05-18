@@ -40,7 +40,7 @@ export default ({ id }) => {
   const createWaitingObj = () => {
     return {
       book: bookDetails.book,
-      office: activeOffice || userOffice
+      office: activeOffice ? activeOffice.id : userOffice
     };
   };
 
@@ -156,7 +156,7 @@ export default ({ id }) => {
           <BookAvailabilitySection
             bookDetails={bookDetails}
             handleScrollClick={handleScrollClick}
-            setUnavailableInMyOffice={setUnavailableInMyOffice}
+            setUnavailableInMyOffice={() => setUnavailableInMyOffice(true)}
             activeOffice={activeOffice}
             setActiveOffice={setActiveOffice}
             openWaitingModal={openWaitingModal}
