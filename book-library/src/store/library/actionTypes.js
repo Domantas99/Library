@@ -17,3 +17,5 @@ export const GET_CATEGORIES_END = 'library/GET_CATEGORIES_END';
 export const SELECT_CATEGORY = 'library/SELECT_CATEGORY';
 export const GET_AUTHORS_START = 'library/GET_AUTHORS_START';
 export const GET_AUTHORS_END = 'library/GET_AUTHORS_END';
+export const SET_BOOK_ARCHIVE_STATUS = 'library/SET_BOOK_ARCHIVE_STATUS';
+export const SET_BOOK_ARCHIVE_STATUS_END = 'library/SET_BOOK_ARCHIVE_STATUS_END';
