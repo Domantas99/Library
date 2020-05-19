@@ -12,24 +12,24 @@ const Filter = ({
   dataAction,
   filterSelector,
   filterMap,
+  sortMap,
   excludedFilters,
   setFilterAction,
 }) => {
   const dispatch = useDispatch();
-  const [sortField, setSortField] = useState('DateAdded');
-  const [sortDirection, setSortDirection] = useState(-1);
+  const [sort, setSort] = useState(sortMap[0].value);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
+  const [sortOptions, setSortOptions] = useState([]);
 
   const generateSortedFilters = useCallback(
     (newFilters) => {
       return {
         ...newFilters,
-        sortField: [sortField],
-        sortDirection: [sortDirection],
+        sort: [sort],
       };
     },
-    [sortField, sortDirection]
+    [sort]
   );
 
   const removeFilter = (key, filter) => {
@@ -57,12 +57,8 @@ const Filter = ({
     setModalState(true);
   };
 
-  const handleChangeSortField = (event) => {
-    setSortField(event.target.value);
-  };
-
-  const handleChangeSortDirection = (event) => {
-    setSortDirection(event.target.value);
+  const handleChangeSort = (event) => {
+    setSort(event.target.value);
   };
 
   const createFilterElements = () => {
@@ -83,11 +79,21 @@ const Filter = ({
 
   useEffect(() => {
     dispatch(dataAction(generateSortedFilters(filterSelector)));
-  }, [filterSelector, sortField, sortDirection]);
+  }, [filterSelector, sort]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());
   }, [filterSelector]);
+
+  useEffect(() => {
+    setSortOptions(
+      sortMap.map((sortEntry) => (
+        <option key={sortEntry.value} value={sortEntry.value}>
+          {sortEntry.label}
+        </option>
+      ))
+    );
+  }, [sortMap]);
 
   return (
     <>
@@ -95,20 +101,10 @@ const Filter = ({
       <Button onClick={() => handleModalClick()}>Add Filters</Button>
       <select
         id="book-list-sorting-field"
-        defaultValue={sortField}
-        onChange={handleChangeSortField}
+        defaultValue={sort}
+        onChange={handleChangeSort}
       >
-        <option value="Title">Title</option>
-        <option value="ReleaseDate">Release Date</option>
-        <option value="DateAdded">Date Added</option>
-      </select>
-      <select
-        id="book-list-sorting-direction"
-        defaultValue={`${sortDirection}`}
-        onChange={handleChangeSortDirection}
-      >
-        <option value="1">Ascending</option>
-        <option value="-1">Descending</option>
+        {sortOptions}
       </select>
       <Modal
         modalState={modalState}
@@ -129,12 +125,18 @@ const Filter = ({
 
 Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
-  filterMap: PropTypes.objectOf(PropTypes.shape({
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    values: PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    ).isRequired,
-  })).isRequired,
+  filterMap: PropTypes.objectOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      values: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ).isRequired,
+  sortMap: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   filterSelector: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

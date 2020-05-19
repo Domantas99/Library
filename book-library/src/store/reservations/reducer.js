@@ -5,13 +5,18 @@ import {
   REMOVE_RESERVATION_START,
   REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
-  REMOVE_WAITING_END
-} from "./actionTypes";
+  REMOVE_WAITING_END,
+  SET_FILTERS_START,
+  SET_TEAM_FILTERS_START,
+} from './actionTypes';
+import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
-  reservationData: [],
   bookReservationData: [],
   currentlyReading: [],
+  filters: {},
+  reservationData: [],
+  teamFilters: {},
   teamReservationData: {
     reservations: [],
     hasNextPage: false,
@@ -38,7 +43,7 @@ export default (state = initialState, action) => {
     case GET_TEAM_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
-          ...reservation
+          ...reservation,
         };
       });
       return {
@@ -56,7 +61,7 @@ export default (state = initialState, action) => {
     case GET_BOOK_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
-          ...reservation
+          ...reservation,
         };
       });
       return {
@@ -73,11 +78,13 @@ export default (state = initialState, action) => {
         ),
       };
     }
+
     case REMOVE_RESERVATION_END: {
       return {
         ...state,
       };
     }
+
     case REMOVE_WAITING_START: {
       return {
         ...state,
@@ -86,9 +93,32 @@ export default (state = initialState, action) => {
         ),
       };
     }
+
     case REMOVE_WAITING_END: {
       return {
         ...state,
+      };
+    }
+
+    case SET_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.filters)) {
+        return state;
+      }
+      return {
+        ...state,
+        filters: newFilters,
+      };
+    }
+
+    case SET_TEAM_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.teamFilters)) {
+        return state;
+      }
+      return {
+        ...state,
+        teamFilters: newFilters,
       };
     }
 

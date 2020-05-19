@@ -1,11 +1,14 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Modal from "./Modal";
-import ReservationModalContent from "./ReservationModalContent";
-import { removeReservation, removeWaiting } from "../store/reservations/actions";
-import CheckInForm from "./CheckInForm";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  removeReservation,
+  removeWaiting,
+} from '../store/reservations/actions';
+import CheckInForm from './CheckInForm';
+import Modal from './Modal';
+import ReservationModalContent from './ReservationModalContent';
 
 const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
@@ -43,8 +46,9 @@ const ReservationsTableItem = ({ data }) => {
       </Modal>
       {data.user && (
         <td>
-          <span>{data.user.fullName}</span>
-        </td>)}
+          <span>{data.user.userName}</span>
+        </td>
+      )}
       <td>
         <img src={data.book.coverPictureUrl} alt="" />
         <span>{data.book.title}</span>
@@ -58,7 +62,7 @@ const ReservationsTableItem = ({ data }) => {
       </td>
       <td>{data.bookedFrom.substring(0, 10)}</td>
       <td>{data.returnDate.substring(0, 10)}</td>
-      {data.status === "Borrowed" ? (
+      {data.status === 'Borrowed' ? (
         <td>
           <Modal
             modalState={modalState}
@@ -74,10 +78,12 @@ const ReservationsTableItem = ({ data }) => {
           <button onClick={() => handleModalClick()}>Edit</button>
           <button onClick={() => setCheckInModalState(true)}>Check In</button>
         </td>
-      ) : (data.status === "Waiting" &&
-        <td>
-          <button onClick={onLeaveWaitlist}>Leave waitlist</button>
-        </td>
+      ) : (
+        data.status === 'Waiting' && (
+          <td>
+            <button onClick={onLeaveWaitlist}>Leave waitlist</button>
+          </td>
+        )
       )}
     </tr>
   );
