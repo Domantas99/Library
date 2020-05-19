@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../core/history';
 import {
   addReservation,
@@ -9,7 +9,7 @@ import {
   removeReservationAPI,
   removeWaiting,
   updateReservation,
-} from "./api";
+} from './api';
 import {
   ADD_RESERVATION_START,
   ADD_RESERVATION_END,
@@ -27,7 +27,7 @@ import {
   SET_TEAM_FILTERS_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
-} from "./actionTypes";
+} from './actionTypes';
 import {
   addReservationEnd,
   addWaitingEnd,
@@ -39,7 +39,7 @@ import {
   setFiltersEnd,
   setTeamFiltersEnd,
   updateReservationEnd,
-} from "./actions";
+} from './actions';
 import { paramGenerator } from '../../utilities';
 
 export function* addReservationSaga(action) {

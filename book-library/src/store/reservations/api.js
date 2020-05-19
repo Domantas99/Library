@@ -74,7 +74,7 @@ const reservations = [
   },
 ];
 
-export const getReservationsList = ({id, filters}) => {
+export const getReservationsList = ({ id, filters }) => {
   let url = `reservations/user/${id}`;
   if (filters) {
     url += `?${paramGenerator(filters)}`;
@@ -158,7 +158,7 @@ export const addWaiting = (waiting) => {
 };
 
 export const removeWaiting = (waitingId) => {
-  return httpClient.delete(`reservations/waiting/${waitingId}`)
+  return httpClient.delete(`reservations/waiting/${waitingId}`);
 };
 
 export const removeReservationAPI = (reservationId) => {

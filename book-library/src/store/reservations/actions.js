@@ -19,7 +19,7 @@ import {
   SET_TEAM_FILTERS_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
-} from "./actionTypes";
+} from './actionTypes';
 
 export const addReservation = (reservation) => ({
   type: ADD_RESERVATION_START,
@@ -41,7 +41,7 @@ export const addWaitingEnd = () => ({
 
 export const getReservations = (id, filters) => ({
   type: GET_RESERVATIONS_START,
-  payload: {id, filters },
+  payload: { id, filters },
 });
 export const getReservationsEnd = (reservationsList) => ({
   type: GET_RESERVATIONS_END,

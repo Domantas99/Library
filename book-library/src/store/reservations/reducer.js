@@ -8,7 +8,7 @@ import {
   REMOVE_WAITING_END,
   SET_FILTERS_START,
   SET_TEAM_FILTERS_START,
-} from "./actionTypes";
+} from './actionTypes';
 import { paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
@@ -43,7 +43,7 @@ export default (state = initialState, action) => {
     case GET_TEAM_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
-          ...reservation
+          ...reservation,
         };
       });
       return {
@@ -61,7 +61,7 @@ export default (state = initialState, action) => {
     case GET_BOOK_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
-          ...reservation
+          ...reservation,
         };
       });
       return {

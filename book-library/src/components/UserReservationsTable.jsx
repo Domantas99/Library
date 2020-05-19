@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
-import {
-  getAuthors,
-  getCategories,
-} from '../store/library/actions';
+import { getAuthors, getCategories } from '../store/library/actions';
 import { getOffices } from '../store/office/actions';
 import { getReservations, setFilters } from '../store/reservations/actions';
 import Filter from './Filter';
@@ -19,7 +16,7 @@ const ReservationsTable = () => {
   );
   /* Assuming every reserved book exists in library and so its category and author are in there.
     If the excess entries are too much trouble, can add a separate API call. */
-  const categories = useSelector((state) => state.library.categories); 
+  const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const user = useSelector((state) => state.user.userData);
@@ -42,40 +39,51 @@ const ReservationsTable = () => {
     status: {
       label: 'Status',
       values: ['Returned', 'Borrowed', 'Waiting'],
-    }
+    },
   });
   /* eslint-disable no-unused-vars */
-  const [sortMap, setSortMap] = useState([{
-    value: 'recent',
-    label: 'Recent',
-  },{
-    value: 'oldest',
-    label: 'Oldest',
-  },{
-    value: 'titleaz',
-    label: 'Title [A-Z]',
-  },{
-    value: 'titleza',
-    label: 'Title [Z-A]',
-  },{
-    value: 'authoraz',
-    label: 'Author [A-Z]',
-  },{
-    value: 'authorza',
-    label: 'Author [Z-A]',
-  },{
-    value: 'fromasc',
-    label: 'Booked From (Ascending)',
-  },{
-    value: 'fromdsc',
-    label: 'Booked From (Descending)',
-  },{
-    value: 'returnasc',
-    label: 'Return Date (Ascending)',
-  },{
-    value: 'returndsc',
-    label: 'Return Date (Descending)',
-  }]);
+  const [sortMap, setSortMap] = useState([
+    {
+      value: 'recent',
+      label: 'Recent',
+    },
+    {
+      value: 'oldest',
+      label: 'Oldest',
+    },
+    {
+      value: 'titleaz',
+      label: 'Title [A-Z]',
+    },
+    {
+      value: 'titleza',
+      label: 'Title [Z-A]',
+    },
+    {
+      value: 'authoraz',
+      label: 'Author [A-Z]',
+    },
+    {
+      value: 'authorza',
+      label: 'Author [Z-A]',
+    },
+    {
+      value: 'fromasc',
+      label: 'Booked From (Ascending)',
+    },
+    {
+      value: 'fromdsc',
+      label: 'Booked From (Descending)',
+    },
+    {
+      value: 'returnasc',
+      label: 'Return Date (Ascending)',
+    },
+    {
+      value: 'returndsc',
+      label: 'Return Date (Descending)',
+    },
+  ]);
 
   useEffect(() => {
     const generateFilterMap = () => {
@@ -101,9 +109,9 @@ const ReservationsTable = () => {
   }, [categories, offices, authors]);
 
   useEffect(() => {
-    if(user.id){
-    dispatch(getReservations(user.id, filterSelector));
-  }
+    if (user.id) {
+      dispatch(getReservations(user.id, filterSelector));
+    }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [user, filterSelector]);
 

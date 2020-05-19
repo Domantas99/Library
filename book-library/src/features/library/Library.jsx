@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { BookList, BookDetails } from '../../components';
 import {
   getBookList,
   setFilters,
@@ -13,9 +12,13 @@ import {
   getCategories,
 } from '../../store/library/actions';
 import { getOffices } from '../../store/office/actions';
-import ActionItem from '../../components/ActionItem';
-import Filter from '../../components/Filter';
-import Panel from '../../components/Panel';
+import {
+  ActionItem,
+  BookDetails,
+  BookList,
+  Filter,
+  Panel,
+} from '../../components';
 
 const Library = ({ location }) => {
   const dispatch = useDispatch();
@@ -54,25 +57,32 @@ const Library = ({ location }) => {
     },
   });
   /* eslint-disable no-unused-vars */
-  const [sortMap, setSortMap] = useState([{
-    value: 'recent',
-    label: 'Recent',
-  },{
-    value: 'oldest',
-    label: 'Oldest',
-  },{
-    value: 'titleaz',
-    label: 'Title [A-Z]',
-  },{
-    value: 'titleza',
-    label: 'Title [Z-A]',
-  },{
-    value: 'authoraz',
-    label: 'Author [A-Z]',
-  },{
-    value: 'authorza',
-    label: 'Author [Z-A]',
-  }]);
+  const [sortMap, setSortMap] = useState([
+    {
+      value: 'recent',
+      label: 'Recent',
+    },
+    {
+      value: 'oldest',
+      label: 'Oldest',
+    },
+    {
+      value: 'titleaz',
+      label: 'Title [A-Z]',
+    },
+    {
+      value: 'titleza',
+      label: 'Title [Z-A]',
+    },
+    {
+      value: 'authoraz',
+      label: 'Author [A-Z]',
+    },
+    {
+      value: 'authorza',
+      label: 'Author [Z-A]',
+    },
+  ]);
 
   useEffect(() => {
     const generateFilterMap = () => {

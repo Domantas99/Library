@@ -43,15 +43,6 @@ const Filter = ({
 
   const createFilterPill = (key, filter) => {
     return (
-      filter === Object(filter) ?
-      <Button
-      mini
-      key={`${key}-${filter.value}`}
-      onClick={() => removeFilter(key, filter.value)}
-    >
-      {`${filterMap[key].label}: ${filter.text}`}
-    </Button>
-      :
       <Button
         mini
         key={`${key}-${filter}`}
@@ -95,8 +86,14 @@ const Filter = ({
   }, [filterSelector]);
 
   useEffect(() => {
-    setSortOptions(sortMap.map(sortEntry => <option key={sortEntry.value} value={sortEntry.value}>{sortEntry.label}</option>))
-  }, [sortMap])
+    setSortOptions(
+      sortMap.map((sortEntry) => (
+        <option key={sortEntry.value} value={sortEntry.value}>
+          {sortEntry.label}
+        </option>
+      ))
+    );
+  }, [sortMap]);
 
   return (
     <>
@@ -128,19 +125,18 @@ const Filter = ({
 
 Filter.propTypes = {
   dataAction: PropTypes.func.isRequired,
-  filterMap: PropTypes.objectOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    values: PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      })])
-    ).isRequired,
-  })).isRequired,
-  sortMap: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  })).isRequired,
+  filterMap: PropTypes.objectOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      values: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ).isRequired,
+  sortMap: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   filterSelector: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

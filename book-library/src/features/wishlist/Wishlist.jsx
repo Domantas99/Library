@@ -2,18 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
-import { BookList } from '../../components';
 import {
   getAuthors,
   getCategories,
   getWishlist,
   setFilters,
 } from '../../store/wishlist/actions';
-import ActionItem from '../../components/ActionItem';
-import Filter from '../../components/Filter';
-import Modal from '../../components/Modal';
-import Panel from '../../components/Panel';
-import WishForm from '../../components/WishForm';
+import {
+  ActionItem,
+  BookList,
+  Filter,
+  Modal,
+  Panel,
+  WishForm,
+} from '../../components';
 
 const Wishlist = (location) => {
   const dispatch = useDispatch();
@@ -43,25 +45,32 @@ const Wishlist = (location) => {
       values: [],
     },
   });
-  const [sortMap, setSortMap] = useState([{
-    value: 'recent',
-    label: 'Recent',
-  },{
-    value: 'oldest',
-    label: 'Oldest',
-  },{
-    value: 'titleaz',
-    label: 'Title [A-Z]',
-  },{
-    value: 'titleza',
-    label: 'Title [Z-A]',
-  },{
-    value: 'authoraz',
-    label: 'Author [A-Z]',
-  },{
-    value: 'authorza',
-    label: 'Author [Z-A]',
-  }]);
+  const [sortMap, setSortMap] = useState([
+    {
+      value: 'recent',
+      label: 'Recent',
+    },
+    {
+      value: 'oldest',
+      label: 'Oldest',
+    },
+    {
+      value: 'titleaz',
+      label: 'Title [A-Z]',
+    },
+    {
+      value: 'titleza',
+      label: 'Title [Z-A]',
+    },
+    {
+      value: 'authoraz',
+      label: 'Author [A-Z]',
+    },
+    {
+      value: 'authorza',
+      label: 'Author [Z-A]',
+    },
+  ]);
 
   useEffect(() => {
     const generateFilterMap = () => {
