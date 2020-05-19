@@ -21,7 +21,7 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] Book book) {
+        public async Task<ActionResult<ResponseResult<Book>>> AddBook([FromBody] AddBookDTO book) {
             return await _booksService.AddNewBook(book);
         }
         [HttpPut("{id}")]

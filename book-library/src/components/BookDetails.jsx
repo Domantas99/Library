@@ -156,7 +156,7 @@ export default ({ id }) => {
           <BookAvailabilitySection
             bookDetails={bookDetails}
             handleScrollClick={handleScrollClick}
-            setUnavailableInMyOffice={() => setUnavailableInMyOffice(true)}
+            setUnavailableInMyOffice={setUnavailableInMyOffice}
             activeOffice={activeOffice}
             setActiveOffice={setActiveOffice}
             openWaitingModal={openWaitingModal}

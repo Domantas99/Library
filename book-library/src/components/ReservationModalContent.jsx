@@ -7,31 +7,33 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
 
-export default ({ reservation, onExit, onSubmit }) => {
+export default ({ reservation, onExit, Edit }) => {
   const [returndate, handleDateChange] = useState(
-    reservation.returnDay || formatDate()
+     reservation.plannedReturnOn?.substring(0, 10) || reservation.returnDate?.substring(0, 10)  || formatDate()
   );
   const dispatch = useDispatch();
   const UserId = useSelector((state) => state.user.userData.id);
-  
+  const reservationObj = {
+    office: reservation.activeOffice || reservation.office || reservation.bookCase?.office, 
+    book: reservation.book || reservation.bookCase.book
+  };
+
   function onSubmitClick() {
     const obj = createReservationObj();
     dispatch(addReservation(obj));
-    onSubmit();
     onExit();
   }
 
   function createReservationObj() {
     const today = new Date();
-
     return {
       Id: reservation.id || -1,
       UserId,
       PlannedReturnOn: returndate,
       CheckedOutOn: today,
       BookCase: {
-        BookId: reservation.book.id,
-        OfficeId: reservation.activeOffice.id,
+        BookId: reservationObj.book.id,
+        OfficeId: reservationObj.office.id,
         Count: 1,
         CreatedOn: today,
         CreatedBy: UserId,
@@ -55,26 +57,29 @@ export default ({ reservation, onExit, onSubmit }) => {
 
   return (
     <>
-      <h2>Check out</h2>
+      <h2>{Edit===true? "Edit reservation" : "Check out"}</h2>
       <div className="">
-        <img src={reservation.book.coverPictureUrl} alt="" />
+        <img src={reservationObj.book.coverPictureUrl} alt="" />
       </div>
       <div className="book-details__title">
-        {reservation.book.title}
+        {reservationObj.book.title}
         <h4 className="text-secondary">
-          by <span className="text-underlined">{reservation.book.author}</span>
+          by <span className="text-underlined">{reservationObj.book.author}</span>
         </h4>
       </div>
       <h4>Reserve at:</h4>
       <div className="ba-section-office-details">
         <div className="ba-section-list-item-text-title">
-          {reservation.book.name} office
+          {reservationObj.office.name } office
         </div>
-        <div className="ba-section-list-item-text-available">
-          {reservation.activeOffice.count} available
-        </div>
+        { Edit === false && (
+          <div className="ba-section-list-item-text-available">
+            {reservation.activeOffice.count} available
+          </div>
+          )
+        }
         <div className="ba-section-list-item-text-address">
-          {reservation.activeOffice.fullAddress}
+          { reservationObj.office.fullAddress }
         </div>
         <label htmlFor="reservedUntil">Reserve until:</label>
         <input
@@ -94,7 +99,7 @@ export default ({ reservation, onExit, onSubmit }) => {
         Cancel
       </button>
       <button onClick={() => onSubmitClick()} disabled={!reservation}>
-        {reservation.book.id ? "Save Changes" : "Confirm Reservation"}
+        {reservationObj.book.id ? "Save Changes" : "Confirm Reservation"}
       </button>
     </>
   );
