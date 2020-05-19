@@ -74,8 +74,12 @@ const reservations = [
   },
 ];
 
-export const getReservationsList = (userId) => {
-  return httpClient.get(`reservations/user/${userId}`);
+export const getReservationsList = ({id, filters}) => {
+  let url = `reservations/user/${id}`;
+  if (filters) {
+    url += `?${paramGenerator(filters)}`;
+  }
+  return httpClient.get(url);
 };
 
 export const getTeamReservations = (params) => {

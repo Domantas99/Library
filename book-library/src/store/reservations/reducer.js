@@ -6,6 +6,7 @@ import {
   REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
+  SET_FILTERS_START,
   SET_TEAM_FILTERS_START,
 } from "./actionTypes";
 import { paramGenerator, paramFormatter } from '../../utilities';
@@ -13,6 +14,7 @@ import { paramGenerator, paramFormatter } from '../../utilities';
 const initialState = {
   bookReservationData: [],
   currentlyReading: [],
+  filters: {},
   reservationData: [],
   teamFilters: {},
   teamReservationData: {
@@ -113,6 +115,17 @@ export default (state = initialState, action) => {
     case REMOVE_WAITING_END: {
       return {
         ...state,
+      };
+    }
+
+    case SET_FILTERS_START: {
+      const newFilters = paramFormatter(action.payload);
+      if (paramGenerator(newFilters) === paramGenerator(state.filters)) {
+        return state;
+      }
+      return {
+        ...state,
+        filters: newFilters,
       };
     }
 

@@ -13,6 +13,8 @@ import {
   REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
+  SET_FILTERS_START,
+  SET_FILTERS_END,
   SET_TEAM_FILTERS_START,
   SET_TEAM_FILTERS_END,
   UPDATE_RESERVATION_START,
@@ -37,9 +39,9 @@ export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
 
-export const getReservations = (id) => ({
+export const getReservations = (id, filters) => ({
   type: GET_RESERVATIONS_START,
-  payload: id,
+  payload: {id, filters },
 });
 export const getReservationsEnd = (reservationsList) => ({
   type: GET_RESERVATIONS_END,
@@ -55,13 +57,23 @@ export const getBookReservationsEnd = (reservations) => ({
   payload: reservations,
 });
 
-export const getTeamReservations = ( filters) => ({
+export const getTeamReservations = (filters) => ({
   type: GET_TEAM_RESERVATIONS_START,
   payload: filters,
 });
 export const getTeamReservationsEnd = (reservations) => ({
   type: GET_TEAM_RESERVATIONS_END,
   payload: reservations,
+});
+
+export const setFilters = (filters) => ({
+  type: SET_FILTERS_START,
+  payload: filters,
+});
+
+export const setFiltersEnd = (filters) => ({
+  type: SET_FILTERS_END,
+  payload: filters,
 });
 
 export const setTeamFilters = (filters) => ({

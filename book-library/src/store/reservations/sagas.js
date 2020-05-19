@@ -21,6 +21,8 @@ import {
   REMOVE_RESERVATION_START,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
+  SET_FILTERS_START,
+  SET_FILTERS_END,
   SET_TEAM_FILTERS_START,
   SET_TEAM_FILTERS_END,
   UPDATE_RESERVATION_START,
@@ -34,6 +36,7 @@ import {
   getBookReservationsEnd,
   removeReservationEnd,
   removeWaitingEnd,
+  setFiltersEnd,
   setTeamFiltersEnd,
   updateReservationEnd,
 } from "./actions";
@@ -123,6 +126,19 @@ export function* updateReservationSaga(action) {
   }
 }
 
+export function* setFiltersSaga(action) {
+  const params = paramGenerator(action.payload);
+  let newRoute =
+    window.location.pathname.split('?')[0] + params ? `?${params}` : '';
+  if (newRoute.slice(-1) === '/') {
+    newRoute = newRoute.slice(0, -1);
+  }
+  if (newRoute !== window.location.pathname) {
+    history.replace(newRoute);
+  }
+  yield put(setFiltersEnd(action.payload));
+}
+
 export function* setTeamFiltersSaga(action) {
   const params = paramGenerator(action.payload);
   let newRoute =
@@ -147,6 +163,8 @@ export default function* () {
   yield takeLatest(REMOVE_RESERVATION_START, removeReservationSaga);
   yield takeLatest(REMOVE_WAITING_START, removeWaitingSaga);
   yield takeLatest(REMOVE_WAITING_END, getReservationsSaga);
+  yield takeLatest(SET_FILTERS_START, setFiltersSaga);
+  yield takeLatest(SET_FILTERS_END, getReservationsSaga);
   yield takeLatest(SET_TEAM_FILTERS_START, setTeamFiltersSaga);
   yield takeLatest(SET_TEAM_FILTERS_END, getTeamReservationsSaga);
   yield takeLatest(UPDATE_RESERVATION_START, updateReservationSaga);

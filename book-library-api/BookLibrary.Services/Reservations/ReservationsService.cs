@@ -183,7 +183,11 @@ namespace BookLibrary.Services.Reservations
             }
         }
 
-        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user)
+        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user) {
+            return await GetReservations(user, new List<string>(), new List<string>(), new List<string>(), new List<string>(), sort_recent);
+        }
+
+        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user && x.CheckedInOn == null)
                 .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
@@ -192,13 +196,29 @@ namespace BookLibrary.Services.Reservations
                 .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
             var response = reservations.Concat(waitings).ToList();
-
+            if (category != null && category.Count > 0)
+            {
+                response = response.Where(x => category.Contains(x.Book.Category)).ToList();
+            }
+            if (offices != null && offices.Count > 0)
+            {
+                response = response.Where(x => offices.Contains(x.Office.Name)).ToList();
+            }
+            if (status != null && status.Count > 0)
+            {
+                response = response.Where(x => status.Contains(x.Status)).ToList();
+            }
+            if (authors != null && authors.Count > 0)
+            {
+                response = response.Where(x => authors.Contains(x.Book.Author)).ToList();
+            }
+            response = resultSort(response, sort);
             return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = response };
 
         }
 
 
-        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<int> users, int page, int pageSize, string sort)
+        public async Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<string> users, int page, int pageSize, string sort)
         {
             var reservations = await _context.Reservation.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
             var waitings = await _context.Waiting.Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Include(x => x.User).Select(x => (ReservationDTO)x).ToListAsync();
@@ -216,9 +236,9 @@ namespace BookLibrary.Services.Reservations
                 results = results.Where(x => authors.Contains(x.Book.Author)).ToList();
             }
             if (users != null && users.Count > 0) {
-                results = results.Where(x => users.Contains(x.User.Id)).ToList();
+                results = results.Where(x => users.Contains(x.User.UserName)).ToList();
             }
-            resultSort(results, sort);
+            results = resultSort(results, sort);
             var response = PagedList<ReservationDTO>.CreateFrom(results, page, pageSize);
             return new PagedResponseResult<PagedList<ReservationDTO>> { Error = false, ReturnResult = response, Page = response.CurrentPage, PageSize = response.PageSize, HasNextPage = response.HasNextPage, HasPreviousPage = response.HasPreviousPage, TotalPages = response.TotalPages, Items = response.Items };
         }

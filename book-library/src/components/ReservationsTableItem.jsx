@@ -43,7 +43,7 @@ const ReservationsTableItem = ({ data }) => {
       </Modal>
       {data.user && (
         <td>
-          <span>{data.user.fullName}</span>
+          <span>{data.user.userName}</span>
         </td>)}
       <td>
         <img src={data.book.coverPictureUrl} alt="" />

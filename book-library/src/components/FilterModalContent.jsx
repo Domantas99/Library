@@ -68,17 +68,6 @@ const FilterModalContent = ({
   const generateCategoryFilterItem = useCallback(
     (category, filter) => {
       return (
-        filter === Object(filter) ? 
-        <div key={`${category}-${filter.value}`}>
-          <input
-            type="checkbox"
-            id={`checkbox-${category}-${filter.value}`}
-            onChange={() => handleFilterChange(category, filter.value)}
-            checked={checkedBoxes.includes(`checkbox-${category}-${filter.value}`)}
-          />
-          <label htmlFor={`checkbox-${category}-${filter.value}`}>{filter.text}</label>
-          </div>
-        :
         <div key={`${category}-${filter}`}>
           <input
             type="checkbox"
@@ -149,7 +138,7 @@ const FilterModalContent = ({
     setFilteredOptions(
       Object.entries(filterMap).reduce((prev, [filterCategory, filterObj]) => {
         prev[filterCategory] = filterObj.values.filter((value) =>
-          (value === Object(value) ? value.text : value).toLowerCase().includes(searchText.toLowerCase())
+          value.toLowerCase().includes(searchText.toLowerCase())
         );
         return prev;
       }, {})

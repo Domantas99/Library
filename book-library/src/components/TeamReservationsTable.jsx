@@ -102,9 +102,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
         status: filterMap.status,
         users: {
           label: 'User',
-          values: users.map((user) => {
-            return { text: user.fullName, value: user.id };
-          }),
+          values: users.map((user) => user.userName),
         },
       };
     };

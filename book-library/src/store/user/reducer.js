@@ -3,8 +3,8 @@ import { GET_USER, GET_USER_END } from './actionTypes';
 const initialState = {
   userData: [],
   users: [
-    { id: 1, fullName: 'Nathaniel Roberts' },
-    { id: 2, fullName: 'Mr Bean' },
+    { id: 1, userName: 'Nathaniux123' },
+    { id: 2, userName: 'Beanz' },
   ], //TODO need users list implemented
 };
 

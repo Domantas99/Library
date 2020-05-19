@@ -22,13 +22,13 @@ namespace BookLibrary.Api.Controllers.Reservations
 
         //TODO: Maybe this would be better if it was in a users/{id}/reservations route? Something to consider once we actually implement users.
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<ResponseResult<ICollection<ReservationDTO>>>> GetReservationsForUser(int userId)
+        public async Task<ActionResult<ResponseResult<ICollection<ReservationDTO>>>> GetReservationsForUser(int userId, [FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] List<string> status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
-            return await _reservationsService.GetReservations(userId);
+            return await _reservationsService.GetReservations(userId, category, offices, status, authors, sort);
         }
 
         [HttpGet()]
-        public async Task<ActionResult<ResponseResult<PagedList<ReservationDTO>>>> GetTeamReservations([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] List<string> status, [FromQuery] List<string> authors, [FromQuery] List<int> users, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) 
+        public async Task<ActionResult<ResponseResult<PagedList<ReservationDTO>>>> GetTeamReservations([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] List<string> status, [FromQuery] List<string> authors, [FromQuery] List<string> users, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) 
         {
             return await _reservationsService.GetTeamReservations(category, offices, status, authors, users, page, pageSize, sort);
         }
