@@ -304,8 +304,8 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
         {
-            var allBooks = _context.Book.ToList();
-
+            var allBooks = BooksWithoutWishes();
+            
             var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
             allBooks = allBooks.Except(reservations).ToList();
 
@@ -316,7 +316,7 @@ namespace BookLibrary.Services.Books
             int authorsCount = userAuthors.Count;
 
             int takeCount = 1;
-            if (authorsCount <= count)
+            if (authorsCount <= count && authorsCount > 0)
             {
                 takeCount = count / authorsCount;
             }
@@ -336,12 +336,14 @@ namespace BookLibrary.Services.Books
             if (recommended.Count < count)
             {
                 int diff = count - recommended.Count;
-                takeCount = diff / categoriesCount + 1;
-
-                for (int i = 0; i < userCategories.Count; i++)
+                if (categoriesCount > 0)
                 {
-                    var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
-                    recommended.AddRange(recB);
+                    takeCount = diff / categoriesCount + 1;
+                    for (int i = 0; i < userCategories.Count; i++)
+                    {
+                        var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
+                        recommended.AddRange(recB);
+                    }
                 }
                 allBooks = allBooks.Except(recommended).ToList();
                 if (recommended.Count < count)
@@ -350,7 +352,7 @@ namespace BookLibrary.Services.Books
                 }
                 if (recommended.Count < count)
                 {
-                    recommended.AddRange(_context.Book.Except(recommended));
+                    recommended.AddRange(BooksWithoutWishes().Except(recommended));
                 }
             }
             recommended = recommended.Take(count).ToList();

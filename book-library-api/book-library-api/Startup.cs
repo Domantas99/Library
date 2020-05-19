@@ -35,14 +35,21 @@ namespace BookLibrary.Api
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            try
+
+            services.AddDbContext<DataBase.Models.LibraryDBContext>(options =>
             {
-                services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LIBRARY_DATABASE_CONNECTION")));
-            }
-            catch {
-                services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
-            }
-         
+                try
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("LIBRARY_DATABASE_CONNECTION"));
+                }
+                catch
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("LibraryDB"));
+                }
+            });
+
+            services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
+
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IOfficesService, OfficesService>();
@@ -50,7 +57,8 @@ namespace BookLibrary.Api
             services.AddScoped<IWishlistService, WishlistService>();
             services.AddScoped<IUsersService, UsersService>();
 
-            services.AddSpaStaticFiles(options => {
+            services.AddSpaStaticFiles(options =>
+            {
                 options.RootPath = "wwwroot";
             });
 

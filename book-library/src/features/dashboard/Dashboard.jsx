@@ -14,11 +14,11 @@ const Dashboard = () => {
   const recommendedBooks = useSelector(
     (state) => state.dashboard.recommendedBooks
   );
-
+    
   const currentlyReadingBooks = useSelector(
     (state) => state.dashboard.currentlyReadingBooks
   );
-
+  debugger
   useEffect(() => {
     dispatch(getCurrentlyReadingBooks({ userId: 1 }));
   }, [dispatch]);
