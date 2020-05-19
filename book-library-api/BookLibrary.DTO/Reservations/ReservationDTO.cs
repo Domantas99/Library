@@ -23,7 +23,7 @@ namespace BookLibrary.DTO.Reservations
             BookedFrom = reservation.CheckedOutOn,
             ReturnDate = reservation.PlannedReturnOn,
             User = reservation.User,
-            Status = reservation.CheckedOutOn.HasValue ? reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed" : "Waiting"
+            Status = reservation.CheckedInOn.HasValue ? "Returned" : "Borrowed"
         };
         public static explicit operator ReservationDTO(Waiting waiting) => new ReservationDTO
         {
@@ -31,6 +31,7 @@ namespace BookLibrary.DTO.Reservations
             Book = waiting.BookCase.Book,
             Office = waiting.BookCase.Office,
             BookedFrom = waiting.CreatedOn,
+            User = waiting.User,
             Status = "Waiting"
         };
     }

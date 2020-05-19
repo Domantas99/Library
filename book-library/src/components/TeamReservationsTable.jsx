@@ -1,23 +1,141 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import PropTypes from "prop-types";
-import ReservationsTableItem from "./ReservationsTableItem";
-import { getTeamReservations } from "../store/reservations/actions";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import queryString from 'query-string';
+import { getAuthors, getCategories } from '../store/library/actions';
+import { getOffices } from '../store/office/actions';
+import {
+  getTeamReservations,
+  setTeamFilters,
+} from '../store/reservations/actions';
+import Filter from './Filter';
+import ReservationsTableItem from './ReservationsTableItem';
 
 const TeamReservationsTable = ({ startingPage, pageSize }) => {
   const dispatch = useDispatch();
+  const values = queryString.parse(window.location.search);
+  const filterSelector = useSelector((state) => state.reservations.teamFilters);
   const reservationData = useSelector(
     (state) => state.reservations.teamReservationData
   );
+  /* Assuming every reserved book exists in library and so its category and author are in there.
+    If the excess entries are too much trouble, can add a separate API call. */
+  const categories = useSelector((state) => state.library.categories);
+  const offices = useSelector((state) => state.office.offices);
+  const authors = useSelector((state) => state.library.authors);
+  const users = useSelector((state) => state.user.users);
   const [page, setPage] = useState(startingPage);
-  const [sort, setSort] = useState("recent");
+  /* eslint-disable no-unused-vars */
+  const [excludedFilters, setExcludedFilters] = useState([
+    'sort',
+    'page',
+    ' pageSize',
+  ]);
   const [tableRows, setTableRows] = useState([]);
   const [navButtons, setNavButtons] = useState([]);
+  const [filterMap, setFilterMap] = useState({
+    category: {
+      label: 'Category',
+      values: [],
+    },
+    authors: {
+      label: 'Author',
+      values: [],
+    },
+    offices: {
+      label: 'Office',
+      values: [],
+    },
+    status: {
+      label: 'Status',
+      values: ['Returned', 'Borrowed', 'Waiting'],
+    },
+    users: {
+      label: 'Users',
+      values: [],
+    },
+  });
+  /* eslint-disable no-unused-vars */
+  const [sortMap, setSortMap] = useState([
+    {
+      value: 'recent',
+      label: 'Recent',
+    },
+    {
+      value: 'oldest',
+      label: 'Oldest',
+    },
+    {
+      value: 'titleaz',
+      label: 'Title [A-Z]',
+    },
+    {
+      value: 'titleza',
+      label: 'Title [Z-A]',
+    },
+    {
+      value: 'authoraz',
+      label: 'Author [A-Z]',
+    },
+    {
+      value: 'authorza',
+      label: 'Author [Z-A]',
+    },
+    {
+      value: 'fromasc',
+      label: 'Booked From (Ascending)',
+    },
+    {
+      value: 'fromdsc',
+      label: 'Booked From (Descending)',
+    },
+    {
+      value: 'returnasc',
+      label: 'Return Date (Ascending)',
+    },
+    {
+      value: 'returndsc',
+      label: 'Return Date (Descending)',
+    },
+  ]);
 
   useEffect(() => {
-    dispatch(getTeamReservations(page, pageSize, sort));
+    const generateFilterMap = () => {
+      return {
+        category: {
+          label: 'Category',
+          values: categories,
+        },
+        authors: {
+          label: 'Author',
+          values: authors,
+        },
+        offices: {
+          label: 'Office',
+          values: offices.map((office) => office.name),
+        },
+        status: filterMap.status,
+        users: {
+          label: 'User',
+          values: users.map((user) => user.userName),
+        },
+      };
+    };
+
+    setFilterMap(generateFilterMap());
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [page, pageSize, sort]);
+  }, [categories, offices, authors, users]);
+
+  useEffect(() => {
+    dispatch(
+      getTeamReservations({
+        ...filterSelector,
+        page: [page],
+        pageSize: [pageSize],
+      })
+    );
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [page, pageSize, filterSelector]);
 
   useEffect(() => {
     const generateTableRows = () => {
@@ -29,6 +147,16 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     };
     setTableRows(generateTableRows());
   }, [reservationData]);
+
+  useEffect(() => {
+    dispatch(setTeamFilters(values));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getOffices());
+    dispatch(getAuthors());
+  }, []);
 
   useEffect(() => {
     const generateNavButtons = () => {
@@ -119,15 +247,16 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     setNavButtons(generateNavButtons);
   }, [reservationData, page, pageSize]);
 
-  const handleChangeSort = (event) => {
-    setSort(event.target.value);
-  };
-
   return (
     <div className="panel__content">
-      <select value={sort} onChange={handleChangeSort}>
-        <option value="recent">Recent</option>
-      </select>
+      <Filter
+        dataAction={getTeamReservations}
+        filterSelector={filterSelector}
+        filterMap={filterMap}
+        sortMap={sortMap}
+        excludedFilters={excludedFilters}
+        setFilterAction={setTeamFilters}
+      />
       <table>
         <thead>
           <tr>
