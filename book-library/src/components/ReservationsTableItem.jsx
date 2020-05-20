@@ -60,8 +60,8 @@ const ReservationsTableItem = ({ data }) => {
       <td>
         <span>{data.status}</span>
       </td>
-      <td>{data.bookedFrom.substring(0, 10)}</td>
-      <td>{data.returnDate.substring(0, 10)}</td>
+      <td>{data.bookedFrom?.substring(0, 10)}</td>
+      <td>{data.returnDate?.substring(0, 10)}</td>
       {data.status === 'Borrowed' ? (
         <td>
           <Modal
