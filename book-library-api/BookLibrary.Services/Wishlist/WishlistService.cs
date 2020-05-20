@@ -128,6 +128,9 @@ namespace BookLibrary.Services.Wishlist
             try
             {
                 var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
+                if (wishToRemove.Comment != null && wishToRemove.Comment.Length > 0) {
+                    _context.BookComment.Add(new BookComment { Book = book, Comment = wishToRemove.Comment, CreatedBy = wishToRemove.CreatedBy, CreatedOn = wishToRemove.CreatedOn });
+                }
                 var userwishes = _context.UserWish.Where(w => w.WishId == wishToRemove.Id);
                 _context.UserWish.RemoveRange(userwishes);
                 _context.Wish.Remove(wishToRemove);

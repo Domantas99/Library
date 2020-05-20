@@ -5,6 +5,7 @@ const initialState = {
   total: 0,
 };
 
+//TODO Timestamp formatting
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_COMMENTS_END: {

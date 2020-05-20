@@ -1,17 +1,18 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addWish } from "../store/wishlist/actions";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addWish } from '../store/wishlist/actions';
 
-export default function WishForm({exitAction}) {
+export default function WishForm({ exitAction }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.loggedInUserId);
   const [bookInfo, setBookInfo] = useState({
-    title: "",
-    author: "",
-    coverPictureUrl: "",
-    publicationDate: "",
-    comment: "",
+    title: '',
+    author: '',
+    coverPictureUrl: '',
+    publicationDate: '',
+    comment: '',
   });
 
   const handleChange = (event) => {
@@ -34,6 +35,7 @@ export default function WishForm({exitAction}) {
         DateAdded: new Date(),
       },
       CreatedOn: new Date(),
+      CreatedBy: user,
       Comment: bookInfo.comment,
     };
   };
