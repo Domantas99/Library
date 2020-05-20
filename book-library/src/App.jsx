@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {
   Dashboard,
@@ -11,8 +11,17 @@ import {
   Wishlist,
 } from './features';
 import { SearchBar, Navigation } from './components';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from './store/user/actions';
 
 function App() {
+  const dispatch = useDispatch();
+  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
+
+  useEffect(() => {
+    dispatch(getUser(loggedInUserId))
+  }, [loggedInUserId]);
+
   return (
     <>
       <div className="header">

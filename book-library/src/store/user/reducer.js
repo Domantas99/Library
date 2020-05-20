@@ -1,7 +1,7 @@
 import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
-  loggedInUserId: 3,
+  loggedInUserId: 1,
   userData: { isAdmin: true },
   users: [
     { id: 1, userName: 'Nathaniux123' },

@@ -12,12 +12,10 @@ const Categories = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.library.categories);
   const activeCategory = useSelector((state) => state.library.activeCategory);
-  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   const user = useSelector((state) => state.user.userData);
   
   useEffect(() => {
     dispatch(getCategories());
-    dispatch(getUser(loggedInUserId))
   }, []);
 
   return (

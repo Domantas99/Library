@@ -19,7 +19,6 @@ import {
   Filter,
   Panel,
 } from '../../components';
-import { getUser } from '../../store/user/actions';
 
 const Library = ({ location }) => {
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ const Library = ({ location }) => {
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
-  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   const user = useSelector((state) => state.user.userData);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
@@ -117,7 +115,6 @@ const Library = ({ location }) => {
     dispatch(getCategories());
     dispatch(getOffices());
     dispatch(getAuthors());
-    dispatch(getUser(loggedInUserId));
   }, []);
 
   return id ? (
