@@ -134,7 +134,7 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string sortField="DateAdded", int sortDirection=-1)
+        public Task<ResponseResult<ICollection<BookListDTO>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sortField="DateAdded", int sortDirection=-1)
         {
             var books = BooksWithoutWishes();
             if (categories != null && categories.Count > 0)
@@ -171,7 +171,36 @@ namespace BookLibrary.Services.Books
             catch (NullReferenceException e) {
                 //Probably means sort field isn't set properly. Note it's case sensitive.
             }
-            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
+            List<BookListDTO> bookList = new List<BookListDTO>();
+            foreach (Book book in books)
+            {
+                var bookInOffice = _context.Library.Where(x => x.BookId == book.Id && x.OfficeId == userOffice && x.Count != 0).FirstOrDefault();
+                bool avail = false;
+                if (bookInOffice != null)
+                    avail = true;
+                bookList.Add(new BookListDTO
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Isbn = book.Isbn,
+                    Author = book.Author,
+                    Description = book.Description,
+                    Category = book.Category,
+                    Tag = book.Tag,
+                    Format = book.Format,
+                    NumberOfPages = book.NumberOfPages,
+                    Series = book.Series,
+                    Publisher = book.Publisher,
+                    EditionLanguage = book.EditionLanguage,
+                    CoverPictureUrl = book.CoverPictureUrl,
+                    GoodReadsUrl = book.GoodReadsUrl,
+                    IsArchived = book.IsArchived,
+                    DateAdded = book.DateAdded,
+                    ReleaseDate = book.ReleaseDate,
+                    IsAvailableInMyOffice = avail
+                });
+            }
+            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
         }
 
         public Task<ResponseResult<ICollection<string>>> GetCategories()

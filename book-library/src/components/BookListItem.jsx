@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { setVote, getVote } from "../store/wishlist/actions";
 import Modal from "../components/Modal";
 import BookForm from "./BookForm";
+import classNames from 'classnames';
 
 export default ({ data, navigate, offices }) => {
   const dispatch = useDispatch();
@@ -33,6 +34,11 @@ export default ({ data, navigate, offices }) => {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, []);
 
+  const availableClass = classNames('book-status__text', {
+    'book-status__text--available': data.isAvailableInMyOffice,
+    'book-status__text--unavailable': !data.isAvailableInMyOffice,
+  });
+
   return (
     <div>
       <div
@@ -45,6 +51,9 @@ export default ({ data, navigate, offices }) => {
         </div>
   <span className="book__title">{(data.isArchived===true ? "[Archived]": "") + data.title}</span>
         <span className="book__author">{data.author}</span>
+      </div>
+      <div className={availableClass}>
+      {data.isAvailableInMyOffice ? `Available` : 'Currently unavailable'}
       </div>
       {data.votes !== undefined && (
         <div>

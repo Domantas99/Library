@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import FilterModalContent from './FilterModalContent';
@@ -20,6 +20,7 @@ const Filter = ({
   const [sortDirection, setSortDirection] = useState(-1);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
+  const userOffice = useSelector((state) => state.user.userData?.officeId);
 
   const generateSortedFilters = useCallback(
     (newFilters) => {
@@ -82,8 +83,8 @@ const Filter = ({
   };
 
   useEffect(() => {
-    dispatch(dataAction(generateSortedFilters(filterSelector)));
-  }, [filterSelector, sortField, sortDirection]);
+    dispatch(dataAction(generateSortedFilters(filterSelector), userOffice));
+  }, [filterSelector, sortField, sortDirection, userOffice]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());
