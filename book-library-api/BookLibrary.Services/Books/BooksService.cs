@@ -272,11 +272,8 @@ namespace BookLibrary.Services.Books
             try
             {
                 book.Id = id;
-                var library = book.Library;
-                book.Library = null;
-                _context.Book.Update(book);
-                await _context.SaveChangesAsync();
-                foreach (var lib in library)
+                var newLibrary = new List<Library>();
+                foreach (var lib in book.Library)
                 {
                     if (lib.Count > 0)
                     {
@@ -285,24 +282,18 @@ namespace BookLibrary.Services.Books
                         {
                             oldLib.ModifiedOn = DateTime.Today;
                             oldLib.Count = lib.Count;
+                            newLibrary.Add(oldLib);
                         }
                         else
                         {
                             lib.BookId = id;
-                            lib.ModifiedOn = null;
-                            lib.CreatedOn = DateTime.Today;
-                            _context.Library.Add(lib);
-                        }
-                    }
-                    else
-                    {
-                        var oldLib = _context.Library.Where(x => x.BookId == id && x.OfficeId == lib.OfficeId).FirstOrDefault();
-                        if (oldLib != null)
-                        {
-                            _context.Library.Remove(oldLib);
+                            newLibrary.Add(lib);
                         }
                     }
                 }
+                _context.Library.RemoveRange(_context.Library.Where(x => x.BookId == book.Id && !newLibrary.Contains(x)));
+                book.Library = newLibrary;
+                _context.Book.Update(book);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

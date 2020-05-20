@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getCurrentlyReadingBooks({ userId: loggedInUserId }));
-  }, [dispatch]);
+  }, [dispatch, loggedInUserId]);
 
   const seeAllLink = (
     <Link className="book-section-header-link" to="/library">

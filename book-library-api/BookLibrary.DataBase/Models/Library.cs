@@ -16,7 +16,7 @@ namespace BookLibrary.DataBase.Models
         public int OfficeId { get; set; }
         public int Count { get; set; }
         [Column(TypeName = "Date")]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Today;
         public int CreatedBy { get; set; }
         [Column(TypeName = "Date")]
         public DateTime? ModifiedOn { get; set; }
