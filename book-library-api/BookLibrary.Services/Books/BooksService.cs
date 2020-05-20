@@ -1,6 +1,7 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
+using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -119,10 +120,31 @@ namespace BookLibrary.Services.Books
                     isAnyoneReading = true;
                 }
             }
-            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, IsAnyoneReading=isAnyoneReading, ReadingUserId = userId, ActiveReservation= reservation, Library = book.Library };
+
+            var bookDetailsDTO = new BookDetailsDTO {
+                Book = book,
+                IsUserCurrentlyReading = isCurrentlyReading, 
+                IsAnyoneReading=isAnyoneReading, 
+                ReadingUserId = userId, 
+                ActiveReservation= reservation, 
+                Library = book.Library,
+                NotReadingUsers = GetNotReadingBookUsers(bookId)
+            };
 
             return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }
+
+        public List<UserCheckOutDTO> GetNotReadingBookUsers(int bookId) {
+            var readingUsers = _context.Reservation.Where(r => r.CheckedInOn == null).Include(a => a.BookCase).ToArray().Where(x=>x.BookCase.BookId == bookId).Select(x=>x.User);
+            var users = _context.User.ToList().Except(readingUsers).ToArray();
+            List<UserCheckOutDTO> userList = new List<UserCheckOutDTO>();
+            for (int i = 0; i < users.Count(); i++)
+            {
+                userList.Add(new UserCheckOutDTO(users[i]));
+            }
+            return userList;
+        }
+
 
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {

@@ -30,7 +30,10 @@ namespace BookLibrary.DataBase.Models
         [DataMember]
         public string ProfilePictureUrl { get; set; }
         [DataMember]
+        public bool IsAdmin { get; set; }
+        [DataMember]
         public int OfficeId { get; set; }
+        [DataMember]
         public virtual Office Office { get; set; }
         public virtual ICollection<Reservation> Reservation { get; set; }
         public virtual ICollection<Waiting> Waiting { get; set; }
