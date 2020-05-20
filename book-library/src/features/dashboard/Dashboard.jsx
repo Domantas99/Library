@@ -11,7 +11,7 @@ import { BookList, CurrentlyReadingSection, Panel } from '../../components';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const latestBooks = useSelector((state) => state.dashboard.latestBooks);
-  const loggedInUserId = useSelector((state) => state.user.defaultLoggedInUserId);
+  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   const recommendedBooks = useSelector(
     (state) => state.dashboard.recommendedBooks
   );

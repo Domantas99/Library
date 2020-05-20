@@ -13,7 +13,7 @@ export default ({ reservation, onExit, Edit, isAdmin ,notReadingUsers }) => {
       reservation.returnDate?.substring(0, 10) ||
       formatDate()
   );
-  const UserId = useSelector((state) => state.user.defaultLoggedInUserId);
+  const UserId = useSelector((state) => state.user.loggedInUserId);
   const [selectedCheckOutUser, setCheckOutUser] = useState(UserId);
   const dispatch = useDispatch();
   

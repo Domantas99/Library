@@ -9,7 +9,7 @@ import { addWaiting } from "../store/reservations/actions";
 
 export default ({ waiting, closeModal }) => {
   const dispatch = useDispatch();
-  const UserId = useSelector((state) => state.user.defaultLoggedInUserId);
+  const UserId = useSelector((state) => state.user.loggedInUserId);
   
   function onSubmit() {
     const obj = createWaitingObj();
