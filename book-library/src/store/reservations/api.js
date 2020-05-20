@@ -74,8 +74,12 @@ const reservations = [
   },
 ];
 
-export const getReservationsList = (ids) => {
-  return httpClient.get(`reservations/user/${ids.userId}`);
+export const getReservationsList = ({ id, filters }) => {
+  let url = `reservations/user/${id}`;
+  if (filters) {
+    url += `?${paramGenerator(filters)}`;
+  }
+  return httpClient.get(url);
 };
 
 export const getTeamReservations = (params) => {
@@ -154,7 +158,7 @@ export const addWaiting = (waiting) => {
 };
 
 export const removeWaiting = (waitingId) => {
-  return httpClient.delete(`reservations/waiting/${waitingId}`)
+  return httpClient.delete(`reservations/waiting/${waitingId}`);
 };
 
 export const removeReservationAPI = (reservationId) => {

@@ -148,7 +148,7 @@ const FilterModalContent = ({
   useEffect(() => {
     const countTotalSelections = () => {
       return Object.entries(newFilters)
-        .map((key, value) => (filterMap[key] ? value.length : 0))
+        .map(([key, value]) => (filterMap[key] ? value.length : 0))
         .reduce((prev, curr) => {
           return prev + curr;
         }, 0);

@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import {
   getLatestBooks,
   getCurrentlyReadingBooks,
   getRecommendedBooks,
 } from '../../store/dashboard/actions';
-import CurrentlyReadingSection from '../../components/CurrentlyReadingSection';
-import { BookList } from '../../components';
-import Panel from '../../components/Panel';
+import { BookList, CurrentlyReadingSection, Panel } from '../../components';
 
-export default function Dashboard() {
+const Dashboard = () => {
   const dispatch = useDispatch();
   const latestBooks = useSelector((state) => state.dashboard.latestBooks);
-  const recommendedBooks = useSelector((state) => state.dashboard.recommendedBooks);
+  const recommendedBooks = useSelector(
+    (state) => state.dashboard.recommendedBooks
+  );
 
   const currentlyReadingBooks = useSelector(
     (state) => state.dashboard.currentlyReadingBooks
   );
 
   useEffect(() => {
-    dispatch(getCurrentlyReadingBooks({userId: 1}));
+    dispatch(getCurrentlyReadingBooks({ userId: 1 }));
   }, [dispatch]);
 
   const seeAllLink = (
@@ -51,18 +50,18 @@ export default function Dashboard() {
           />
         </Panel>
       </div>
-      {
-        currentlyReadingBooks.length > 0 && (
-          <div className="dashboard__sidebar">
-            <Panel title="Currently Reading" className="sticky">
-              <CurrentlyReadingSection
-                title="Currently Reading"
-                reservations={currentlyReadingBooks}
-              />
-            </Panel>
-          </div>
-        )  
-      }
+      {currentlyReadingBooks.length > 0 && (
+        <div className="dashboard__sidebar">
+          <Panel title="Currently Reading" className="sticky">
+            <CurrentlyReadingSection
+              title="Currently Reading"
+              reservations={currentlyReadingBooks}
+            />
+          </Panel>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Dashboard;

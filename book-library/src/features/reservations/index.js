@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import Reservations from './Reservations';
+import TeamReservations from './TeamReservations';
+import UserReservations from './UserReservations';
 
-export { Reservations };
+export { TeamReservations, UserReservations };
