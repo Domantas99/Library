@@ -7,14 +7,16 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
 
-export default ({ reservation, onExit, Edit }) => {
+export default ({ reservation, onExit, Edit, isAdmin ,notReadingUsers }) => {
   const [returndate, handleDateChange] = useState(
     reservation.plannedReturnOn?.substring(0, 10) ||
       reservation.returnDate?.substring(0, 10) ||
       formatDate()
   );
+  const UserId = useSelector((state) => state.user.defaultLoggedInUserId);
+  const [selectedCheckOutUser, setCheckOutUser] = useState(UserId);
   const dispatch = useDispatch();
-  const UserId = useSelector((state) => state.user.userData.id);
+  
   const reservationObj = {
     office:
       reservation.activeOffice ||
@@ -25,7 +27,7 @@ export default ({ reservation, onExit, Edit }) => {
 
   function onSubmitClick() {
     const obj = createReservationObj();
-    dispatch(addReservation(obj));
+    dispatch(addReservation(obj, UserId));
     onExit();
   }
 
@@ -33,7 +35,7 @@ export default ({ reservation, onExit, Edit }) => {
     const today = new Date();
     return {
       Id: reservation.id || -1,
-      UserId,
+      UserId: selectedCheckOutUser,
       PlannedReturnOn: returndate,
       CheckedOutOn: today,
       BookCase: {
@@ -85,7 +87,24 @@ export default ({ reservation, onExit, Edit }) => {
         )}
         <div className="ba-section-list-item-text-address">
           {reservationObj.office.fullAddress}
-        </div>
+        </div> 
+        { (isAdmin === true && Edit===false) && (
+            <div className="ba-section-list-item-text-address">
+              <h4>Check out for:</h4>
+              <select onChange={(e) => setCheckOutUser(e.target.value)} value={selectedCheckOutUser}>
+                {
+                  notReadingUsers.map(user => (
+                    <option value={user.userId}>
+                      {/* <img src={user.imageUrl}/> */}
+                      {user.fullName}
+                    </option>
+                    )
+                  )
+                }
+              </select>
+            </div>
+          )
+        }
         <label htmlFor="reservedUntil">Reserve until:</label>
         <input
           type="date"

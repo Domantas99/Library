@@ -43,10 +43,10 @@ import {
 import { paramGenerator } from '../../utilities';
 
 export function* addReservationSaga(action) {
-  try {
+  try {    
     const apiResult = yield call(addReservation, action.payload);
     const { bookId } = apiResult.returnResult.bookCase;
-    const { userId } = apiResult.returnResult;
+    const userId = action.userId;
     yield put(addReservationEnd({ bookId, userId }));
   } catch (e) {
     // stops saga from braking on api error

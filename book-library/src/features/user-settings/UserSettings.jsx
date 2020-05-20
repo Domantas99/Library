@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function UserSettings() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.userData);
+    const loggedInUserId = useSelector((state) => state.user.defaultLoggedInUserId);
     useEffect(() => {
-      dispatch(getUser(1));
+      dispatch(getUser(loggedInUserId));
       /* eslint-disable react-hooks/exhaustive-deps */
     }, [dispatch, user?.id]);
     

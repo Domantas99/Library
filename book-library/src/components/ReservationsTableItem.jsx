@@ -15,7 +15,7 @@ const ReservationsTableItem = ({ data }) => {
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   //TODO: This will have interesting results if we use it as an admin.
-  const userId = useSelector((state) => state.user.userData.id);
+  const userId = useSelector((state) => state.user.defaultLoggedInUserId);
 
   const handleModalClick = () => {
     setModalState(true);

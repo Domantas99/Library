@@ -285,9 +285,9 @@ const BookForm = ({
             <option value="" disabled hidden>
               Select format
             </option>
-            <option value="paperback">Paperback</option>
-            <option value="e-book">E-book</option>
-            <option value="audiobook">Audiobook</option>
+            <option value="Paperback">Paperback</option>
+            <option value="E-book">E-book</option>
+            <option value="Audiobook">Audiobook</option>
           </select>
           {formState.errors.bookFormat?.length > 0 && (
             <span className="error">
