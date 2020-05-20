@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 import _ from 'lodash';
 import { getCategories, selectCategory } from '../store/library/actions';
-import { getUser } from '../store/user/actions';
 
 const Categories = () => {
   const dispatch = useDispatch();
