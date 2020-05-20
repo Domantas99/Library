@@ -1,6 +1,7 @@
 import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
+  loggedInUserId: 3,
   userData: [],
   users: [
     { id: 1, userName: 'Nathaniux123' },

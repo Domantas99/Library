@@ -1,6 +1,7 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
+using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -119,10 +120,31 @@ namespace BookLibrary.Services.Books
                     isAnyoneReading = true;
                 }
             }
-            var bookDetailsDTO = new BookDetailsDTO { Book = book, IsUserCurrentlyReading = isCurrentlyReading, IsAnyoneReading=isAnyoneReading, ReadingUserId = userId, ActiveReservation= reservation, Library = book.Library };
+
+            var bookDetailsDTO = new BookDetailsDTO {
+                Book = book,
+                IsUserCurrentlyReading = isCurrentlyReading, 
+                IsAnyoneReading=isAnyoneReading, 
+                ReadingUserId = userId, 
+                ActiveReservation= reservation, 
+                Library = book.Library,
+                NotReadingUsers = GetNotReadingBookUsers(bookId)
+            };
 
             return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
         }
+
+        public List<UserCheckOutDTO> GetNotReadingBookUsers(int bookId) {
+            var readingUsers = _context.Reservation.Where(r => r.CheckedInOn == null).Include(a => a.BookCase).ToArray().Where(x=>x.BookCase.BookId == bookId).Select(x=>x.User);
+            var users = _context.User.ToList().Except(readingUsers).ToArray();
+            List<UserCheckOutDTO> userList = new List<UserCheckOutDTO>();
+            for (int i = 0; i < users.Count(); i++)
+            {
+                userList.Add(new UserCheckOutDTO(users[i]));
+            }
+            return userList;
+        }
+
 
         public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
         {
@@ -304,8 +326,8 @@ namespace BookLibrary.Services.Books
 
         public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
         {
-            var allBooks = _context.Book.ToList();
-
+            var allBooks = BooksWithoutWishes();
+            
             var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
             allBooks = allBooks.Except(reservations).ToList();
 
@@ -316,7 +338,7 @@ namespace BookLibrary.Services.Books
             int authorsCount = userAuthors.Count;
 
             int takeCount = 1;
-            if (authorsCount <= count)
+            if (authorsCount <= count && authorsCount > 0)
             {
                 takeCount = count / authorsCount;
             }
@@ -336,12 +358,14 @@ namespace BookLibrary.Services.Books
             if (recommended.Count < count)
             {
                 int diff = count - recommended.Count;
-                takeCount = diff / categoriesCount + 1;
-
-                for (int i = 0; i < userCategories.Count; i++)
+                if (categoriesCount > 0)
                 {
-                    var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
-                    recommended.AddRange(recB);
+                    takeCount = diff / categoriesCount + 1;
+                    for (int i = 0; i < userCategories.Count; i++)
+                    {
+                        var recB = allBooks.Where(x => x.Category == userCategories.ElementAt(i)).Take(takeCount);
+                        recommended.AddRange(recB);
+                    }
                 }
                 allBooks = allBooks.Except(recommended).ToList();
                 if (recommended.Count < count)
@@ -350,7 +374,7 @@ namespace BookLibrary.Services.Books
                 }
                 if (recommended.Count < count)
                 {
-                    recommended.AddRange(_context.Book.Except(recommended));
+                    recommended.AddRange(BooksWithoutWishes().Except(recommended));
                 }
             }
             recommended = recommended.Take(count).ToList();

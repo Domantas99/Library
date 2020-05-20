@@ -20,6 +20,7 @@ export default ({ id }) => {
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
   const book = bookDetails.book;
+  const currentUser = useSelector((state) => state.user.userData);
   const userOffice = useSelector((state) => state.user.userData.officeId);
   const [confimationData, setConfirmationData] = useState([]);
   const [modalState, setModalState] = useState(false);
@@ -74,7 +75,7 @@ export default ({ id }) => {
   }
 
   const archiveConfimationData = {
-    text: `Do you really want to ${book.isArchived===true ? 'UN': ''}ARCHIVE this book?`,
+    text: `Do you really want to ${book?.isArchived===true ? 'UN': ''}ARCHIVE this book?`,
     onNo: () => setModalState(false),
     onYes: onArchive,
   };
@@ -160,6 +161,8 @@ export default ({ id }) => {
             activeOffice={activeOffice}
             setActiveOffice={setActiveOffice}
             openWaitingModal={openWaitingModal}
+            user={currentUser}
+            notReadingBookUsers={bookDetails.notReadingUsers}
           />
         </div>
       </div>

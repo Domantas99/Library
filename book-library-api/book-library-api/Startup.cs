@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace BookLibrary.Api
 {
@@ -33,6 +34,20 @@ namespace BookLibrary.Api
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+
+            services.AddDbContext<DataBase.Models.LibraryDBContext>(options =>
+            {
+                try
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("LIBRARY_DATABASE_CONNECTION"));
+                }
+                catch
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("LibraryDB"));
+                }
+            });
+
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<IBooksService, BooksService>();
@@ -42,7 +57,8 @@ namespace BookLibrary.Api
             services.AddScoped<IWishlistService, WishlistService>();
             services.AddScoped<IUsersService, UsersService>();
 
-            services.AddSpaStaticFiles(options => {
+            services.AddSpaStaticFiles(options =>
+            {
                 options.RootPath = "wwwroot";
             });
 
