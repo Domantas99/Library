@@ -116,21 +116,23 @@ export default ({ id }) => {
           <h4 className="text-secondary">
             by <span className="text-underlined">{bookDetails.book?.author}</span>
           </h4>
-          <div>
-            <Button onClick={() => setMoreBtnState(!moreBtnState)} mini secondary><i className="btn__icon btn__icon--settings" />More</Button>
-            {
-              moreBtnState && (
-              <div className="book-details-moreContent">
-                <Button  small clear onClick={onArchiveClick}>
-                  { (bookDetails.book?.isArchived === true ? "Una" : "A") + "rchive book" }
-                </Button>
-                <Button small clear onClick={onDeleteClick}>
-                  Delete book
-                </Button>
-              </div>)
-            }
-            
-          </div>
+          { currentUser?.isAdmin===true && (         
+            <div>
+              <Button onClick={() => setMoreBtnState(!moreBtnState)} mini secondary><i className="btn__icon btn__icon--settings" />More</Button>
+                {
+                  moreBtnState && (
+                  <div className="book-details-moreContent">
+                    <Button  small clear onClick={onArchiveClick}>
+                      { (bookDetails.book?.isArchived === true ? "Una" : "A") + "rchive book" }
+                    </Button>
+                    <Button small clear onClick={onDeleteClick}>
+                      Delete book
+                    </Button>
+                  </div>)
+                }   
+              </div>
+            )
+          }
         </div>
         <div className="book-details__content book-details__content--secondary">
           <div className="book-details__description">
@@ -138,10 +140,12 @@ export default ({ id }) => {
           </div>
           <hr />
           {bookDetails?.book && <BookDetailsGrid bookDetails={bookDetails.book} />}
-          <Button dark mini onClick={handleClick}>
-            <i className="btn__icon btn__icon--edit" />
-            Edit details
-          </Button>
+          { currentUser?.isAdmin===true && (
+            <Button dark mini onClick={handleClick}>
+              <i className="btn__icon btn__icon--edit" />
+              Edit details
+            </Button>
+          )}
           <hr />
           <BookReservationsSection
             id={id} 

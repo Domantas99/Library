@@ -6,24 +6,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 import _ from 'lodash';
 import { getCategories, selectCategory } from '../store/library/actions';
+import { getUser } from '../store/user/actions';
 
 const Categories = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.library.categories);
   const activeCategory = useSelector((state) => state.library.activeCategory);
-
+  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
+  const user = useSelector((state) => state.user.userData);
+  
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getUser(loggedInUserId))
   }, []);
 
   return (
     <ul className="navigation__item-content">
-      <NavLink to="/library/register-book" key="register-new">
-        <li className="navigation__item-secondary">+ Register new book</li>
-      </NavLink>
-      <li>
-        <hr />
-      </li>
+      {
+        user?.isAdmin===true && (
+          <div>
+            <NavLink to="/library/register-book" key="register-new">
+              <li className="navigation__item-secondary">+ Register new book</li>
+            </NavLink>
+            <li>
+              <hr />
+            </li>
+          </div>
+        )
+      }
       <NavLink
         to="/library"
         key="all"

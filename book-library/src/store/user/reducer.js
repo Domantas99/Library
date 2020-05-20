@@ -2,7 +2,7 @@ import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
   loggedInUserId: 3,
-  userData: [],
+  userData: { isAdmin: true },
   users: [
     { id: 1, userName: 'Nathaniux123' },
     { id: 2, userName: 'Beanz' },

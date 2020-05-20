@@ -34,8 +34,7 @@ namespace BookLibrary.Api
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-
-
+        
             services.AddDbContext<DataBase.Models.LibraryDBContext>(options =>
             {
                 try
@@ -47,8 +46,6 @@ namespace BookLibrary.Api
                     options.UseSqlServer(Configuration.GetConnectionString("LibraryDB"));
                 }
             });
-
-            services.AddDbContext<DataBase.Models.LibraryDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LibraryDB")));
 
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<ICommentsService, CommentsService>();

@@ -125,7 +125,7 @@ export default function BookAvailabilitySection({
                   {(activeOffice || bookDetails.activeReservation) && (
                   <ReservationModalContent
                     Edit={reservationModalMode}
-                    isAdmin={user.isAdmin}
+                    isAdmin={user?.isAdmin}
                     notReadingUsers={notReadingBookUsers}
                     reservation={reservationModalMode===false ? reservation : bookDetails.activeReservation}
                     onExit={() => setModalState(false)}
@@ -176,7 +176,7 @@ export default function BookAvailabilitySection({
         </div>
       )}
       
-      {(bookDetails.isUserCurrentlyReading===false || user.isAdmin) && (
+      {(bookDetails.isUserCurrentlyReading===false || user?.isAdmin) && (
         <div>
           {bookInOffices.length > 0 ? (
             <div>
@@ -219,7 +219,7 @@ export default function BookAvailabilitySection({
                     onClick={() => handleModalClick()}
                     disabled={!activeOffice || bookDetails.book?.isArchived === true}
                   >
-                    {(bookDetails.isUserCurrentlyReading===true && user.isAdmin)? "Check out for other person" : "Check out"} 
+                    {(bookDetails.isUserCurrentlyReading===true && user?.isAdmin)? "Check out for other person" : "Check out"} 
                   </button>
                 </div>
               </div>
