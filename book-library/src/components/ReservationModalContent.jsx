@@ -6,12 +6,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
+import { formatDate } from '../utilities/dateHalper';
 
 export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
   const [returndate, handleDateChange] = useState(
-    reservation.plannedReturnOn.substring(0, 10) ||
-      reservation.returnDate.substring(0, 10) ||
-      formatDate()
+    formatDate(reservation.plannedReturnOn) ||
+      formatDate(reservation.returnDate) ||
+      newDate()
   );
   const UserId = useSelector((state) => state.user.loggedInUserId);
   const [selectedCheckOutUser, setCheckOutUser] = useState(UserId);
@@ -50,7 +51,7 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
     };
   }
 
-  function formatDate() {
+  function newDate() {
     const date = new Date();
     let month = `${date.getMonth() + 1}`;
     let day = `${date.getDate()}`;
@@ -108,7 +109,7 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
         <input
           type="date"
           name="reservedUntil"
-          min={formatDate()}
+          min={newDate()}
           value={returndate}
           onChange={(e) => handleDateChange(e.target.value)}
         />

@@ -16,6 +16,7 @@ import CheckInForm from './CheckInForm';
 import { removeReservation } from '../store/reservations/actions';
 import RadioButton from './Radio';
 import Button from './Button';
+import { formatDate } from '../utilities/dateHalper';
 
 function BookAvailabilitySection({
   bookDetails,
@@ -123,9 +124,7 @@ function BookAvailabilitySection({
         <div>
           Return date:
           <span className="ba-section-currentlyReading-content-date">
-            {activeReservation
-              ? activeReservation.returnDate.substring(0, 10)
-              : ''}
+            {activeReservation && formatDate(activeReservation.returnDate)}
           </span>
         </div>
       </div>

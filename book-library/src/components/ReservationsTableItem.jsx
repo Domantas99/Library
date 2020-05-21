@@ -9,6 +9,7 @@ import {
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
+import { formatDate } from '../utilities/dateHalper';
 
 const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
@@ -60,8 +61,8 @@ const ReservationsTableItem = ({ data }) => {
       <td>
         <span>{data.status}</span>
       </td>
-      <td>{data.bookedFrom?.substring(0, 10)}</td>
-      <td>{data.returnDate?.substring(0, 10)}</td>
+      <td>{formatDate(data.bookedFrom)}</td>
+      <td>{formatDate(data.returnDate)}</td>
       {data.status === 'Borrowed' ? (
         <td>
           <Modal
