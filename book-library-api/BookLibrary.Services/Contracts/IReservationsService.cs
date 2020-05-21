@@ -15,7 +15,7 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user);
         Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort);
         Task<ResponseResult<Reservation>> AddReservation(Reservation reservation);
-        Task<ResponseResult<Book>> CheckInReservation(int reservationId);
+        Task<ResponseResult<Book>> CheckInReservation(int reservationId, CheckInDTO data);
         Task<ResponseResult<Book>> RemoveWaiting(int waitingId);
         Task<ResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<string> users, int page, int pageSize, string sort);
         Task<ResponseResult<ICollection<Reservation>>> GetUserCurrentlyReadingReservedBooks(int userId);

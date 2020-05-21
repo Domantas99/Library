@@ -31,7 +31,7 @@ const Library = ({ location }) => {
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const userOffice = useSelector((state) => state.user.userData?.officeId);
-  const user = useSelector((state) => state.user.userData);
+  const user = useSelector((state) => state.user.loggedInUserId);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const actionButton = (
@@ -109,7 +109,7 @@ const Library = ({ location }) => {
   }, [categories, offices, authors]);
 
   useEffect(() => {
-    dispatch(setFilters(values));
+    dispatch(setFilters(values, user));
   }, []);
 
   useEffect(() => {
@@ -134,7 +134,9 @@ const Library = ({ location }) => {
             filterMap={filterMap}
             sortMap={sortMap}
             excludedFilters={excludedFilters}
-            setFilterAction={setFilters}
+            setFilterAction={(values) => {
+              console.log(values, userOffice);
+              return setFilters(values, userOffice)}}
           />
         }
         actionButton={user?.isAdmin===true && actionButton}
