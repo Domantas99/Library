@@ -51,7 +51,7 @@ export const getAuthorsEnd = (authors) => ({
 
 export const getBookAvailability = (id) => ({
   type: GET_BOOK_AVAILABILITY,
-  payload: +id,
+  payload: id,
 });
 export const getBookAvailabilityEnd = (availabilityDetails) => ({
   type: GET_BOOK_AVAILABILITY_END,

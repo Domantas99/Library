@@ -5,6 +5,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
+
 import { getBookDetails, deleteBook, setBookArchiveState } from '../store/library/actions';
 import BookAvailabilitySection from './BookAvailabilitySection';
 import BookCommentsSection from './BookCommentsSection';
@@ -31,6 +33,12 @@ export default ({ id }) => {
   const [moreBtnState, setMoreBtnState] = useState(false);
 
   const ref = React.createRef();
+
+  useEffect(() => {
+    if (!_.isEmpty(currentUser) && currentUser.id) {
+      dispatch(getBookDetails(id, currentUser.id));
+    }
+  }, [dispatch, id, currentUser]);
  
   const handleScrollClick = () =>
     ref.current.scrollIntoView({
@@ -54,8 +62,6 @@ export default ({ id }) => {
     setWaitingModal(false);
   }
 
-  const userId = useSelector((state) => state.user.userData.id);
-  
   function onDelete() {
     setModalState(false);
     if (bookDetails.isAnyoneReading===false) {
@@ -85,10 +91,6 @@ export default ({ id }) => {
     onYes: onDelete,
   };
 
-  useEffect(() => {
-    dispatch(getBookDetails(id, userId));
-  }, [dispatch, id, userId]);
-
   function handleClick() {
     history.push(`/edit-book/${id}`);
   }
@@ -101,6 +103,10 @@ export default ({ id }) => {
   function onDeleteClick() {
     setConfirmationData(DeleteConfirmationData);
     setModalState(true);
+  }
+
+  if (_.isEmpty(bookDetails)) {
+    return null;
   }
 
   return (

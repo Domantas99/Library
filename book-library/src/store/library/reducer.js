@@ -19,10 +19,7 @@ import { paramGenerator, paramFormatter } from '../../utilities';
 const initialState = {
   authors: [],
   bookData: [],
-  bookDetails: {
-    book: {},
-    isUserCurrentlyReading: false,
-  },
+  bookDetails: {},
   bookAvailability: [],
   filters: {},
   categories: [],

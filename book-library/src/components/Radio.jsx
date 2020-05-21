@@ -1,8 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 
 // eslint-disable-next-line react/prop-types
-const RadioButton = ({ title, name, onClick, disabled }) => (
-  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+const RadioButton = ({ title = null, name, onClick, disabled = false }) => (
   <label className="form__input form__radio">
     {title}
     <input type="radio" name={name} onClick={onClick} disabled={disabled} />

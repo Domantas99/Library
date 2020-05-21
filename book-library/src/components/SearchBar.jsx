@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -24,7 +25,6 @@ export default function SearchBar() {
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       onKeyPress={(e) => e.key === "Enter" && navigationOnEnter()}
       onBlur={(e) => setSuggestionsVisible(e.currentTarget.contains(e.relatedTarget))}
