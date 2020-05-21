@@ -53,7 +53,7 @@ export default ({ data, navigate, offices }) => {
         <span className="book__author">{data.author}</span>
       </div>
       <div className={availableClass}>
-      {data.isAvailableInMyOffice ? `Available` : 'Currently unavailable'}
+      {typeof data.isAvailableInMyOffice !== 'undefined' && (data.isAvailableInMyOffice ? `Available` : 'Currently unavailable')}
       </div>
       {data.votes !== undefined && (
         <div>
