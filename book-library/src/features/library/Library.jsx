@@ -31,6 +31,7 @@ const Library = ({ location }) => {
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const userOffice = useSelector((state) => state.user.userData?.officeId);
+  const user = useSelector((state) => state.user.userData);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const actionButton = (
@@ -136,7 +137,7 @@ const Library = ({ location }) => {
             setFilterAction={setFilters}
           />
         }
-        actionButton={actionButton}
+        actionButton={user?.isAdmin===true && actionButton}
       />
     </Panel>
   );

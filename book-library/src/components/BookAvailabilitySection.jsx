@@ -28,7 +28,10 @@ export default function BookAvailabilitySection({
   setUnavailableInMyOffice,
   activeOffice, 
   setActiveOffice,
-  openWaitingModal}) {
+  openWaitingModal,
+  user,
+  notReadingBookUsers
+}) {
 
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
@@ -38,7 +41,7 @@ export default function BookAvailabilitySection({
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [reservation, setReservation]= useState(null);
   const [reservationModalMode, setReservationModalMode ]= useState(false);
-  
+
   const handleModalClick = () => {
     setReservationModalMode(false);
     const book = bookDetails.book;
@@ -122,13 +125,58 @@ export default function BookAvailabilitySection({
                   {(activeOffice || bookDetails.activeReservation) && (
                   <ReservationModalContent
                     Edit={reservationModalMode}
+                    isAdmin={user?.isAdmin}
+                    notReadingUsers={notReadingBookUsers}
                     reservation={reservationModalMode===false ? reservation : bookDetails.activeReservation}
                     onExit={() => setModalState(false)}
                     onSubmit={() => ({})}
                   />
                   )}
                 </Modal>
-      {bookDetails.isUserCurrentlyReading===false ? (
+                { bookDetails.isUserCurrentlyReading===true && (
+        <div className="ba-section-currentlyReading">
+          <Modal
+            modalState={checkInModalState}
+            exitAction={() => setCheckInModalState(false)}
+            height="400px"
+            width="400px"
+          >
+            <CheckInForm
+              reservation={bookDetails.activeReservation}
+              onCancel={() => setCheckInModalState(false)}
+              onConfirm={() => onCheckInSubmitClick()}
+            />
+          </Modal>
+          <div className="ba-section-currentlyReading-content">
+            <div className="ba-section-currentlyReading-content-text">
+              You are currently reading this book
+            </div>
+            <div>
+              Return date:
+            <span className="ba-section-currentlyReading-content-date">
+              {bookDetails?.activeReservation?.returnDate.substring(0, 10)}
+            </span>
+            </div>
+          </div>
+          <div className="ba-section-buttons">
+            <button
+              className="ba-section-buttons-dark"
+              onClick={() => setCheckInModalState(true)}
+            >
+              Check in
+            </button>
+            <button 
+              onClick={() => {setModalState(true)
+                setReservationModalMode(true)
+              } }
+              className="ba-section-buttons-light">
+              Edit reservation
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {(bookDetails.isUserCurrentlyReading===false || user?.isAdmin) && (
         <div>
           {bookInOffices.length > 0 ? (
             <div>
@@ -171,7 +219,7 @@ export default function BookAvailabilitySection({
                     onClick={() => handleModalClick()}
                     disabled={!activeOffice || bookDetails.book?.isArchived === true}
                   >
-                    Check out
+                    {(bookDetails.isUserCurrentlyReading===true && user?.isAdmin)? "Check out for other person" : "Check out"} 
                   </button>
                 </div>
               </div>
@@ -180,48 +228,7 @@ export default function BookAvailabilitySection({
           :
           <div>Book is not added</div>}
           </div>)
-          : (
-        <div className="ba-section-currentlyReading">
-          <Modal
-            modalState={checkInModalState}
-            exitAction={() => setCheckInModalState(false)}
-            height="400px"
-            width="400px"
-          >
-            <CheckInForm
-              reservation={bookDetails.activeReservation}
-              onCancel={() => setCheckInModalState(false)}
-              onConfirm={() => onCheckInSubmitClick()}
-            />
-          </Modal>
-          <div className="ba-section-currentlyReading-content">
-            <div className="ba-section-currentlyReading-content-text">
-              You are currently reading this book
-            </div>
-            <div>
-              Return date:
-            <span className="ba-section-currentlyReading-content-date">
-              {bookDetails?.activeReservation?.returnDate.substring(0, 10)}
-            </span>
-            </div>
-          </div>
-          <div className="ba-section-buttons">
-            <button
-              className="ba-section-buttons-dark"
-              onClick={() => setCheckInModalState(true)}
-            >
-              Check in
-            </button>
-            <button 
-              onClick={() => {setModalState(true)
-                setReservationModalMode(true)
-              } }
-              className="ba-section-buttons-light">
-              Edit reservation
-            </button>
-          </div>
-        </div>
-      )}
+         } 
     </div>
   );
 }

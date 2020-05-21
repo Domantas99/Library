@@ -171,6 +171,7 @@ export default function* () {
   yield takeLatest(UPDATE_BOOK, updateBookSaga);
   yield takeLatest(SET_FILTERS_START, setFiltersSaga);
   yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);
+  yield takeLatest(DELETE_BOOK_END, getCategoriesSaga);
   yield takeLatest(ADD_NEW_BOOK_END, getCategoriesSaga);
   yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
   yield takeLatest(UPDATE_BOOK_END, getBookDetailsSaga);

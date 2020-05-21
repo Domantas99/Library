@@ -21,9 +21,10 @@ import {
   UPDATE_RESERVATION_END,
 } from './actionTypes';
 
-export const addReservation = (reservation) => ({
+export const addReservation = (reservation, userId) => ({
   type: ADD_RESERVATION_START,
   payload: reservation,
+  userId,
 });
 export const addReservationEnd = (ids) => ({
   type: ADD_RESERVATION_END,

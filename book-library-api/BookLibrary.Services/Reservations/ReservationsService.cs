@@ -248,8 +248,9 @@ namespace BookLibrary.Services.Reservations
             var reservations = await _context.Reservation
                 .Include(a => a.BookCase)
                     .ThenInclude(b => b.Book)
-                        .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
-                            .ToListAsync();
+                        .Include(o => o.BookCase.Office)
+                            .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                                .ToListAsync();
 
             return new ResponseResult<ICollection<Reservation>> { Error = false, ReturnResult = reservations };
         }

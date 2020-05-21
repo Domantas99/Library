@@ -52,7 +52,8 @@ namespace BookLibrary.DataBase.Models
                     ProfilePictureUrl = "https://randomuser.me/api/portraits/men/94.jpg",
                     GoodReadsAccount= "https://www.goodreads.com/",
                     PhoneNumber="+3701234567",
-                    Role="Full-Stack Developer"
+                    Role="Full-Stack Developer",
+                    IsAdmin=false
                 }, new User
                 {
                     Id = 2,
@@ -63,7 +64,20 @@ namespace BookLibrary.DataBase.Models
                     ProfilePictureUrl = "https://vignette.wikia.nocookie.net/mrbean/images/4/4b/Mr_beans_holiday_ver2.jpg/revision/latest?cb=20181130033425",
                     GoodReadsAccount = "https://www.goodreads.com/",
                     PhoneNumber = "+3707654321",
-                    Role = "Full-Time Disaster"
+                    Role = "Full-Time Disaster",
+                    IsAdmin=false
+                }, new User
+                {
+                    Id = 3,
+                    FullName = "Jon Mills",
+                    UserName = "MrAdmin",
+                    Email = "admin@library.com",
+                    OfficeId = 1,
+                    ProfilePictureUrl = "https://randomuser.me/api/portraits/men/34.jpg",
+                    GoodReadsAccount = "https://www.goodreads.com/admin-lib",
+                    PhoneNumber = "+37010101010",
+                    Role = "Full-Time Admin",
+                    IsAdmin = true
                 }
                 );
 

@@ -15,7 +15,7 @@ const ReservationsTableItem = ({ data }) => {
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   //TODO: This will have interesting results if we use it as an admin.
-  const userId = useSelector((state) => state.user.userData.id);
+  const userId = useSelector((state) => state.user.loggedInUserId);
 
   const handleModalClick = () => {
     setModalState(true);
@@ -60,7 +60,7 @@ const ReservationsTableItem = ({ data }) => {
       <td>
         <span>{data.status}</span>
       </td>
-      <td>{data.bookedFrom.substring(0, 10)}</td>
+      <td>{data.bookedFrom?.substring(0, 10)}</td>
       <td>{data.returnDate?.substring(0, 10)}</td>
       {data.status === 'Borrowed' ? (
         <td>

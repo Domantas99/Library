@@ -67,6 +67,8 @@
     <Compile Remove="Migrations\20200513122622_AddSecondUser.Designer.cs" />
     <Compile Remove="Migrations\20200515070413_SecondUser.cs" />
     <Compile Remove="Migrations\20200515070413_SecondUser.Designer.cs" />
+    <Compile Remove="Migrations\20200520084236_added-admin.cs" />
+    <Compile Remove="Migrations\20200520084236_added-admin.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
