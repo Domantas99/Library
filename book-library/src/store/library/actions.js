@@ -67,9 +67,9 @@ export const getBookDetailsEnd = (details) => ({
   payload: details,
 });
 
-export const getBookList = (params) => ({
+export const getBookList = (params, userOffice) => ({
   type: GET_BOOK_LIST_START,
-  payload: params,
+  payload: {params, userOffice}
 });
 export const getBookListEnd = (bookList) => ({
   type: GET_BOOK_LIST_END,
