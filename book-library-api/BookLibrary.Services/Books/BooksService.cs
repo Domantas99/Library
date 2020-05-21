@@ -99,7 +99,7 @@ namespace BookLibrary.Services.Books
         {
             var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
             var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
-            var reservation = userReservations.Where(x => x.Status != "Waiting").FirstOrDefault(x => x.Book.Id == bookId);
+            var reservation = userReservations.Where(x => x.Status != "Waiting" && x.Status != "Returned").FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
 
 

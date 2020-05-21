@@ -77,14 +77,14 @@ export const getTeamReservationsEnd = (reservations) => ({
   payload: reservations,
 });
 
-export const setFilters = (filters) => ({
+export const setFilters = (id, filters) => ({
   type: SET_FILTERS_START,
-  payload: filters,
+  payload: { id, filters },
 });
 
-export const setFiltersEnd = (filters) => ({
+export const setFiltersEnd = ({ id, filters }) => ({
   type: SET_FILTERS_END,
-  payload: filters,
+  payload: { id, filters },
 });
 
 export const setTeamFilters = (filters) => ({

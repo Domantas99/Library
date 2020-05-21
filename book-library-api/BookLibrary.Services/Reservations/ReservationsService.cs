@@ -192,7 +192,7 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
         {
-            var reservations = await _context.Reservation.Where(x => x.UserId == user && x.CheckedInOn == null)
+            var reservations = await _context.Reservation.Where(x => x.UserId == user)
                 .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
             var waitings = await _context.Waiting.Where(x => x.UserId == user)

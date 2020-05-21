@@ -7,6 +7,7 @@ import Button from './Button';
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
+import { formatDate } from '../utilities/dateHalper';
 
 const CurrentlyReadingSection = ({ reservations }) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
         width="400px"
       >
         <ReservationModalContent
-          Edit={true}
+          Edit
           reservation={selectedReservation}
           onExit={() => setEditModalState(false)}
         />
@@ -70,7 +71,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
                 {res.bookCase.book.author}
               </h5>
               <h5 className="currently-reading__author">
-                Return date: {res.plannedReturnOn.substring(0, 10)}
+                {`Return date: ${formatDate(res.plannedReturnOn)}`}
               </h5>
             </div>
           </div>

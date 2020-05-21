@@ -100,7 +100,7 @@ export default (state = initialState, action) => {
     }
 
     case SET_FILTERS_START: {
-      const newFilters = paramFormatter(action.payload);
+      const newFilters = paramFormatter(action.payload.filters);
       if (paramGenerator(newFilters) === paramGenerator(state.filters)) {
         return state;
       }

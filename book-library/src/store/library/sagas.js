@@ -149,7 +149,7 @@ export function* setFiltersSaga(action) {
   if (newRoute !== window.location.pathname) {
     history.replace(newRoute);
   }
-  yield put(setFiltersEnd(action.payload));
+  yield put(setFiltersEnd(action.payload, action.userOffice));
 }
 
 export function* updateBookSaga(action) {

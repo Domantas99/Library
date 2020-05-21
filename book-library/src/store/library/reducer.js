@@ -14,15 +14,12 @@ import {
   GET_AUTHORS_END,
   SET_BOOK_ARCHIVE_STATUS,
 } from './actionTypes';
-import { paramGenerator, paramFormatter } from '../../utilities';
+import { paramGenerator, paramFormatter, formatDate } from '../../utilities';
 
 const initialState = {
   authors: [],
   bookData: [],
-  bookDetails: {
-    book: {},
-    isUserCurrentlyReading: false,
-  },
+  bookDetails: {},
   bookAvailability: [],
   filters: {},
   categories: [],
@@ -35,7 +32,7 @@ export default (state = initialState, action) => {
       const books = action.payload.returnResult.map((book) => {
         return {
           ...book,
-          releaseDate: book.releaseDate.substring(0, 10),
+          releaseDate: formatDate(book.releaseDate),
         };
       });
       return {
@@ -55,7 +52,7 @@ export default (state = initialState, action) => {
         ...state,
         bookDetails: {
           ...result,
-          book: { ...returnedBook, releaseDate: returnedBook.releaseDate.substring(0, 10) },
+          book: { ...returnedBook, releaseDate: formatDate(returnedBook.releaseDate) },
         },
       };
     }

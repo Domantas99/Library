@@ -6,22 +6,23 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
+import { formatDate } from '../utilities/dateHalper';
 
-export default ({ reservation, onExit, Edit, isAdmin ,notReadingUsers }) => {
+export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
   const [returndate, handleDateChange] = useState(
-    reservation.plannedReturnOn?.substring(0, 10) ||
-      reservation.returnDate?.substring(0, 10) ||
-      formatDate()
+    formatDate(reservation.plannedReturnOn) ||
+      formatDate(reservation.returnDate) ||
+      newDate()
   );
   const UserId = useSelector((state) => state.user.loggedInUserId);
   const [selectedCheckOutUser, setCheckOutUser] = useState(UserId);
   const dispatch = useDispatch();
-  
+
   const reservationObj = {
     office:
       reservation.activeOffice ||
       reservation.office ||
-      reservation.bookCase?.office,
+      reservation.bookCase.office,
     book: reservation.book || reservation.bookCase.book,
   };
 
@@ -50,7 +51,7 @@ export default ({ reservation, onExit, Edit, isAdmin ,notReadingUsers }) => {
     };
   }
 
-  function formatDate() {
+  function newDate() {
     const date = new Date();
     let month = `${date.getMonth() + 1}`;
     let day = `${date.getDate()}`;
@@ -87,29 +88,28 @@ export default ({ reservation, onExit, Edit, isAdmin ,notReadingUsers }) => {
         )}
         <div className="ba-section-list-item-text-address">
           {reservationObj.office.fullAddress}
-        </div> 
-        { (isAdmin === true && Edit===false) && (
-            <div className="ba-section-list-item-text-address">
-              <h4>Check out for:</h4>
-              <select onChange={(e) => setCheckOutUser(e.target.value)} value={selectedCheckOutUser}>
-                {
-                  notReadingUsers.map(user => (
-                    <option value={user.userId}>
-                      {/* <img src={user.imageUrl}/> */}
-                      {user.fullName}
-                    </option>
-                    )
-                  )
-                }
-              </select>
-            </div>
-          )
-        }
+        </div>
+        {isAdmin === true && Edit === false && (
+          <div className="ba-section-list-item-text-address">
+            <h4>Check out for:</h4>
+            <select
+              onChange={(e) => setCheckOutUser(e.target.value)}
+              value={selectedCheckOutUser}
+            >
+              {notReadingUsers.map((user) => (
+                <option value={user.userId}>
+                  {/* <img src={user.imageUrl}/> */}
+                  {user.fullName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <label htmlFor="reservedUntil">Reserve until:</label>
         <input
           type="date"
           name="reservedUntil"
-          min={formatDate()}
+          min={newDate()}
           value={returndate}
           onChange={(e) => handleDateChange(e.target.value)}
         />

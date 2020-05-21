@@ -127,7 +127,7 @@ export function* updateReservationSaga(action) {
 }
 
 export function* setFiltersSaga(action) {
-  const params = paramGenerator(action.payload);
+  const params = paramGenerator(action.payload.filters);
   let newRoute =
     window.location.pathname.split('?')[0] + params ? `?${params}` : '';
   if (newRoute.slice(-1) === '/') {
