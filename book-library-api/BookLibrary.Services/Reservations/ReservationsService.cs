@@ -87,7 +87,7 @@ namespace BookLibrary.Services.Reservations
             return new ResponseResult<Waiting> { Error = flag, ReturnResult = waiting };
         }
 
-        public async Task<ResponseResult<Book>> CheckInReservation(int reservationId)
+        public async Task<ResponseResult<Book>> CheckInReservation(int reservationId, CheckInDTO data)
         {
             var reservation = await _context.Reservation.Include(a => a.BookCase).ThenInclude(b => b.Book).FirstOrDefaultAsync(x => x.Id == reservationId);
             Book book = null;
@@ -98,6 +98,9 @@ namespace BookLibrary.Services.Reservations
                 {
                     reservation.CheckedInOn = DateTime.Today;
                     book = reservation.BookCase.Book;
+                    if (data.Review != null && data.Review.Length > 0) {
+                        _context.BookComment.Add(new BookComment{Book = book, Comment = data.Review, CreatedBy = reservation.UserId, CreatedOn = DateTime.Now});
+                    }
                 }
                 await _context.SaveChangesAsync();
             }

@@ -161,6 +161,6 @@ export const removeWaiting = (waitingId) => {
   return httpClient.delete(`reservations/waiting/${waitingId}`);
 };
 
-export const removeReservationAPI = (reservationId) => {
-  return httpClient.delete(`reservations/${reservationId}`);
+export const checkInReservation = ({ reservationId, review }) => {
+  return httpClient.post(`reservations/${reservationId}/check-in`, { review });
 };

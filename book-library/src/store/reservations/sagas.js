@@ -6,7 +6,7 @@ import {
   getBookReservations,
   getReservationsList,
   getTeamReservations,
-  removeReservationAPI,
+  checkInReservation,
   removeWaiting,
   updateReservation,
 } from './api';
@@ -15,10 +15,10 @@ import {
   ADD_RESERVATION_END,
   ADD_WAITING_START,
   ADD_WAITING_END,
+  CHECK_IN_RESERVATION_START,
   GET_RESERVATIONS_START,
   GET_BOOK_RESERVATIONS_START,
   GET_TEAM_RESERVATIONS_START,
-  REMOVE_RESERVATION_START,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
   SET_FILTERS_START,
@@ -31,10 +31,10 @@ import {
 import {
   addReservationEnd,
   addWaitingEnd,
+  checkInReservationEnd,
   getReservationsEnd,
   getTeamReservationsEnd,
   getBookReservationsEnd,
-  removeReservationEnd,
   removeWaitingEnd,
   setFiltersEnd,
   setTeamFiltersEnd,
@@ -43,7 +43,7 @@ import {
 import { paramGenerator } from '../../utilities';
 
 export function* addReservationSaga(action) {
-  try {    
+  try {
     const apiResult = yield call(addReservation, action.payload);
     const { bookId } = apiResult.returnResult.bookCase;
     const userId = action.userId;
@@ -57,6 +57,20 @@ export function* addWaitingSaga(action) {
   try {
     const apiResult = yield call(addWaiting, action.payload);
     yield put(addWaitingEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
+export function* checkInReservationSaga(action) {
+  try {
+    const apiResult = yield call(checkInReservation, action.payload);
+    yield put(
+      checkInReservationEnd({
+        bookId: apiResult.returnResult.id,
+        userId: action.userId,
+      })
+    );
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -84,20 +98,6 @@ export function* getTeamReservationsSaga(action) {
   try {
     const apiResult = yield call(getTeamReservations, action.payload);
     yield put(getTeamReservationsEnd(apiResult));
-  } catch (e) {
-    // stops saga from braking on api error
-  }
-}
-
-export function* removeReservationSaga(action) {
-  try {
-    const apiResult = yield call(removeReservationAPI, action.payload);
-    yield put(
-      removeReservationEnd({
-        bookId: apiResult.returnResult.id,
-        userId: action.userId,
-      })
-    );
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -157,10 +157,10 @@ export default function* () {
   yield takeLatest(ADD_RESERVATION_END, getReservationsSaga);
   yield takeLatest(ADD_WAITING_START, addWaitingSaga);
   yield takeLatest(ADD_WAITING_END, getBookReservations);
+  yield takeLatest(CHECK_IN_RESERVATION_START, checkInReservationSaga);
   yield takeLatest(GET_RESERVATIONS_START, getReservationsSaga);
   yield takeLatest(GET_BOOK_RESERVATIONS_START, getBookReservationsSaga);
   yield takeLatest(GET_TEAM_RESERVATIONS_START, getTeamReservationsSaga);
-  yield takeLatest(REMOVE_RESERVATION_START, removeReservationSaga);
   yield takeLatest(REMOVE_WAITING_START, removeWaitingSaga);
   yield takeLatest(REMOVE_WAITING_END, getReservationsSaga);
   yield takeLatest(SET_FILTERS_START, setFiltersSaga);

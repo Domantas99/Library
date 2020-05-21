@@ -1,9 +1,9 @@
 import {
+  CHECK_IN_RESERVATION_START,
+  CHECK_IN_RESERVATION_END,
   GET_RESERVATIONS_END,
   GET_TEAM_RESERVATIONS_END,
   GET_BOOK_RESERVATIONS_END,
-  REMOVE_RESERVATION_START,
-  REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
   SET_FILTERS_START,
@@ -28,6 +28,20 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CHECK_IN_RESERVATION_START: {
+      return {
+        ...state,
+        reservationData: state.reservationData.filter(
+          (x) => x.id !== action.payload
+        ),
+      };
+    }
+
+    case CHECK_IN_RESERVATION_END: {
+      return {
+        ...state,
+      };
+    }
     case GET_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
@@ -67,21 +81,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookReservationData: reservations,
-      };
-    }
-
-    case REMOVE_RESERVATION_START: {
-      return {
-        ...state,
-        reservationData: state.reservationData.filter(
-          (x) => x.id !== action.payload
-        ),
-      };
-    }
-
-    case REMOVE_RESERVATION_END: {
-      return {
-        ...state,
       };
     }
 

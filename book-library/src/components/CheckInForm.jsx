@@ -2,9 +2,15 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import React from 'react';
 
-export default function CheckInForm({ reservation, onCancel, onConfirm }) {
+export default function CheckInForm({
+  reservation,
+  onCancel,
+  onConfirm,
+  reviewValue,
+  reviewHandler,
+}) {
   function onConfirmClick() {
     onConfirm();
   }
@@ -23,10 +29,16 @@ export default function CheckInForm({ reservation, onCancel, onConfirm }) {
           <div className="checkInForm-content-text-info-author">
             {reservation.book.author}
           </div>
-          <div className="checkInForm-content-comment">
-            <label>Review</label>
-            <textarea placeholder="Leave a comment..." />
-          </div>
+          {reviewHandler && (
+            <div className="checkInForm-content-comment">
+              <label>Review</label>
+              <textarea
+                placeholder="Leave a comment..."
+                value={reviewValue}
+                onChange={(e) => reviewHandler(e.target.value)}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="checkInForm-buttons">
