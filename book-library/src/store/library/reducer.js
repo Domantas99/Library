@@ -74,16 +74,8 @@ export default (state = initialState, action) => {
       };
     }
     case DELETE_BOOK_END: {
-      const result = action.payload;
-      if (!result.error) {
-        const books = state.bookData.filter((x) => x.result.returnResult.id);
-        return {
-          ...state,
-          bookData: books,
-        };
-      }
       return {
-        ...state,
+        ...state
       };
     }
     case UPDATE_BOOK_END: {

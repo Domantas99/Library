@@ -15,7 +15,7 @@ const Categories = () => {
   
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
 
   return (
     <ul className="navigation__item-content">

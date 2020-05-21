@@ -15,7 +15,7 @@ const Dashboard = () => {
   const recommendedBooks = useSelector(
     (state) => state.dashboard.recommendedBooks
   );
-    
+  const userOffice = useSelector((state) => state.user.userData?.officeId);
   const currentlyReadingBooks = useSelector(
     (state) => state.dashboard.currentlyReadingBooks
   );
@@ -32,12 +32,13 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
+      {userOffice &&
       <div>
         <Panel title="New Books" actions={seeAllLink}>
           <BookList
             noSort
             dataSelector={latestBooks}
-            dataAction={getLatestBooks(4)}
+            dataAction={getLatestBooks(4, userOffice)}
             navigateItems
           />
         </Panel>
@@ -51,6 +52,7 @@ const Dashboard = () => {
           />
         </Panel>
       </div>
+}
       {currentlyReadingBooks.length > 0 && (
         <div className="dashboard__sidebar">
           <Panel title="Currently Reading" className="sticky">

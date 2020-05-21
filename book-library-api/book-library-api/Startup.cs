@@ -39,7 +39,7 @@ namespace BookLibrary.Api
             {
                 try
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("LIBRARY_DATABASE_CONNECTION"));
+                    options.UseSqlServer(Environment.GetEnvironmentVariable("LIBRARY_DATABASE_CONNECTION", EnvironmentVariableTarget.User));
                 }
                 catch
                 {

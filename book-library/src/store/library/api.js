@@ -5,10 +5,13 @@ export const addBookAPI = (bookObj) => {
   return httpClient.post('books', bookObj);
 };
 
-export const getBookList = (params) => {
+export const getBookList = (data) => {
   let url = 'books';
-  if (params) {
-    url += `?${paramGenerator(params)}`;
+  if (data.params) {
+    url += `?${paramGenerator(data.params)}`;
+  }
+  if (data.userOffice){
+    url+= `&userOffice=${data.userOffice}`;
   }
   return httpClient.get(url);
 };
