@@ -17,12 +17,12 @@ namespace BookLibrary.Services.Contracts
         Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
         Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId);
         Task<ResponseResult<ICollection<string>>> GetCategories();
-        Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count);
+        Task<ResponseResult<ICollection<BookListDTO>>> GetLatestBooks(int count, int userOffice);
         Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId);
         Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId);
         Task<ResponseResult<Book>> DeleteBook(int id);
         Task<ResponseResult<ICollection<string>>> GetAuthors();
-        Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count);
+        Task<ResponseResult<ICollection<BookListDTO>>> GetUserRecommendedBooks(int userId, int count);
         Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived);
     }
 }

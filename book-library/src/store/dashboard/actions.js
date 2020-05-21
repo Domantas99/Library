@@ -7,9 +7,9 @@ import {
   GET_RECOMMENDED_BOOKS_END
 } from './actionTypes';
 
-export const getLatestBooks = (numberOfBooks) => ({
+export const getLatestBooks = (numberOfBooks, userOffice) => ({
   type: GET_LATEST_BOOKS,
-  payload: numberOfBooks,
+  payload: {numberOfBooks, userOffice}
 });
 export const getLatestBooksEnd = (books) => ({
   type: GET_LATEST_BOOKS_END,

@@ -36,7 +36,7 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpGet("recommended")]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
+        public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
         {
             return await _booksService.GetUserRecommendedBooks(userId, count);
         }
@@ -66,9 +66,9 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpGet("latest/{count}")]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetLatestBooks(int count)
+        public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetLatestBooks(int count, [FromQuery] int userOffice)
         {
-            return await _booksService.GetLatestBooks(count);
+            return await _booksService.GetLatestBooks(count, userOffice);
         }
 
         [HttpGet("{id}/availability")]

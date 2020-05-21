@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -196,6 +197,11 @@ namespace BookLibrary.Services.Books
                         break;
                     }
             }
+            List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
+            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
+        }
+        private List<BookListDTO> AddAvailabilityInList(List<Book> books, int userOffice)
+        {
             List<BookListDTO> bookList = new List<BookListDTO>();
             foreach (Book book in books)
             {
@@ -232,9 +238,8 @@ namespace BookLibrary.Services.Books
                     IsAvailableInMyOffice = avail
                 });
             }
-            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
+            return bookList;
         }
-
         public Task<ResponseResult<ICollection<string>>> GetCategories()
         {
             var books = BooksWithoutWishes();
@@ -271,13 +276,13 @@ namespace BookLibrary.Services.Books
 
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
+        public Task<ResponseResult<ICollection<BookListDTO>>> GetLatestBooks(int count, int userOffice)
         {
             var books = BooksWithoutWishes();
 
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
-
-            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() });
+            var bookList = AddAvailabilityInList(books, userOffice);
+            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList.Take(count).ToList() });
         }
 
         public async Task<ResponseResult<Book>> UpdateBook(int id, Book book)
@@ -338,7 +343,7 @@ namespace BookLibrary.Services.Books
             return books;
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
+        public async Task<ResponseResult<ICollection<BookListDTO>>> GetUserRecommendedBooks(int userId, int count)
         {
             var allBooks = _context.Book.ToList();
 
@@ -389,9 +394,11 @@ namespace BookLibrary.Services.Books
                     recommended.AddRange(_context.Book.Except(recommended));
                 }
             }
-            recommended = recommended.Take(count).ToList();
+            int userOffice = _context.User.Where(x => x.Id == userId).Select(x => x.OfficeId).FirstOrDefault();
+            var bookList = AddAvailabilityInList(recommended, userOffice);
+            bookList = bookList.Take(count).ToList();
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
+            return new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList };
         }
 
         public async Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived)
