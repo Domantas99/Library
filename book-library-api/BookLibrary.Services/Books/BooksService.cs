@@ -165,7 +165,7 @@ namespace BookLibrary.Services.Books
             return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetBooks(List<string> categories, List<string> offices, List<string> status, List<string> authors, string sort)
+        public Task<ResponseResult<ICollection<BookListDTO>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
         {
             var books = BooksWithoutWishes();
             if (categories != null && categories.Count > 0)
@@ -218,9 +218,49 @@ namespace BookLibrary.Services.Books
                         break;
                     }
             }
-            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books });
+            List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
+            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
         }
-
+        private List<BookListDTO> AddAvailabilityInList(List<Book> books, int userOffice)
+        {
+            List<BookListDTO> bookList = new List<BookListDTO>();
+            foreach (Book book in books)
+            {
+                bool avail = false;
+                int bookInOfficeC = _context.Library.Where(x => x.BookId == book.Id && x.OfficeId == userOffice)
+                    .Select(x => x.Count).FirstOrDefault();
+                var booksAvailable = GetBookAvailability(book.Id);
+                if (booksAvailable.Result.ReturnResult != null)
+                {
+                    var count = booksAvailable.Result.ReturnResult.Where(x => x.OfficeId == userOffice)
+                        .Select(x => x.Count).FirstOrDefault();
+                    if (count != 0)
+                        avail = true;
+                }
+                bookList.Add(new BookListDTO
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Isbn = book.Isbn,
+                    Author = book.Author,
+                    Description = book.Description,
+                    Category = book.Category,
+                    Tag = book.Tag,
+                    Format = book.Format,
+                    NumberOfPages = book.NumberOfPages,
+                    Series = book.Series,
+                    Publisher = book.Publisher,
+                    EditionLanguage = book.EditionLanguage,
+                    CoverPictureUrl = book.CoverPictureUrl,
+                    GoodReadsUrl = book.GoodReadsUrl,
+                    IsArchived = book.IsArchived,
+                    DateAdded = book.DateAdded,
+                    ReleaseDate = book.ReleaseDate,
+                    IsAvailableInMyOffice = avail
+                });
+            }
+            return bookList;
+        }
         public Task<ResponseResult<ICollection<string>>> GetCategories()
         {
             var books = BooksWithoutWishes();
@@ -257,13 +297,13 @@ namespace BookLibrary.Services.Books
 
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetLatestBooks(int count)
+        public Task<ResponseResult<ICollection<BookListDTO>>> GetLatestBooks(int count, int userOffice)
         {
             var books = BooksWithoutWishes();
 
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
-
-            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = books.Take(count).ToList() });
+            var bookList = AddAvailabilityInList(books, userOffice);
+            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList.Take(count).ToList() });
         }
 
         public async Task<ResponseResult<Book>> UpdateBook(int id, Book book)
@@ -315,7 +355,7 @@ namespace BookLibrary.Services.Books
             return books;
         }
 
-        public async Task<ResponseResult<ICollection<Book>>> GetUserRecommendedBooks(int userId, int count)
+        public async Task<ResponseResult<ICollection<BookListDTO>>> GetUserRecommendedBooks(int userId, int count)
         {
             var allBooks = BooksWithoutWishes();
             
@@ -368,9 +408,11 @@ namespace BookLibrary.Services.Books
                     recommended.AddRange(BooksWithoutWishes().Except(recommended));
                 }
             }
-            recommended = recommended.Take(count).ToList();
+            int userOffice = _context.User.Where(x => x.Id == userId).Select(x => x.OfficeId).FirstOrDefault();
+            var bookList = AddAvailabilityInList(recommended, userOffice);
+            bookList = bookList.Take(count).ToList();
 
-            return new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = recommended };
+            return new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList };
         }
 
         public async Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived)

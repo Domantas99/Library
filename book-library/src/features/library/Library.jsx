@@ -30,6 +30,7 @@ const Library = ({ location }) => {
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
+  const userOffice = useSelector((state) => state.user.userData?.officeId);
   const user = useSelector((state) => state.user.userData);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
@@ -123,7 +124,7 @@ const Library = ({ location }) => {
     <Panel title="Library">
       <BookList
         dataSelector={bookSelector}
-        dataAction={getBookList(values)}
+        dataAction={getBookList(values, userOffice)}
         navigateItems
         addLink="/library/register-book"
         filterComponent={

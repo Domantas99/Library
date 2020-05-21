@@ -30,13 +30,13 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.UpdateBook(id, book);
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] List<string> status, [FromQuery] List<string> authors, [FromQuery] string sort)
+        public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetBooks([FromQuery] int userOffice, [FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
-            return await _booksService.GetBooks(category, offices, status, authors, sort);
+            return await _booksService.GetBooks(category, offices, status, authors, userOffice, sort);
         }
 
         [HttpGet("recommended")]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
+        public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
         {
             return await _booksService.GetUserRecommendedBooks(userId, count);
         }
@@ -66,9 +66,9 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpGet("latest/{count}")]
-        public async Task<ActionResult<ResponseResult<ICollection<Book>>>> GetLatestBooks(int count)
+        public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetLatestBooks(int count, [FromQuery] int userOffice)
         {
-            return await _booksService.GetLatestBooks(count);
+            return await _booksService.GetLatestBooks(count, userOffice);
         }
 
         [HttpGet("{id}/availability")]
