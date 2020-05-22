@@ -127,7 +127,7 @@ const ReservationsTable = () => {
   }, [reservationData]);
 
   useEffect(() => {
-    dispatch(setFilters( user, values ));
+    dispatch(setFilters(user, values));
   }, []);
 
   useEffect(() => {

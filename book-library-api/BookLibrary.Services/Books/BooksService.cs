@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
@@ -432,6 +433,16 @@ namespace BookLibrary.Services.Books
             }
 
             return new ResponseResult<Book> { Error = false, ReturnResult = book };
+        }
+
+        public async Task<ResponseResult<ICollection<ReservationDTO>>> GetReservations(int id)
+        {
+            var reservations = await _context.Reservation.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.BookId == id && x.CheckedInOn == null).Select(x => (ReservationDTO)x).ToListAsync();
+            var waitings = await _context.Waiting.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.Book.Id == id).Select(x => (ReservationDTO)x).ToListAsync();
+
+            var concat = reservations.Concat(waitings).ToList();
+
+            return new ResponseResult<ICollection<ReservationDTO>> { Error = false, ReturnResult = concat };
         }
     }
 }

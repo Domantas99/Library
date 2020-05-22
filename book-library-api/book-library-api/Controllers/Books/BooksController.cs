@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,11 @@ namespace BookLibrary.Api.Controllers.Books
         public async Task<ActionResult<ResponseResult<ICollection<BookComment>>>> GetComments(int id)
         {
             return await _booksService.GetComments(id);
+        }
+
+        [HttpGet("{id}/reservations")]
+        public async Task<ActionResult<ResponseResult<ICollection<ReservationDTO>>>> getReservations(int id) {
+            return await _booksService.GetReservations(id);
         }
 
         [HttpDelete("{id}")]
