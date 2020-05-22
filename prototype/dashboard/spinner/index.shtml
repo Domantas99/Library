@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--#include virtual="/includes/head.html" -->
+</head>
+<body>
+<!--#include virtual="/includes/layout/header.html" -->
+<!--#include virtual="/includes/layout/sidebar.html" -->
+<!--#include virtual="/includes/templates/spinner.html" -->
+<div class="page">
+    <div class="page__content">
+        <div class="dashboard">
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>New Books</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="4" >
+                </div>
+            </div>
+            <div class="panel dashboard__sidebar">
+                <div class="panel__header">
+                    <h1>Currently reading</h1>
+                </div>
+                <div class="panel__content">
+
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>New Books</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="4" >
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>New Books</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="4" >
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel__header">
+                    <h1>You might enjoy</h1>
+                </div>
+                <div class="panel__content book-grid" data-copies="50" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--#include virtual="/includes/scripts.shtml" -->
+</body>
+</html>margin-left

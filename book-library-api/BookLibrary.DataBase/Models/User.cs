@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
 namespace BookLibrary.DataBase.Models
@@ -32,9 +34,14 @@ namespace BookLibrary.DataBase.Models
         [DataMember]
         public bool IsAdmin { get; set; }
         [DataMember]
-        public int OfficeId { get; set; }
+        public int? OfficeId { get; set; }
         [DataMember]
+        [ForeignKey("OfficeId")]
         public virtual Office Office { get; set; }
+        [DataMember]
+        public string AspNetUserId { get; set; }
+        [ForeignKey("AspNetUserId")]
+        public virtual IdentityUser AspNetUser { get; set; }
         public virtual ICollection<Reservation> Reservation { get; set; }
         public virtual ICollection<Waiting> Waiting { get; set; }
         public virtual ICollection<UserWish> UserWish { get; set; }

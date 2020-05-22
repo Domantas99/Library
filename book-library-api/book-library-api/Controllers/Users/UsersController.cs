@@ -6,25 +6,37 @@ using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookLibrary.Api.Controllers.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiControllerBase
     {
         private IUsersService _usersService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, UserManager<IdentityUser> userManager)
         {
             _usersService = usersService;
+            _userManager = userManager;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ResponseResult<User>>> GetUser(int id)
         {
-            return await _usersService.GetUser(id);
+            var user = await _usersService.GetUser(id);
+            var identityUser = await _userManager.FindByIdAsync(user.ReturnResult.AspNetUserId);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+
+            if (roles.Any(r => r.Equals("Admin")))
+            {
+                user.ReturnResult.IsAdmin = true;
+            }
+
+            return user;
         }
 
         [HttpPut]

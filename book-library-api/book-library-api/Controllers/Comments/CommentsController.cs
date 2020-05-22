@@ -12,7 +12,7 @@ namespace BookLibrary.Api.Controllers.Comments
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentsController : ControllerBase
+    public class CommentsController : ApiControllerBase
     {
 
         private readonly ICommentsService _commentsService;

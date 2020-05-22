@@ -12,7 +12,7 @@ namespace BookLibrary.Api.Controllers.Offices
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficesController : ControllerBase
+    public class OfficesController : ApiControllerBase
     {
         private readonly IOfficesService _officesService;
         public OfficesController(IOfficesService booksService)
