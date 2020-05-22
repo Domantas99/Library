@@ -13,7 +13,7 @@ namespace BookLibrary.Api.Controllers.Wishlist
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WishlistController : ControllerBase
+    public class WishlistController : ApiControllerBase
     {
         private IWishlistService _wishlistService;
 

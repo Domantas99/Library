@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  removeReservation,
+  checkInReservation,
   removeWaiting,
 } from '../store/reservations/actions';
 import CheckInForm from './CheckInForm';
@@ -15,6 +15,7 @@ const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
+  const [review, setReview] = useState('');
   //TODO: This will have interesting results if we use it as an admin.
   const userId = useSelector((state) => state.user.loggedInUserId);
 
@@ -23,7 +24,13 @@ const ReservationsTableItem = ({ data }) => {
   };
 
   const onConfirmClick = () => {
-    dispatch(removeReservation(data.id, userId));
+    dispatch(
+      checkInReservation(
+        data.id,
+        userId,
+        data.user === null || data.user.id === userId ? review : ''
+      )
+    );
     setCheckInModalState(false);
   };
 
@@ -39,11 +46,21 @@ const ReservationsTableItem = ({ data }) => {
         height="400px"
         width="400px"
       >
-        <CheckInForm
-          onCancel={() => setCheckInModalState(false)}
-          reservation={data}
-          onConfirm={() => onConfirmClick()}
-        />
+        {data.user === null || data.user.id === userId ? (
+          <CheckInForm
+            onCancel={() => setCheckInModalState(false)}
+            reservation={data}
+            onConfirm={() => onConfirmClick()}
+            reviewValue={review}
+            reviewHandler={setReview}
+          />
+        ) : (
+          <CheckInForm
+            onCancel={() => setCheckInModalState(false)}
+            reservation={data}
+            onConfirm={() => onConfirmClick()}
+          />
+        )}
       </Modal>
       {data.user && (
         <td>

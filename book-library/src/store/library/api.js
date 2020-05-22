@@ -6,9 +6,9 @@ export const addBookAPI = (bookObj) => {
 };
 
 export const getBookList = (data) => {
-  let url = 'books';
+  let url = 'books?';
   if (data.params) {
-    url += `?${paramGenerator(data.params)}`;
+    url += `${paramGenerator(data.params)}`;
   }
   if (data.userOffice){
     url+= `&userOffice=${data.userOffice}`;

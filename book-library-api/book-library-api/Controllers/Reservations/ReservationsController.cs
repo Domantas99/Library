@@ -12,7 +12,7 @@ namespace BookLibrary.Api.Controllers.Reservations
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservationsController: ControllerBase
+    public class ReservationsController: ApiControllerBase
     {
         private readonly IReservationsService _reservationsService;
         public ReservationsController(IReservationsService reservationsService)
@@ -50,10 +50,10 @@ namespace BookLibrary.Api.Controllers.Reservations
             return await _reservationsService.RemoveWaiting(waitingId);
         }
 
-        [HttpDelete("{reservationId}")]
-        public async Task<ActionResult<ResponseResult<Book>>> CheckInReservation(int reservationId)
+        [HttpPost("{reservationId}/check-in")]
+        public async Task<ActionResult<ResponseResult<Book>>> CheckInReservation(int reservationId, [FromBody]CheckInDTO data)
         {
-            return await _reservationsService.CheckInReservation(reservationId);
+            return await _reservationsService.CheckInReservation(reservationId, data);
         }
 
         [HttpGet("currently-reading/{userId}")]

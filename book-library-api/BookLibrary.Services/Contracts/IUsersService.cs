@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
+using BookLibrary.DTO.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,6 @@ namespace BookLibrary.Services.Contracts
     {
         Task<ResponseResult<User>> GetUser(int id);
         Task<ResponseResult<User>> UpdateUser(User user);
+        Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId);
     }
 }

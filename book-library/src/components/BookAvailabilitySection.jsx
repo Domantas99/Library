@@ -2,23 +2,23 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import _ from 'lodash';
-
 import { getBookAvailability } from '../store/library/actions';
-import Modal from './Modal';
-import ReservationModalContent from './ReservationModalContent';
+import { checkInReservation } from '../store/reservations/actions';
+import { formatDate } from '../utilities/dateHalper';
+import Button from './Button';
 import CantFind from './CantFind';
 import CheckInForm from './CheckInForm';
-import { removeReservation } from '../store/reservations/actions';
+import Modal from './Modal';
 import RadioButton from './Radio';
-import Button from './Button';
-import { formatDate } from '../utilities/dateHalper';
+import ReservationModalContent from './ReservationModalContent';
 
-function BookAvailabilitySection({
+const BookAvailabilitySection = ({
   bookDetails,
   handleScrollClick,
   setUnavailableInMyOffice,
@@ -27,7 +27,7 @@ function BookAvailabilitySection({
   openWaitingModal,
   user,
   notReadingBookUsers,
-}) {
+}) => {
   const dispatch = useDispatch();
   const bookInOffices = useSelector((state) => state.library.bookAvailability);
   const userOffice = useSelector((state) => state.user.userData.officeId);
@@ -35,6 +35,7 @@ function BookAvailabilitySection({
   const [cantFindModal, setCantFindModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [reservation, setReservation] = useState(null);
+  const [reservationReview, setReservationReview] = useState('');
   const [reservationModalMode, setReservationModalMode] = useState(false);
   const { id: bookId } = useParams();
 
@@ -68,10 +69,31 @@ function BookAvailabilitySection({
 
   function onCheckInSubmitClick() {
     dispatch(
-      removeReservation(activeReservation.id, bookDetails.readingUserId)
+      checkInReservation(
+        bookDetails.activeReservation.id,
+        bookDetails.readingUserId,
+        reservationReview
+      )
     );
     setCheckInModalState(false);
   }
+
+  useEffect(() => {
+    if (bookDetails.book) {
+      dispatch(getBookAvailability(bookDetails.book.id));
+    }
+  }, [dispatch, bookDetails]);
+
+  useEffect(() => {
+    const officeC = bookInOffices.find((x) => x.id === userOffice);
+    if (
+      officeC &&
+      officeC.count === 0 &&
+      bookDetails.isUserCurrentlyReading === false
+    ) {
+      setUnavailableInMyOffice(true);
+    }
+  }, [bookInOffices, setUnavailableInMyOffice, userOffice, bookDetails]);
 
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
@@ -153,11 +175,7 @@ function BookAvailabilitySection({
         {activeOffice && activeOffice.count < 1 ? (
           <div className="book-status__buttons">
             <div>
-              <Button
-                wide
-                onClick={openWaitingModal}
-                disabled={!activeOffice}
-              >
+              <Button wide onClick={openWaitingModal} disabled={!activeOffice}>
                 Enter waitlist
               </Button>
               <Button
@@ -235,6 +253,8 @@ function BookAvailabilitySection({
           reservation={activeReservation}
           onCancel={() => setCheckInModalState(false)}
           onConfirm={() => onCheckInSubmitClick()}
+          reviewValue={reservationReview}
+          reviewHandler={setReservationReview}
         />
       </Modal>
       <Modal
@@ -247,6 +267,6 @@ function BookAvailabilitySection({
       </Modal>
     </>
   );
-}
+};
 
 export default BookAvailabilitySection;

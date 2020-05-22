@@ -3,14 +3,14 @@ import {
   ADD_RESERVATION_END,
   ADD_WAITING_START,
   ADD_WAITING_END,
+  CHECK_IN_RESERVATION_START,
+  CHECK_IN_RESERVATION_END,
   GET_RESERVATIONS_START,
   GET_RESERVATIONS_END,
   GET_BOOK_RESERVATIONS_START,
   GET_BOOK_RESERVATIONS_END,
   GET_TEAM_RESERVATIONS_START,
   GET_TEAM_RESERVATIONS_END,
-  REMOVE_RESERVATION_START,
-  REMOVE_RESERVATION_END,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
   SET_FILTERS_START,
@@ -40,6 +40,16 @@ export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
 
+export const checkInReservation = (reservationId, userId, review) => ({
+  type: CHECK_IN_RESERVATION_START,
+  payload: { reservationId, review },
+  userId,
+});
+export const checkInReservationEnd = (ids) => ({
+  type: CHECK_IN_RESERVATION_END,
+  payload: ids,
+});
+
 export const getReservations = (id, filters) => ({
   type: GET_RESERVATIONS_START,
   payload: { id, filters },
@@ -67,14 +77,14 @@ export const getTeamReservationsEnd = (reservations) => ({
   payload: reservations,
 });
 
-export const setFilters = (filters) => ({
+export const setFilters = (id, filters) => ({
   type: SET_FILTERS_START,
-  payload: filters,
+  payload: { id, filters },
 });
 
-export const setFiltersEnd = (filters) => ({
+export const setFiltersEnd = ({ id, filters }) => ({
   type: SET_FILTERS_END,
-  payload: filters,
+  payload: { id, filters },
 });
 
 export const setTeamFilters = (filters) => ({
@@ -94,16 +104,6 @@ export const removeWaiting = (waitingId, userId) => ({
 });
 export const removeWaitingEnd = (ids) => ({
   type: REMOVE_WAITING_END,
-  payload: ids,
-});
-
-export const removeReservation = (reservationId, userId) => ({
-  type: REMOVE_RESERVATION_START,
-  payload: reservationId,
-  userId,
-});
-export const removeReservationEnd = (ids) => ({
-  type: REMOVE_RESERVATION_END,
   payload: ids,
 });
 

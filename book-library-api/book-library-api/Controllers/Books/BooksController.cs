@@ -6,7 +6,11 @@ using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
+<<<<<<< HEAD
 using BookLibrary.Services.ExceptionHandling.Exceptions;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +18,7 @@ namespace BookLibrary.Api.Controllers.Books
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : ControllerBase
+    public class BooksController : ApiControllerBase
     {
         private readonly IBooksService _booksService;
         public BooksController(IBooksService booksService) {
