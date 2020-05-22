@@ -6,6 +6,7 @@ const initialState = {
   users: [
     { id: 1, userName: 'Nathaniux123' },
     { id: 2, userName: 'Beanz' },
+    { id: 3, userName: 'MrAdmin' },
   ], //TODO need users list implemented
 };
 

@@ -75,7 +75,7 @@ export default (state = initialState, action) => {
     }
     case DELETE_BOOK_END: {
       return {
-        ...state
+        ...state,
       };
     }
     case UPDATE_BOOK_END: {

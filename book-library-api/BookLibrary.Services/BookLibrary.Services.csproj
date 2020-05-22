@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BookLibrary.DataBase\BookLibrary.DataBase.csproj" />
     <ProjectReference Include="..\BookLibrary.DTO\BookLibrary.DTO.csproj" />
   </ItemGroup>

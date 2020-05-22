@@ -1,14 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import request from 'superagent';
+import { useDispatch } from 'react-redux';
 
 class HTTPClient {
   constructor() {
     this.baseUrl = 'http://localhost:5000/api/';
+    this.dispatch = useDispatch();
   }
 
   async get(path) {
-    const response = await request.get(this._getUrl(path));
+    const response = await request.get(this._getUrl(path))
 
+    this.dispatch();
+    
     return response.body;
   }
 

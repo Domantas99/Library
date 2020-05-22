@@ -3,6 +3,7 @@ using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -83,15 +84,16 @@ namespace BookLibrary.Services.Books
         public async Task<ResponseResult<Book>> DeleteBook(int id)
         {
             var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);
-            if (bookToDelete != null)
+            if (bookToDelete == null)
             {
-                var libraryToRemove = _context.Library.Where(b => b.BookId == id);
-                var wishToRemove = _context.Wish.Where(b => b.BookId == id);
-                _context.Library.RemoveRange(libraryToRemove);
-                _context.RemoveRange(wishToRemove);
-                _context.Book.Remove(bookToDelete);
-                await _context.SaveChangesAsync();
+                throw new HandledException("Book not found");
             }
+            var libraryToRemove = _context.Library.Where(b => b.BookId == id);
+            var wishToRemove = _context.Wish.Where(b => b.BookId == id);
+            _context.Library.RemoveRange(libraryToRemove);
+            _context.RemoveRange(wishToRemove);
+            _context.Book.Remove(bookToDelete);
+            await _context.SaveChangesAsync();
             return new ResponseResult<Book> { Error = false, ReturnResult = bookToDelete };
         }
 
@@ -306,9 +308,8 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList.Take(count).ToList() });
         }
 
-        public async Task<ResponseResult<Book>> UpdateBook(int id, Book book)
+        public async Task<Book> UpdateBook(int id, Book book)
         {
-            bool errorFlag = false;
             try
             {
                 book.Id = id;
@@ -335,13 +336,12 @@ namespace BookLibrary.Services.Books
                 book.Library = newLibrary;
                 _context.Book.Update(book);
                 await _context.SaveChangesAsync();
+                return book;
             }
             catch (Exception ex)
             {
-                errorFlag = true;
+                throw new HandledException("Book update failed");
             }
-
-            return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
         }
 
         private List<Book> BooksWithoutWishes()

@@ -6,6 +6,7 @@ using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,13 +26,14 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.AddNewBook(book);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResponseResult<Book>>> UpdateBook(int id, [FromBody] Book book)
+        public async Task<ActionResult<Book>> UpdateBook(int id, [FromBody] Book book)
         {
             return await _booksService.UpdateBook(id, book);
         }
         [HttpGet]
         public async Task<ActionResult<ResponseResult<ICollection<BookListDTO>>>> GetBooks([FromQuery] int userOffice, [FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
+            throw new HandledException("exeption in books");
             return await _booksService.GetBooks(category, offices, status, authors, userOffice, sort);
         }
 
@@ -56,6 +58,7 @@ namespace BookLibrary.Api.Controllers.Books
         [HttpGet("categories")]
         public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
         {
+            throw new Exception("exeption in books");
             return await _booksService.GetCategories();
         }
 

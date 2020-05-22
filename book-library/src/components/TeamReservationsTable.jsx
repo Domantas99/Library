@@ -139,9 +139,9 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
 
   useEffect(() => {
     const generateTableRows = () => {
-      return reservationData.reservations.map((reservation) => {
+      return reservationData.reservations.map((reservation, index) => {
         return (
-          <ReservationsTableItem key={reservation.id} data={reservation} />
+          <ReservationsTableItem key={index} data={reservation} />
         );
       });
     };

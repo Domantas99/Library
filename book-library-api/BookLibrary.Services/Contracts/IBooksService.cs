@@ -13,7 +13,7 @@ namespace BookLibrary.Services.Contracts
     {
         Task<ResponseResult<Book>> AddNewBook(AddBookDTO book);
         Task<ResponseResult<ICollection<BookListDTO>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort);
-        Task<ResponseResult<Book>> UpdateBook(int id, Book book);
+        Task<Book> UpdateBook(int id, Book book);
         Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
         Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId);
         Task<ResponseResult<ICollection<string>>> GetCategories();
