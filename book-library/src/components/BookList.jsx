@@ -16,6 +16,7 @@ function BookList({
   navigateItems,
   filterComponent,
   noSort,
+  renderItemActions=()=>{}
 }) {
   const dispatch = useDispatch();
   const [bookComponents, setBookComponents] = useState([]);
@@ -32,13 +33,14 @@ function BookList({
   useEffect(() => {
     const createBookComponents = (data) => {
       return [...data]
-        .map((element) => {
+        .map((element, index) => {
           return (
             <BookListItem
               key={element.id}
               data={element}
               navigate={navigateItems}
               offices={offices}
+              renderActions={(data) => renderItemActions(data, index)}
             />
           );
         });

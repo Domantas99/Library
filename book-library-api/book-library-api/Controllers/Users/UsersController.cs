@@ -28,10 +28,8 @@ namespace BookLibrary.Api.Controllers.Users
         public async Task<ActionResult<ResponseResult<User>>> GetUser(int id)
         {
             var user = await _usersService.GetUser(id);
-            var identityUser = await _userManager.FindByIdAsync(user.ReturnResult.AspNetUserId);
-            var roles = await _userManager.GetRolesAsync(identityUser);
 
-            if (roles.Any(r => r.Equals("Admin")))
+            if (User.IsInRole("Admin"))
             {
                 user.ReturnResult.IsAdmin = true;
             }
