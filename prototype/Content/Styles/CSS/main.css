@@ -1129,13 +1129,13 @@ input[type=radio] {
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(100, 100, 100, 0.3);
+  background-color: rgba(225, 225, 225, 0.5);
   z-index: 100; }
   .spinner__bookshelf_wrapper {
     position: relative;
     top: 60%;
     left: 50%;
-    transform: translate(-50%, -50%); }
+    transform: translate(-50%, -50%) scale(0.5); }
   .spinner__books_list {
     margin: 0 auto;
     width: 300px;
