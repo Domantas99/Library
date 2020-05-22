@@ -9,6 +9,6 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IOfficesService
     {
-        Task<ResponseResult<ICollection<Office>>> GetOffices();
+        Task<ICollection<Office>> GetOffices();
     }
 }

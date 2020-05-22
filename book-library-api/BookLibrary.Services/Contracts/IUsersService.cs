@@ -10,8 +10,8 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IUsersService
     {
-        Task<ResponseResult<User>> GetUser(int id);
-        Task<ResponseResult<User>> UpdateUser(User user);
+        Task<User> GetUser(int id);
+        Task<User> UpdateUser(User user);
         Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId);
     }
 }

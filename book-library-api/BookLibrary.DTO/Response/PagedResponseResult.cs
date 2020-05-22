@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BookLibrary.DTO.Response
 {
-    public class PagedResponseResult<T>: ResponseResult<T>
+    public class PagedResponseResult<T>
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
@@ -12,5 +12,6 @@ namespace BookLibrary.DTO.Response
         public bool HasPreviousPage { get; set; }
         public int TotalPages { get; set; }
         public int Items { get; set; }
+        public T Result { get; set; }
     }
 }

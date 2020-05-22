@@ -19,11 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using System;
-<<<<<<< HEAD
 using System.IO;
-=======
 using System.Threading.Tasks;
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
 
 namespace BookLibrary.Api
 {
@@ -53,12 +50,8 @@ namespace BookLibrary.Api
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
         
-<<<<<<< HEAD
-             
-            services.AddDbContext<DataBase.Models.LibraryDBContext>(options =>
-=======
+
             services.AddDbContext<LibraryDBContext>(options =>
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
             {
                 var evdDBString = Environment.GetEnvironmentVariable("LIBRARY_DATABASE_CONNECTION");
 

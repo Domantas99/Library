@@ -28,7 +28,7 @@ namespace BookLibrary.Services.Wishlist
             _booksService = booksService;
         }
 
-        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
+        public async Task<Wish> AddNewWish(Wish wish)
         {
             bool flag = false;
             try
@@ -40,10 +40,10 @@ namespace BookLibrary.Services.Wishlist
             {
                 flag = true;
             }
-            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
+            return wish;
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sort)
+        public async Task<ICollection<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort)
         {
             var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
             if (categories != null && categories.Count > 0)
@@ -88,9 +88,9 @@ namespace BookLibrary.Services.Wishlist
                         break;
                     }
             }
-            return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
+            return wishlist;
         }
-        public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)
+        public async Task<UserWish> ManageVote(UserWish userWish)
         {
             bool flag = false;
             var alreadyExists = _context.UserWish.FirstOrDefault(x => x.WishId == userWish.WishId && x.UserId == userWish.UserId);
@@ -109,9 +109,9 @@ namespace BookLibrary.Services.Wishlist
                 flag = true;
             }
 
-            return new ResponseResult<UserWish> { Error = flag, ReturnResult = userWish };
+            return userWish;
         }
-        public async Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId)
+        public async Task<ICollection<VoteItemDTO>> GetVote(int userId)
         {
             var voteList = _context.UserWish.Select(x => new VoteItemDTO()
             {
@@ -119,10 +119,10 @@ namespace BookLibrary.Services.Wishlist
                 Vote = x.UserId == userId
             }).ToList();
             
-            return new ResponseResult<ICollection<VoteItemDTO>> { Error = false, ReturnResult = voteList };
+            return voteList;
         }
 
-        public async Task<ResponseResult<Book>> MoveWishToLibrary(Book book)
+        public async Task<Book> MoveWishToLibrary(Book book)
         {
             bool flag = false;
             try
@@ -142,21 +142,21 @@ namespace BookLibrary.Services.Wishlist
                 flag = true;
             }
 
-            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
+            return book;
         }
 
-        public Task<ResponseResult<ICollection<string>>> GetCategories()
+        public async Task<ICollection<string>> GetCategories()
         {
             var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
             uniqueCategories.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+            return uniqueCategories;
         }
 
-        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        public async Task<ICollection<string>> GetAuthors()
         {
             var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
             uniqueAuthors.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
+            return uniqueAuthors;
         }
     }
 }

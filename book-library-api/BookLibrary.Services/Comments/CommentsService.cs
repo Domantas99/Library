@@ -19,7 +19,7 @@ namespace BookLibrary.Services.Comments
             _context = context;
         }
 
-        public async Task<ResponseResult<BookComment>> AddComment(BookComment comment)
+        public async Task<BookComment> AddComment(BookComment comment)
         {
             bool errorFlag = false;
             try
@@ -32,10 +32,10 @@ namespace BookLibrary.Services.Comments
                 errorFlag = true;
             }
 
-            return new ResponseResult<BookComment> { Error = errorFlag, ReturnResult = comment };
+            return comment;
         }
 
-        public async Task<ResponseResult<BookComment>> GetComment(int id)
+        public async Task<BookComment> GetComment(int id)
         {
             bool errFlag = false;
             var comment = await _context.BookComment.FirstOrDefaultAsync(b => b.Id == id);
@@ -44,13 +44,13 @@ namespace BookLibrary.Services.Comments
                 errFlag = true;
             }
 
-            return new ResponseResult<BookComment> { Error = errFlag, ReturnResult = comment };
+            return comment;
         }
 
-        public async Task<ResponseResult<ICollection<BookComment>>> GetComments()
+        public async Task<ICollection<BookComment>> GetComments()
         {
             var comments = await _context.BookComment.ToListAsync();
-            return new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments };
+            return comments;
         }
     }
 }

@@ -20,17 +20,17 @@ namespace BookLibrary.Services
             _context = context;
         }
 
-        public async Task<ResponseResult<User>> GetUser(int id)
+        public async Task<User> GetUser(int id)
         {
             bool flag = false;
             var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) {
                 flag = true;
             }
-            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+            return user;
         }
 
-        public async Task<ResponseResult<User>> UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
             bool flag = false;
             try
@@ -41,7 +41,7 @@ namespace BookLibrary.Services
             catch (Exception ex) {
                 flag = true;
             }
-            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+            return user;
         }
 
         public async Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId)

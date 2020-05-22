@@ -30,7 +30,7 @@ namespace BookLibrary.Services.Books
             _reservationsService = reservationsService;
         }
 
-        public async Task<ResponseResult<Book>> AddNewBook(AddBookDTO bookDto)
+        public async Task<Book> AddNewBook(AddBookDTO bookDto)
         {
             bool errorFlag = false;
             Book book = new Book();
@@ -72,16 +72,17 @@ namespace BookLibrary.Services.Books
                     }
                 }
                 await _context.SaveChangesAsync();
+                return book;
             }
             catch (Exception ex)
             {
-                errorFlag = true;
+                throw new HandledException("There was an error adding a book");            
             }
 
-            return new ResponseResult<Book> { Error = errorFlag, ReturnResult = book };
+         //   return new Book { Error = errorFlag, ReturnResult = book };
         }
 
-        public async Task<ResponseResult<Book>> DeleteBook(int id)
+        public async Task<Book> DeleteBook(int id)
         {
             var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);
             if (bookToDelete == null)
@@ -94,13 +95,14 @@ namespace BookLibrary.Services.Books
             _context.RemoveRange(wishToRemove);
             _context.Book.Remove(bookToDelete);
             await _context.SaveChangesAsync();
-            return new ResponseResult<Book> { Error = false, ReturnResult = bookToDelete };
+            return bookToDelete;
+            //return new Book { Error = false, ReturnResult = bookToDelete };
         }
 
-        public async Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId)
+        public async Task<BookDetailsDTO> GetBook(int bookId, int userId)
         {
             var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
-            var userReservations = _reservationsService.GetReservations(userId).Result.ReturnResult;
+            var userReservations = _reservationsService.GetReservations(userId).Result;
             var reservation = userReservations.Where(x => x.Status != "Waiting" && x.Status != "Returned").FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
 
@@ -133,7 +135,7 @@ namespace BookLibrary.Services.Books
                 NotReadingUsers = GetNotReadingBookUsers(bookId)
             };
 
-            return new ResponseResult<BookDetailsDTO> { Error = false, ReturnResult = bookDetailsDTO };
+            return bookDetailsDTO;
         }
 
         public List<UserCheckOutDTO> GetNotReadingBookUsers(int bookId) {
@@ -148,7 +150,7 @@ namespace BookLibrary.Services.Books
         }
 
 
-        public async Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId)
+        public async Task<List<Library>> GetBookAvailability(int bookId)
         {
             var libraries = await _context.Library.Include(lib => lib.Office).Where(lib => lib.BookId == bookId).ToListAsync();
             var reservations = await _context.Reservation.Include(a => a.BookCase).ThenInclude(b => b.Book).Where(x => x.BookCase.BookId == bookId).ToListAsync();
@@ -164,64 +166,70 @@ namespace BookLibrary.Services.Books
                 }
             }
 
-            return new ResponseResult<ICollection<Library>> { Error = false, ReturnResult = libraries };
+            return libraries;
         }
 
-        public Task<ResponseResult<ICollection<BookListDTO>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
+        public async Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
         {
-            var books = BooksWithoutWishes();
-            if (categories != null && categories.Count > 0)
+            try
             {
-                books = books.Where(a => a.Category != null && categories.Contains(a.Category)).ToList();
+                var books = BooksWithoutWishes();
+                if (categories != null && categories.Count > 0)
+                {
+                    books = books.Where(a => a.Category != null && categories.Contains(a.Category)).ToList();
+                }
+                if (authors.Count > 0)
+                {
+                    books = books.Where(a => authors.Contains(a.Author)).ToList();
+                }
+                if (offices.Count > 0)
+                {
+                    var booksInOffices = _context.Library.Where(a => offices.Contains(a.Office.Name)).Select(a => a.Book.Id).Distinct();
+                    books = books.Where(a => booksInOffices.Contains(a.Id)).ToList();
+                }
+                if (!(status == null))
+                {
+                    //TODO Book status needs to get redone from "are there copies in library" if I recall the meeting correctly. 
+                }
+                switch (sort)
+                {
+                    case sort_recent:
+                        {
+                            books = books.OrderByDescending(book => book.ReleaseDate).ToList();
+                            break;
+                        }
+                    case sort_oldest:
+                        {
+                            books = books.OrderBy(book => book.ReleaseDate).ToList();
+                            break;
+                        }
+                    case sort_title_asc:
+                        {
+                            books = books.OrderBy(book => book.Title).ToList();
+                            break;
+                        }
+                    case sort_title_dsc:
+                        {
+                            books = books.OrderByDescending(book => book.Title).ToList();
+                            break;
+                        }
+                    case sort_author_asc:
+                        {
+                            books = books.OrderBy(book => book.Author).ToList();
+                            break;
+                        }
+                    case sort_author_dsc:
+                        {
+                            books = books.OrderByDescending(book => book.Author).ToList();
+                            break;
+                        }
+                }
+                List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
+                return bookList;
             }
-            if (authors.Count > 0)
-            {
-                books = books.Where(a => authors.Contains(a.Author)).ToList();
+            catch (Exception ex) {
+                throw new HandledException("There was an error books");
             }
-            if (offices.Count > 0)
-            {
-                var booksInOffices = _context.Library.Where(a => offices.Contains(a.Office.Name)).Select(a => a.Book.Id).Distinct();
-                books = books.Where(a => booksInOffices.Contains(a.Id)).ToList();
-            }
-            if (!(status == null))
-            {
-                //TODO Book status needs to get redone from "are there copies in library" if I recall the meeting correctly. 
-            }
-            switch (sort)
-            {
-                case sort_recent:
-                    {
-                        books = books.OrderByDescending(book => book.ReleaseDate).ToList();
-                        break;
-                    }
-                case sort_oldest:
-                    {
-                        books = books.OrderBy(book => book.ReleaseDate).ToList();
-                        break;
-                    }
-                case sort_title_asc:
-                    {
-                        books = books.OrderBy(book => book.Title).ToList();
-                        break;
-                    }
-                case sort_title_dsc:
-                    {
-                        books = books.OrderByDescending(book => book.Title).ToList();
-                        break;
-                    }
-                case sort_author_asc:
-                    {
-                        books = books.OrderBy(book => book.Author).ToList();
-                        break;
-                    }
-                case sort_author_dsc:
-                    {
-                        books = books.OrderByDescending(book => book.Author).ToList();
-                        break;
-                    }
-            }
-            List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
-            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
         }
         private List<BookListDTO> AddAvailabilityInList(List<Book> books, int? userOffice)
         {
@@ -231,18 +239,18 @@ namespace BookLibrary.Services.Books
                 bool avail = false;
 
                 var booksAvailable = GetBookAvailability(book.Id);
-                if (booksAvailable.Result.ReturnResult != null)
+                if (booksAvailable.Result != null)
                 {
                     if (!userOffice.HasValue)
                     {
-                        var count = booksAvailable.Result.ReturnResult.Where(x => x.OfficeId == userOffice)
+                        var count = booksAvailable.Result.Where(x => x.OfficeId == userOffice)
                         .Select(x => x.Count).FirstOrDefault();
                         if (count != 0)
                             avail = true;
                     } 
                     else
                     {
-                        avail = booksAvailable.Result.ReturnResult.Any(x => x.Count > 0);
+                        avail = booksAvailable.Result.Any(x => x.Count > 0);
                     }
                 }
                 bookList.Add(new BookListDTO
@@ -269,29 +277,29 @@ namespace BookLibrary.Services.Books
             }
             return bookList;
         }
-        public Task<ResponseResult<ICollection<string>>> GetCategories()
+        public async Task<List<string>> GetCategories()
         {
             var books = BooksWithoutWishes();
             var uniqueCategories = books.Where(book => book.Category != null).Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueCategories.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+            return uniqueCategories;
         }
 
-        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        public async Task<List<string>> GetAuthors()
         {
             var books = BooksWithoutWishes();
             var uniqueAuthors = books.Select(book => book.Author).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueAuthors.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
+            return uniqueAuthors;
         }
 
-        public Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId)
+        public async Task<List<BookComment>> GetComments(int bookId)
         {
             var comments = _context.BookComment.Where(comment => comment.BookId == bookId).ToList();
-            return Task.FromResult(new ResponseResult<ICollection<BookComment>> { Error = false, ReturnResult = comments });
+            return comments;
         }
 
-        public Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern)
+        public async Task<List<Book>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
             var books = BooksWithoutWishes();
@@ -301,17 +309,17 @@ namespace BookLibrary.Services.Books
                                                             book.IsArchived == false)
                                                             .ToList();
 
-            return Task.FromResult(new ResponseResult<ICollection<Book>> { Error = false, ReturnResult = filteredBooks });
+            return filteredBooks;
 
         }
 
-        public Task<ResponseResult<ICollection<BookListDTO>>> GetLatestBooks(int count, int userOffice)
+        public async Task<List<BookListDTO>> GetLatestBooks(int count, int userOffice)
         {
             var books = BooksWithoutWishes();
-
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
             var bookList = AddAvailabilityInList(books, userOffice);
-            return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList.Take(count).ToList() });
+            
+            return bookList.Take(count).ToList();
         }
 
         public async Task<Book> UpdateBook(int id, Book book)
@@ -361,7 +369,7 @@ namespace BookLibrary.Services.Books
             return books;
         }
 
-        public async Task<ResponseResult<ICollection<BookListDTO>>> GetUserRecommendedBooks(int userId, int count)
+        public async Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count)
         {
             var allBooks = BooksWithoutWishes();
             
@@ -418,10 +426,10 @@ namespace BookLibrary.Services.Books
             var bookList = AddAvailabilityInList(recommended, userOffice);
             bookList = bookList.Take(count).ToList();
 
-            return new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList };
+            return bookList;
         }
 
-        public async Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived)
+        public async Task<Book> SetBookArchiveStatus(int bookId, bool isArchived)
         {
             var book = await _context.Book.FirstOrDefaultAsync(x => x.Id == bookId);
             if (book != null)
@@ -431,7 +439,7 @@ namespace BookLibrary.Services.Books
                 await _context.SaveChangesAsync();
             }
 
-            return new ResponseResult<Book> { Error = false, ReturnResult = book };
+            return book;
         }
     }
 }

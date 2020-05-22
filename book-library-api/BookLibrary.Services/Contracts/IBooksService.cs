@@ -11,18 +11,18 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IBooksService
     {
-        Task<ResponseResult<Book>> AddNewBook(AddBookDTO book);
-        Task<ResponseResult<ICollection<BookListDTO>>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort);
+        Task<Book> AddNewBook(AddBookDTO book);
+        Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort);
         Task<Book> UpdateBook(int id, Book book);
-        Task<ResponseResult<ICollection<Book>>> GetFilteredBooks(string pattern);
-        Task<ResponseResult<BookDetailsDTO>> GetBook(int bookId, int userId);
-        Task<ResponseResult<ICollection<string>>> GetCategories();
-        Task<ResponseResult<ICollection<BookListDTO>>> GetLatestBooks(int count, int userOffice);
-        Task<ResponseResult<ICollection<Library>>> GetBookAvailability(int bookId);
-        Task<ResponseResult<ICollection<BookComment>>> GetComments(int bookId);
-        Task<ResponseResult<Book>> DeleteBook(int id);
-        Task<ResponseResult<ICollection<string>>> GetAuthors();
-        Task<ResponseResult<ICollection<BookListDTO>>> GetUserRecommendedBooks(int userId, int count);
-        Task<ResponseResult<Book>> SetBookArchiveStatus(int bookId, bool isArchived);
+        Task<List<Book>> GetFilteredBooks(string pattern);
+        Task<BookDetailsDTO> GetBook(int bookId, int userId);
+        Task<List<string>> GetCategories();
+        Task<List<BookListDTO>> GetLatestBooks(int count, int userOffice);
+        Task<List<Library>> GetBookAvailability(int bookId);
+        Task<List<BookComment>> GetComments(int bookId);
+        Task<Book> DeleteBook(int id);
+        Task<List<string>> GetAuthors();
+        Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count);
+        Task<Book> SetBookArchiveStatus(int bookId, bool isArchived);
     }
 }
