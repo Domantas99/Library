@@ -6,7 +6,7 @@ const initialState = {
   users: [
     { id: 1, userName: 'Nathaniux123' },
     { id: 2, userName: 'Beanz' },
-  ], //TODO need users list implemented
+  ], // TODO need users list implemented
 };
 
 export default (state = initialState, action) => {

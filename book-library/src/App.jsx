@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Dashboard,
   EditBook,
@@ -11,7 +12,6 @@ import {
   Wishlist,
 } from './features';
 import { SearchBar, Navigation } from './components';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './store/user/actions';
 
 function App() {
@@ -19,7 +19,8 @@ function App() {
   const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
 
   useEffect(() => {
-    dispatch(getUser(loggedInUserId))
+    dispatch(getUser(loggedInUserId));
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [loggedInUserId]);
 
   return (

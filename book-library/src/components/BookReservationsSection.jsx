@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getBookReservations } from '../store/reservations/actions';
 import Button from './Button';
 
-export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
+const BookReservationSection = ({
+  id,
+  reffer,
+  unavailableInMyOffice,
+  openWaitingModal,
+}) => {
   const dispatch = useDispatch();
   const reservations = useSelector(
     (state) => state.reservations.bookReservationData
@@ -11,13 +17,17 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
   const [borrowed, setBorrowed] = useState([]);
   const [waiting, setWaiting] = useState([]);
 
-  const generateReservationComponents = (reservations) => {
-    let borrowed = [];
-    let waiting = [];
-    reservations.forEach((reservation) => {
-      if (reservation.status === 'Borrowed') {
-        if (borrowed.length === 0) {
-          borrowed.push(
+  useEffect(() => {
+    dispatch(getBookReservations(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    const generateReservationComponents = () => {
+      const borrowedElements = [];
+      const waitingElements = [];
+      reservations.borrowed.forEach((reservation) => {
+        if (borrowedElements.length === 0) {
+          borrowedElements.push(
             <div key="header" className="book-reservation__list-header">
               <span className="book-reservation__list-header-employee">
                 Employee
@@ -34,18 +44,18 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
             </div>
           );
         }
-        borrowed.push(
+        borrowedElements.push(
           <div key={reservation.id} className="book-reservation__list-item">
             <div className="book-reservation__employee">
               <img
                 className="book-reservation__user-picture"
-                src={reservation.userPictureUrl}
+                src={reservation.user.profilePictureUrl}
                 alt=""
               />
-              <span>{reservation.userName}</span>
+              <span>{reservation.user.fullName}</span>
             </div>
             <span className="book-reservation__office">
-              {reservation.office}
+              {reservation.office.name}
             </span>
             <span className="book-reservation__bookedFrom">
               {reservation.bookedFrom}
@@ -55,9 +65,10 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
             </span>
           </div>
         );
-      } else if (reservation.status === 'Waiting') {
-        if (waiting.length === 0) {
-          waiting.push(
+      });
+      reservations.waiting.forEach((reservation) => {
+        if (waitingElements.length === 0) {
+          waitingElements.push(
             <div key="header" className="book-reservation__list-header">
               <span className="book-reservation__list-header-employee">
                 Employee
@@ -71,41 +82,34 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
             </div>
           );
         }
-        waiting.push(
+        waitingElements.push(
           <div key={reservation.id} className="book-reservation__list-item">
             <div className="book-reservation__employee">
               <img
                 className="book-reservation__user-picture"
-                src={reservation.userPictureUrl}
+                src={reservation.user.profilePictureUrl}
                 alt=""
               />
-              <span>{reservation.userName}</span>
+              <span>{reservation.user.fullName}</span>
             </div>
             <span className="book-reservation__office">
-              {reservation.office}
+              {reservation.office.name}
             </span>
             <span className="book-reservation__bookedFrom">
               {reservation.bookedFrom}
             </span>
           </div>
         );
-      }
-    });
-    setBorrowed(borrowed);
-    setWaiting(waiting);
-  };
-
-  useEffect(() => {
-    dispatch(getBookReservations(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
+      });
+      setBorrowed(borrowedElements);
+      setWaiting(waitingElements);
+    };
     generateReservationComponents(reservations);
   }, [dispatch, reservations]);
 
   return (
     <>
-      {borrowed ? (
+      {borrowed && borrowed.length > 0 ? (
         <>
           <div className="book-reservation__list">
             <h3 className="book-reservation__list-title">
@@ -117,7 +121,7 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
       ) : (
         <></>
       )}
-      {waiting ? (
+      {waiting && waiting.length > 0 ? (
         <>
           <div className="book-reservation__list" ref={reffer}>
             <h3 className="book-reservation__list-title">Waitlist</h3>
@@ -127,10 +131,20 @@ export default ({ id, reffer, unavailableInMyOffice, openWaitingModal }) => {
       ) : (
         <></>
       )}
-      {unavailableInMyOffice===true && (
-      <Button mini dark onClick={openWaitingModal}>
-        Join Waitlist
-      </Button>)}
+      {unavailableInMyOffice === true && (
+        <Button mini dark onClick={openWaitingModal}>
+          Join Waitlist
+        </Button>
+      )}
     </>
   );
 };
+
+BookReservationSection.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  reffer: PropTypes.shape({ current: PropTypes.any }).isRequired,
+  unavailableInMyOffice: PropTypes.bool.isRequired,
+  openWaitingModal: PropTypes.func.isRequired,
+};
+
+export default BookReservationSection;

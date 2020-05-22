@@ -90,62 +90,15 @@ export const getTeamReservations = (params) => {
   return httpClient.get(url);
 };
 
-//TODO This needs to be real API data.
 export const getBookReservations = (bookId) => {
-  return {
-    errorFlag: false,
-    returnResult: [
-      {
-        id: 1,
-        bookId,
-        office: 'Kaunas',
-        status: 'Borrowed',
-        bookedFrom: '2020-04-12',
-        returnDate: '2020-05-12',
-        userId: 1,
-        userName: 'Jonas Jonaitis',
-        userPictureUrl: 'https://randomuser.me/api/portraits/men/78.jpg',
-      },
-      {
-        id: 2,
-        bookId,
-        office: 'Vilnius',
-        status: 'Borrowed',
-        bookedFrom: '2020-04-12',
-        returnDate: '2020-05-12',
-        userId: 2,
-        userName: 'Justas Justaitis',
-        userPictureUrl: 'https://randomuser.me/api/portraits/men/31.jpg',
-      },
-      {
-        id: 3,
-        bookId,
-        office: 'Kaunas',
-        status: 'Waiting',
-        bookedFrom: '2020-04-12',
-        userId: 3,
-        userName: 'Lina Linaitė',
-        userPictureUrl: 'https://randomuser.me/api/portraits/women/78.jpg',
-      },
-      {
-        id: 4,
-        bookId,
-        office: 'Vilnius',
-        status: 'Waiting',
-        bookedFrom: '2020-04-12',
-        userId: 4,
-        userName: 'Sima Simaitė',
-        userPictureUrl: 'https://randomuser.me/api/portraits/women/31.jpg',
-      },
-    ],
-  };
+  return httpClient.get(`books/${bookId}/reservations`);
 };
 
 export const addReservation = (reservation) => {
   return httpClient.post('reservations', reservation);
 };
 
-//TODO This needs to be a real API method.
+// TODO This needs to be a real API method.
 export const updateReservation = (reservation) => {
   reservations[
     reservations.findIndex((element) => element.id === reservation.id)

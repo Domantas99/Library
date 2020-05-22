@@ -9,10 +9,10 @@ import {
   SET_FILTERS_START,
   SET_TEAM_FILTERS_START,
 } from './actionTypes';
-import { paramGenerator, paramFormatter } from '../../utilities';
+import { formatDate, paramGenerator, paramFormatter } from '../../utilities';
 
 const initialState = {
-  bookReservationData: [],
+  bookReservationData: { borrowed: [], waiting: [] },
   currentlyReading: [],
   filters: {},
   reservationData: [],
@@ -42,6 +42,7 @@ export default (state = initialState, action) => {
         ...state,
       };
     }
+
     case GET_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
@@ -54,6 +55,26 @@ export default (state = initialState, action) => {
       };
     }
 
+    case GET_BOOK_RESERVATIONS_END: {
+      const borrowed = action.payload.returnResult
+        .filter((x) => x.status === 'Borrowed')
+        .map((reservation) => ({
+          ...reservation,
+          bookedFrom: formatDate(reservation.bookedFrom),
+          returnDate: formatDate(reservation.returnDate),
+        }));
+      const waiting = action.payload.returnResult
+        .filter((x) => x.status === 'Waiting')
+        .map((reservation) => ({
+          ...reservation,
+          bookedFrom: formatDate(reservation.bookedFrom),
+        }));
+      return {
+        ...state,
+        bookReservationData: { borrowed, waiting },
+      };
+    }
+
     case GET_TEAM_RESERVATIONS_END: {
       const reservations = action.payload.returnResult.map((reservation) => {
         return {
@@ -63,24 +84,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         teamReservationData: {
-          reservations: reservations,
+          reservations,
           hasNextPage: action.payload.hasNextPage,
           hasPreviousPage: action.payload.hasPreviousPage,
           totalPages: action.payload.totalPages,
           items: action.payload.items,
         },
-      };
-    }
-
-    case GET_BOOK_RESERVATIONS_END: {
-      const reservations = action.payload.returnResult.map((reservation) => {
-        return {
-          ...reservation,
-        };
-      });
-      return {
-        ...state,
-        bookReservationData: reservations,
       };
     }
 

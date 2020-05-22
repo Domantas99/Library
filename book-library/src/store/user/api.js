@@ -5,5 +5,5 @@ export const getUserApi = (id) => {
   return httpClient.get(`users/${id}`);
 };
 export const updateUserApi = (user) => {
-  return httpClient.put("users", user);
+  return httpClient.put('users', user);
 };
