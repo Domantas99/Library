@@ -33,12 +33,10 @@ namespace BookLibrary.Services.Books
 
         public async Task<Book> AddNewBook(AddBookDTO bookDto)
         {
-            bool errorFlag = false;
-            Book book = new Book();
             try
             {
                 var library = bookDto.Library;
-                book = new Book
+                var book = new Book
                 {
                     Title = bookDto.Title,
                     Isbn = bookDto.Isbn,
@@ -58,6 +56,7 @@ namespace BookLibrary.Services.Books
                 };
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
+
                 foreach (var libr in library) {
                     if (libr.Count > 0)
                     {
@@ -72,15 +71,14 @@ namespace BookLibrary.Services.Books
                         _context.Library.Add(lib);
                     }
                 }
+
                 await _context.SaveChangesAsync();
                 return book;
             }
-            catch (Exception ex)
+            catch
             {
                 throw new HandledException("There was an error adding a book");            
             }
-
-         //   return new Book { Error = errorFlag, ReturnResult = book };
         }
 
         public async Task<Book> DeleteBook(int id)
@@ -88,25 +86,31 @@ namespace BookLibrary.Services.Books
             var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);
             if (bookToDelete == null)
             {
-                throw new HandledException("Book not found");
+                throw new HandledException("Book not found when deleting");
             }
+
             var libraryToRemove = _context.Library.Where(b => b.BookId == id);
             var wishToRemove = _context.Wish.Where(b => b.BookId == id);
             _context.Library.RemoveRange(libraryToRemove);
             _context.RemoveRange(wishToRemove);
             _context.Book.Remove(bookToDelete);
             await _context.SaveChangesAsync();
+
             return bookToDelete;
-            //return new Book { Error = false, ReturnResult = bookToDelete };
         }
 
         public async Task<BookDetailsDTO> GetBook(int bookId, int userId)
         {
             var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
+
+            if (book == null)
+            {
+                throw new HandledException("Book not found");
+            }
+
             var userReservations = _reservationsService.GetReservations(userId).Result;
             var reservation = userReservations.Where(x => x.Status != "Waiting" && x.Status != "Returned").FirstOrDefault(x => x.Book.Id == bookId);
             bool isCurrentlyReading = false;
-
 
             bool isAnyoneReading = false;
 
@@ -170,7 +174,7 @@ namespace BookLibrary.Services.Books
             return libraries;
         }
 
-        public async Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
+        public Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
         {
             try
             {
@@ -226,10 +230,10 @@ namespace BookLibrary.Services.Books
                         }
                 }
                 List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
-                return bookList;
+                return Task.FromResult(bookList);
             }
-            catch (Exception ex) {
-                throw new HandledException("There was an error books");
+            catch {
+                throw new HandledException("There was an error when geting books");
             }
         }
         private List<BookListDTO> AddAvailabilityInList(List<Book> books, int? userOffice)
@@ -278,29 +282,29 @@ namespace BookLibrary.Services.Books
             }
             return bookList;
         }
-        public async Task<List<string>> GetCategories()
+        public Task<List<string>> GetCategories()
         {
             var books = BooksWithoutWishes();
             var uniqueCategories = books.Where(book => book.Category != null).Select(book => book.Category).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueCategories.Sort();
-            return uniqueCategories;
+            return Task.FromResult(uniqueCategories);
         }
 
-        public async Task<List<string>> GetAuthors()
+        public Task<List<string>> GetAuthors()
         {
             var books = BooksWithoutWishes();
             var uniqueAuthors = books.Select(book => book.Author).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             uniqueAuthors.Sort();
-            return uniqueAuthors;
+            return Task.FromResult(uniqueAuthors);
         }
 
-        public async Task<List<BookComment>> GetComments(int bookId)
+        public Task<List<BookComment>> GetComments(int bookId)
         {
             var comments = _context.BookComment.Where(comment => comment.BookId == bookId).ToList();
-            return comments;
+            return Task.FromResult(comments);
         }
 
-        public async Task<List<Book>> GetFilteredBooks(string pattern)
+        public Task<List<Book>> GetFilteredBooks(string pattern)
         {
             pattern = pattern.ToLower();
             var books = BooksWithoutWishes();
@@ -310,17 +314,16 @@ namespace BookLibrary.Services.Books
                                                             book.IsArchived == false)
                                                             .ToList();
 
-            return filteredBooks;
-
+            return Task.FromResult(filteredBooks);
         }
 
-        public async Task<List<BookListDTO>> GetLatestBooks(int count, int userOffice)
+        public Task<List<BookListDTO>> GetLatestBooks(int count, int userOffice)
         {
             var books = BooksWithoutWishes();
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
             var bookList = AddAvailabilityInList(books, userOffice);
             
-            return bookList.Take(count).ToList();
+            return Task.FromResult(bookList.Take(count).ToList());
         }
 
         public async Task<Book> UpdateBook(int id, Book book)
@@ -353,7 +356,7 @@ namespace BookLibrary.Services.Books
                 await _context.SaveChangesAsync();
                 return book;
             }
-            catch (Exception ex)
+            catch
             {
                 throw new HandledException("Book update failed");
             }
@@ -370,7 +373,7 @@ namespace BookLibrary.Services.Books
             return books;
         }
 
-        public async Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count)
+        public Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count)
         {
             var allBooks = BooksWithoutWishes();
             
@@ -427,7 +430,7 @@ namespace BookLibrary.Services.Books
             var bookList = AddAvailabilityInList(recommended, userOffice);
             bookList = bookList.Take(count).ToList();
 
-            return bookList;
+            return Task.FromResult(bookList);
         }
 
         public async Task<Book> SetBookArchiveStatus(int bookId, bool isArchived)

@@ -19,11 +19,8 @@ const ReservationsTable = () => {
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
-<<<<<<< HEAD
   const userId = useSelector((state) => state.user.loggedInUserId);
-=======
-  const user = useSelector((state) => state.user.loggedInUserId);
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
+
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const [tableRows, setTableRows] = useState([]);
@@ -114,13 +111,8 @@ const ReservationsTable = () => {
   }, [categories, offices, authors]);
 
   useEffect(() => {
-<<<<<<< HEAD
     if (userId) {
       dispatch(getReservations(userId, filterSelector));
-=======
-    if (user) {
-      dispatch(getReservations(user, filterSelector));
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
     }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [userId, filterSelector]);
@@ -137,7 +129,7 @@ const ReservationsTable = () => {
   }, [reservationData]);
 
   useEffect(() => {
-    dispatch(setFilters(user, values));
+    dispatch(setFilters(userId, values));
   }, []);
 
   useEffect(() => {
@@ -149,16 +141,12 @@ const ReservationsTable = () => {
   return (
     <div className="panel__content">
       <Filter
-<<<<<<< HEAD
         dataAction={(filters) => getReservations(userId, filters)}
-=======
-        dataAction={(filters) => getReservations(user, filters)}
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
         filterSelector={filterSelector}
         filterMap={filterMap}
         sortMap={sortMap}
         excludedFilters={excludedFilters}
-        setFilterAction={(filters) => setFilters(user, filters)}
+        setFilterAction={(filters) => setFilters(userId, filters)}
       />
       <table>
         <thead>

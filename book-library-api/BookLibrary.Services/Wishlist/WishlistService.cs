@@ -2,6 +2,7 @@
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Wishlist;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,15 +31,14 @@ namespace BookLibrary.Services.Wishlist
 
         public async Task<Wish> AddNewWish(Wish wish)
         {
-            bool flag = false;
             try
             {
                 _context.Wish.Add(wish);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch
             {
-                flag = true;
+                throw new HandledException("There was an error while adding new wish");
             }
             return wish;
         }
@@ -109,8 +109,8 @@ namespace BookLibrary.Services.Wishlist
             var wish = _context.Wish.Where(x => x.Id == id).Include(x=>x.Votes).FirstOrDefault();
             var userId = 1;
             if (wish == null)
-            {
-                throw new Exception("No such wishlist book exists");
+            {             
+                throw new HandledException("No such wishlist book exists");
             }
             var existingUserWish = wish.Votes.Where(x=>x.UserId == userId).FirstOrDefault();
             if (existingUserWish == null)
@@ -128,7 +128,7 @@ namespace BookLibrary.Services.Wishlist
             _context.SaveChanges();
         }
 
-        public async Task<List<VoteItemDTO>> GetVote(int userId)
+        public Task<List<VoteItemDTO>> GetVote(int userId)
         {
             var voteList = _context.UserWish.Select(x => new VoteItemDTO()
             {
@@ -136,12 +136,11 @@ namespace BookLibrary.Services.Wishlist
                 Vote = x.UserId == userId
             }).ToList();
             
-            return voteList;
+            return Task.FromResult(voteList);
         }
 
         public async Task<Book> MoveWishToLibrary(Book book)
         {
-            bool flag = false;
             try
             {
                 var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
@@ -153,27 +152,26 @@ namespace BookLibrary.Services.Wishlist
                 _context.Wish.Remove(wishToRemove);
                 await _booksService.UpdateBook(book.Id, book);
                 await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
+                return book;
+            }          
+            catch
             {
-                flag = true;
+                throw new HandledException("There was an error while moving book from wishlist to library");
             }
-
-            return book;
         }
 
-        public async Task<List<string>> GetCategories()
+        public Task<List<string>> GetCategories()
         {
             var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
             uniqueCategories.Sort();
-            return uniqueCategories;
+            return Task.FromResult(uniqueCategories);
         }
 
-        public async Task<List<string>> GetAuthors()
+        public Task<List<string>> GetAuthors()
         {
             var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
             uniqueAuthors.Sort();
-            return uniqueAuthors;
+            return Task.FromResult(uniqueAuthors);
         }
     }
 }

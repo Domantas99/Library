@@ -1,6 +1,7 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,15 +22,14 @@ namespace BookLibrary.Services.Comments
 
         public async Task<BookComment> AddComment(BookComment comment)
         {
-            bool errorFlag = false;
             try
             {
                 _context.BookComment.Add(comment);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                errorFlag = true;
+                throw new HandledException("There was an error adding a comment");
             }
 
             return comment;
@@ -37,11 +37,10 @@ namespace BookLibrary.Services.Comments
 
         public async Task<BookComment> GetComment(int id)
         {
-            bool errFlag = false;
             var comment = await _context.BookComment.FirstOrDefaultAsync(b => b.Id == id);
             if (comment == null)
             {
-                errFlag = true;
+                throw new HandledException("There was an error getting a comment");
             }
 
             return comment;

@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
     }
 
     case GET_RESERVATIONS_END: {
-      const reservations = action.payload.returnResult.map((reservation) => {
+      const reservations = action.payload.map((reservation) => {
         return {
           ...reservation,
         };
@@ -56,14 +56,14 @@ export default (state = initialState, action) => {
     }
 
     case GET_BOOK_RESERVATIONS_END: {
-      const borrowed = action.payload.returnResult
+      const borrowed = action.payload
         .filter((x) => x.status === 'Borrowed')
         .map((reservation) => ({
           ...reservation,
           bookedFrom: formatDate(reservation.bookedFrom),
           returnDate: formatDate(reservation.returnDate),
         }));
-      const waiting = action.payload.returnResult
+      const waiting = action.payload
         .filter((x) => x.status === 'Waiting')
         .map((reservation) => ({
           ...reservation,
@@ -76,7 +76,7 @@ export default (state = initialState, action) => {
     }
 
     case GET_TEAM_RESERVATIONS_END: {
-      const reservations = action.payload.returnResult.map((reservation) => {
+      const reservations = action.payload.map((reservation) => {
         return {
           ...reservation,
         };

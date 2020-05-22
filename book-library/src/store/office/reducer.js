@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
     case GET_OFFICES_END: {
       const result = action.payload;
       if (!result.error) {
-        return { ...state, offices: result.returnResult };
+        return { ...state, offices: result };
       }
       break;
     }

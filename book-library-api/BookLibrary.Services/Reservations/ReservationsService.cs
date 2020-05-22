@@ -2,6 +2,7 @@
 using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,6 @@ namespace BookLibrary.Services.Reservations
 
         public async Task<Reservation> AddReservation(Reservation reservation)
         {
-            bool flag = false;
             try
             {
                 var reservations = await _context.Reservation.Include(x => x.BookCase).ToListAsync();
@@ -52,17 +52,15 @@ namespace BookLibrary.Services.Reservations
 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                var a = ex;
-                flag = true;
+                throw new HandledException("There was an error while adding a reservation");
             }
             return reservation;
         }
 
         public async Task<Waiting> AddWaiting(Waiting waiting)
         {
-            bool flag = false;
             try
             {
                 var existing = await _context.Waiting.FirstOrDefaultAsync(x => x.UserId == waiting.UserId && x.BookCase.BookId == waiting.BookCase.BookId);
@@ -79,10 +77,9 @@ namespace BookLibrary.Services.Reservations
                     await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                var a = ex;
-                flag = true;
+                throw new HandledException("There was an error while joining waitlist");
             }
             return waiting;
         }
@@ -90,49 +87,49 @@ namespace BookLibrary.Services.Reservations
         public async Task<Book> CheckInReservation(int reservationId, CheckInDTO data)
         {
             var reservation = await _context.Reservation.Include(a => a.BookCase).ThenInclude(b => b.Book).FirstOrDefaultAsync(x => x.Id == reservationId);
-            Book book = null;
-            bool flag = false;
             try
             {
-                if (reservation != null)
+                if (reservation == null)
                 {
-                    reservation.CheckedInOn = DateTime.Today;
-                    book = reservation.BookCase.Book;
-                    if (data.Review != null && data.Review.Length > 0) {
-                        _context.BookComment.Add(new BookComment{Book = book, Comment = data.Review, CreatedBy = reservation.UserId, CreatedOn = DateTime.Now});
-                    }
+                    throw new HandledException($"Reservation with id:{reservationId} not found");
                 }
+                reservation.CheckedInOn = DateTime.Today;
+                var book = reservation.BookCase.Book;
+                if (data.Review != null && data.Review.Length > 0)
+                {
+                    _context.BookComment.Add(new BookComment { Book = book, Comment = data.Review, CreatedBy = reservation.UserId, CreatedOn = DateTime.Now });
+                }
+
                 await _context.SaveChangesAsync();
+                return book;
             }
-            catch (Exception e)
+            catch
             {
-                flag = true;
-            }
-            return book;
+                throw new HandledException("There was an error while adding a comment");
+            }    
         }
 
         public async Task<Book> RemoveWaiting(int waitingId)
         {
-            var waiting = await _context.Waiting.FirstOrDefaultAsync(x => x.Id == waitingId);
-            Book book = null;
-            bool flag = false;
+            var waiting = await _context.Waiting.FirstOrDefaultAsync(x => x.Id == waitingId);     
             try
             {
-                if (waiting != null)
+                if (waiting == null)
                 {
-                    var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == waiting.BookCaseId);
-                    book = bookCase.Book;
-                    _context.Waiting.Remove(waiting);
-                    _context.BookCase.Remove(bookCase);
+                    throw new HandledException($"Waiting with id: {waitingId} was not found");
                 }
+                var bookCase = await _context.BookCase.Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == waiting.BookCaseId);
+                var book = bookCase.Book;
+                _context.Waiting.Remove(waiting);
+                _context.BookCase.Remove(bookCase);
                 await _context.SaveChangesAsync();
+                return book;
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
-                flag = true;
+                throw new HandledException("There was an error while leaving waitlist");
             }
-            return book;
+            
         }
 
         private List<ReservationDTO> resultSort(List<ReservationDTO> list, string sort)

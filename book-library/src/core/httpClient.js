@@ -1,19 +1,20 @@
 /* eslint-disable no-underscore-dangle */
 import request from 'superagent';
 import { useDispatch } from 'react-redux';
+import {store } from '../store/store';
 
 class HTTPClient {
   constructor() {
     this.baseUrl = 'http://localhost:5000/api/';
-    this.dispatch = useDispatch();
+    //this.dispatch = useDispatch();
     // this.baseUrl = process.env.REACT_APP_SERVER_URL;
   }
 
   async get(path) {
     const response = await request.get(this._getUrl(path))
-
-    this.dispatch();
-    
+    // store.dispatch();
+    // this.dispatch();
+  
     return response.body;
   }
 

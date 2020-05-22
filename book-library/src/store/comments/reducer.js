@@ -11,16 +11,16 @@ export default (state = initialState, action) => {
     case GET_COMMENTS_END: {
       return {
         ...state,
-        comments: action.payload.returnResult,
-        total: action.payload.returnResult.length,
+        comments: action.payload,
+        total: action.payload.length,
       };
     }
 
     case GET_BOOK_COMMENTS_END: {
       return {
         ...state,
-        comments: action.payload.returnResult,
-        total: action.payload.returnResult.length,
+        comments: action.payload,
+        total: action.payload.length,
       };
     }
 

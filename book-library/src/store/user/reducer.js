@@ -1,7 +1,7 @@
 import { GET_USER, GET_USER_END } from './actionTypes';
 
 const initialState = {
-  loggedInUserId: 1,
+  loggedInUserId: 3,
   userData: { isAdmin: true },
   users: [
     { id: 1, userName: 'Nathaniux123' },
@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
     case GET_USER_END: {
       const result = action.payload;
       if (!result.error) {
-        return { ...state, userData: result.returnResult };
+        return { ...state, userData: result };
       }
       break;
     }

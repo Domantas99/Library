@@ -17,10 +17,10 @@ namespace BookLibrary.Services.Offices
             _context = context;
         }
 
-        public async Task<List<Office>> GetOffices()
+        public Task<List<Office>> GetOffices()
         {
             var offices = _context.Office.ToList();
-            return offices;
+            return Task.FromResult(offices);
         }
     }
 }
