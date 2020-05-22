@@ -10,7 +10,7 @@ import Modal from "../components/Modal";
 import BookForm from "./BookForm";
 import classNames from 'classnames';
 
-export default ({ data, navigate, offices }) => {
+export default ({ data, navigate, offices, renderActions }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.loggedInUserId);
   const voteStates = useSelector((state) => state.wishlist.voteState);
@@ -24,15 +24,6 @@ export default ({ data, navigate, offices }) => {
       WishId: data.wishId,
     };
   },[userId, data]);
-
-  function handleClick() {
-    const vote = createVoteObject();
-    dispatch(setVote(vote));
-  }
-  useEffect(() => {
-    dispatch(getVote(createVoteObject()));
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, []);
 
   const availableClass = classNames('book-status__text', {
     'book-status__text--available': data.isAvailableInMyOffice,
@@ -55,6 +46,7 @@ export default ({ data, navigate, offices }) => {
       <div className={availableClass}>
       {typeof data.isAvailableInMyOffice !== 'undefined' && (data.isAvailableInMyOffice ? `Available` : 'Currently unavailable')}
       </div>
+      {renderActions(data)}
       {data.votes !== undefined && (
         <div>
           <Modal
@@ -68,12 +60,7 @@ export default ({ data, navigate, offices }) => {
               moveToWishAction={()=>setMoveWishToBookModal(false)}
             ></BookForm>
           </Modal>
-          <button //TODO This and the next should be updated to the new Button component.
-            style={voted ? { backgroundColor: "#4568FB" } : {}}
-            onClick={handleClick}
-          >
-            {data.votes}
-          </button>
+
           <button onClick={()=> setMoveWishToBookModal(true)}>Move</button>
          </div>
       )}

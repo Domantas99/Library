@@ -70,9 +70,12 @@ namespace BookLibrary.Api.Controllers.Auth
 				new Claim(ClaimTypes.Email, identityUser.Email),
 				new Claim(ClaimTypes.Name, identityUser.UserName),
 				new Claim(ClaimTypes.NameIdentifier, identityUser.Id),
-				new Claim(ClaimTypes.Role, roles.FirstOrDefault())
 				// TODO Add more claims here
 			};
+			if (roles.Any())
+			{
+				claims.Add(new Claim(ClaimTypes.Role, roles.FirstOrDefault()));
+			}
 			var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 

@@ -15,6 +15,7 @@ namespace BookLibrary.DTO.Wishlist
         public DateTime DateAdded { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int Votes { get; set; }
+        public bool UserVoted { get; set; }
 
         public static explicit operator WishlistItemDTO(Wish wish) => new WishlistItemDTO {
             WishId = wish.Id,

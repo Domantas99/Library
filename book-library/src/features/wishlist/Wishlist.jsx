@@ -7,6 +7,7 @@ import {
   getCategories,
   getWishlist,
   setFilters,
+  setVote
 } from '../../store/wishlist/actions';
 import {
   ActionItem,
@@ -16,6 +17,7 @@ import {
   Panel,
   WishForm,
 } from '../../components';
+import WishListVotes from '../../components/WishlistVotes';
 
 const Wishlist = (location) => {
   const dispatch = useDispatch();
@@ -98,6 +100,9 @@ const Wishlist = (location) => {
     dispatch(getAuthors());
   }, []);
 
+  const handleVote = (wishId, index) => {
+    dispatch(setVote(wishId, index));
+  }
   return (
     <>
       <Panel title="Wishlist">
@@ -116,6 +121,13 @@ const Wishlist = (location) => {
             />
           }
           actionButton={actionButton}
+          renderItemActions={(data, index) => (
+            <WishListVotes
+              voteCount={data.votes}
+              hasVoted={data.userVoted}
+              onVote={() => handleVote(data.wishId, index)}
+            />
+          )}
         />
       </Panel>
       <Modal

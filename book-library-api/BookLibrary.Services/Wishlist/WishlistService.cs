@@ -43,9 +43,9 @@ namespace BookLibrary.Services.Wishlist
             return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sort)
+        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId)
         {
-            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
+            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ThenInclude(x=>x.User).ToListAsync();
             if (categories != null && categories.Count > 0)
             {
                 wishes = wishes.Where(a => a.Book.Category != null && categories.Contains(a.Book.Category)).ToList();
@@ -54,7 +54,19 @@ namespace BookLibrary.Services.Wishlist
             {
                 wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
             }
-            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
+            var wishlist = wishes.Select(wish => new WishlistItemDTO
+            {
+                WishId = wish.Id,
+                Id = wish.Book.Id,
+                Title = wish.Book.Title,
+                Author = wish.Book.Author,
+                CoverPictureUrl = wish.Book.CoverPictureUrl,
+                DateAdded = wish.Book.DateAdded,
+                ReleaseDate = wish.Book.ReleaseDate,
+                Votes = wish.Votes.Count,
+                UserVoted = wish.Votes.Where(x => x.UserId == 1).Any()
+            }).ToList();
+
             switch (sort)
             {
                 case sort_recent:
@@ -90,26 +102,28 @@ namespace BookLibrary.Services.Wishlist
             }
             return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
         }
-        public async Task<ResponseResult<UserWish>> ManageVote(UserWish userWish)
+        public void ManageVote(int id)
         {
-            bool flag = false;
-            var alreadyExists = _context.UserWish.FirstOrDefault(x => x.WishId == userWish.WishId && x.UserId == userWish.UserId);
-            try
+            var wish = _context.Wish.Where(x => x.Id == id).Include(x=>x.Votes).FirstOrDefault();
+            var userId = 1;
+            if (wish == null)
             {
-                if (alreadyExists != null)
+                throw new Exception("No such wishlist book exists");
+            }
+            var existingUserWish = wish.Votes.Where(x=>x.UserId == userId).FirstOrDefault();
+            if (existingUserWish == null)
+            {
+                _context.UserWish.AddAsync(new UserWish()
                 {
-                    _context.UserWish.Remove(alreadyExists);
-                }
-                else
-                    _context.UserWish.Add(userWish);
-                await _context.SaveChangesAsync();
+                    UserId = userId,
+                    WishId = id
+                });
             }
-            catch (Exception e)
+            else
             {
-                flag = true;
+                _context.UserWish.Remove(existingUserWish);
             }
-
-            return new ResponseResult<UserWish> { Error = flag, ReturnResult = userWish };
+            _context.SaveChanges();
         }
         public async Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId)
         {
