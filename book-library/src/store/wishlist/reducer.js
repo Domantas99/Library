@@ -1,10 +1,9 @@
+import update from 'immutability-helper';
 import {
   ADD_WISH_END,
   GET_AUTHORS_END,
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
-  GET_VOTE,
-  GET_VOTE_END,
   GET_WISHLIST_END,
   SET_FILTERS_START,
   SET_VOTE_END,
@@ -50,19 +49,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_VOTE: {
-      return {
-        ...state,
-      };
-    }
-
-    case GET_VOTE_END: {
-      return {
-        ...state,
-        voteState: action.payload.returnResult,
-      };
-    }
-
     case GET_WISHLIST_END: {
       return {
         ...state,
@@ -82,10 +68,19 @@ export default (state = initialState, action) => {
     }
 
     case SET_VOTE_END: {
-      return {
-        ...state,
-        voteData: action.payload,
-      };
+      const currentWish = state.bookData[action.payload]
+      return update(state, {
+        bookData: {
+          [action.payload]: {
+            votes: {
+              $set: currentWish.userVoted ? currentWish.votes - 1 : currentWish.votes + 1
+            }, 
+            userVoted: {
+              $set: !currentWish.userVoted
+            }
+          }
+        }
+      })
     }
 
     default: {

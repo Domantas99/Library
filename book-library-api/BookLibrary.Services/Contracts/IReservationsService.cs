@@ -12,12 +12,12 @@ namespace BookLibrary.Services.Contracts
     public interface IReservationsService
     {
         Task<Waiting> AddWaiting(Waiting waiting);
-        Task<ICollection<ReservationDTO>> GetReservations(int user);
-        Task<ICollection<ReservationDTO>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort);
+        Task<List<ReservationDTO>> GetReservations(int user);
+        Task<List<ReservationDTO>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort);
         Task<Reservation> AddReservation(Reservation reservation);
         Task<Book> CheckInReservation(int reservationId, CheckInDTO data);
         Task<Book> RemoveWaiting(int waitingId);
-        Task<PagedList<ReservationDTO>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<string> users, int page, int pageSize, string sort);
-        Task<ICollection<Reservation>> GetUserCurrentlyReadingReservedBooks(int userId);
+        Task<PagedResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<string> users, int page, int pageSize, string sort);
+        Task<List<Reservation>> GetUserCurrentlyReadingReservedBooks(int userId);
     }
 }

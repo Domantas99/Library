@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,5 +25,6 @@ namespace BookLibrary.Services.Contracts
         Task<List<string>> GetAuthors();
         Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count);
         Task<Book> SetBookArchiveStatus(int bookId, bool isArchived);
+        Task<List<ReservationDTO>> GetReservations(int id);
     }
 }

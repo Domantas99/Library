@@ -17,7 +17,7 @@ namespace BookLibrary.Services.Offices
             _context = context;
         }
 
-        public async Task<ICollection<Office>> GetOffices()
+        public async Task<List<Office>> GetOffices()
         {
             var offices = _context.Office.ToList();
             return offices;

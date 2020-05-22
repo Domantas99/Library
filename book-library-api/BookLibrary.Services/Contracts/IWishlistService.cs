@@ -10,12 +10,12 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IWishlistService
     {
-        Task<ICollection<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort);
-        Task<UserWish> ManageVote(UserWish userWish);
-        Task<ICollection<VoteItemDTO>> GetVote(int userId);
+        Task<List<VoteItemDTO>> GetVote(int userId);
         Task<Wish> AddNewWish(Wish wish);
         Task<Book> MoveWishToLibrary(Book book);
-        Task<ICollection<string>> GetCategories();
-        Task<ICollection<string>> GetAuthors();
+        Task<List<string>> GetCategories();
+        Task<List<string>> GetAuthors();
+        Task<List<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId);
+        void ManageVote(int id);
     }
 }

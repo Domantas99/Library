@@ -5,7 +5,6 @@ import {
   addWishAPI,
   getAuthors,
   getCategories,
-  getVoteAPI,
   getWishlist,
   moveWishToLibraryAPI,
   setVoteAPI,
@@ -15,7 +14,6 @@ import {
   ADD_WISH_END,
   GET_AUTHORS_START,
   GET_CATEGORIES_START,
-  GET_VOTE,
   GET_WISHLIST_START,
   MOVE_WISH_TO_LIBRARY,
   MOVE_WISH_TO_LIBRARY_END,
@@ -28,7 +26,6 @@ import {
   addWishEnd,
   getAuthorsEnd,
   getCategoriesEnd,
-  getVoteEnd,
   getWishlistEnd,
   moveWishToLibraryEnd,
   setFiltersEnd,
@@ -66,15 +63,6 @@ export function* getCategoriesSaga(action) {
   }
 }
 
-export function* getVoteSaga(action) {
-  try {
-    const apiResult = yield call(getVoteAPI, action.payload);
-    yield put(getVoteEnd(apiResult));
-  } catch (e) {
-    // stops saga from braking on api error
-  }
-}
-
 export function* getWishlistSaga(action) {
   try {
     const apiResult = yield call(getWishlist, action.payload);
@@ -108,8 +96,8 @@ export function* setFiltersSaga(action) {
 
 export function* setVoteSaga(action) {
   try {
-    const apiResult = yield call(setVoteAPI, action.payload);
-    yield put(setVoteEnd(apiResult));
+    yield call(setVoteAPI, action.payload.wishId);
+    yield put(setVoteEnd(action.payload.index));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -120,12 +108,10 @@ export default function* () {
   yield takeLatest(ADD_WISH_END, getWishlistSaga);
   yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
   yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);
-  yield takeLatest(GET_VOTE, getVoteSaga);
   yield takeLatest(GET_WISHLIST_START, getWishlistSaga);
   yield takeLatest(MOVE_WISH_TO_LIBRARY, moveWishToLibrarySaga);
   yield takeLatest(MOVE_WISH_TO_LIBRARY_END, getWishlistSaga);
   yield takeLatest(SET_FILTERS_START, setFiltersSaga);
   yield takeLatest(SET_FILTERS_END, getWishlistSaga);
   yield takeLatest(SET_VOTE, setVoteSaga);
-  yield takeLatest(SET_VOTE_END, getWishlistSaga);  
 }

@@ -4,12 +4,9 @@ import { useDispatch } from 'react-redux';
 
 class HTTPClient {
   constructor() {
-<<<<<<< HEAD
     this.baseUrl = 'http://localhost:5000/api/';
     this.dispatch = useDispatch();
-=======
-    this.baseUrl = process.env.REACT_APP_SERVER_URL;
->>>>>>> fba72cc67bebe2f1b87cf65276c4b423d7bc0c24
+    // this.baseUrl = process.env.REACT_APP_SERVER_URL;
   }
 
   async get(path) {

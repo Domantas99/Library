@@ -186,11 +186,11 @@ namespace BookLibrary.Services.Reservations
             }
         }
 
-        public async Task<ICollection<ReservationDTO>> GetReservations(int user) {
+        public async Task<List<ReservationDTO>> GetReservations(int user) {
             return await GetReservations(user, new List<string>(), new List<string>(), new List<string>(), new List<string>(), sort_recent);
         }
 
-        public async Task<ICollection<ReservationDTO>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
+        public async Task<List<ReservationDTO>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
         {
             var reservations = await _context.Reservation.Where(x => x.UserId == user)
                 .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
@@ -255,7 +255,7 @@ namespace BookLibrary.Services.Reservations
             };
         }
 
-        public async Task<ICollection<Reservation>> GetUserCurrentlyReadingReservedBooks(int userId)
+        public async Task<List<Reservation>> GetUserCurrentlyReadingReservedBooks(int userId)
         {
             var reservations = await _context.Reservation
                 .Include(a => a.BookCase)

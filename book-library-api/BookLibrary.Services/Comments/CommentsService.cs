@@ -47,7 +47,7 @@ namespace BookLibrary.Services.Comments
             return comment;
         }
 
-        public async Task<ICollection<BookComment>> GetComments()
+        public async Task<List<BookComment>> GetComments()
         {
             var comments = await _context.BookComment.ToListAsync();
             return comments;

@@ -42,15 +42,6 @@ export const getCategoriesEnd = (categories) => ({
   payload: categories,
 });
 
-export const getVote = (vote) => ({
-  type: GET_VOTE,
-  payload: vote,
-});
-export const getVoteEnd = (vote) => ({
-  type: GET_VOTE_END,
-  payload: vote,
-});
-
 export const getWishlist = (params) => ({
   type: GET_WISHLIST_START,
   payload: params,
@@ -79,11 +70,11 @@ export const setFiltersEnd = (filters) => ({
   payload: filters,
 });
 
-export const setVote = (vote) => ({
+export const setVote = (wishId, index) => ({
   type: SET_VOTE,
-  payload: vote,
+  payload: {wishId, index}
 });
-export const setVoteEnd = (vote) => ({
+export const setVoteEnd = (index) => ({
   type: SET_VOTE_END,
-  payload: vote,
+  payload: index,
 });

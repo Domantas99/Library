@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
@@ -22,41 +23,38 @@ namespace BookLibrary.Api.Controllers.Wishlist
             _wishlistService = wishlistService;
         }
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<WishlistItemDTO>>>> GetWishlist([FromQuery]List<string> category, [FromQuery] List<string> authors, [FromQuery] string sort)
+        public async Task<ActionResult<ICollection<WishlistItemDTO>>> GetWishlist([FromQuery]List<string> category, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
-            return await _wishlistService.GetWishlist(category, authors, sort);
+            var aspNetUserId = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value).FirstOrDefault();
+            return await _wishlistService.GetWishlist(category, authors, sort, aspNetUserId);
         }
-        [HttpGet("vote")]
-        public async Task<ActionResult<ResponseResult<ICollection<VoteItemDTO>>>> GetVote([FromQuery] int userId)
+        [HttpPost("vote/{id}")]
+        public ActionResult ManageVote(int id)
         {
-            return await _wishlistService.GetVote(userId);
-        }
-        [HttpPost("vote")]
-        public async Task<ActionResult<ResponseResult<UserWish>>> ManageVote([FromBody] UserWish userWish)
-        {
-            return await _wishlistService.ManageVote(userWish);
+            _wishlistService.ManageVote(id);
+            return Ok();
         }
 
         [HttpPost("add")]
-        public async Task<ActionResult<ResponseResult<Wish>>> AddNewWish([FromBody]Wish wish)
+        public async Task<ActionResult<Wish>> AddNewWish([FromBody]Wish wish)
         {
             return await _wishlistService.AddNewWish(wish);
         }
 
         [HttpPost("move-to-library")]
-        public async Task<ActionResult<ResponseResult<Book>>> MoveWishToLibrary([FromBody]Book book)
+        public async Task<ActionResult<Book>> MoveWishToLibrary([FromBody]Book book)
         {
             return await _wishlistService.MoveWishToLibrary(book);
         }
 
         [HttpGet("categories")]
-        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetCategories()
+        public async Task<ActionResult<ICollection<string>>> GetCategories()
         {
             return await _wishlistService.GetCategories();
         }
 
         [HttpGet("authors")]
-        public async Task<ActionResult<ResponseResult<ICollection<string>>>> GetAuthors()
+        public async Task<ActionResult<ICollection<string>>> GetAuthors()
         {
             return await _wishlistService.GetAuthors();
         }

@@ -43,9 +43,10 @@ namespace BookLibrary.Services.Wishlist
             return wish;
         }
 
-        public async Task<ICollection<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort)
+
+        public async Task<List<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId)
         {
-            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ToListAsync();
+            var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ThenInclude(x=>x.User).ToListAsync();
             if (categories != null && categories.Count > 0)
             {
                 wishes = wishes.Where(a => a.Book.Category != null && categories.Contains(a.Book.Category)).ToList();
@@ -54,7 +55,19 @@ namespace BookLibrary.Services.Wishlist
             {
                 wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
             }
-            var wishlist = wishes.Select(x => (WishlistItemDTO)x).ToList();
+            var wishlist = wishes.Select(wish => new WishlistItemDTO
+            {
+                WishId = wish.Id,
+                Id = wish.Book.Id,
+                Title = wish.Book.Title,
+                Author = wish.Book.Author,
+                CoverPictureUrl = wish.Book.CoverPictureUrl,
+                DateAdded = wish.Book.DateAdded,
+                ReleaseDate = wish.Book.ReleaseDate,
+                Votes = wish.Votes.Count,
+                UserVoted = wish.Votes.Where(x => x.UserId == 1).Any()
+            }).ToList();
+
             switch (sort)
             {
                 case sort_recent:
@@ -90,28 +103,32 @@ namespace BookLibrary.Services.Wishlist
             }
             return wishlist;
         }
-        public async Task<UserWish> ManageVote(UserWish userWish)
-        {
-            bool flag = false;
-            var alreadyExists = _context.UserWish.FirstOrDefault(x => x.WishId == userWish.WishId && x.UserId == userWish.UserId);
-            try
-            {
-                if (alreadyExists != null)
-                {
-                    _context.UserWish.Remove(alreadyExists);
-                }
-                else
-                    _context.UserWish.Add(userWish);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                flag = true;
-            }
 
-            return userWish;
+        public void ManageVote(int id)
+        {
+            var wish = _context.Wish.Where(x => x.Id == id).Include(x=>x.Votes).FirstOrDefault();
+            var userId = 1;
+            if (wish == null)
+            {
+                throw new Exception("No such wishlist book exists");
+            }
+            var existingUserWish = wish.Votes.Where(x=>x.UserId == userId).FirstOrDefault();
+            if (existingUserWish == null)
+            {
+                _context.UserWish.AddAsync(new UserWish()
+                {
+                    UserId = userId,
+                    WishId = id
+                });
+            }
+            else
+            {
+                _context.UserWish.Remove(existingUserWish);
+            }
+            _context.SaveChanges();
         }
-        public async Task<ICollection<VoteItemDTO>> GetVote(int userId)
+
+        public async Task<List<VoteItemDTO>> GetVote(int userId)
         {
             var voteList = _context.UserWish.Select(x => new VoteItemDTO()
             {
@@ -145,14 +162,14 @@ namespace BookLibrary.Services.Wishlist
             return book;
         }
 
-        public async Task<ICollection<string>> GetCategories()
+        public async Task<List<string>> GetCategories()
         {
             var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
             uniqueCategories.Sort();
             return uniqueCategories;
         }
 
-        public async Task<ICollection<string>> GetAuthors()
+        public async Task<List<string>> GetAuthors()
         {
             var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
             uniqueAuthors.Sort();
