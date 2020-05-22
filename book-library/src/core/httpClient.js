@@ -3,7 +3,7 @@ import request from 'superagent';
 
 class HTTPClient {
   constructor() {
-    this.baseUrl = 'http://localhost:5000/api/';
+    this.baseUrl = process.env.REACT_APP_SERVER_URL;
   }
 
   async get(path) {

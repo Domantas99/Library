@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
+using BookLibrary.DTO.Users;
 using BookLibrary.DTO.Wishlist;
 using BookLibrary.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,18 @@ namespace BookLibrary.Services
                 flag = true;
             }
             return new ResponseResult<User> { Error = flag, ReturnResult = user };
+        }
+
+        public async Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId)
+        {
+            _context.User.Add(new User {
+                UserName = newUserInfo.Email,
+                Email = newUserInfo.Email,
+                FullName = newUserInfo.FullName,
+                AspNetUserId = aspNetUserId
+            });
+            
+            await _context.SaveChangesAsync();
         }
     }
 }

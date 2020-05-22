@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary.DataBase.Models
 {
-    public partial class LibraryDBContext : DbContext
+    public partial class LibraryDBContext : IdentityDbContext<IdentityUser>
     {
         public LibraryDBContext()
         {
@@ -280,6 +282,9 @@ namespace BookLibrary.DataBase.Models
                     .HasConstraintName("FK_UserWish_UserId");
             });
             OnModelCreatingPartial(modelBuilder);
+
+            modelBuilder.Entity<IdentityUser>().Property(p => p.Id).ValueGeneratedOnAdd();
+            base.OnModelCreating(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

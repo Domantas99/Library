@@ -12,7 +12,7 @@ namespace BookLibrary.Api.Controllers.Reservations
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservationsController: ControllerBase
+    public class ReservationsController: ApiControllerBase
     {
         private readonly IReservationsService _reservationsService;
         public ReservationsController(IReservationsService reservationsService)

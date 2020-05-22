@@ -221,21 +221,27 @@ namespace BookLibrary.Services.Books
             List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
             return Task.FromResult(new ResponseResult<ICollection<BookListDTO>> { Error = false, ReturnResult = bookList });
         }
-        private List<BookListDTO> AddAvailabilityInList(List<Book> books, int userOffice)
+        private List<BookListDTO> AddAvailabilityInList(List<Book> books, int? userOffice)
         {
             List<BookListDTO> bookList = new List<BookListDTO>();
             foreach (Book book in books)
             {
                 bool avail = false;
-                int bookInOfficeC = _context.Library.Where(x => x.BookId == book.Id && x.OfficeId == userOffice)
-                    .Select(x => x.Count).FirstOrDefault();
+
                 var booksAvailable = GetBookAvailability(book.Id);
                 if (booksAvailable.Result.ReturnResult != null)
                 {
-                    var count = booksAvailable.Result.ReturnResult.Where(x => x.OfficeId == userOffice)
+                    if (!userOffice.HasValue)
+                    {
+                        var count = booksAvailable.Result.ReturnResult.Where(x => x.OfficeId == userOffice)
                         .Select(x => x.Count).FirstOrDefault();
-                    if (count != 0)
-                        avail = true;
+                        if (count != 0)
+                            avail = true;
+                    } 
+                    else
+                    {
+                        avail = booksAvailable.Result.ReturnResult.Any(x => x.Count > 0);
+                    }
                 }
                 bookList.Add(new BookListDTO
                 {
@@ -408,7 +414,7 @@ namespace BookLibrary.Services.Books
                     recommended.AddRange(BooksWithoutWishes().Except(recommended));
                 }
             }
-            int userOffice = _context.User.Where(x => x.Id == userId).Select(x => x.OfficeId).FirstOrDefault();
+            var userOffice = _context.User.Where(x => x.Id == userId).Select(x => x.OfficeId).FirstOrDefault();
             var bookList = AddAvailabilityInList(recommended, userOffice);
             bookList = bookList.Take(count).ToList();
 
