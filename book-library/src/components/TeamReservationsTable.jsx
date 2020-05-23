@@ -24,6 +24,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const users = useSelector((state) => state.user.users);
+
   const [page, setPage] = useState(startingPage);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState([
@@ -141,7 +142,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     const generateTableRows = () => {
       return reservationData.reservations.map((reservation, index) => {
         return (
-          <ReservationsTableItem key={index} data={reservation} />
+          <ReservationsTableItem key={reservation.id} data={reservation} />
         );
       });
     };
