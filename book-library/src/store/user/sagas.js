@@ -15,7 +15,7 @@ export function* getUserSaga(action) {
 export function* updateUserSaga(action) {
   try {
     const apiResult = yield call(updateUserApi, action.payload);
-    yield put(getUserEnd(apiResult.returnResult.id));
+    yield put(getUserEnd(apiResult.id));
   } catch (e) {
     // stops saga from braking on api error
   }

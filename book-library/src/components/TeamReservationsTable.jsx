@@ -24,6 +24,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const users = useSelector((state) => state.user.users);
+
   const [page, setPage] = useState(startingPage);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState([

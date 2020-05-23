@@ -45,7 +45,7 @@ import { paramGenerator } from '../../utilities';
 export function* addReservationSaga(action) {
   try {
     const apiResult = yield call(addReservation, action.payload);
-    const { bookId } = apiResult.returnResult.bookCase;
+    const { bookId } = apiResult.bookCase;
     const userId = action.userId;
     yield put(addReservationEnd({ bookId, userId }));
   } catch (e) {
@@ -67,7 +67,7 @@ export function* checkInReservationSaga(action) {
     const apiResult = yield call(checkInReservation, action.payload);
     yield put(
       checkInReservationEnd({
-        bookId: apiResult.returnResult.id,
+        bookId: apiResult.id,
         userId: action.userId,
       })
     );
@@ -108,7 +108,7 @@ export function* removeWaitingSaga(action) {
     const apiResult = yield call(removeWaiting, action.payload);
     yield put(
       removeWaitingEnd({
-        bookId: apiResult.returnResult.id,
+        bookId: apiResult.id,
         userId: action.userId,
       })
     );

@@ -2,6 +2,7 @@
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Wishlist;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,22 +29,22 @@ namespace BookLibrary.Services.Wishlist
             _booksService = booksService;
         }
 
-        public async Task<ResponseResult<Wish>> AddNewWish(Wish wish)
+        public async Task<Wish> AddNewWish(Wish wish)
         {
-            bool flag = false;
             try
             {
                 _context.Wish.Add(wish);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch
             {
-                flag = true;
+                throw new HandledException("There was an error while adding new wish");
             }
-            return new ResponseResult<Wish> { Error = flag, ReturnResult = wish };
+            return wish;
         }
 
-        public async Task<ResponseResult<ICollection<WishlistItemDTO>>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId)
+
+        public async Task<List<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId)
         {
             var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ThenInclude(x=>x.User).ToListAsync();
             if (categories != null && categories.Count > 0)
@@ -100,15 +101,16 @@ namespace BookLibrary.Services.Wishlist
                         break;
                     }
             }
-            return new ResponseResult<ICollection<WishlistItemDTO>> { Error = false, ReturnResult = wishlist };
+            return wishlist;
         }
+
         public void ManageVote(int id)
         {
             var wish = _context.Wish.Where(x => x.Id == id).Include(x=>x.Votes).FirstOrDefault();
             var userId = 1;
             if (wish == null)
-            {
-                throw new Exception("No such wishlist book exists");
+            {             
+                throw new HandledException("No such wishlist book exists");
             }
             var existingUserWish = wish.Votes.Where(x=>x.UserId == userId).FirstOrDefault();
             if (existingUserWish == null)
@@ -125,7 +127,8 @@ namespace BookLibrary.Services.Wishlist
             }
             _context.SaveChanges();
         }
-        public async Task<ResponseResult<ICollection<VoteItemDTO>>> GetVote(int userId)
+
+        public Task<List<VoteItemDTO>> GetVote(int userId)
         {
             var voteList = _context.UserWish.Select(x => new VoteItemDTO()
             {
@@ -133,12 +136,11 @@ namespace BookLibrary.Services.Wishlist
                 Vote = x.UserId == userId
             }).ToList();
             
-            return new ResponseResult<ICollection<VoteItemDTO>> { Error = false, ReturnResult = voteList };
+            return Task.FromResult(voteList);
         }
 
-        public async Task<ResponseResult<Book>> MoveWishToLibrary(Book book)
+        public async Task<Book> MoveWishToLibrary(Book book)
         {
-            bool flag = false;
             try
             {
                 var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
@@ -150,27 +152,26 @@ namespace BookLibrary.Services.Wishlist
                 _context.Wish.Remove(wishToRemove);
                 await _booksService.UpdateBook(book.Id, book);
                 await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
+                return book;
+            }          
+            catch
             {
-                flag = true;
+                throw new HandledException("There was an error while moving book from wishlist to library");
             }
-
-            return new ResponseResult<Book> { Error = flag, ReturnResult = book };
         }
 
-        public Task<ResponseResult<ICollection<string>>> GetCategories()
+        public Task<List<string>> GetCategories()
         {
             var uniqueCategories = _context.Wish.Select(wish => wish.Book).Where(book => book.Category != null).Select(book => book.Category).Distinct().ToList();
             uniqueCategories.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueCategories });
+            return Task.FromResult(uniqueCategories);
         }
 
-        public Task<ResponseResult<ICollection<string>>> GetAuthors()
+        public Task<List<string>> GetAuthors()
         {
             var uniqueAuthors = _context.Wish.Select(wish => wish.Book.Author).Distinct().ToList();
             uniqueAuthors.Sort();
-            return Task.FromResult(new ResponseResult<ICollection<string>> { Error = false, ReturnResult = uniqueAuthors });
+            return Task.FromResult(uniqueAuthors);
         }
     }
 }

@@ -22,19 +22,19 @@ namespace BookLibrary.Api.Controllers.Comments
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<BookComment>>>> GetCommentss()
+        public async Task<ActionResult<ICollection<BookComment>>> GetCommentss()
         {
             return await _commentsService.GetComments();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseResult<BookComment>>> GetBookComment(int id)
+        public async Task<ActionResult<BookComment>> GetBookComment(int id)
         {
             return await _commentsService.GetComment(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseResult<BookComment>>> AddComment([FromBody] BookComment comment)
+        public async Task<ActionResult<BookComment>> AddComment([FromBody] BookComment comment)
         {
             return await _commentsService.AddComment(comment);
         }

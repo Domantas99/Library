@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import {
   Dashboard,
   EditBook,
@@ -13,10 +14,26 @@ import {
 } from './features';
 import { SearchBar, Navigation } from './components';
 import { getUser } from './store/user/actions';
+import 'react-toastify/dist/ReactToastify.css';
 
+toast.configure();
 function App() {
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
+  const myToast = useSelector((state) => state.general.toast);
+
+  const notify = () => {
+    toast[myToast.type](myToast.message, {
+      position: toast.POSITION[myToast.position],
+      autoClose: myToast.duration,
+    });
+  };
+
+  useEffect(() => {
+    if (myToast.message !== '') {
+      notify();
+    }
+  }, [myToast]);
 
   useEffect(() => {
     dispatch(getUser(loggedInUserId));

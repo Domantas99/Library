@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_WISH_END: {
       const temp = state.bookData;
-      temp.push(action.payload.returnResult);
+      temp.push(action.payload);
       return {
         ...state,
         bookData: temp,
@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
     case GET_AUTHORS_END: {
       return {
         ...state,
-        authors: action.payload.returnResult,
+        authors: action.payload,
       };
     }
 
@@ -45,14 +45,14 @@ export default (state = initialState, action) => {
     case GET_CATEGORIES_END: {
       return {
         ...state,
-        categories: action.payload.returnResult,
+        categories: action.payload,
       };
     }
 
     case GET_WISHLIST_END: {
       return {
         ...state,
-        bookData: action.payload.returnResult,
+        bookData: action.payload,
       };
     }
 
@@ -73,14 +73,16 @@ export default (state = initialState, action) => {
         bookData: {
           [action.payload]: {
             votes: {
-              $set: currentWish.userVoted ? currentWish.votes - 1 : currentWish.votes + 1
-            }, 
+              $set: currentWish.userVoted
+                ? currentWish.votes - 1
+                : currentWish.votes + 1,
+            },
             userVoted: {
-              $set: !currentWish.userVoted
-            }
-          }
-        }
-      })
+              $set: !currentWish.userVoted,
+            },
+          },
+        },
+      });
     }
 
     default: {

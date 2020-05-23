@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
     case GET_SEARCHED_BOOKS_END: {
       const result = action.payload;
       if (!result.error) {
-        return { ...state, data: result.returnResult };
+        return { ...state, data: result };
       }
       break;
     }

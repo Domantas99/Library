@@ -3,6 +3,8 @@ using BookLibrary.Services;
 using BookLibrary.Services.Books;
 using BookLibrary.Services.Comments;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling;
+using BookLibrary.Services.Logger;
 using BookLibrary.Services.Offices;
 using BookLibrary.Services.Reservations;
 using BookLibrary.Services.Wishlist;
@@ -15,7 +17,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NLog;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BookLibrary.Api
@@ -24,10 +28,13 @@ namespace BookLibrary.Api
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,10 +43,14 @@ namespace BookLibrary.Api
             {
                 options.AddPolicy("all", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
+
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
         
+
             services.AddDbContext<LibraryDBContext>(options =>
             {
                 var evdDBString = Environment.GetEnvironmentVariable("LIBRARY_DATABASE_CONNECTION");
@@ -95,6 +106,8 @@ namespace BookLibrary.Api
 
             app.UseCors("all");
 
+            app.ConfigureCustomExceptionHandler();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -115,6 +128,8 @@ namespace BookLibrary.Api
             {
                 spa.Options.DefaultPage = "/index.html";
             });
+
+            
         }
     }
 }

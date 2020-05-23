@@ -9,8 +9,8 @@ namespace BookLibrary.Services.Contracts
 {
     public interface ICommentsService
     {
-        Task<ResponseResult<BookComment>> AddComment(BookComment comment);
-        Task<ResponseResult<ICollection<BookComment>>> GetComments();
-        Task<ResponseResult<BookComment>> GetComment(int id);
+        Task<BookComment> AddComment(BookComment comment);
+        Task<List<BookComment>> GetComments();
+        Task<BookComment> GetComment(int id);
     }
 }

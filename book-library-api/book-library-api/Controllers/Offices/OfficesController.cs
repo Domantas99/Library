@@ -21,7 +21,7 @@ namespace BookLibrary.Api.Controllers.Offices
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseResult<ICollection<Office>>>> GetOffices()
+        public async Task<ActionResult<ICollection<Office>>> GetOffices()
         {
             return await _officesService.GetOffices();
         }

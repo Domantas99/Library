@@ -3,6 +3,7 @@ using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Users;
 using BookLibrary.DTO.Wishlist;
 using BookLibrary.Services.Contracts;
+using BookLibrary.Services.ExceptionHandling.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,38 +21,45 @@ namespace BookLibrary.Services
             _context = context;
         }
 
-        public async Task<ResponseResult<User>> GetUser(int id)
+        public async Task<User> GetUser(int id)
         {
-            bool flag = false;
             var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) {
-                flag = true;
+                throw new HandledException($"User with id: {id} was not found");
             }
-            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+            return user;
         }
 
-        public async Task<ResponseResult<User>> UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
-            bool flag = false;
             try
             {
                 _context.User.Update(user);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) {
-                flag = true;
+            catch {
+                throw new HandledException("There was an error while updating a user");
             }
-            return new ResponseResult<User> { Error = flag, ReturnResult = user };
+            return user;
         }
 
         public async Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId)
         {
-            _context.User.Add(new User {
-                UserName = newUserInfo.Email,
-                Email = newUserInfo.Email,
-                FullName = newUserInfo.FullName,
-                AspNetUserId = aspNetUserId
-            });
+            try
+            {
+                _context.User.Add(new User
+                {
+                    UserName = newUserInfo.Email,
+                    Email = newUserInfo.Email,
+                    FullName = newUserInfo.FullName,
+                    AspNetUserId = aspNetUserId
+                });
+            }
+            catch
+            {
+                throw new HandledException("There was an error while creating a new user");
+            }
+            
             
             await _context.SaveChangesAsync();
         }

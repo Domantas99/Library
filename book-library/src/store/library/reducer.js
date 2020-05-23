@@ -29,7 +29,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_BOOK_LIST_END: {
-      const books = action.payload.returnResult.map((book) => {
+      const books = action.payload.map((book) => {
         return {
           ...book,
           releaseDate: formatDate(book.releaseDate),
@@ -46,13 +46,16 @@ export default (state = initialState, action) => {
       };
     }
     case GET_BOOK_DETAILS_END: {
-      const result = action.payload.returnResult;
+      const result = action.payload;
       const returnedBook = result.book;
       return {
         ...state,
         bookDetails: {
           ...result,
-          book: { ...returnedBook, releaseDate: formatDate(returnedBook.releaseDate) },
+          book: {
+            ...returnedBook,
+            releaseDate: formatDate(returnedBook.releaseDate),
+          },
         },
       };
     }
@@ -65,7 +68,7 @@ export default (state = initialState, action) => {
     case GET_BOOK_AVAILABILITY_END: {
       return {
         ...state,
-        bookAvailability: action.payload.returnResult,
+        bookAvailability: action.payload,
       };
     }
     case DELETE_BOOK: {
@@ -75,7 +78,7 @@ export default (state = initialState, action) => {
     }
     case DELETE_BOOK_END: {
       return {
-        ...state
+        ...state,
       };
     }
     case UPDATE_BOOK_END: {
@@ -83,7 +86,7 @@ export default (state = initialState, action) => {
       if (!result.error) {
         return {
           ...state,
-          bookDetails: action.payload.returnResult,
+          bookDetails: action.payload,
         };
       }
       return {
@@ -116,7 +119,7 @@ export default (state = initialState, action) => {
     case GET_CATEGORIES_END: {
       return {
         ...state,
-        categories: action.payload.returnResult,
+        categories: action.payload,
       };
     }
 
@@ -130,12 +133,12 @@ export default (state = initialState, action) => {
     case GET_AUTHORS_END: {
       return {
         ...state,
-        authors: action.payload.returnResult,
+        authors: action.payload,
       };
     }
     case SET_BOOK_ARCHIVE_STATUS: {
       return {
-        ...state
+        ...state,
       };
     }
 
