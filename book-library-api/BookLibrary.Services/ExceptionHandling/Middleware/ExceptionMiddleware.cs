@@ -13,12 +13,10 @@ namespace BookLibrary.Services.ExceptionHandling
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-       // private readonly ILoggerManager _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILoggerManager logger)
+        public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
-           // _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -29,8 +27,6 @@ namespace BookLibrary.Services.ExceptionHandling
             }
             catch (HandledException ex)
             {
-                //Console.WriteLine("write something descriptive for developer here");
-               // _logger.LogError($"Something went wrong: {ex.Message}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
 import request from 'superagent';
@@ -14,8 +15,6 @@ class HTTPClient {
       const response = await request.get(this._getUrl(path));
       return response.body;
     } catch (e) {
-      debugger;
-      console.log(e.response.body.message, 'cia tas e');
       this.handleException(e);
     }
   }
@@ -29,7 +28,6 @@ class HTTPClient {
 
       return response.body;
     } catch (e) {
-      debugger;
       this.handleException(e.message);
     }
   }
@@ -68,7 +66,7 @@ class HTTPClient {
       duration: 5000,
       position: 'TOP_RIGHT',
     };
-    if (response.statusCode === 500) {
+    if (response.status === 500) {
       toast.message = 'Unknown Server error please try again';
     }
 

@@ -81,7 +81,7 @@ export default function UserForm({user}) {
                         >
                         {
                             offices.map(o => (
-                            <option value={o.id}>{o.name}</option>
+                            <option key={o.id} value={o.id}>{o.name}</option>
                             ))
                         }
                         </select>
