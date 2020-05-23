@@ -83,20 +83,29 @@ namespace BookLibrary.Services.Books
 
         public async Task<Book> DeleteBook(int id)
         {
+
             var bookToDelete = _context.Book.FirstOrDefault(b => b.Id == id);
             if (bookToDelete == null)
             {
                 throw new HandledException("Book not found when deleting");
             }
+            try
+            {
+                var libraryToRemove = _context.Library.Where(b => b.BookId == id);
+                var wishToRemove = _context.Wish.Where(b => b.BookId == id);
+                var commentsToRemove = _context.BookComment.Where(b => b.BookId == id);
+                _context.BookComment.RemoveRange(commentsToRemove);
+                _context.Library.RemoveRange(libraryToRemove);
+                _context.RemoveRange(wishToRemove);
+                _context.Book.Remove(bookToDelete);
+                await _context.SaveChangesAsync();
 
-            var libraryToRemove = _context.Library.Where(b => b.BookId == id);
-            var wishToRemove = _context.Wish.Where(b => b.BookId == id);
-            _context.Library.RemoveRange(libraryToRemove);
-            _context.RemoveRange(wishToRemove);
-            _context.Book.Remove(bookToDelete);
-            await _context.SaveChangesAsync();
-
-            return bookToDelete;
+                return bookToDelete;
+            }
+            catch {
+                throw new HandledException("There was an error while deleting a book");
+            }
+              
         }
 
         public async Task<BookDetailsDTO> GetBook(int bookId, int userId)

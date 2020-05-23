@@ -1,22 +1,26 @@
-import { GET_OFFICES, GET_OFFICES_END } from './actionTypes';
+import { DISPLAY_TOAST } from './actionTypes';
+import { duration } from 'moment';
 
 const initialState = {
-  offices: [],
+  toast: {
+    type: 'warn',
+    message: '',
+    props: { 
+      position: 'TOP_RIGHT',
+      duration: 5000,
+    } 
+  }
 };
 
 export default (state = initialState, action) => {
+  console.log(action, 'veiksmas')
   switch (action.type) {
-    case GET_OFFICES: {
-      return state;
+    case DISPLAY_TOAST: {
+      return {
+        ...state,
+        toast: action.payload,
+      };
     }
-    case GET_OFFICES_END: {
-      const result = action.payload;
-      if (!result.error) {
-        return { ...state, offices: result };
-      }
-      break;
-    }
-
     default: {
       return state;
     }

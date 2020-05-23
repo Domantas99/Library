@@ -27,7 +27,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log(action, "vykksta veiksmas")
   switch (action.type) {
     case GET_BOOK_LIST_END: {
       const books = action.payload.map((book) => {

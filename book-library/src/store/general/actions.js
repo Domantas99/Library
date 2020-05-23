@@ -1,7 +1,6 @@
-import { GET_OFFICES, GET_OFFICES_END } from './actionTypes';
+import { DISPLAY_TOAST } from './actionTypes';
 
-export const getOffices = () => ({ type: GET_OFFICES });
-export const getOfficesEnd = (offices) => ({
-  type: GET_OFFICES_END,
-  payload: offices,
+export const displayToast = (message) => ({
+  type: DISPLAY_TOAST,
+  payload: message,
 });

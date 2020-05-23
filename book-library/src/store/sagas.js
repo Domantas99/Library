@@ -7,6 +7,7 @@ import { sagas as dashboardSagas } from './dashboard';
 import { sagas as officeSagas } from './office';
 import { sagas as commentSagas } from './comments';
 import { sagas as userSagas } from './user';
+import { sagas as generalSagas } from './general';
 
 export default function* sagas() {
   yield all([
@@ -18,5 +19,6 @@ export default function* sagas() {
     fork(officeSagas),
     fork(commentSagas),
     fork(userSagas),
+    fork(generalSagas),
   ]);
 }

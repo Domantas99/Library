@@ -35,6 +35,7 @@ namespace BookLibrary.Api.Controllers.Books
         [HttpGet]
         public async Task<ActionResult<ICollection<BookListDTO>>> GetBooks([FromQuery] int userOffice, [FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
+            // throw new HandledException("MANO");
             return await _booksService.GetBooks(category, offices, status, authors, userOffice, sort);
         }
 

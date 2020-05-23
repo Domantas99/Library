@@ -42,7 +42,7 @@ namespace BookLibrary.Services.ExceptionHandling
 
             return context.Response.WriteAsync(JsonConvert.SerializeObject(new
             {
-                Message = exception.Message
+                message = exception.Message
             }));
         }
     }
