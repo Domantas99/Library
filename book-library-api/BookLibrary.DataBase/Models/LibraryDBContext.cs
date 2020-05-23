@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BookLibrary.DataBase.Models
 {
@@ -43,10 +44,75 @@ namespace BookLibrary.DataBase.Models
                 new Office { Id = 4, Name = "Toronto", FullAddress = "36 Toronto Street Suite 260, Toronto, Ontario M5C 2C5, Canada" },
                 new Office { Id = 5, Name = "Chicago", FullAddress = "350 N Orleans St, Suite 7500S, Chicago, IL 60654, United States" }
                 );
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7"
+                }
+                );
+
+            // All passwords are the same - Password1!
+            modelBuilder.Entity<IdentityUser>().HasData(
+                new IdentityUser { 
+                    Id = "b8c10928-5609-4d7c-8051-f0500b49fa0b",
+                    UserName = "nathan.roberts@gmail.com",
+                    NormalizedUserName = "NATHAN.ROBERTS@GMAIL.COM",
+                    NormalizedEmail = "NATHAN.ROBERTS@GMAIL.COM",
+                    Email = "nathan.roberts@gmail.com",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAEAACcQAAAAEBkEbCfAudIyZ0Qz/bx2Nr8toMPAuQf3RoCrNDswSwn5Tdn0ZNdfy/51Se1MsshULQ==",
+                    SecurityStamp = "SHNK3GMI3EAPFETOSCG36NR53ZYY3DN6",
+                    ConcurrencyStamp = "d0c4d174-ab92-4b8a-b438-3801618fa132",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0
+                },
+                new IdentityUser
+                {
+                    Id = "f6e4ac6a-d229-4e79-bb3d-1b58920918d7",
+                    UserName = "gmail@bean.mr",
+                    NormalizedUserName = "GMAIL@BEAN.MR",
+                    NormalizedEmail = "GMAIL@BEAN.MR",
+                    Email = "gmail@bean.mr",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAEAACcQAAAAEBkEbCfAudIyZ0Qz/bx2Nr8toMPAuQf3RoCrNDswSwn5Tdn0ZNdfy/51Se1MsshULQ==",
+                    SecurityStamp = "SHNK3GMI3EAPFETOSCG36NR53ZYY3DN6",
+                    ConcurrencyStamp = "e0797c37-76cb-4814-b22e-de5344b5e2a0",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0
+                },
+                new IdentityUser
+                {
+                    Id = "09ecbf1a-320a-4633-b749-1960d7cb2804",
+                    UserName = "admin@library.com",
+                    NormalizedUserName = "ADMIN@LIBRARY.COM",
+                    Email = "admin@library.com",
+                    NormalizedEmail = "ADMIN@LIBRARY.COM",
+                    EmailConfirmed = false,
+                    PasswordHash = "AQAAAAEAACcQAAAAEBkEbCfAudIyZ0Qz/bx2Nr8toMPAuQf3RoCrNDswSwn5Tdn0ZNdfy/51Se1MsshULQ==",
+                    SecurityStamp = "SHNK3GMI3EAPFETOSCG36NR53ZYY3DN6",
+                    ConcurrencyStamp = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7",
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0
+                }
+                );
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                // connect admin user to admin role
+                new IdentityUserRole<string> { UserId = "09ecbf1a-320a-4633-b749-1960d7cb2804", RoleId = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7" }
+                );
         
             modelBuilder.Entity<User>().HasData(
                 new User { 
-                    Id = 1, 
+                    Id = 1,
+                    AspNetUserId = "b8c10928-5609-4d7c-8051-f0500b49fa0b",
                     FullName = "Nathan Roberts", 
                     UserName = "Nathaniux123", 
                     Email = "nathan.roberts@gmail.com", 
@@ -59,6 +125,7 @@ namespace BookLibrary.DataBase.Models
                 }, new User
                 {
                     Id = 2,
+                    AspNetUserId = "f6e4ac6a-d229-4e79-bb3d-1b58920918d7",
                     FullName = "Mr. Bean",
                     UserName = "Beanz",
                     Email = "gmail@bean.mr",
@@ -79,7 +146,8 @@ namespace BookLibrary.DataBase.Models
                     GoodReadsAccount = "https://www.goodreads.com/admin-lib",
                     PhoneNumber = "+37010101010",
                     Role = "Full-Time Admin",
-                    IsAdmin = true
+                    IsAdmin = true,
+                    AspNetUserId = "09ecbf1a-320a-4633-b749-1960d7cb2804"
                 }
                 );
 
