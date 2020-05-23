@@ -10,16 +10,11 @@ export const getBookList = (data) => {
   if (data.params) {
     url += `${paramGenerator(data.params)}`;
   }
-  if (data.userOffice){
-    url+= `&userOffice=${data.userOffice}`;
-  }
   return httpClient.get(url);
 };
 
-export const getBookDetails = (ids) => {
-  return httpClient.get(
-    `books/book-details/?bookId=${ids.bookId}&userId=${ids.userId}`
-  );
+export const getBookDetails = (bookId) => {
+  return httpClient.get(`books/book-details/${bookId}`);
 };
 
 export const getBookAvailabilityAPI = (id) => {
@@ -40,8 +35,10 @@ export const getCategories = () => {
 
 export const getAuthors = () => {
   return httpClient.get('books/authors');
-}
+};
 
 export const setBookArchiveStatusAPI = (data) => {
-  return httpClient.post(`books/archive-book/?bookId=${data.bookId}&status=${data.status}`);
-}
+  return httpClient.post(
+    `books/archive-book/?bookId=${data.bookId}&status=${data.status}`
+  );
+};

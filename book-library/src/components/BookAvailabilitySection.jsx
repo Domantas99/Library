@@ -69,11 +69,7 @@ const BookAvailabilitySection = ({
 
   function onCheckInSubmitClick() {
     dispatch(
-      checkInReservation(
-        bookDetails.activeReservation.id,
-        bookDetails.readingUserId,
-        reservationReview
-      )
+      checkInReservation(bookDetails.activeReservation.id, reservationReview)
     );
     setCheckInModalState(false);
   }

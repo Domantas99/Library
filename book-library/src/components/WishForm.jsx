@@ -6,7 +6,6 @@ import { addWish } from '../store/wishlist/actions';
 
 export default function WishForm({ exitAction }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.loggedInUserId);
   const [bookInfo, setBookInfo] = useState({
     title: '',
     author: '',
@@ -32,10 +31,7 @@ export default function WishForm({ exitAction }) {
         Author: bookInfo.author,
         CoverPictureUrl: bookInfo.coverPictureUrl,
         ReleaseDate: bookInfo.publicationDate,
-        DateAdded: new Date(),
       },
-      CreatedOn: new Date(),
-      CreatedBy: user,
       Comment: bookInfo.comment,
     };
   };

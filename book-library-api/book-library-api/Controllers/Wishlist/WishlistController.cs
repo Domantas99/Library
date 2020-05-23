@@ -25,8 +25,7 @@ namespace BookLibrary.Api.Controllers.Wishlist
         [HttpGet]
         public async Task<ActionResult<ICollection<WishlistItemDTO>>> GetWishlist([FromQuery]List<string> category, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
-            var aspNetUserId = User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value).FirstOrDefault();
-            return await _wishlistService.GetWishlist(category, authors, sort, aspNetUserId);
+            return await _wishlistService.GetWishlist(category, authors, sort, GetUserId());
         }
         [HttpPost("vote/{id}")]
         public ActionResult ManageVote(int id)

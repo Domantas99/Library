@@ -6,11 +6,10 @@ import { getUser } from "../store/user/actions";
 export default function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
-  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   
   useEffect(() => {
-    dispatch(getUser(loggedInUserId));
-  }, [dispatch, loggedInUserId]);
+    dispatch(getUser());
+  }, [dispatch]);
 
   return (
     <div className="user-info">

@@ -14,8 +14,7 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
       formatDate(reservation.returnDate) ||
       newDate()
   );
-  const UserId = useSelector((state) => state.user.loggedInUserId);
-  const [selectedCheckOutUser, setCheckOutUser] = useState(UserId);
+  const [selectedCheckOutUser, setCheckOutUser] = useState(null);
   const dispatch = useDispatch();
 
   const reservationObj = {
@@ -28,26 +27,17 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
 
   function onSubmitClick() {
     const obj = createReservationObj();
-    dispatch(addReservation(obj, UserId));
+    dispatch(addReservation(obj, selectedCheckOutUser));
     onExit();
   }
 
   function createReservationObj() {
-    const today = new Date();
     return {
-      Id: reservation.id || -1,
-      UserId: selectedCheckOutUser,
-      PlannedReturnOn: returndate,
-      CheckedOutOn: today,
-      BookCase: {
-        BookId: reservationObj.book.id,
-        OfficeId: reservationObj.office.id,
-        Count: 1,
-        CreatedOn: today,
-        CreatedBy: UserId,
-        ModifiedOn: today,
-        ModifiedBy: UserId,
-      },
+      reservationId: reservation.id || null,
+      userId: selectedCheckOutUser || null,
+      plannedReturnOn: returndate,
+      bookId: reservationObj.book.id,
+      officeId: reservationObj.office.id,
     };
   }
 

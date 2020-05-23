@@ -1,9 +1,9 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import Categories from "./Categories";
-import { selectCategory } from "../store/library/actions";
-import UserInfo from "./UserInfo";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import Categories from './Categories';
+import { selectCategory } from '../store/library/actions';
+import UserInfo from './UserInfo';
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -70,11 +70,10 @@ export default function Navigation() {
           </li>
         </ul>
         <div className="navigation__item">
-          <NavLink  to="user-settings">
+          <NavLink to="user-settings">
             <button>Manage my account</button>
           </NavLink>
         </div>
-
       </div>
     </div>
   );

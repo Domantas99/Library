@@ -1,18 +1,14 @@
 import {
   GET_BOOK_LIST_END,
-  ADD_NEW_BOOK,
   GET_BOOK_DETAILS_END,
   GET_BOOK_AVAILABILITY,
   GET_BOOK_AVAILABILITY_END,
-  DELETE_BOOK,
-  DELETE_BOOK_END,
   SET_FILTERS_START,
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
   SELECT_CATEGORY,
   UPDATE_BOOK_END,
   GET_AUTHORS_END,
-  SET_BOOK_ARCHIVE_STATUS,
 } from './actionTypes';
 import { paramGenerator, paramFormatter, formatDate } from '../../utilities';
 
@@ -38,11 +34,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         bookData: books,
-      };
-    }
-    case ADD_NEW_BOOK: {
-      return {
-        ...state,
       };
     }
     case GET_BOOK_DETAILS_END: {
@@ -71,16 +62,6 @@ export default (state = initialState, action) => {
         bookAvailability: action.payload,
       };
     }
-    case DELETE_BOOK: {
-      return {
-        ...state,
-      };
-    }
-    case DELETE_BOOK_END: {
-      return {
-        ...state,
-      };
-    }
     case UPDATE_BOOK_END: {
       const result = action.payload;
       if (!result.error) {
@@ -89,9 +70,8 @@ export default (state = initialState, action) => {
           bookDetails: action.payload,
         };
       }
-      return {
-        ...state,
-      };
+
+      return state;
     }
 
     case SET_FILTERS_START: {
@@ -134,11 +114,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         authors: action.payload,
-      };
-    }
-    case SET_BOOK_ARCHIVE_STATUS: {
-      return {
-        ...state,
       };
     }
 

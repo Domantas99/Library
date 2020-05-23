@@ -11,7 +11,6 @@ using BookLibrary.Services.Wishlist;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -69,7 +68,7 @@ namespace BookLibrary.Api
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
                     options.SlidingExpiration = true;
-                    options.ExpireTimeSpan = new TimeSpan(0, 1, 0);
+                    options.ExpireTimeSpan = new TimeSpan(1, 0, 0);
                     options.Events.OnRedirectToLogin = context =>
                     {
                         context.Response.StatusCode = 401;
@@ -104,7 +103,13 @@ namespace BookLibrary.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("all");
+            app.UseCors(c =>
+            {
+                c.AllowCredentials();
+                c.AllowAnyMethod();
+                c.AllowAnyHeader();
+                c.WithOrigins("http://localhost:3000");
+            });
 
             app.ConfigureCustomExceptionHandler();
 

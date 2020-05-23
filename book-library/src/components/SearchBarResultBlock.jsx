@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { resetSearchbar } from "../store/search-bar/actions";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetSearchbar } from '../store/search-bar/actions';
 
 export default function SearchBarResultBlock({ book }) {
   const dispatch = useDispatch();
