@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { getSearchedBooks, resetSearchbar } from "../store/search-bar/actions";
-import SearchBarResultBlock from "./SearchBarResultBlock";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { getSearchedBooks, resetSearchbar } from '../store/search-bar/actions';
+import SearchBarResultBlock from './SearchBarResultBlock';
 
 export default function SearchBar() {
   const dispatch = useDispatch();
@@ -26,8 +26,10 @@ export default function SearchBar() {
 
   return (
     <div
-      onKeyPress={(e) => e.key === "Enter" && navigationOnEnter()}
-      onBlur={(e) => setSuggestionsVisible(e.currentTarget.contains(e.relatedTarget))}
+      onKeyPress={(e) => e.key === 'Enter' && navigationOnEnter()}
+      onBlur={(e) =>
+        setSuggestionsVisible(e.currentTarget.contains(e.relatedTarget))
+      }
       onFocus={() => {
         setSuggestionsVisible(books);
       }}
@@ -36,7 +38,7 @@ export default function SearchBar() {
       <i className="search__icon" />
       <input
         className={`search__input${
-          suggestionsVisible ? " suggestions-visible" : ""
+          suggestionsVisible ? ' suggestions-visible' : ''
         }`}
         onChange={(e) => {
           search(e.target.value);
@@ -44,7 +46,7 @@ export default function SearchBar() {
         value={filter}
         placeholder="Search books"
       />
-      <ul className={`suggestions${suggestionsVisible ? "" : " hidden"}`}>
+      <ul className={`suggestions${suggestionsVisible ? '' : ' hidden'}`}>
         {books.map((book) => (
           <li key={book.id}>
             <SearchBarResultBlock key={book.id} book={book} />

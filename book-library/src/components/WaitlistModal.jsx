@@ -3,14 +3,13 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addWaiting } from "../store/reservations/actions";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addWaiting } from '../store/reservations/actions';
 
 export default ({ waiting, closeModal }) => {
   const dispatch = useDispatch();
-  const UserId = useSelector((state) => state.user.loggedInUserId);
-  
+
   function onSubmit() {
     const obj = createWaitingObj();
     dispatch(addWaiting(obj));
@@ -18,17 +17,11 @@ export default ({ waiting, closeModal }) => {
   }
 
   function createWaitingObj() {
-    const today = new Date();
-
     return {
       Id: waiting.id || -1,
-      UserId,
-      CreatedOn: today,
       BookCase: {
         BookId: waiting.book.id,
         OfficeId: waiting.office,
-        CreatedOn: today,
-        CreatedBy: UserId,
       },
     };
   }
@@ -45,7 +38,10 @@ export default ({ waiting, closeModal }) => {
           <span className="text-underlined">{waiting.book.author}</span>
         </h4>
       </div>
-      <p>There are no available copies at your office. Join a waiting list and get notified once the book becomes available</p>
+      <p>
+        There are no available copies at your office. Join a waiting list and
+        get notified once the book becomes available
+      </p>
       <button
         onClick={() => {
           closeModal();

@@ -58,9 +58,9 @@ export const getBookAvailabilityEnd = (availabilityDetails) => ({
   payload: availabilityDetails,
 });
 
-export const getBookDetails = (bookId, userId) => ({
+export const getBookDetails = (bookId) => ({
   type: GET_BOOK_DETAILS_START,
-  payload: { bookId, userId },
+  payload: bookId,
 });
 export const getBookDetailsEnd = (details) => ({
   type: GET_BOOK_DETAILS_END,
@@ -87,15 +87,14 @@ export const selectCategory = (category) => ({
   payload: category,
 });
 
-export const setFilters = (filters, userOffice) => ({
+export const setFilters = (filters) => ({
   type: SET_FILTERS_START,
   payload: filters,
-  userOffice,
 });
 
-export const setFiltersEnd = (filters, userOffice) => ({
+export const setFiltersEnd = (filters) => ({
   type: SET_FILTERS_END,
-  payload: { filters, userOffice },
+  payload: { filters },
 });
 
 export const updateBook = (id, book) => ({
@@ -107,14 +106,14 @@ export const updateBookEnd = (book) => ({
   payload: book,
 });
 
-export function setBookArchiveState(bookId, status, userId) {
+export function setBookArchiveState(bookId, status) {
   return {
     type: SET_BOOK_ARCHIVE_STATUS,
-    payload: { bookId, status, userId },
+    payload: { bookId, status },
   };
 }
 
-export const setBookArchiveStateEnd = (bookId, userId) => ({
+export const setBookArchiveStateEnd = (bookId) => ({
   type: SET_BOOK_ARCHIVE_STATUS_END,
-  payload: { bookId, userId },
+  payload: bookId,
 });

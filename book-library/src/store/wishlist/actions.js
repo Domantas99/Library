@@ -72,7 +72,7 @@ export const setFiltersEnd = (filters) => ({
 
 export const setVote = (wishId, index) => ({
   type: SET_VOTE,
-  payload: {wishId, index}
+  payload: { wishId, index },
 });
 export const setVoteEnd = (index) => ({
   type: SET_VOTE_END,

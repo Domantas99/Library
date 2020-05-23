@@ -161,7 +161,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
 
   useEffect(() => {
     const generateNavButtons = () => {
-      let buttons = [];
+      const buttons = [];
       buttons.push(
         <button
           key="prev"

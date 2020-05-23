@@ -12,25 +12,23 @@ const Categories = () => {
   const categories = useSelector((state) => state.library.categories);
   const activeCategory = useSelector((state) => state.library.activeCategory);
   const user = useSelector((state) => state.user.userData);
-  
+
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
 
   return (
     <ul className="navigation__item-content">
-      {
-        user?.isAdmin===true && (
-          <div>
-            <NavLink to="/library/register-book" key="register-new">
-              <li className="navigation__item-secondary">+ Register new book</li>
-            </NavLink>
-            <li>
-              <hr />
-            </li>
-          </div>
-        )
-      }
+      {user?.isAdmin === true && (
+        <div>
+          <NavLink to="/library/register-book" key="register-new">
+            <li className="navigation__item-secondary">+ Register new book</li>
+          </NavLink>
+          <li>
+            <hr />
+          </li>
+        </div>
+      )}
       <NavLink
         to="/library"
         key="all"

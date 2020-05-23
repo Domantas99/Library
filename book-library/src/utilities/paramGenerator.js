@@ -22,7 +22,7 @@ const paramFormatter = (params) => {
 
 const paramGenerator = (params) => {
   if (!Object.keys(params).length > 0) {
-    return "";
+    return '';
   }
   return Object.entries(paramFormatter(params))
     .map(([key, list]) => {
@@ -31,9 +31,9 @@ const paramGenerator = (params) => {
           return value ? `${key}=${value}` : null;
         })
         .filter((value) => value !== null)
-        .join("&");
+        .join('&');
     })
-    .join("&");
+    .join('&');
 };
 
 export { paramGenerator, paramFormatter };

@@ -7,7 +7,7 @@ import {
   getCategories,
   getWishlist,
   setFilters,
-  setVote
+  setVote,
 } from '../../store/wishlist/actions';
 import {
   ActionItem,
@@ -102,7 +102,7 @@ const Wishlist = (location) => {
 
   const handleVote = (wishId, index) => {
     dispatch(setVote(wishId, index));
-  }
+  };
   return (
     <>
       <Panel title="Wishlist">

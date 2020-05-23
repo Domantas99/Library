@@ -22,7 +22,7 @@ import {
 
 export function* getCurrentlyReadingBooksSaga(action) {
   try {
-    const apiResult = yield call(getCurrentlyReadingBooksAPI, action.payload);
+    const apiResult = yield call(getCurrentlyReadingBooksAPI);
     yield put(getCurrentlyReadingBooksEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

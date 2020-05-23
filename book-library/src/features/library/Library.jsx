@@ -30,8 +30,7 @@ const Library = ({ location }) => {
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
-  const userOffice = useSelector((state) => state.user.userData?.officeId);
-  const user = useSelector((state) => state.user.loggedInUserId);
+  const userData = useSelector((state) => state.user.userData);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const actionButton = (
@@ -109,7 +108,7 @@ const Library = ({ location }) => {
   }, [categories, offices, authors]);
 
   useEffect(() => {
-    dispatch(setFilters(values, user));
+    dispatch(setFilters(values));
   }, []);
 
   useEffect(() => {
@@ -124,7 +123,7 @@ const Library = ({ location }) => {
     <Panel title="Library">
       <BookList
         dataSelector={bookSelector}
-        dataAction={getBookList(values, userOffice)}
+        dataAction={getBookList(values, userData?.userOffice)}
         navigateItems
         addLink="/library/register-book"
         filterComponent={
@@ -135,11 +134,10 @@ const Library = ({ location }) => {
             sortMap={sortMap}
             excludedFilters={excludedFilters}
             setFilterAction={(values) => {
-              console.log(values, userOffice);
-              return setFilters(values, userOffice)}}
+              return setFilters(values, userData?.userOffice)}}
           />
         }
-        actionButton={user?.isAdmin===true && actionButton}
+        actionButton={userData?.isAdmin===true && actionButton}
       />
     </Panel>
   );

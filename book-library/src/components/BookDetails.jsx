@@ -79,7 +79,7 @@ export default ({ id }) => {
   function onArchive() {
     setModalState(false);
     if (bookDetails.isAnyoneReading === false) {
-      dispatch(setBookArchiveState(book.id, !book.isArchived, 1));
+      dispatch(setBookArchiveState(book.id, !book.isArchived));
     } else {
       alert('You cannot archive checked-in book');
     }

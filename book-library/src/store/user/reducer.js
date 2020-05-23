@@ -1,7 +1,6 @@
-import { GET_USER, GET_USER_END } from './actionTypes';
+import { GET_USER_END } from './actionTypes';
 
 const initialState = {
-  loggedInUserId: 3,
   userData: { isAdmin: true },
   users: [
     { id: 1, userName: 'Nathaniux123' },
@@ -12,9 +11,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_USER: {
-      return state;
-    }
     case GET_USER_END: {
       const result = action.payload;
       if (!result.error) {

@@ -1,22 +1,21 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import UserForm from '../../components/UserForm';
 import { getUser } from '../../store/user/actions';
-import { useDispatch, useSelector } from 'react-redux';
 
 export default function UserSettings() {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.userData);
-    const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
-    useEffect(() => {
-      dispatch(getUser(loggedInUserId));
-      /* eslint-disable react-hooks/exhaustive-deps */
-    }, [dispatch, user?.id]);
-    
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userData);
+  useEffect(() => {
+    dispatch(getUser());
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [dispatch]);
+
   return (
     <>
-        <div>
-            <UserForm user={user}></UserForm>
-        </div>
+      <div>
+        <UserForm user={user} />
+      </div>
     </>
   );
 }

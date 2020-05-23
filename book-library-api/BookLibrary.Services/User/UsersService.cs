@@ -21,9 +21,9 @@ namespace BookLibrary.Services
             _context = context;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(string id)
         {
-            var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.User.Include(u => u.Office).FirstOrDefaultAsync(x => x.AspNetUserId == id);
             if (user == null) {
                 throw new HandledException($"User with id: {id} was not found");
             }

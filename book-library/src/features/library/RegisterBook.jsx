@@ -1,9 +1,9 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BookForm } from "../../components";
-import { getOffices } from "../../store/office/actions";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BookForm } from '../../components';
+import { getOffices } from '../../store/office/actions';
 
 export default () => {
   const dispatch = useDispatch();

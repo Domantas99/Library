@@ -16,15 +16,15 @@ function BookList({
   navigateItems,
   filterComponent,
   noSort,
-  renderItemActions=()=>{}
+  renderItemActions = () => {},
 }) {
   const dispatch = useDispatch();
   const [bookComponents, setBookComponents] = useState([]);
-  const offices = useSelector((state)=> state.office.offices);
+  const offices = useSelector((state) => state.office.offices);
 
   useEffect(() => {
     dispatch(getOffices());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(dataAction);
@@ -32,23 +32,20 @@ function BookList({
 
   useEffect(() => {
     const createBookComponents = (data) => {
-      return [...data]
-        .map((element, index) => {
-          return (
-            <BookListItem
-              key={element.id}
-              data={element}
-              navigate={navigateItems}
-              offices={offices}
-              renderActions={(data) => renderItemActions(data, index)}
-            />
-          );
-        });
+      return [...data].map((element, index) => {
+        return (
+          <BookListItem
+            key={element.id}
+            data={element}
+            navigate={navigateItems}
+            offices={offices}
+            renderActions={(data) => renderItemActions(data, index)}
+          />
+        );
+      });
     };
 
-    setBookComponents(
-      createBookComponents(dataSelector)
-    );
+    setBookComponents(createBookComponents(dataSelector));
   }, [dataSelector, navigateItems, offices]);
 
   return (

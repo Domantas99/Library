@@ -5,7 +5,6 @@ import {
   GET_TEAM_RESERVATIONS_END,
   GET_BOOK_RESERVATIONS_END,
   REMOVE_WAITING_START,
-  REMOVE_WAITING_END,
   SET_FILTERS_START,
   SET_TEAM_FILTERS_START,
 } from './actionTypes';
@@ -99,12 +98,6 @@ export default (state = initialState, action) => {
         reservationData: state.reservationData.filter(
           (x) => x.id !== action.payload
         ),
-      };
-    }
-
-    case REMOVE_WAITING_END: {
-      return {
-        ...state,
       };
     }
 

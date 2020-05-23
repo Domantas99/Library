@@ -4,28 +4,27 @@ import {
   GET_CURRENTLY_READING_BOOKS,
   GET_CURRENTLY_READING_BOOKS_END,
   GET_RECOMMENDED_BOOKS,
-  GET_RECOMMENDED_BOOKS_END
+  GET_RECOMMENDED_BOOKS_END,
 } from './actionTypes';
 
-export const getLatestBooks = (numberOfBooks, userOffice) => ({
+export const getLatestBooks = (numberOfBooks) => ({
   type: GET_LATEST_BOOKS,
-  payload: {numberOfBooks, userOffice}
+  payload: numberOfBooks,
 });
 export const getLatestBooksEnd = (books) => ({
   type: GET_LATEST_BOOKS_END,
   payload: books,
 });
-export const getCurrentlyReadingBooks = ({userId}) => ({
+export const getCurrentlyReadingBooks = () => ({
   type: GET_CURRENTLY_READING_BOOKS,
-  payload: { userId }
 });
 export const getCurrentlyReadingBooksEnd = (books) => ({
   type: GET_CURRENTLY_READING_BOOKS_END,
   payload: books,
 });
-export const getRecommendedBooks = (userId, count) => ({
+export const getRecommendedBooks = (count) => ({
   type: GET_RECOMMENDED_BOOKS,
-  payload: { userId, count }
+  payload: count,
 });
 export const getRecommendedBooksEnd = (books) => ({
   type: GET_RECOMMENDED_BOOKS_END,

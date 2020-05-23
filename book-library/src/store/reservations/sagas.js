@@ -27,6 +27,7 @@ import {
   SET_TEAM_FILTERS_END,
   UPDATE_RESERVATION_START,
   UPDATE_RESERVATION_END,
+  CHECK_IN_RESERVATION_END,
 } from './actionTypes';
 import {
   addReservationEnd,
@@ -44,10 +45,8 @@ import { paramGenerator } from '../../utilities';
 
 export function* addReservationSaga(action) {
   try {
-    const apiResult = yield call(addReservation, action.payload);
-    const { bookId } = apiResult.bookCase;
-    const userId = action.userId;
-    yield put(addReservationEnd({ bookId, userId }));
+    yield call(addReservation, action.payload);
+    yield put(addReservationEnd(action.payload.bookId));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -65,12 +64,7 @@ export function* addWaitingSaga(action) {
 export function* checkInReservationSaga(action) {
   try {
     const apiResult = yield call(checkInReservation, action.payload);
-    yield put(
-      checkInReservationEnd({
-        bookId: apiResult.id,
-        userId: action.userId,
-      })
-    );
+    yield put(checkInReservationEnd(apiResult.id));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -106,12 +100,7 @@ export function* getTeamReservationsSaga(action) {
 export function* removeWaitingSaga(action) {
   try {
     const apiResult = yield call(removeWaiting, action.payload);
-    yield put(
-      removeWaitingEnd({
-        bookId: apiResult.id,
-        userId: action.userId,
-      })
-    );
+    yield put(removeWaitingEnd(apiResult.id));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -169,4 +158,5 @@ export default function* () {
   yield takeLatest(SET_TEAM_FILTERS_END, getTeamReservationsSaga);
   yield takeLatest(UPDATE_RESERVATION_START, updateReservationSaga);
   yield takeLatest(UPDATE_RESERVATION_END, getReservationsSaga);
+  yield takeLatest(CHECK_IN_RESERVATION_END, getReservationsSaga);
 }

@@ -16,26 +16,18 @@ const ReservationsTableItem = ({ data }) => {
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
   const [review, setReview] = useState('');
-  //TODO: This will have interesting results if we use it as an admin.
-  const userId = useSelector((state) => state.user.loggedInUserId);
 
   const handleModalClick = () => {
     setModalState(true);
   };
 
   const onConfirmClick = () => {
-    dispatch(
-      checkInReservation(
-        data.id,
-        userId,
-        data.user === null || data.user.id === userId ? review : ''
-      )
-    );
+    dispatch(checkInReservation(data.id, data.user === null ? review : ''));
     setCheckInModalState(false);
   };
 
   const onLeaveWaitlist = () => {
-    dispatch(removeWaiting(data.id, userId));
+    dispatch(removeWaiting(data.id));
   };
 
   return (
@@ -46,7 +38,7 @@ const ReservationsTableItem = ({ data }) => {
         height="400px"
         width="400px"
       >
-        {data.user === null || data.user.id === userId ? (
+        {data.user === null ? (
           <CheckInForm
             onCancel={() => setCheckInModalState(false)}
             reservation={data}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Response;
@@ -24,10 +25,10 @@ namespace BookLibrary.Api.Controllers.Users
             _userManager = userManager;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        [HttpGet("")]
+        public async Task<ActionResult<User>> GetUser()
         {
-            var user = await _usersService.GetUser(id);
+            var user = await _usersService.GetUser(GetUserId());
 
             if (User.IsInRole("Admin"))
             {

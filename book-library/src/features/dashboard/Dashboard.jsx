@@ -11,7 +11,6 @@ import { BookList, CurrentlyReadingSection, Panel } from '../../components';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const latestBooks = useSelector((state) => state.dashboard.latestBooks);
-  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   const recommendedBooks = useSelector(
     (state) => state.dashboard.recommendedBooks
   );
@@ -21,8 +20,8 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    dispatch(getCurrentlyReadingBooks({ userId: loggedInUserId }));
-  }, [dispatch, loggedInUserId]);
+    dispatch(getCurrentlyReadingBooks());
+  }, [dispatch]);
 
   const seeAllLink = (
     <Link className="book-section-header-link" to="/library">
@@ -47,7 +46,7 @@ const Dashboard = () => {
           <BookList
             noSort
             dataSelector={recommendedBooks}
-            dataAction={getRecommendedBooks(loggedInUserId, 12)}
+            dataAction={getRecommendedBooks(12)}
             navigateItems
           />
         </Panel>
