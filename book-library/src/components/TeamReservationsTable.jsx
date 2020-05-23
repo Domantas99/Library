@@ -140,7 +140,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
 
   useEffect(() => {
     const generateTableRows = () => {
-      return reservationData.reservations.map((reservation, index) => {
+      return reservationData.reservations.map((reservation) => {
         return (
           <ReservationsTableItem key={reservation.id} data={reservation} />
         );
