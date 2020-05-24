@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { Link } from "react-router-dom";
-import BookListItem from "./BookListItem";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import BookListItem from './BookListItem';
 
 export default function BooksSection({ books, sectionName }) {
   return (

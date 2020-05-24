@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React from "react";
+import React from 'react';
 
 export default function CantFind({ onExit }) {
   return (

@@ -10,7 +10,6 @@ namespace BookLibrary.DTO.Books
     public class BookDetailsDTO
     {
         public Book Book { get; set; }
-        public int ReadingUserId { get; set; }
         public bool IsUserCurrentlyReading { get; set; }
         public ReservationDTO ActiveReservation { get; set; }
         public ICollection<Library> Library { get; set; }

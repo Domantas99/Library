@@ -131,9 +131,7 @@ export function* selectCategorySaga(action) {
 export function* setBookArchiveStateSaga(action) {
   try {
     const apiResult = yield call(setBookArchiveStatusAPI, action.payload);
-    yield put(
-      setBookArchiveStateEnd(action.payload.bookId, action.payload.userId)
-    );
+    yield put(setBookArchiveStateEnd(action.payload.bookId));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -149,7 +147,7 @@ export function* setFiltersSaga(action) {
   if (newRoute !== window.location.pathname) {
     history.replace(newRoute);
   }
-  yield put(setFiltersEnd(action.payload, action.userOffice));
+  yield put(setFiltersEnd(action.payload));
 }
 
 export function* updateBookSaga(action) {

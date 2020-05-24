@@ -68,7 +68,7 @@ export default (state = initialState, action) => {
     }
 
     case SET_VOTE_END: {
-      const currentWish = state.bookData[action.payload]
+      const currentWish = state.bookData[action.payload];
       return update(state, {
         bookData: {
           [action.payload]: {

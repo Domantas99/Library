@@ -21,14 +21,13 @@ import {
   UPDATE_RESERVATION_END,
 } from './actionTypes';
 
-export const addReservation = (reservation, userId) => ({
+export const addReservation = (reservation) => ({
   type: ADD_RESERVATION_START,
   payload: reservation,
-  userId,
 });
-export const addReservationEnd = (ids) => ({
+export const addReservationEnd = (bookId) => ({
   type: ADD_RESERVATION_END,
-  payload: ids,
+  payload: bookId,
 });
 
 export const addWaiting = (waiting) => ({
@@ -40,19 +39,18 @@ export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
 
-export const checkInReservation = (reservationId, userId, review) => ({
+export const checkInReservation = (reservationId, review) => ({
   type: CHECK_IN_RESERVATION_START,
   payload: { reservationId, review },
-  userId,
 });
-export const checkInReservationEnd = (ids) => ({
+export const checkInReservationEnd = (bookId) => ({
   type: CHECK_IN_RESERVATION_END,
-  payload: ids,
+  payload: bookId,
 });
 
-export const getReservations = (id, filters) => ({
+export const getReservations = (filters) => ({
   type: GET_RESERVATIONS_START,
-  payload: { id, filters },
+  payload: { filters },
 });
 export const getReservationsEnd = (reservationsList) => ({
   type: GET_RESERVATIONS_END,
@@ -77,14 +75,14 @@ export const getTeamReservationsEnd = (reservations) => ({
   payload: reservations,
 });
 
-export const setFilters = (id, filters) => ({
+export const setFilters = (filters) => ({
   type: SET_FILTERS_START,
-  payload: { id, filters },
+  payload: { filters },
 });
 
-export const setFiltersEnd = ({ id, filters }) => ({
+export const setFiltersEnd = ({ filters }) => ({
   type: SET_FILTERS_END,
-  payload: { id, filters },
+  payload: { filters },
 });
 
 export const setTeamFilters = (filters) => ({
@@ -97,14 +95,13 @@ export const setTeamFiltersEnd = (filters) => ({
   payload: filters,
 });
 
-export const removeWaiting = (waitingId, userId) => ({
+export const removeWaiting = (waitingId) => ({
   type: REMOVE_WAITING_START,
   payload: waitingId,
-  userId,
 });
-export const removeWaitingEnd = (ids) => ({
+export const removeWaitingEnd = (bookId) => ({
   type: REMOVE_WAITING_END,
-  payload: ids,
+  payload: bookId,
 });
 
 export const updateReservation = (reservation) => ({

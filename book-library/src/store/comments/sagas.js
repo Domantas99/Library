@@ -47,7 +47,7 @@ export function* getBookCommentsAfterAddSaga(action) {
 
 export function* getBookCommentsAfterCheckinSaga(action) {
   try {
-    const apiResult = yield call(getBookComments, action.payload.bookId);
+    const apiResult = yield call(getBookComments, action.payload);
     yield put(getBookCommentsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

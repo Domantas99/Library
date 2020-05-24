@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getBookComments } from "../store/comments/actions";
-import BookCommentComponent from "./BookCommentComponent";
-import CommentForm from "./CommentForm";
-import { getFieldSorter } from "../utilities";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBookComments } from '../store/comments/actions';
+import BookCommentComponent from './BookCommentComponent';
+import CommentForm from './CommentForm';
+import { getFieldSorter } from '../utilities';
 
 export default ({ id, initPage = 1, commentsPerPage = 5 }) => {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.comments.comments);
   const total = useSelector((state) => state.comments.total);
   const [page, setPage] = useState(initPage);
-  const [sortField, setSortField] = useState("createdOn");
+  const [sortField, setSortField] = useState('createdOn');
   const [sortDirection, setSortDirection] = useState(-1);
   const [commentComponents, setCommentComponents] = useState([]);
   const [navButtons, setNavButtons] = useState([]);
@@ -22,8 +22,8 @@ export default ({ id, initPage = 1, commentsPerPage = 5 }) => {
     sortField,
     sortDirection
   ) => {
-    let start = commentsPerPage * (page - 1);
-    let end = start + commentsPerPage;
+    const start = commentsPerPage * (page - 1);
+    const end = start + commentsPerPage;
     return [...comments]
       .sort(getFieldSorter(sortField, sortDirection))
       .slice(start, end)
@@ -33,8 +33,8 @@ export default ({ id, initPage = 1, commentsPerPage = 5 }) => {
   };
 
   const generateNavButtons = (page, commentsPerPage, total) => {
-    let buttons = [];
-    let maximum = Math.ceil(total / commentsPerPage);
+    const buttons = [];
+    const maximum = Math.ceil(total / commentsPerPage);
     buttons.push(
       <button
         key="prev"
@@ -149,7 +149,10 @@ export default ({ id, initPage = 1, commentsPerPage = 5 }) => {
 
   return (
     <div>
-      <span>Comments &bull; {total}</span>
+      <span>
+        Comments &bull;
+        {total}
+      </span>
       <select
         id="comments__sort-field"
         defaultValue={sortField}

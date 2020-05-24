@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
@@ -33,16 +34,16 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.UpdateBook(id, book);
         }
         [HttpGet]
-        public async Task<ActionResult<ICollection<BookListDTO>>> GetBooks([FromQuery] int userOffice, [FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
+        public async Task<ActionResult<ICollection<BookListDTO>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
-            return await _booksService.GetBooks(category, offices, status, authors, userOffice, sort);
+            return await _booksService.GetBooks(category, offices, status, authors, GetUserId(), sort);
         }
 
 
         [HttpGet("recommended")]
-        public async Task<ActionResult<ICollection<BookListDTO>>> GetRecommendedBooks([FromQuery] int userId, [FromQuery]int count) 
+        public async Task<ActionResult<ICollection<BookListDTO>>> GetRecommendedBooks([FromQuery]int count) 
         {
-            return await _booksService.GetUserRecommendedBooks(userId, count);
+            return await _booksService.GetUserRecommendedBooks(GetUserId(), count);
         }
 
         [HttpGet("filter/{pattern}")]
@@ -51,10 +52,10 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetFilteredBooks(pattern);
         }
 
-        [HttpGet("book-details")]
-        public async Task<ActionResult<BookDetailsDTO>> GetBook([FromQuery] int bookId, [FromQuery] int userId)
+        [HttpGet("book-details/{bookId}")]
+        public async Task<ActionResult<BookDetailsDTO>> GetBook(int bookId)
         {
-            return await _booksService.GetBook(bookId, userId);
+            return await _booksService.GetBook(bookId, GetUserId());
         }
 
         [HttpGet("categories")]
@@ -70,9 +71,9 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpGet("latest/{count}")]
-        public async Task<ActionResult<ICollection<BookListDTO>>> GetLatestBooks(int count, [FromQuery] int userOffice)
+        public async Task<ActionResult<ICollection<BookListDTO>>> GetLatestBooks(int count)
         {
-            return await _booksService.GetLatestBooks(count, userOffice);
+            return await _booksService.GetLatestBooks(count, GetUserId());
         }
 
         [HttpGet("{id}/availability")]

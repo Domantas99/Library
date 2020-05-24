@@ -113,7 +113,7 @@ namespace BookLibrary.Services.Books
 
         }
 
-        public async Task<BookDetailsDTO> GetBook(int bookId, int userId)
+        public async Task<BookDetailsDTO> GetBook(int bookId, string userId)
         {
             var book = await _context.Book.Include(x => x.Library).Include(x => x.Rating).FirstOrDefaultAsync(b => b.Id == bookId);
 
@@ -147,10 +147,9 @@ namespace BookLibrary.Services.Books
             var bookDetailsDTO = new BookDetailsDTO
             {
                 Book = book,
-                IsUserCurrentlyReading = isCurrentlyReading,
-                IsAnyoneReading = isAnyoneReading,
-                ReadingUserId = userId,
-                ActiveReservation = reservation,
+                IsUserCurrentlyReading = isCurrentlyReading, 
+                IsAnyoneReading=isAnyoneReading, 
+                ActiveReservation= reservation,
                 Library = book.Library,
                 NotReadingUsers = GetNotReadingBookUsers(bookId),
                 Rating = (book.Rating != null && book.Rating.Count > 0) ? book.Rating.Sum(x => x.Value) / book.Rating.Count : 0,
@@ -191,7 +190,7 @@ namespace BookLibrary.Services.Books
             return libraries;
         }
 
-        public Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, int userOffice, string sort)
+        public Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string userId, string sort)
         {
             try
             {
@@ -246,7 +245,7 @@ namespace BookLibrary.Services.Books
                             break;
                         }
                 }
-                List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
+            List<BookListDTO> bookList = AddAvailabilityInList(books, userId);
                 return Task.FromResult(bookList);
             }
             catch
@@ -254,8 +253,10 @@ namespace BookLibrary.Services.Books
                 throw new HandledException("There was an error when geting books");
             }
         }
-        private List<BookListDTO> AddAvailabilityInList(List<Book> books, int? userOffice)
+        private List<BookListDTO> AddAvailabilityInList(List<Book> books, string userId)
         {
+            var userOffice = _context.User.Where(x => x.AspNetUserId == userId).Select(x => x.OfficeId).FirstOrDefault();
+
             List<BookListDTO> bookList = new List<BookListDTO>();
             foreach (Book book in books)
             {
@@ -264,7 +265,7 @@ namespace BookLibrary.Services.Books
                 var booksAvailable = GetBookAvailability(book.Id);
                 if (booksAvailable.Result != null)
                 {
-                    if (!userOffice.HasValue)
+                    if (userOffice.HasValue)
                     {
                         var count = booksAvailable.Result.Where(x => x.OfficeId == userOffice)
                         .Select(x => x.Count).FirstOrDefault();
@@ -336,12 +337,11 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(filteredBooks);
         }
 
-        public Task<List<BookListDTO>> GetLatestBooks(int count, int userOffice)
+        public Task<List<BookListDTO>> GetLatestBooks(int count, string userId)
         {
             var books = BooksWithoutWishes();
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
-            var bookList = AddAvailabilityInList(books, userOffice);
-
+            var bookList = AddAvailabilityInList(books, userId);
             return Task.FromResult(bookList.Take(count).ToList());
         }
 
@@ -392,11 +392,10 @@ namespace BookLibrary.Services.Books
             return books;
         }
 
-        public Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count)
+        public Task<List<BookListDTO>> GetUserRecommendedBooks(string userId, int count)
         {
             var allBooks = BooksWithoutWishes();
-
-            var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
+            var reservations = _context.Reservation.Where(x => x.User.AspNetUserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
             allBooks = allBooks.Except(reservations).ToList();
 
             var userCategories = reservations.Select(x => x.Category).Distinct().ToList();
@@ -445,8 +444,7 @@ namespace BookLibrary.Services.Books
                     recommended.AddRange(BooksWithoutWishes().Except(recommended));
                 }
             }
-            var userOffice = _context.User.Where(x => x.Id == userId).Select(x => x.OfficeId).FirstOrDefault();
-            var bookList = AddAvailabilityInList(recommended, userOffice);
+            var bookList = AddAvailabilityInList(recommended, userId);
             bookList = bookList.Take(count).ToList();
 
             return Task.FromResult(bookList);
@@ -465,10 +463,10 @@ namespace BookLibrary.Services.Books
             return book;
         }
 
-        public async Task<List<ReservationDTO>> GetReservations(int id)
+        public async Task<List<ReservationDTO>> GetReservations(int bookId)
         {
-            var reservations = await _context.Reservation.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.BookId == id && x.CheckedInOn == null).Select(x => (ReservationDTO)x).ToListAsync();
-            var waitings = await _context.Waiting.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.Book.Id == id).Select(x => (ReservationDTO)x).ToListAsync();
+            var reservations = await _context.Reservation.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.BookId == bookId && x.CheckedInOn == null).Select(x => (ReservationDTO)x).ToListAsync();
+            var waitings = await _context.Waiting.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.Book.Id == bookId).Select(x => (ReservationDTO)x).ToListAsync();
 
             var concat = reservations.Concat(waitings).ToList();
             return concat;

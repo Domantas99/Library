@@ -1,56 +1,55 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-underscore-dangle */
-import request from 'superagent';
+import superagent from 'superagent';
 import store from '../store/store';
 import { displayToast } from '../store/general/actions';
 
+const methods = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
+
 class HTTPClient {
   constructor() {
-    this.baseUrl = 'http://localhost:5000/api/';
+    this.baseUrl = process.env.REACT_APP_SERVER_URL;
   }
 
   async get(path) {
-    try {
-      const response = await request.get(this._getUrl(path));
-      return response.body;
-    } catch (e) {
-      this.handleException(e);
-    }
+    return this._makeRequest(methods.GET, path);
   }
 
   async post(path, data) {
-    try {
-      const response = await request
-        .post(this._getUrl(path))
-        .set('Content-Type', 'application/json')
-        .send(data);
-
-      return response.body;
-    } catch (e) {
-      this.handleException(e.message);
-    }
+    return this._makeRequest(methods.POST, path, data);
   }
 
   async put(path, data) {
-    try {
-      const response = await request
-        .put(this._getUrl(path))
-        .set('Content-Type', 'application/json')
-        .send(data);
-
-      return response.body;
-    } catch (e) {
-      this.handleException(e);
-    }
+    return this._makeRequest(methods.PUT, path, data);
   }
 
   async delete(path) {
+    return this._makeRequest(methods.DELETE, path);
+  }
+
+  async _makeRequest(method, path, data = null) {
+    const url = this._getUrl(path);
+
+    const request = superagent(method, url);
+
+    if (method === methods.POST || method === methods.PUT) {
+      request.send(data);
+    }
+
+    // eslint-disable-next-line no-useless-catch
     try {
-      const response = await request.delete(this._getUrl(path));
+      const response = await request.withCredentials();
+
       return response.body;
     } catch (e) {
       this.handleException(e);
+      throw e;
     }
   }
 

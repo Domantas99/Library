@@ -13,14 +13,13 @@ import {
   UserSettings,
   Wishlist,
 } from './features';
-import { SearchBar, Navigation } from './components';
-import { getUser } from './store/user/actions';
+import { SearchBar, Navigation, Button } from './components';
+import { getUser, login } from './store/user/actions';
 import 'react-toastify/dist/ReactToastify.css';
 
 toast.configure();
 function App() {
   const dispatch = useDispatch();
-  const loggedInUserId = useSelector((state) => state.user.loggedInUserId);
   const myToast = useSelector((state) => state.general.toast);
 
   const notify = () => {
@@ -37,14 +36,15 @@ function App() {
   }, [myToast]);
 
   useEffect(() => {
-    dispatch(getUser(loggedInUserId));
+    dispatch(getUser());
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [loggedInUserId]);
+  }, []);
 
   return (
     <>
       <div className="header">
         <SearchBar />
+        <Button onClick={() => dispatch(login())}>Login</Button>
       </div>
       <Navigation />
       <div className="page">

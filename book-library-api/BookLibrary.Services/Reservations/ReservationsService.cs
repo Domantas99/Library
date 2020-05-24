@@ -29,35 +29,50 @@ namespace BookLibrary.Services.Reservations
             _context = context;
         }
 
-        public async Task<Reservation> AddReservation(Reservation reservation)
+        public void AddReservation(ReservationCreateDto reservation, string aspNetUserId)
         {
-            try
+            var user = _context.User.FirstOrDefault(u => u.AspNetUserId == aspNetUserId);
+
+            if (reservation.ReservationId.HasValue)
             {
-                var reservations = await _context.Reservation.Include(x => x.BookCase).ToListAsync();
-                int index = reservations.FindIndex(x => x.Id == reservation.Id);
-                if (index >= 0)
+                var currentReservation = _context.Reservation.Include(x => x.BookCase).FirstOrDefault(x => x.Id == reservation.ReservationId);
+                if (currentReservation == null)
                 {
-                    reservations[index].PlannedReturnOn = reservation.PlannedReturnOn;
-                    reservations[index].BookCase.ModifiedOn = DateTime.Today;
-                }
-                else
-                {
-                    var library = await _context.Library.FirstOrDefaultAsync(x => x.BookId == reservation.BookCase.BookId && x.OfficeId == reservation.BookCase.OfficeId);
-                    if (library != null && library.Count > 0)
-                    {
-                        reservation.Id = 0;
-                        _context.Reservation.Add(reservation);
-                    }
+                    throw new HandledException("Reservation not found");
                 }
 
-                await _context.SaveChangesAsync();
+                currentReservation.PlannedReturnOn = reservation.PlannedReturnOn;
+                currentReservation.BookCase.ModifiedOn = DateTime.Today;
+
+                _context.Reservation.Update(currentReservation);
             }
-            catch
-            {
-                throw new HandledException("There was an error while adding a reservation");
+                else
+                {
+                var library = _context.Library.FirstOrDefault(x => x.BookId == reservation.BookId && x.OfficeId == reservation.OfficeId);
+                    if (library != null && library.Count > 0)
+                    {
+                    var timestamp = DateTime.Now;
+                    _context.Reservation.Add(new Reservation()
+                    {
+                        CheckedOutOn = timestamp,
+                        PlannedReturnOn = reservation.PlannedReturnOn,
+                        UserId = user.Id,
+                        BookCase = new BookCase()
+                        {
+                            BookId = reservation.BookId,
+                            OfficeId = reservation.OfficeId,
+                            CreatedOn = timestamp,
+                            CreatedBy = user.Id,
+                            ModifiedOn = timestamp,
+                            ModifiedBy = user.Id,
+                            Count = 1,
+                    }
+                    });
+                }
             }
-            return reservation;
-        }
+
+            _context.SaveChangesAsync();
+            }
 
         public async Task<Waiting> AddWaiting(Waiting waiting)
         {
@@ -183,16 +198,16 @@ namespace BookLibrary.Services.Reservations
             }
         }
 
-        public async Task<List<ReservationDTO>> GetReservations(int user) {
+        public async Task<List<ReservationDTO>> GetReservations(string user) {
             return await GetReservations(user, new List<string>(), new List<string>(), new List<string>(), new List<string>(), sort_recent);
         }
 
-        public async Task<List<ReservationDTO>> GetReservations(int user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
+        public async Task<List<ReservationDTO>> GetReservations(string user, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort)
         {
-            var reservations = await _context.Reservation.Where(x => x.UserId == user)
+            var reservations = await _context.Reservation.Where(x => x.User.AspNetUserId == user)
                 .Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
-            var waitings = await _context.Waiting.Where(x => x.UserId == user)
+            var waitings = await _context.Waiting.Where(x => x.User.AspNetUserId == user)
                 .Include(x => x.BookCase.Book).Include(x => x.BookCase.Office).Select(x => (ReservationDTO)x).ToListAsync();
 
             var response = reservations.Concat(waitings).ToList();
@@ -252,13 +267,13 @@ namespace BookLibrary.Services.Reservations
             };
         }
 
-        public async Task<List<Reservation>> GetUserCurrentlyReadingReservedBooks(int userId)
+        public async Task<List<Reservation>> GetUserCurrentlyReadingReservedBooks(string userId)
         {
             var reservations = await _context.Reservation
                 .Include(a => a.BookCase)
                     .ThenInclude(b => b.Book)
                         .Include(o => o.BookCase.Office)
-                            .Where(c => c.UserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
+                            .Where(c => c.User.AspNetUserId == userId && c.CheckedOutOn != null && c.CheckedInOn == null)
                                 .ToListAsync();
 
             return reservations;
