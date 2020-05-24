@@ -1,4 +1,4 @@
-import { DISPLAY_TOAST } from './actionTypes';
+import { DISPLAY_TOAST, ADD_COUNTER, SUBTRACT_COUNTER } from './actionTypes';
 
 const initialState = {
   toast: {
@@ -9,6 +9,7 @@ const initialState = {
       duration: 5000,
     },
   },
+  spinnerCount: 0,
 };
 
 export default (state = initialState, action) => {
@@ -17,6 +18,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         toast: action.payload,
+      };
+    }
+    case ADD_COUNTER: {
+      return {
+        ...state,
+        spinnerCount: state.spinnerCount+1,
+      };
+    }
+    case SUBTRACT_COUNTER: {
+      return {
+        ...state,
+        spinnerCount: state.spinnerCount-1,
       };
     }
     default: {
