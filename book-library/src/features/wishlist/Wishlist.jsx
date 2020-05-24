@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import {
   getCategories,
   getWishlist,
   setFilters,
-  setVote
+  setVote,
 } from '../../store/wishlist/actions';
 import {
   ActionItem,
@@ -102,7 +103,7 @@ const Wishlist = (location) => {
 
   const handleVote = (wishId, index) => {
     dispatch(setVote(wishId, index));
-  }
+  };
   return (
     <>
       <Panel title="Wishlist">

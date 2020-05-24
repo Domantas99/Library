@@ -45,5 +45,6 @@ namespace BookLibrary.DataBase.Models
         public virtual ICollection<Reservation> Reservation { get; set; }
         public virtual ICollection<Waiting> Waiting { get; set; }
         public virtual ICollection<UserWish> UserWish { get; set; }
+        public virtual ICollection<Rating> Rating { get; set; }
     }
 }

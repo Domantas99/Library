@@ -92,6 +92,11 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.GetReservations(id);
         }
 
+        [HttpPost("{id}/rate")]
+        public async Task<decimal> RateBook(int id, int rating) {
+            return await _booksService.RateBook(id, rating);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(int id) {
             return await _booksService.DeleteBook(id);

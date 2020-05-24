@@ -26,5 +26,6 @@ namespace BookLibrary.Services.Contracts
         Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count);
         Task<Book> SetBookArchiveStatus(int bookId, bool isArchived);
         Task<List<ReservationDTO>> GetReservations(int id);
+        Task<decimal> RateBook(int id, int rating);
     }
 }

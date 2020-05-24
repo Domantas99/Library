@@ -171,6 +171,7 @@ export default ({ id }) => {
           )}
         </div>
         <div className="book-details__content book-details__content--secondary">
+          <span className="book__rating">{book.rating}</span>
           <div className="book-details__description">
             <p>{bookDetails.book && book.description}</p>
           </div>

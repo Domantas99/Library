@@ -7,11 +7,11 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { addNewBook, updateBook } from "../store/library/actions";
-import { moveWishToLibrary } from "../store/wishlist/actions";
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { addNewBook, updateBook } from '../store/library/actions';
+import { moveWishToLibrary } from '../store/wishlist/actions';
 
 const BookForm = ({
   formTitle,
@@ -25,60 +25,59 @@ const BookForm = ({
   const [officeData, setOffices] = useState(offices);
   /* eslint-disable no-unused-vars */
   const [requiredFields, setRequiredFields] = useState([
-    "bookTitle",
-    "bookAuthor",
-    "bookIsbn",
-    "bookFormat",
-    "bookDate",
+    'bookTitle',
+    'bookAuthor',
+    'bookIsbn',
+    'bookFormat',
+    'bookDate',
   ]);
 
   const [formState, setFormState] = useState({ errors: {} });
 
   useEffect(() => {
     setFormState({
-      goodreadsSearch: "",
-      coverImage: bookDetails ? bookDetails.coverPictureUrl || "" : "",
-      bookTitle: bookDetails ? bookDetails.title || "" : "",
-      bookAuthor: bookDetails ? bookDetails.author || "" : "",
-      bookDescription: bookDetails ? bookDetails.description || "" : "",
-      bookIsbn: bookDetails ? bookDetails.isbn || "" : "",
-      bookFormat: bookDetails ? bookDetails.format || "Paperback" : "",
+      goodreadsSearch: '',
+      coverImage: bookDetails ? bookDetails.coverPictureUrl || '' : '',
+      bookTitle: bookDetails ? bookDetails.title || '' : '',
+      bookAuthor: bookDetails ? bookDetails.author || '' : '',
+      bookDescription: bookDetails ? bookDetails.description || '' : '',
+      bookIsbn: bookDetails ? bookDetails.isbn || '' : '',
+      bookFormat: bookDetails ? bookDetails.format || 'Paperback' : '',
       bookPages: bookDetails ? bookDetails.numberOfPages || 0 : 0,
-      bookDate: bookDetails ? bookDetails.releaseDate || "" : "",
-      bookPublisher: bookDetails ? bookDetails.publisher || "Not Defined" : "",
-      bookLanguage: bookDetails ? bookDetails.editionLanguage || "" : "",
-      bookSeries: bookDetails ? bookDetails.series || "" : "",
-      bookCategory: bookDetails ? bookDetails.category || "" : "",
+      bookDate: bookDetails ? bookDetails.releaseDate || '' : '',
+      bookPublisher: bookDetails ? bookDetails.publisher || 'Not Defined' : '',
+      bookLanguage: bookDetails ? bookDetails.editionLanguage || '' : '',
+      bookSeries: bookDetails ? bookDetails.series || '' : '',
+      bookCategory: bookDetails ? bookDetails.category || '' : '',
       bookTag: bookDetails
-        ? bookDetails.tag || "tempTagPlaceholder"
-        : "tempTagPlaceholder",
+        ? bookDetails.tag || 'tempTagPlaceholder'
+        : 'tempTagPlaceholder',
       errors: {
-        coverImage: "",
-        bookTitle: "",
-        bookIsbn: "",
-        bookAuthor: "",
-        bookDescription: "",
-        bookCategory: "",
-        bookTag: "",
-        bookFormat: "",
-        bookPages: "",
-        bookDate: "",
-        bookSeries: "",
-        bookPublisher: "",
-        bookLanguage: "",
+        coverImage: '',
+        bookTitle: '',
+        bookIsbn: '',
+        bookAuthor: '',
+        bookDescription: '',
+        bookCategory: '',
+        bookTag: '',
+        bookFormat: '',
+        bookPages: '',
+        bookDate: '',
+        bookSeries: '',
+        bookPublisher: '',
+        bookLanguage: '',
       },
     });
   }, [bookDetails]);
 
   const validate = (key, value) => {
     if (requiredFields.includes(key)) {
-      if (key === "bookFormat" || key === "bookDate") {
-        return value.length > 0 ? "" : "Please select";
-      } else {
-        return value.length < 1 || value.length > 1000
-          ? "field must be filled and can not exceed 1000 characters"
-          : "";
+      if (key === 'bookFormat' || key === 'bookDate') {
+        return value.length > 0 ? '' : 'Please select';
       }
+      return value.length < 1 || value.length > 1000
+        ? 'field must be filled and can not exceed 1000 characters'
+        : '';
     }
   };
 
@@ -87,7 +86,7 @@ const BookForm = ({
     Object.keys(formState.errors).forEach(
       (key) => (errors[key] = validate(key, formState[key]))
     );
-    setFormState({ ...formState, errors: errors });
+    setFormState({ ...formState, errors });
     let valid = true;
     Object.entries(formState.errors).forEach(
       (key, val) => key in requiredFields && val.length > 0 && (valid = false)
@@ -125,19 +124,19 @@ const BookForm = ({
     event.preventDefault();
     if (validErrors() && validInputs()) {
       const book = createBookObject();
-      if (formTitle === "Register new book") {
+      if (formTitle === 'Register new book') {
         dispatch(addNewBook(book));
         history.push(`/library/${id}`);
-      } else if (formTitle === "Book editing") {
+      } else if (formTitle === 'Book editing') {
         dispatch(updateBook(id, book));
-        history.push("/library");
-      } else if (formTitle === "Add wish to library") {
+        history.push('/library');
+      } else if (formTitle === 'Add wish to library') {
         const obj = { ...book, id: bookDetails.id };
         dispatch(moveWishToLibrary(obj));
         moveToWishAction();
       }
     } else {
-      alert("Invalid form");
+      alert('Invalid form');
     }
   };
 
@@ -197,12 +196,13 @@ const BookForm = ({
             name="coverImage"
             accept="image/*"
           />
-          {formState.errors.coverImage?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.coverImage}
-            </span>
-          )}
+          {formState.errors.coverImage &&
+            formState.errors.coverImage.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.coverImage}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -214,7 +214,7 @@ const BookForm = ({
             name="bookTitle"
             onChange={handleChange}
           />
-          {formState.errors.bookTitle?.length > 0 && (
+          {formState.errors.bookTitle && formState.errors.bookTitle.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookTitle}
@@ -231,12 +231,13 @@ const BookForm = ({
             name="bookAuthor"
             onChange={handleChange}
           />
-          {formState.errors.bookAuthor?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookAuthor}
-            </span>
-          )}
+          {formState.errors.bookAuthor &&
+            formState.errors.bookAuthor.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookAuthor}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -249,12 +250,13 @@ const BookForm = ({
             rows="10"
             onChange={handleChange}
           />
-          {formState.errors.bookDescription?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookDescription}
-            </span>
-          )}
+          {formState.errors.bookDescription &&
+            formState.errors.bookDescription.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookDescription}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -266,7 +268,7 @@ const BookForm = ({
             value={formState.bookIsbn}
             onChange={handleChange}
           />
-          {formState.errors.bookIsbn?.length > 0 && (
+          {formState.errors.bookIsbn && formState.errors.bookIsbn.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookIsbn}
@@ -289,12 +291,13 @@ const BookForm = ({
             <option value="E-book">E-book</option>
             <option value="Audiobook">Audiobook</option>
           </select>
-          {formState.errors.bookFormat?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookFormat}
-            </span>
-          )}
+          {formState.errors.bookFormat &&
+            formState.errors.bookFormat.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookFormat}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -307,7 +310,7 @@ const BookForm = ({
             value={formState.bookPages}
             onChange={handleChange}
           />
-          {formState.errors.bookPages?.length > 0 && (
+          {formState.errors.bookPages && formState.errors.bookPages.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookPages}
@@ -324,7 +327,7 @@ const BookForm = ({
             value={formState.bookDate}
             onChange={handleChange}
           />
-          {formState.errors.bookDate?.length > 0 && (
+          {formState.errors.bookDate && formState.errors.bookDate.length > 0 && (
             <span className="error">
               <br />
               {formState.errors.bookDate}
@@ -341,12 +344,13 @@ const BookForm = ({
             value={formState.bookPublisher}
             onChange={handleChange}
           />
-          {formState.errors.bookPublisher?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookPublisher}
-            </span>
-          )}
+          {formState.errors.bookPublisher &&
+            formState.errors.bookPublisher.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookPublisher}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -358,12 +362,13 @@ const BookForm = ({
             value={formState.bookLanguage}
             onChange={handleChange}
           />
-          {formState.errors.bookLanguage?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookLanguage}
-            </span>
-          )}
+          {formState.errors.bookLanguage &&
+            formState.errors.bookLanguage.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookLanguage}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -375,12 +380,13 @@ const BookForm = ({
             value={formState.bookSeries}
             onChange={handleChange}
           />
-          {formState.errors.bookSeries?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookSeries}
-            </span>
-          )}
+          {formState.errors.bookSeries &&
+            formState.errors.bookSeries.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookSeries}
+              </span>
+            )}
         </div>
 
         <div className="input-wrapper">
@@ -392,12 +398,13 @@ const BookForm = ({
             value={formState.bookCategory}
             onChange={handleChange}
           />
-          {formState.errors.bookCategory?.length > 0 && (
-            <span className="error">
-              <br />
-              {formState.errors.bookCategory}
-            </span>
-          )}
+          {formState.errors.bookCategory &&
+            formState.errors.bookCategory.length > 0 && (
+              <span className="error">
+                <br />
+                {formState.errors.bookCategory}
+              </span>
+            )}
         </div>
 
         <div className="copies-wrapper">

@@ -16,5 +16,6 @@ namespace BookLibrary.DTO.Books
         public ICollection<Library> Library { get; set; }
         public bool IsAnyoneReading { get; set; }
         public List<UserCheckOutDTO> NotReadingUsers { get; set; }
+        public decimal Rating { get; set; }
     }
 }

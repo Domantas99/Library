@@ -5,6 +5,7 @@ using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.ExceptionHandling.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,8 @@ namespace BookLibrary.Services.Books
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
 
-                foreach (var libr in library) {
+                foreach (var libr in library)
+                {
                     if (libr.Count > 0)
                     {
                         Library lib = new Library
@@ -77,7 +79,7 @@ namespace BookLibrary.Services.Books
             }
             catch
             {
-                throw new HandledException("There was an error adding a book");            
+                throw new HandledException("There was an error adding a book");
             }
         }
 
@@ -94,7 +96,9 @@ namespace BookLibrary.Services.Books
                 var libraryToRemove = _context.Library.Where(b => b.BookId == id);
                 var wishToRemove = _context.Wish.Where(b => b.BookId == id);
                 var commentsToRemove = _context.BookComment.Where(b => b.BookId == id);
+                var ratingsToRemove = _context.Rating.Where(r => r.BookId == id);
                 _context.BookComment.RemoveRange(commentsToRemove);
+                _context.Rating.RemoveRange(ratingsToRemove);
                 _context.Library.RemoveRange(libraryToRemove);
                 _context.RemoveRange(wishToRemove);
                 _context.Book.Remove(bookToDelete);
@@ -102,15 +106,16 @@ namespace BookLibrary.Services.Books
 
                 return bookToDelete;
             }
-            catch {
+            catch
+            {
                 throw new HandledException("There was an error while deleting a book");
             }
-              
+
         }
 
         public async Task<BookDetailsDTO> GetBook(int bookId, int userId)
         {
-            var book = await _context.Book.Include(x => x.Library).FirstOrDefaultAsync(b => b.Id == bookId);
+            var book = await _context.Book.Include(x => x.Library).Include(x => x.Rating).FirstOrDefaultAsync(b => b.Id == bookId);
 
             if (book == null)
             {
@@ -128,7 +133,7 @@ namespace BookLibrary.Services.Books
                 isCurrentlyReading = true;
                 isAnyoneReading = true;
             }
-    
+
             if (isCurrentlyReading == false)
             {
                 var allReservations = _context.Reservation.Where(r => r.CheckedInOn == null);
@@ -139,21 +144,24 @@ namespace BookLibrary.Services.Books
                 }
             }
 
-            var bookDetailsDTO = new BookDetailsDTO {
+            var bookDetailsDTO = new BookDetailsDTO
+            {
                 Book = book,
-                IsUserCurrentlyReading = isCurrentlyReading, 
-                IsAnyoneReading=isAnyoneReading, 
-                ReadingUserId = userId, 
-                ActiveReservation= reservation, 
+                IsUserCurrentlyReading = isCurrentlyReading,
+                IsAnyoneReading = isAnyoneReading,
+                ReadingUserId = userId,
+                ActiveReservation = reservation,
                 Library = book.Library,
-                NotReadingUsers = GetNotReadingBookUsers(bookId)
+                NotReadingUsers = GetNotReadingBookUsers(bookId),
+                Rating = (book.Rating != null && book.Rating.Count > 0) ? book.Rating.Sum(x => x.Value) / book.Rating.Count : 0,
             };
 
             return bookDetailsDTO;
         }
 
-        public List<UserCheckOutDTO> GetNotReadingBookUsers(int bookId) {
-            var readingUsers = _context.Reservation.Where(r => r.CheckedInOn == null).Include(a => a.BookCase).ToArray().Where(x=>x.BookCase.BookId == bookId).Select(x=>x.User);
+        public List<UserCheckOutDTO> GetNotReadingBookUsers(int bookId)
+        {
+            var readingUsers = _context.Reservation.Where(r => r.CheckedInOn == null).Include(a => a.BookCase).ToArray().Where(x => x.BookCase.BookId == bookId).Select(x => x.User);
             var users = _context.User.ToList().Except(readingUsers).ToArray();
             List<UserCheckOutDTO> userList = new List<UserCheckOutDTO>();
             for (int i = 0; i < users.Count(); i++)
@@ -241,7 +249,8 @@ namespace BookLibrary.Services.Books
                 List<BookListDTO> bookList = AddAvailabilityInList(books, userOffice);
                 return Task.FromResult(bookList);
             }
-            catch {
+            catch
+            {
                 throw new HandledException("There was an error when geting books");
             }
         }
@@ -261,7 +270,7 @@ namespace BookLibrary.Services.Books
                         .Select(x => x.Count).FirstOrDefault();
                         if (count != 0)
                             avail = true;
-                    } 
+                    }
                     else
                     {
                         avail = booksAvailable.Result.Any(x => x.Count > 0);
@@ -286,7 +295,8 @@ namespace BookLibrary.Services.Books
                     IsArchived = book.IsArchived,
                     DateAdded = book.DateAdded,
                     ReleaseDate = book.ReleaseDate,
-                    IsAvailableInMyOffice = avail
+                    IsAvailableInMyOffice = avail,
+                    Rating = (book.Rating != null && book.Rating.Count > 0) ? (decimal)(book.Rating.Sum(x => x.Value)) / book.Rating.Count : 0,
                 });
             }
             return bookList;
@@ -317,10 +327,10 @@ namespace BookLibrary.Services.Books
         {
             pattern = pattern.ToLower();
             var books = BooksWithoutWishes();
-            var filteredBooks =  books.Where(book => (book.Title.ToLower().Contains(pattern) ||
-                                                            book.Author.ToLower().Contains(pattern) ||
-                                                            book.Isbn.ToLower().Contains(pattern)) &&
-                                                            book.IsArchived == false)
+            var filteredBooks = books.Where(book => (book.Title.ToLower().Contains(pattern) ||
+                                                           book.Author.ToLower().Contains(pattern) ||
+                                                           book.Isbn.ToLower().Contains(pattern)) &&
+                                                           book.IsArchived == false)
                                                             .ToList();
 
             return Task.FromResult(filteredBooks);
@@ -331,7 +341,7 @@ namespace BookLibrary.Services.Books
             var books = BooksWithoutWishes();
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
             var bookList = AddAvailabilityInList(books, userOffice);
-            
+
             return Task.FromResult(bookList.Take(count).ToList());
         }
 
@@ -373,11 +383,11 @@ namespace BookLibrary.Services.Books
 
         private List<Book> BooksWithoutWishes()
         {
-            var books = _context.Book.ToList();
+            var books = _context.Book.Include(x => x.Rating).ToList();
             var wishes = _context.Wish.Include(w => w.Book).ToList();
-            for (int i = 0; i < wishes.Count; i++)
+            foreach (Wish w in wishes)
             {
-                books.Remove(wishes[i].Book);
+                books.Remove(w.Book);
             }
             return books;
         }
@@ -385,7 +395,7 @@ namespace BookLibrary.Services.Books
         public Task<List<BookListDTO>> GetUserRecommendedBooks(int userId, int count)
         {
             var allBooks = BooksWithoutWishes();
-            
+
             var reservations = _context.Reservation.Where(x => x.UserId == userId).Select(x => x.BookCase.Book).Distinct().ToList();
             allBooks = allBooks.Except(reservations).ToList();
 
@@ -461,7 +471,20 @@ namespace BookLibrary.Services.Books
             var waitings = await _context.Waiting.Include(x => x.BookCase).ThenInclude(x => x.Book).Include(x => x.BookCase.Office).Include(x => x.User).Where(x => x.BookCase.Book.Id == id).Select(x => (ReservationDTO)x).ToListAsync();
 
             var concat = reservations.Concat(waitings).ToList();
-            return  concat;
+            return concat;
+        }
+
+        public async Task<decimal> RateBook(int id, int rating)
+        {
+            try
+            {
+                var book = await _context.Book.Where(x => x.Id == id).Include(x => x.Rating).FirstOrDefaultAsync();
+                return (book.Rating != null && book.Rating.Count > 0) ? book.Rating.Sum(x => x.Value) / book.Rating.Count : 0;
+            }
+            catch
+            {
+                throw new HandledException("Book rating failed");
+            }
         }
     }
 }

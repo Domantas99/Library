@@ -5,8 +5,6 @@ import {
   GET_AUTHORS_END,
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
-  GET_VOTE,
-  GET_VOTE_END,
   GET_WISHLIST_START,
   GET_WISHLIST_END,
   MOVE_WISH_TO_LIBRARY,
@@ -72,7 +70,7 @@ export const setFiltersEnd = (filters) => ({
 
 export const setVote = (wishId, index) => ({
   type: SET_VOTE,
-  payload: {wishId, index}
+  payload: { wishId, index },
 });
 export const setVoteEnd = (index) => ({
   type: SET_VOTE_END,

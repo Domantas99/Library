@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace BookLibrary.DataBase.Models
 {
@@ -46,15 +49,17 @@ namespace BookLibrary.DataBase.Models
         [DataMember]
         public bool IsArchived { get; set; } = false;
         [DataMember]
-        [Column(TypeName ="Date")]
+        [Column(TypeName = "Date")]
         public DateTime DateAdded { get; set; }
         [DataMember]
         [Column(TypeName = "Date")]
         public DateTime ReleaseDate { get; set; }
         public virtual Wish Wish { get; set; }
+
         public virtual ICollection<BookComment> BookComment { get; set; }
         public virtual ICollection<BookWish> BookWish { get; set; }
         [DataMember]
         public virtual ICollection<Library> Library { get; set; }
+        public virtual ICollection<Rating> Rating { get; set; }
     }
 }
