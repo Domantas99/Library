@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
@@ -94,8 +93,8 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpPost("{id}/rate")]
-        public async Task<decimal> RateBook(int id, int rating) {
-            return await _booksService.RateBook(id, rating);
+        public async Task<RatingResponseDTO> RateBook(int id, [FromQuery] int rating) {
+            return await _booksService.RateBook(id, GetUserId(), rating);
         }
 
         [HttpDelete("{id}")]

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../core/history';
@@ -9,6 +10,7 @@ import {
   getBookAvailabilityAPI,
   getBookList,
   getBookDetails,
+  rateBook,
   setBookArchiveStatusAPI,
   updateBook,
 } from './api';
@@ -22,6 +24,8 @@ import {
   GET_BOOK_DETAILS_START,
   GET_BOOK_LIST_START,
   GET_CATEGORIES_START,
+  RATE_BOOK,
+  RATE_BOOK_END,
   SELECT_CATEGORY,
   SET_BOOK_ARCHIVE_STATUS_END,
   SET_BOOK_ARCHIVE_STATUS,
@@ -38,6 +42,7 @@ import {
   getBookDetailsEnd,
   getBookListEnd,
   getCategoriesEnd,
+  rateBookEnd,
   setBookArchiveStateEnd,
   setFilters,
   setFiltersEnd,
@@ -117,6 +122,15 @@ export function* getCategoriesSaga(action) {
   }
 }
 
+export function* rateBookSaga(action) {
+  try {
+    const apiResult = yield call(rateBook, action.payload);
+    yield put(rateBookEnd(apiResult));
+  } catch (ex) {
+    //
+  }
+}
+
 export function* selectCategorySaga(action) {
   if (action.payload != null) {
     const newCategory = Array.isArray(action.payload)
@@ -173,6 +187,7 @@ export default function* () {
   yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);
+  yield takeLatest(RATE_BOOK, rateBookSaga);
   yield takeLatest(SELECT_CATEGORY, selectCategorySaga);
   yield takeLatest(SET_BOOK_ARCHIVE_STATUS, setBookArchiveStateSaga);
   yield takeLatest(SET_BOOK_ARCHIVE_STATUS_END, getBookDetailsSaga);

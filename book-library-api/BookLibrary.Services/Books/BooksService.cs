@@ -143,16 +143,22 @@ namespace BookLibrary.Services.Books
                     isAnyoneReading = true;
                 }
             }
+            var userIdInt = _context.User.Where(x => x.AspNetUserId == userId).Select(x => x.Id).FirstOrDefault();
+            bool userHasRated = _context.Rating.Any(x => x.BookId == bookId && x.UserId == userIdInt);
+
+            var ratingsCount = _context.Rating.Where(x => x.BookId == bookId).Count();
 
             var bookDetailsDTO = new BookDetailsDTO
             {
                 Book = book,
-                IsUserCurrentlyReading = isCurrentlyReading, 
-                IsAnyoneReading=isAnyoneReading, 
-                ActiveReservation= reservation,
+                IsUserCurrentlyReading = isCurrentlyReading,
+                IsAnyoneReading = isAnyoneReading,
+                ActiveReservation = reservation,
                 Library = book.Library,
                 NotReadingUsers = GetNotReadingBookUsers(bookId),
-                Rating = (book.Rating != null && book.Rating.Count > 0) ? book.Rating.Sum(x => x.Value) / book.Rating.Count : 0,
+                Rating = (book.Rating != null && book.Rating.Count > 0) ? (decimal)(book.Rating.Sum(x => x.Value)) / book.Rating.Count : 0,
+                UserHasRated = userHasRated,
+                RatingCount = ratingsCount,
             };
 
             return bookDetailsDTO;
@@ -245,7 +251,7 @@ namespace BookLibrary.Services.Books
                             break;
                         }
                 }
-            List<BookListDTO> bookList = AddAvailabilityInList(books, userId);
+                List<BookListDTO> bookList = AddAvailabilityInList(books, userId);
                 return Task.FromResult(bookList);
             }
             catch
@@ -472,12 +478,39 @@ namespace BookLibrary.Services.Books
             return concat;
         }
 
-        public async Task<decimal> RateBook(int id, int rating)
+        public async Task<RatingResponseDTO> RateBook(int id, string userId, int rating)
         {
+            if (rating < 0 || rating > 5)
+            {
+                throw new HandledException("Only values between 0 and 5 are valid for book rating");
+            }
             try
             {
-                var book = await _context.Book.Where(x => x.Id == id).Include(x => x.Rating).FirstOrDefaultAsync();
-                return (book.Rating != null && book.Rating.Count > 0) ? book.Rating.Sum(x => x.Value) / book.Rating.Count : 0;
+                var user = _context.User.Where(x => x.AspNetUserId == userId).Select(x => x.Id).FirstOrDefault();
+                var oldRating = _context.Rating.Where(x => x.BookId == id && x.UserId == user).FirstOrDefault();
+                if (oldRating != null)
+                {
+                    if (rating == 0)
+                    {
+                        _context.Rating.Remove(oldRating);
+                    }
+                    else
+                    {
+                        oldRating.Value = rating;
+                    }
+                }
+                else
+                {
+                    if (rating > 0)
+                    {
+                        _context.Rating.Add(new Rating { BookId = id, UserId = user, Value = rating });
+                    }
+                }
+                await _context.SaveChangesAsync();
+                var book = _context.Book.Where(x => x.Id == id).Include(x => x.Rating).FirstOrDefault();
+                var newRating = (book.Rating != null && book.Rating.Count > 0) ? (decimal)(book.Rating.Sum(x => x.Value)) / book.Rating.Count : 0;
+                var ratingsCount = _context.Rating.Where(x => x.BookId == id).Count();
+                return new RatingResponseDTO { Rating = newRating, UserHasRated = rating != 0, RatingCount = ratingsCount};
             }
             catch
             {

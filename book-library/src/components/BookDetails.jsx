@@ -1,16 +1,20 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import {
   getBookDetails,
   deleteBook,
+  rateBook,
   setBookArchiveState,
 } from '../store/library/actions';
 import BookAvailabilitySection from './BookAvailabilitySection';
@@ -112,6 +116,38 @@ export default ({ id }) => {
     setModalState(true);
   }
 
+  const onRateClick = (rating) => () => {
+    dispatch(rateBook(id, rating));
+  };
+
+  const generateRatingStars = useCallback(() => {
+    const stars = [];
+    let i = 1;
+    for (; i <= Math.floor(bookDetails.rating); i += 1) {
+      stars.push(
+        <img key={i} className="rating__star" onClick={onRateClick(i)} />
+      );
+    }
+    if (bookDetails.rating % 1 > 0.25) {
+      if (bookDetails.rating % 1 < 0.75) {
+        stars.push(
+          <img key={i} className="rating__star_half" onClick={onRateClick(i)} />
+        );
+      } else {
+        stars.push(
+          <img key={i} className="rating_star" onClick={onRateClick(i)} />
+        );
+      }
+      i += 1;
+    }
+    for (; i <= 5; i += 1) {
+      stars.push(
+        <img key={i} className="rating__star_empty" onClick={onRateClick(i)} />
+      );
+    }
+    return stars;
+  }, [bookDetails]);
+
   if (_.isEmpty(bookDetails)) {
     return null;
   }
@@ -143,6 +179,27 @@ export default ({ id }) => {
               {bookDetails.book && bookDetails.book.author}
             </span>
           </h4>
+          <span className="rating__container">
+            {bookDetails.rating > 0 ? (
+              <>
+                <span className="rating__stars">{generateRatingStars()}</span>
+                <span>{bookDetails.rating.toFixed(2)}</span>
+                <span>
+                  {`${bookDetails.ratingCount} rating${
+                    bookDetails.ratingCount % 100 === 11 ||
+                    bookDetails.ratingCount % 10 !== 1
+                      ? 's'
+                      : ''
+                  }`}
+                </span>
+              </>
+            ) : (
+              'Book is not yet rated'
+            )}
+            {bookDetails.userHasRated && (
+              <Button onClick={onRateClick(0)}>Remove Rating</Button>
+            )}
+          </span>
           {currentUser && currentUser.isAdmin === true && (
             <div>
               <Button
@@ -171,7 +228,6 @@ export default ({ id }) => {
           )}
         </div>
         <div className="book-details__content book-details__content--secondary">
-          <span className="book__rating">{book.rating}</span>
           <div className="book-details__description">
             <p>{bookDetails.book && book.description}</p>
           </div>
