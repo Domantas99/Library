@@ -180,22 +180,16 @@ export default ({ id }) => {
             </span>
           </h4>
           <span className="rating__container">
-            {bookDetails.rating > 0 ? (
-              <>
-                <span className="rating__stars">{generateRatingStars()}</span>
-                <span>{bookDetails.rating.toFixed(2)}</span>
-                <span>
-                  {`${bookDetails.ratingCount} rating${
-                    bookDetails.ratingCount % 100 === 11 ||
-                    bookDetails.ratingCount % 10 !== 1
-                      ? 's'
-                      : ''
-                  }`}
-                </span>
-              </>
-            ) : (
-              'Book is not yet rated'
-            )}
+            <span className="rating__stars">{generateRatingStars()}</span>
+            <span>{bookDetails.rating.toFixed(2)}</span>
+            <span>
+              {`${bookDetails.ratingCount} rating${
+                bookDetails.ratingCount % 100 === 11 ||
+                bookDetails.ratingCount % 10 !== 1
+                  ? 's'
+                  : ''
+              }`}
+            </span>
             {bookDetails.userHasRated && (
               <Button onClick={onRateClick(0)}>Remove Rating</Button>
             )}
