@@ -16,6 +16,7 @@ import SearchBarResultBlock from './SearchBarResultBlock';
 import TeamReservationsTable from './TeamReservationsTable';
 import UserReservationsTable from './UserReservationsTable';
 import WishForm from './WishForm';
+import Spinner from './Spinner';
 
 export {
   ActionItem,
@@ -35,4 +36,5 @@ export {
   TeamReservationsTable,
   UserReservationsTable,
   WishForm,
+  Spinner,
 };

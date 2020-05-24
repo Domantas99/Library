@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 import superagent from 'superagent';
 import store from '../store/store';
-import { displayToast } from '../store/general/actions';
+import { displayToast, addCounter, subtractCounter } from '../store/general/actions';
 
 const methods = {
   GET: 'GET',
@@ -18,6 +18,7 @@ class HTTPClient {
   }
 
   async get(path) {
+
     return this._makeRequest(methods.GET, path);
   }
 
@@ -34,6 +35,7 @@ class HTTPClient {
   }
 
   async _makeRequest(method, path, data = null) {
+    this.beforeEach();
     const url = this._getUrl(path);
 
     const request = superagent(method, url);
@@ -45,12 +47,20 @@ class HTTPClient {
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await request.withCredentials();
+      this.afterEach();
 
       return response.body;
     } catch (e) {
       this.handleException(e);
+      this.afterEach();
       throw e;
     }
+  }
+  beforeEach() {
+    store.dispatch(addCounter());
+  }
+  afterEach() {
+    store.dispatch(subtractCounter());
   }
 
   _getUrl(path) {
