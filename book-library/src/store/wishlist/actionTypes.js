@@ -7,9 +7,6 @@ export const GET_AUTHORS_END = 'wishlist/GET_AUTHORS_END';
 export const GET_CATEGORIES_START = 'wishlist/GET_CATEGORIES_START';
 export const GET_CATEGORIES_END = 'wishlist/GET_CATEGORIES_END';
 
-export const GET_VOTE = 'wishlist/GET_VOTE';
-export const GET_VOTE_END = 'wishlist/GET_VOTE_END';
-
 export const GET_WISHLIST_START = 'wishlist/GET_WISHLIST_START';
 export const GET_WISHLIST_END = 'wishlist/GET_WISHLIST_END';
 

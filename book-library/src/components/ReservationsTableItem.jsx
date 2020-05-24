@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   checkInReservation,
   removeWaiting,

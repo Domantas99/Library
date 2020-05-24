@@ -13,6 +13,8 @@ import {
   GET_BOOK_LIST_END,
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
+  RATE_BOOK,
+  RATE_BOOK_END,
   SELECT_CATEGORY,
   SET_FILTERS_START,
   SET_FILTERS_END,
@@ -80,6 +82,15 @@ export const getCategories = () => ({ type: GET_CATEGORIES_START });
 export const getCategoriesEnd = (categories) => ({
   type: GET_CATEGORIES_END,
   payload: categories,
+});
+
+export const rateBook = (bookId, rating) => ({
+  type: RATE_BOOK,
+  payload: { bookId, rating },
+});
+export const rateBookEnd = (response) => ({
+  type: RATE_BOOK_END,
+  payload: response,
 });
 
 export const selectCategory = (category) => ({

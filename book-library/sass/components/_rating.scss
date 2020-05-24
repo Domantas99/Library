@@ -1,0 +1,29 @@
+@import "../svg/sassvg-data";
+
+.rating {
+
+    &__container > * {
+        margin-right: 1em;
+    }
+
+    &__star {
+        @include sassvg("star", $color: #EEB23D, $fillcolor: #EEB23D);
+        padding: base(1);
+        margin: base(0.25);
+        background-size: 1rem;
+    }
+
+    &__star_half {
+        @include sassvg("star_half", $color: #EEB23D, $fillcolor: #EEB23D);
+        padding: base(1);
+        margin: base(0.25);
+        background-size: 1rem;
+    }
+
+    &__star_empty {
+        @include sassvg("star_border", $color: #EEB23D, $fillcolor: #EEB23D);
+        padding: base(1);
+        margin: base(0.25);
+        background-size: 1rem;
+    }
+}

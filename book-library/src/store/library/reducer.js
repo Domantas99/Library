@@ -6,6 +6,7 @@ import {
   SET_FILTERS_START,
   GET_CATEGORIES_START,
   GET_CATEGORIES_END,
+  RATE_BOOK_END,
   SELECT_CATEGORY,
   UPDATE_BOOK_END,
   GET_AUTHORS_END,
@@ -62,6 +63,7 @@ export default (state = initialState, action) => {
         bookAvailability: action.payload,
       };
     }
+
     case UPDATE_BOOK_END: {
       const result = action.payload;
       if (!result.error) {
@@ -72,6 +74,13 @@ export default (state = initialState, action) => {
       }
 
       return state;
+    }
+
+    case RATE_BOOK_END: {
+      return {
+        ...state,
+        bookDetails: { ...state.bookDetails, ...action.payload },
+      };
     }
 
     case SET_FILTERS_START: {

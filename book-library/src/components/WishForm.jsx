@@ -1,10 +1,11 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addWish } from '../store/wishlist/actions';
 
-export default function WishForm({ exitAction }) {
+const WishForm = ({ exitAction }) => {
   const dispatch = useDispatch();
   const [bookInfo, setBookInfo] = useState({
     title: '',
@@ -98,4 +99,10 @@ export default function WishForm({ exitAction }) {
       </div>
     </div>
   );
-}
+};
+
+WishForm.propTypes = {
+  exitAction: PropTypes.func.isRequired,
+};
+
+export default WishForm;

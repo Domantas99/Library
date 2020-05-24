@@ -29,10 +29,11 @@ namespace BookLibrary.DataBase.Models
         public virtual DbSet<Waiting> Waiting { get; set; }
         public virtual DbSet<Wish> Wish { get; set; }
         public virtual DbSet<UserWish> UserWish { get; set; }
+        public virtual DbSet<Rating> Rating { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-         
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,7 +47,9 @@ namespace BookLibrary.DataBase.Models
                 );
 
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7",
+                new IdentityRole
+                {
+                    Id = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7",
                     Name = "Admin",
                     NormalizedName = "ADMIN",
                     ConcurrencyStamp = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7"
@@ -55,7 +58,8 @@ namespace BookLibrary.DataBase.Models
 
             // All passwords are the same - Password1!
             modelBuilder.Entity<IdentityUser>().HasData(
-                new IdentityUser { 
+                new IdentityUser
+                {
                     Id = "b8c10928-5609-4d7c-8051-f0500b49fa0b",
                     UserName = "nathan.roberts@gmail.com",
                     NormalizedUserName = "NATHAN.ROBERTS@GMAIL.COM",
@@ -108,20 +112,21 @@ namespace BookLibrary.DataBase.Models
                 // connect admin user to admin role
                 new IdentityUserRole<string> { UserId = "09ecbf1a-320a-4633-b749-1960d7cb2804", RoleId = "52df1f1d-74a2-46e2-a8f4-c8ac24a75ea7" }
                 );
-        
+
             modelBuilder.Entity<User>().HasData(
-                new User { 
+                new User
+                {
                     Id = 1,
                     AspNetUserId = "b8c10928-5609-4d7c-8051-f0500b49fa0b",
-                    FullName = "Nathan Roberts", 
-                    UserName = "Nathaniux123", 
-                    Email = "nathan.roberts@gmail.com", 
-                    OfficeId = 1, 
+                    FullName = "Nathan Roberts",
+                    UserName = "Nathaniux123",
+                    Email = "nathan.roberts@gmail.com",
+                    OfficeId = 1,
                     ProfilePictureUrl = "https://randomuser.me/api/portraits/men/94.jpg",
-                    GoodReadsAccount= "https://www.goodreads.com/",
-                    PhoneNumber="+3701234567",
-                    Role="Full-Stack Developer",
-                    IsAdmin=false
+                    GoodReadsAccount = "https://www.goodreads.com/",
+                    PhoneNumber = "+3701234567",
+                    Role = "Full-Stack Developer",
+                    IsAdmin = false
                 }, new User
                 {
                     Id = 2,
@@ -134,7 +139,7 @@ namespace BookLibrary.DataBase.Models
                     GoodReadsAccount = "https://www.goodreads.com/",
                     PhoneNumber = "+3707654321",
                     Role = "Full-Time Disaster",
-                    IsAdmin=false
+                    IsAdmin = false
                 }, new User
                 {
                     Id = 3,
@@ -349,6 +354,22 @@ namespace BookLibrary.DataBase.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserWish_UserId");
             });
+
+            modelBuilder.Entity<Rating>(entity =>
+            {
+                entity.HasOne(d => d.Book)
+                        .WithMany(p => p.Rating)
+                        .HasForeignKey(d => d.BookId)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_Rating_Book");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Rating)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Rating_User");
+            }
+                );
             OnModelCreatingPartial(modelBuilder);
 
             modelBuilder.Entity<IdentityUser>().Property(p => p.Id).ValueGeneratedOnAdd();
