@@ -1,0 +1,22 @@
+# This is a sample build configuration for Other.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: djziogas.lt:5443/core-build
+
+pipelines:
+  default:
+    - step:
+        name: build frontend
+        script:
+          - cd ./book-library
+          - npm install
+          - REACT_APP_SERVER_URL=/api/
+          - npm run build
+    - step:
+        name: Deploy to prod
+        deployment: prod
+        trigger: manual  # Uncomment to make this a manual deployment.
+        script:
+          - echo "Deploying to production environment"
