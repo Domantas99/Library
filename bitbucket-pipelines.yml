@@ -34,8 +34,8 @@ pipelines:
           name: build image
           script:
             - cd publish
-            - docker build -t djziogas.lt:5400/library:latest .
-            - docker push djziogas.lt:5400/library:latest
+            - docker build -t djziogas.lt:5443/library:latest .
+            - docker push djziogas.lt:5443/library:latest
       - step:
           name: Deploy to kubernetes
           deployment: test
@@ -43,6 +43,6 @@ pipelines:
           # trigger: manual  # Uncomment to make this a manual deployment.
           script:
             - echo $KUBECONFIG | base64 -d > kubeconfig.yml
-            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5400/library
-            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5400/library:latest
+            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5443/library
+            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5443/library:latest
 
