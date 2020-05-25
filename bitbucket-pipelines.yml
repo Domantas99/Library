@@ -3,14 +3,45 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: djziogas.lt:5443/core-build
 
+options:
+  # Enable docker for the Pipeline
+  docker: true
+  
 pipelines:
-  default:
-    - step:
-        name: build frontend
-        script:
-          - cd ./book-library
-          - npm install
-          - REACT_APP_SERVER_URL=/api/
-          - npm run build
+  branches:
+    master:
+      - step:
+          name: build frontend
+          image: djziogas.lt:5443/core-build
+          script:
+            - cd ./book-library
+            - npm install
+            - REACT_APP_SERVER_URL=/api/
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: build backend
+          image: djziogas.lt:5443/core-build
+          script:
+            - cp -R ./build/* ./book-library-api/book-library-api/wwwroot
+            - dotnet publish ./book-library-api/book-library-api/BookLibrary.API.csproj -c Release -o ./publish
+          artifacts:
+            - publish/**
+      - step:
+          name: build image
+          script:
+            - cd publish
+            - docker build -t djziogas.lt:5400/library:latest .
+            - docker push djziogas.lt:5400/library:latest
+      - step:
+          name: Deploy to kubernetes
+          deployment: test
+          image: atlassian/pipelines-kubectl
+          # trigger: manual  # Uncomment to make this a manual deployment.
+          script:
+            - echo $KUBECONFIG | base64 -d > kubeconfig.yml
+            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5400/library
+            - kubectl --kubeconfig=kubeconfig.yml set image deployment/library library=djziogas.lt:5400/library:latest
+
