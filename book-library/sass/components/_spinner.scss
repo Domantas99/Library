@@ -6,10 +6,12 @@
   right: 0;
   background-color: rgba(225, 225, 225, 0.5);
   z-index: 100;
+  animation: fadein .75s;
+  animation-timing-function: ease-in;
 
   $thickness : 5px;
   $duration : 2500;
-  $delay : $duration/6;
+  $delay : $duration/-6;
 
   $first-color: #d24034;
   $second-color: #fbe58a;
@@ -224,7 +226,11 @@
     to {
       background-position-x: 10px;
     }
+  }
 
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   @keyframes travel {
@@ -284,6 +290,5 @@
       opacity: 0;
       transform: translateX(0px) rotateZ(-90deg);
     }
-
   }
 }

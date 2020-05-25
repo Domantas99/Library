@@ -56,9 +56,11 @@ class HTTPClient {
       throw e;
     }
   }
+
   beforeEach() {
     store.dispatch(addCounter());
   }
+
   afterEach() {
     store.dispatch(subtractCounter());
   }
