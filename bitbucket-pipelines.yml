@@ -17,7 +17,7 @@ pipelines:
           script:
             - cd ./book-library
             - npm install
-            - REACT_APP_SERVER_URL=/api/
+            - export REACT_APP_SERVER_URL=/api/
             - npm run build
           artifacts:
             - book-library/build/**
