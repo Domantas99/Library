@@ -20,13 +20,13 @@ pipelines:
             - REACT_APP_SERVER_URL=/api/
             - npm run build
           artifacts:
-            - build/**
+            - book-library/build/**
       - step:
           name: build backend
           image: djziogas.lt:5443/core-build
           script:
-            - cp -R ./build/* ./book-library-api/book-library-api/wwwroot
-            - dotnet publish ./book-library-api/book-library-api/BookLibrary.API.csproj -c Release -o ./publish
+            - cp -R book-library/build/* book-library-api/book-library-api/wwwroot
+            - dotnet publish book-library-api/book-library-api/BookLibrary.API.csproj -c Release -o publish
           artifacts:
             - publish/**
       - step:
