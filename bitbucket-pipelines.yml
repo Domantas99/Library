@@ -13,7 +13,7 @@ pipelines:
     master:
       - step:
           name: build frontend
-          image: djziogas.lt:5443/core-build
+          image: node:lts
           script:
             - cd ./book-library
             - npm install
@@ -23,8 +23,9 @@ pipelines:
             - book-library/build/**
       - step:
           name: build backend
-          image: djziogas.lt:5443/core-build
+          image: mcr.microsoft.com/dotnet/core/sdk:3.1
           script:
+            - mkdir book-library-api/book-library-api/wwwroot
             - cp -R book-library/build/* book-library-api/book-library-api/wwwroot
             - dotnet publish book-library-api/book-library-api/BookLibrary.API.csproj -c Release -o publish
           artifacts:
