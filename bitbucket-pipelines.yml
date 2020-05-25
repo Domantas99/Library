@@ -14,9 +14,3 @@ pipelines:
           - npm install
           - REACT_APP_SERVER_URL=/api/
           - npm run build
-    - step:
-        name: Deploy to prod
-        deployment: prod
-        trigger: manual  # Uncomment to make this a manual deployment.
-        script:
-          - echo "Deploying to production environment"
