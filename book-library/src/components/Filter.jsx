@@ -78,9 +78,9 @@ const Filter = ({
     return elements;
   };
 
-  useEffect(() => {
-    dispatch(dataAction(generateSortedFilters(filterSelector), userOffice));
-  }, [filterSelector, sort, userOffice]);
+  // useEffect(() => {
+  //   dispatch(dataAction(generateSortedFilters(filterSelector)));
+  // }, [filterSelector, sort]);
 
   useEffect(() => {
     setFilterElements(createFilterElements());

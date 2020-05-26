@@ -69,9 +69,9 @@ export const getBookDetailsEnd = (details) => ({
   payload: details,
 });
 
-export const getBookList = (params, userOffice) => ({
+export const getBookList = (params) => ({
   type: GET_BOOK_LIST_START,
-  payload: { params, userOffice },
+  payload: { params },
 });
 export const getBookListEnd = (bookList) => ({
   type: GET_BOOK_LIST_END,
@@ -105,7 +105,7 @@ export const setFilters = (filters) => ({
 
 export const setFiltersEnd = (filters) => ({
   type: SET_FILTERS_END,
-  payload: { filters },
+  payload: { params: filters },
 });
 
 export const updateBook = (id, book) => ({

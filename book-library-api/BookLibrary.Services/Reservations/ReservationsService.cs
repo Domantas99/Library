@@ -56,7 +56,7 @@ namespace BookLibrary.Services.Reservations
                     {
                         CheckedOutOn = timestamp,
                         PlannedReturnOn = reservation.PlannedReturnOn,
-                        UserId = user.Id,
+                        UserId = reservation.UserId ?? user.Id,
                         BookCase = new BookCase()
                         {
                             BookId = reservation.BookId,

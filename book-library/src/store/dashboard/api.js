@@ -6,7 +6,7 @@ export const getLatestBooksAPI = (numberOfBooks) => {
 };
 
 export const getRecommendedBooksAPI = (count) => {
-  return httpClient.get(`books/recommended/&count=${count}`);
+  return httpClient.get(`books/recommended/?count=${count}`);
 };
 
 export const getCurrentlyReadingBooksAPI = () => {

@@ -123,7 +123,7 @@ const Library = ({ location }) => {
     <Panel title="Library">
       <BookList
         dataSelector={bookSelector}
-        dataAction={getBookList(values, userData?.userOffice)}
+        dataAction={getBookList(values)}
         navigateItems
         addLink="/library/register-book"
         filterComponent={
@@ -134,7 +134,7 @@ const Library = ({ location }) => {
             sortMap={sortMap}
             excludedFilters={excludedFilters}
             setFilterAction={(values) => {
-              return setFilters(values, userData?.userOffice)}}
+              return setFilters(values)}}
           />
         }
         actionButton={userData?.isAdmin===true && actionButton}

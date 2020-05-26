@@ -27,14 +27,14 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
 
   function onSubmitClick() {
     const obj = createReservationObj();
-    dispatch(addReservation(obj, selectedCheckOutUser));
+    dispatch(addReservation(obj));
     onExit();
   }
 
   function createReservationObj() {
     return {
       reservationId: reservation.id || null,
-      userId: selectedCheckOutUser || null,
+      userId: Number(selectedCheckOutUser) || null,
       plannedReturnOn: returndate,
       bookId: reservationObj.book.id,
       officeId: reservationObj.office.id,
