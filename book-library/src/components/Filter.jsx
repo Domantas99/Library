@@ -20,7 +20,6 @@ const Filter = ({
   const [sort, setSort] = useState(sortMap[0].value);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
-  const userOffice = useSelector((state) => state.user.userData?.officeId);
   const [sortOptions, setSortOptions] = useState([]);
 
   const generateSortedFilters = useCallback(
