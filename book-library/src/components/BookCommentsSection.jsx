@@ -1,180 +1,148 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getBookComments } from '../store/comments/actions';
 import BookCommentComponent from './BookCommentComponent';
+import Button from './Button';
 import CommentForm from './CommentForm';
-import { getFieldSorter } from '../utilities';
 
-export default ({ id, initPage = 1, commentsPerPage = 5 }) => {
+const BookCommentsSection = ({ id, pageSize }) => {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.comments.comments);
-  const total = useSelector((state) => state.comments.total);
-  const [page, setPage] = useState(initPage);
-  const [sortField, setSortField] = useState('createdOn');
-  const [sortDirection, setSortDirection] = useState(-1);
+  const [page, setPage] = useState(1);
   const [commentComponents, setCommentComponents] = useState([]);
   const [navButtons, setNavButtons] = useState([]);
 
-  const generateCommentComponents = (
-    comments,
-    page,
-    commentsPerPage,
-    sortField,
-    sortDirection
-  ) => {
-    const start = commentsPerPage * (page - 1);
-    const end = start + commentsPerPage;
-    return [...comments]
-      .sort(getFieldSorter(sortField, sortDirection))
-      .slice(start, end)
-      .map((comment) => {
-        return <BookCommentComponent key={comment.id} data={comment} />;
-      });
-  };
-
-  const generateNavButtons = (page, commentsPerPage, total) => {
-    const buttons = [];
-    const maximum = Math.ceil(total / commentsPerPage);
-    buttons.push(
-      <button
-        key="prev"
-        className="comments__button-step"
-        disabled={!(page > 1)}
-        onClick={() => {
-          setPage(page - 1);
-        }}
-      >
-        &lt; Prev
-      </button>
-    );
-    if (page > 1) {
-      if (page > 2 && page === maximum) {
-        buttons.push(
-          <button
-            key={page - 2}
-            className="comments__button-number"
-            onClick={() => {
-              setPage(page - 2);
-            }}
-          >
-            {page - 2}
-          </button>
+  useEffect(() => {
+    const generateCommentComponents = () => {
+      return comments.result.map((comment) => {
+        return (
+          <BookCommentComponent
+            key={comment.id}
+            data={comment}
+            page={page}
+            pageSize={pageSize}
+          />
         );
-      }
+      });
+    };
+
+    const generateNavButtons = () => {
+      const buttons = [];
       buttons.push(
-        <button
-          key={page - 1}
-          className="comments__button-number"
+        <Button
+          key="prev"
+          className="comments__button-step"
+          disabled={!comments.hasPreviousPage}
           onClick={() => {
             setPage(page - 1);
           }}
         >
-          {page - 1}
-        </button>
+          &lt; Prev
+        </Button>
       );
-    }
-    buttons.push(
-      <button key={page} className="comments__button-current">
-        {page}
-      </button>
-    );
-    if (page < maximum) {
+      if (page > 1) {
+        if (page > 2 && !comments.hasNextPage) {
+          buttons.push(
+            <Button
+              key={page - 2}
+              className="comments__button-number"
+              onClick={() => {
+                setPage(page - 2);
+              }}
+            >
+              {page - 2}
+            </Button>
+          );
+        }
+        buttons.push(
+          <Button
+            key={page - 1}
+            className="comments__button-number"
+            onClick={() => {
+              setPage(page - 1);
+            }}
+          >
+            {page - 1}
+          </Button>
+        );
+      }
       buttons.push(
-        <button
-          key={page + 1}
-          className="comments__button-number"
+        <Button key={page} className="comments__button-current">
+          {page}
+        </Button>
+      );
+      if (comments.hasNextPage) {
+        buttons.push(
+          <Button
+            key={page + 1}
+            className="comments__button-number"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
+            {page + 1}
+          </Button>
+        );
+        if (page === 1 && comments.totalPages > 2) {
+          buttons.push(
+            <Button
+              key={3}
+              className="comments__button-number"
+              onClick={() => {
+                setPage(3);
+              }}
+            >
+              {3}
+            </Button>
+          );
+        }
+      }
+      buttons.push(
+        <Button
+          key="next"
+          className="comments__button-step"
+          disabled={!comments.hasNextPage}
           onClick={() => {
             setPage(page + 1);
           }}
         >
-          {page + 1}
-        </button>
+          Next &gt;
+        </Button>
       );
-      if (page === 1 && maximum > 2) {
-        buttons.push(
-          <button
-            key={3}
-            className="comments__button-number"
-            onClick={() => {
-              setPage(3);
-            }}
-          >
-            {3}
-          </button>
-        );
-      }
+      return buttons;
+    };
+
+    if (comments.result) {
+      setCommentComponents(generateCommentComponents());
+      setNavButtons(generateNavButtons());
     }
-    buttons.push(
-      <button
-        key="next"
-        className="comments__button-step"
-        disabled={!(page < maximum)}
-        onClick={() => {
-          setPage(page + 1);
-        }}
-      >
-        Next &gt;
-      </button>
-    );
-    return buttons;
-  };
-
-  const handleChangeSortField = (event) => {
-    setSortField(event.target.value);
-  };
-
-  const handleChangeSortDirection = (event) => {
-    setSortDirection(event.target.value);
-  };
+  }, [comments, page, pageSize]);
 
   useEffect(() => {
-    dispatch(getBookComments(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    setCommentComponents(
-      generateCommentComponents(
-        comments,
-        page,
-        commentsPerPage,
-        sortField,
-        sortDirection
-      )
-    );
-  }, [comments, page, commentsPerPage, sortField, sortDirection]);
-
-  useEffect(() => {
-    setNavButtons(generateNavButtons(page, commentsPerPage, total));
-  }, [page, commentsPerPage, total]);
+    dispatch(getBookComments({ book: id, page, pageSize }));
+  }, [dispatch, id, page, pageSize]);
 
   return (
     <div>
       <span>
         Comments &bull;
-        {total}
+        {comments.items}
       </span>
-      <select
-        id="comments__sort-field"
-        defaultValue={sortField}
-        onChange={handleChangeSortField}
-      >
-        <option value="createdOn">Date</option>
-      </select>
-      <select
-        id="comments__sort-direction"
-        defaultValue={sortDirection}
-        onChange={handleChangeSortDirection}
-      >
-        <option value="1">Ascending</option>
-        <option value="-1">Descending</option>
-      </select>
       {commentComponents}
       <hr />
       <div>
-        <span>{total} comments</span>
-        <div>{navButtons}</div>
+        <span>{`${comments.items} comments`}</span>
+        <div className="comments__nav">{navButtons}</div>
       </div>
-      <CommentForm book={id} />
+      <CommentForm book={id} page={page} pageSize={pageSize} />
     </div>
   );
 };
+
+BookCommentsSection.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  pageSize: PropTypes.number.isRequired,
+};
+
+export default BookCommentsSection;

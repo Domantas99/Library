@@ -1,6 +1,23 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 import httpClient from '../../core/httpClient';
 import { paramGenerator } from '../../utilities';
+
+export const addReservation = (reservation) => {
+  return httpClient.post('reservations', reservation);
+};
+
+export const addWaiting = (waiting) => {
+  httpClient.post('reservations/waiting', waiting);
+};
+
+export const checkInReservation = ({ reservationId, review }) => {
+  return httpClient.post(`reservations/${reservationId}/check-in`, { review });
+};
+
+export const getBookReservations = (bookId) => {
+  return httpClient.get(`books/${bookId}/reservations`);
+};
 
 export const getReservationsList = ({ filters }) => {
   let url = `reservations/my-reservations`;
@@ -18,27 +35,10 @@ export const getTeamReservations = (params) => {
   return httpClient.get(url);
 };
 
-export const getBookReservations = (bookId) => {
-  return httpClient.get(`books/${bookId}/reservations`);
-};
-
-export const addReservation = (reservation) => {
-  return httpClient.post('reservations', reservation);
-};
-
-// TODO This needs to be a real API method.
-export const updateReservation = (reservation) => {
-  return httpClient.post('reservations', reservation);
-};
-
-export const addWaiting = (waiting) => {
-  httpClient.post('reservations/waiting', waiting);
-};
-
 export const removeWaiting = (waitingId) => {
   return httpClient.delete(`reservations/waiting/${waitingId}`);
 };
 
-export const checkInReservation = ({ reservationId, review }) => {
-  return httpClient.post(`reservations/${reservationId}/check-in`, { review });
+export const updateReservation = (reservation) => {
+  return httpClient.post('reservations', reservation);
 };

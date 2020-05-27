@@ -1,8 +1,7 @@
 import { GET_COMMENTS_END, GET_BOOK_COMMENTS_END } from './actionTypes';
 
 const initialState = {
-  comments: [],
-  total: 0,
+  comments: {},
 };
 
 // TODO Timestamp formatting
@@ -12,7 +11,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
-        total: action.payload.length,
       };
     }
 
@@ -20,7 +18,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
-        total: action.payload.length,
       };
     }
 

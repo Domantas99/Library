@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function CheckInForm({
+const CheckInForm = ({
   reservation,
   onCancel,
   onConfirm,
   reviewValue,
   reviewHandler,
-}) {
+}) => {
   function onConfirmClick() {
     onConfirm();
   }
@@ -52,4 +52,25 @@ export default function CheckInForm({
       </div>
     </div>
   );
-}
+};
+
+CheckInForm.propTypes = {
+  reservation: PropTypes.shape({
+    book: PropTypes.shape({
+      coverPictureUrl: PropTypes.string,
+      title: PropTypes.string,
+      author: PropTypes.string,
+    }),
+  }).isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  reviewValue: PropTypes.string,
+  reviewHandler: PropTypes.func,
+};
+
+CheckInForm.defaultProps = {
+  reviewValue: '',
+  reviewHandler: null,
+};
+
+export default CheckInForm;

@@ -2,15 +2,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { displayToast } from '../store/general/actions';
 import {
   getBookDetails,
   deleteBook,
@@ -26,7 +25,7 @@ import ConfirmationForm from './ConfirmationForm';
 import Modal from './Modal';
 import WaitlistModal from './WaitlistModal';
 
-export default ({ id }) => {
+const BookDetails = ({ id }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
@@ -76,7 +75,13 @@ export default ({ id }) => {
     if (bookDetails.isAnyoneReading === false) {
       dispatch(deleteBook(bookDetails.book.id));
     } else {
-      alert('You cannot delete checked-in book');
+      const toast = {
+        type: 'error',
+        message: 'You cannot delete checked-in book',
+        duration: 5000,
+        position: 'TOP_RIGHT',
+      };
+      dispatch(displayToast(toast));
     }
   }
 
@@ -85,7 +90,13 @@ export default ({ id }) => {
     if (bookDetails.isAnyoneReading === false) {
       dispatch(setBookArchiveState(book.id, !book.isArchived));
     } else {
-      alert('You cannot archive checked-in book');
+      const toast = {
+        type: 'error',
+        message: 'You cannot archive checked-in book',
+        duration: 5000,
+        position: 'TOP_RIGHT',
+      };
+      dispatch(displayToast(toast));
     }
   }
 
@@ -152,7 +163,7 @@ export default ({ id }) => {
     return null;
   }
 
-  return (
+  return id ? (
     <>
       <div
         onClick={() => moreBtnState && setMoreBtnState(false)}
@@ -170,11 +181,11 @@ export default ({ id }) => {
           <div className="book-details__title">
             {bookDetails.book &&
               bookDetails.book.isArchived === true &&
-              '[Archived]'}{' '}
+              '[Archived]'}
             {bookDetails.book && bookDetails.book.title}
           </div>
           <h4 className="text-secondary">
-            by{' '}
+            by
             <span className="text-underlined">
               {bookDetails.book && bookDetails.book.author}
             </span>
@@ -243,7 +254,7 @@ export default ({ id }) => {
             openWaitingModal={openWaitingModal}
           />
           <hr />
-          <BookCommentsSection id={id} />
+          <BookCommentsSection id={id} pageSize={5} />
         </div>
 
         <div className="book-details__side-panel reservation-panel">
@@ -282,5 +293,13 @@ export default ({ id }) => {
         <WaitlistModal waiting={waiting} closeModal={closeWaitingModal} />
       </Modal>
     </>
+  ) : (
+    <></>
   );
 };
+
+BookDetails.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+};
+
+export default BookDetails;

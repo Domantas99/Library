@@ -1,9 +1,8 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import {
   getBookList,
@@ -85,6 +84,22 @@ const Library = ({ location }) => {
     },
   ]);
 
+  const filterComponent = useCallback(
+    () => (
+      <Filter
+        dataAction={getBookList}
+        filterSelector={filterSelector}
+        filterMap={filterMap}
+        sortMap={sortMap}
+        excludedFilters={excludedFilters}
+        setFilterAction={(filterValues) => {
+          return setFilters(filterValues);
+        }}
+      />
+    ),
+    [filterSelector, filterMap, sortMap, excludedFilters]
+  );
+
   useEffect(() => {
     const generateFilterMap = () => {
       return {
@@ -126,21 +141,22 @@ const Library = ({ location }) => {
         dataAction={getBookList(values)}
         navigateItems
         addLink="/library/register-book"
-        filterComponent={
-          <Filter
-            dataAction={getBookList}
-            filterSelector={filterSelector}
-            filterMap={filterMap}
-            sortMap={sortMap}
-            excludedFilters={excludedFilters}
-            setFilterAction={(values) => {
-              return setFilters(values)}}
-          />
-        }
-        actionButton={userData?.isAdmin===true && actionButton}
+        filterComponent={filterComponent()}
+        actionButton={userData && userData.isAdmin === true && actionButton}
       />
     </Panel>
   );
+};
+
+Library.propTypes = {
+  location: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({ search: PropTypes.string }),
+  ]),
+};
+
+Library.defaultProps = {
+  location: '',
 };
 
 export default Library;

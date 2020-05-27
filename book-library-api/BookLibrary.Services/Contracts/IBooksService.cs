@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Comments;
 using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace BookLibrary.Services.Contracts
         Task<List<string>> GetCategories();
         Task<List<BookListDTO>> GetLatestBooks(int count, string userId);
         Task<List<Library>> GetBookAvailability(int bookId);
-        Task<List<BookComment>> GetComments(int bookId);
+        Task<PagedResponseResult<PagedList<CommentDTO>>> GetComments(int bookId, int page, int pageSize);
         Task<Book> DeleteBook(int id);
         Task<List<string>> GetAuthors();
         Task<List<BookListDTO>> GetUserRecommendedBooks(string userId, int count);
