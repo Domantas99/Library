@@ -72,9 +72,7 @@ export function* checkInReservationSaga(action) {
 
 export function* getReservationsSaga(action) {
   try {
-    debugger
     const apiResult = yield call(getReservationsList, action.payload);
-    debugger
     yield put(getReservationsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

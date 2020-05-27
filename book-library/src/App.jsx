@@ -77,7 +77,7 @@ function App() {
                 <Route path="/reservations" component={UserReservations} />
                 <Route path="/edit-book/:id?" component={EditBook} />
                 <Route path="/user-settings" component={UserSettings} />
-                <Redirect exact from="/" to="/dashboard" />
+                <Redirect exact from="/*" to="/dashboard" />
               </Switch>
             </div>
           </div>

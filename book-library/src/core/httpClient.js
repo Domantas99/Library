@@ -3,8 +3,11 @@
 /* eslint-disable no-underscore-dangle */
 import superagent from 'superagent';
 import store from '../store/store';
-import { displayToast, addCounter, subtractCounter } from '../store/general/actions';
-import history from './history';
+import {
+  displayToast,
+  addCounter,
+  subtractCounter,
+} from '../store/general/actions';
 import { isAuth } from '../store/user/actions';
 
 const methods = {
@@ -70,11 +73,9 @@ class HTTPClient {
   }
 
   handleException(e, path) {
-    const { response, request } = e;
+    const { response } = e;
     if (response.statusCode === 401 && !path.includes('auth')) {
-      console.log(path, 'ieejes');
       store.dispatch(isAuth());
-      // history.replace('/login');
     }
     const toast = {
       type: 'error',

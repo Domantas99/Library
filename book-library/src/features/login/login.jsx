@@ -16,7 +16,6 @@ export default function Login() {
   function handleChange(event) {
     event.preventDefault();
     const { name, value } = event.target;
-    // debugger;
     setCredentials({
       ...credentials,
       [name]: value,
@@ -28,25 +27,35 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <div>
-        <label>Email</label>
-        <input
-          onChange={(e) => handleChange(e)}
-          name="Email"
-          value={credentials.Email}
-          placeholder="example@email.com"
-        />
-        <label>Password</label>
-        <input
-          onChange={(e) => handleChange(e)}
-          name="Password"
-          value={credentials.Password}
-          placeholder="password123"
-        />
+    <div className="auth">
+      <h1 className="auth-title">Login to library</h1>
+      <div className="auth-form">
+        <div className="auth-form-block">
+          <label className="auth-form-label">Email</label>
+          <input
+            className="auth-form-input"
+            onChange={(e) => handleChange(e)}
+            name="Email"
+            value={credentials.Email}
+            placeholder="example@email.com"
+          />
+        </div>
+        <div className="auth-form-block">
+          <label className="auth-form-label">Password</label>
+          <input
+            type="password"
+            className="auth-form-input"
+            onChange={(e) => handleChange(e)}
+            name="Password"
+            value={credentials.Password}
+            placeholder="Enter your password"
+          />
+        </div>
       </div>
-      <Button onClick={() => onLoginClick()}>Login</Button>
-      <Button onClick={() => history.push('/registration')}>Register</Button>
+      <div className=" auth-form-buttons">
+        <Button onClick={() => onLoginClick()}>Login</Button>
+        <Button onClick={() => history.push('/registration')}>Register</Button>
+      </div>
     </div>
   );
 }
