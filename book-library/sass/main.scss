@@ -1,41 +1,39 @@
+@import 'core/variables';
+@import 'core/functions';
+@import 'core/mixins';
+@import 'svg/sassvg';
 
+@import 'core/idons';
+@import 'core/typography';
 
+@import 'layout/global';
 
-@import "core/variables";
-@import "core/functions";
-@import "core/mixins";
-@import "svg/sassvg";
+@import 'layout/page';
+@import 'layout/header';
+@import 'layout/sidebar';
+@import 'layout/panel';
+@import 'layout/form';
+@import 'layout/modal';
 
-@import "core/idons";
-@import "core/typography";
-
-@import "layout/global";
-
-@import "layout/page";
-@import "layout/header";
-@import "layout/sidebar";
-@import "layout/panel";
-@import "layout/form";
-@import "layout/modal";
-
-@import "./components/book-grid";
-@import "./components/search-bar";
-@import "./components/search-bar-result-block";
-@import "./components/categories";
-@import "./components/book-details";
-@import "./components/reservation-panel";
-@import "./components/books-section";
-@import "./components/dashboard";
-@import "./components/currently-reading";
-@import "./components/book-status";
-@import "./components/book-reservation-section";
-@import "./components/modal";
-@import "./components/wishform";
-@import "./components/confirmation-form";
-@import "./components/cant-find";
-@import "./components/filter-modal";
-@import "./components/check-in-form";
-@import "./components/book-availability-section";
-@import "./components/user-form";
-@import "./components/spinner";
-@import "./components/rating";
+@import './components/book-grid';
+@import './components/search-bar';
+@import './components/search-bar-result-block';
+@import './components/categories';
+@import './components/book-details';
+@import './components/reservation-panel';
+@import './components/books-section';
+@import './components/dashboard';
+@import './components/currently-reading';
+@import './components/book-status';
+@import './components/book-reservation-section';
+@import './components/modal';
+@import './components/wishform';
+@import './components/confirmation-form';
+@import './components/cant-find';
+@import './components/filter-modal';
+@import './components/check-in-form';
+@import './components/book-availability-section';
+@import './components/user-form';
+@import './components/spinner';
+@import './components/rating';
+@import './components/comments';

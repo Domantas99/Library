@@ -145,7 +145,7 @@ namespace BookLibrary.Services.Wishlist
             {
                 var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
                 if (wishToRemove.Comment != null && wishToRemove.Comment.Length > 0) {
-                    _context.BookComment.Add(new BookComment { Book = book, Comment = wishToRemove.Comment, CreatedBy = wishToRemove.CreatedBy, CreatedOn = wishToRemove.CreatedOn });
+                    _context.BookComment.Add(new BookComment { Book = book, Comment = wishToRemove.Comment, UserId = wishToRemove.CreatedBy, CreatedOn = wishToRemove.CreatedOn });
                 }
                 var userwishes = _context.UserWish.Where(w => w.WishId == wishToRemove.Id);
                 _context.UserWish.RemoveRange(userwishes);

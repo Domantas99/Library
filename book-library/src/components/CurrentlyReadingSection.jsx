@@ -39,13 +39,15 @@ const CurrentlyReadingSection = ({ reservations }) => {
         height="400px"
         width="400px"
       >
-        <CheckInForm
-          reservation={selectedReservation.bookCase}
-          onCancel={() => setModalState(false)}
-          onConfirm={() => onFormConfirm()}
-          reviewValue={review}
-          reviewHandler={setReview}
-        />
+        {selectedReservation && selectedReservation.bookCase && (
+          <CheckInForm
+            reservation={selectedReservation.bookCase}
+            onCancel={() => setModalState(false)}
+            onConfirm={() => onFormConfirm()}
+            reviewValue={review}
+            reviewHandler={setReview}
+          />
+        )}
       </Modal>
 
       <Modal

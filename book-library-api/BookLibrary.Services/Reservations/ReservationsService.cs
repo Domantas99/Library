@@ -112,7 +112,7 @@ namespace BookLibrary.Services.Reservations
                 var book = reservation.BookCase.Book;
                 if (data.Review != null && data.Review.Length > 0)
                 {
-                    _context.BookComment.Add(new BookComment { Book = book, Comment = data.Review, CreatedBy = reservation.UserId, CreatedOn = DateTime.Now });
+                    _context.BookComment.Add(new BookComment { Book = book, Comment = data.Review, UserId = reservation.UserId, CreatedOn = DateTime.Now });
                 }
 
                 await _context.SaveChangesAsync();

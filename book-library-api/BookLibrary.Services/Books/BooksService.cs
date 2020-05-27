@@ -1,5 +1,6 @@
 ﻿using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Comments;
 using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.DTO.Users;
@@ -324,10 +325,19 @@ namespace BookLibrary.Services.Books
             return Task.FromResult(uniqueAuthors);
         }
 
-        public Task<List<BookComment>> GetComments(int bookId)
+        public async Task<PagedResponseResult<PagedList<CommentDTO>>> GetComments(int bookId, int page, int pageSize)
         {
-            var comments = _context.BookComment.Where(comment => comment.BookId == bookId).ToList();
-            return Task.FromResult(comments);
+            var comments = await _context.BookComment.Include(x => x.User).Where(comment => comment.BookId == bookId).OrderByDescending(x => x.CreatedOn).Select(x => (CommentDTO)x).ToListAsync();
+            var response = PagedList<CommentDTO>.CreateFrom(comments, page, pageSize);
+            return new PagedResponseResult<PagedList<CommentDTO>> {
+                Result = response,
+                Page = response.CurrentPage,
+                PageSize = response.PageSize,
+                HasNextPage = response.HasNextPage,
+                HasPreviousPage = response.HasPreviousPage,
+                TotalPages = response.TotalPages,
+                Items = response.Items
+            };
         }
 
         public Task<List<Book>> GetFilteredBooks(string pattern)
