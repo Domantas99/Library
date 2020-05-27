@@ -26,7 +26,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log("veiksmas", action); 
   switch (action.type) {
     case CHECK_IN_RESERVATION_START: {
       return {
