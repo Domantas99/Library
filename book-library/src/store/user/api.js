@@ -10,3 +10,12 @@ export const updateUserApi = (user) => {
 export const login = (loginInfo) => {
   return httpClient.post('auth/login', loginInfo);
 };
+export const registrationApi = (userData) => {
+  return httpClient.post('auth/register', userData);
+};
+export const logoutApi = () => {
+  return httpClient.post('auth/logout');
+};
+export const pingAuthApi = () => {
+  return httpClient.get('auth');
+};

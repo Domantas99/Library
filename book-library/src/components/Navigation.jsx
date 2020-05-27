@@ -4,9 +4,14 @@ import { useDispatch } from 'react-redux';
 import Categories from './Categories';
 import { selectCategory } from '../store/library/actions';
 import UserInfo from './UserInfo';
+import { logOut } from '../store/user/actions';
 
 export default function Navigation() {
   const dispatch = useDispatch();
+  function onLogOutClick() {
+    dispatch(logOut());
+  }
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -73,6 +78,9 @@ export default function Navigation() {
           <NavLink to="user-settings">
             <button>Manage my account</button>
           </NavLink>
+        </div>
+        <div className="navigation__item">
+          <button onClick={() => onLogOutClick()}>Log out</button>
         </div>
       </div>
     </div>

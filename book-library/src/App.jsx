@@ -14,14 +14,19 @@ import {
   Wishlist,
 } from './features';
 import { SearchBar, Navigation, Button, Spinner } from './components';
-import { getUser, login } from './store/user/actions';
+import { getUser, login, isAuth } from './store/user/actions';
 import 'react-toastify/dist/ReactToastify.css';
+import Registration from './features/registration/registration';
+import Login from './features/login/login';
+import { getOffices } from './store/office/actions';
 
 toast.configure();
 function App() {
   const dispatch = useDispatch();
   const myToast = useSelector((state) => state.general.toast);
   const spinnerCount = useSelector((state) => state.general.spinnerCount);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const isAuthLoading = useSelector((state) => state.user.authLoading);
 
   const notify = () => {
     toast[myToast.type](myToast.message, {
@@ -37,33 +42,55 @@ function App() {
   }, [myToast]);
 
   useEffect(() => {
-    dispatch(getUser());
-    /* eslint-disable react-hooks/exhaustive-deps */
+    dispatch(isAuth());
   }, []);
+
+  useEffect(() => {
+    dispatch(getOffices());
+    if (isAuthenticated) {
+      dispatch(getUser());
+    }
+  }, [isAuthenticated]);
+
+  if (isAuthLoading) {
+    return null;
+  }
 
   return (
     <>
       {spinnerCount !== 0 && <Spinner />}
-      <div className="header">
-        <SearchBar />
-        <Button onClick={() => dispatch(login())}>Login</Button>
-      </div>
-      <Navigation />
-      <div className="page">
-        <div className="page__content">
+      {isAuthenticated ? (
+        <>
+          <div className="header">
+            <SearchBar />
+            <Button onClick={() => dispatch(login())}>Login</Button>
+          </div>
+          <Navigation />
+          <div className="page">
+            <div className="page__content">
+              <Switch>
+                <Route path="/dashboard" component={Dashboard} />
+                <Route path="/library/register-book" component={RegisterBook} />
+                <Route path="/library/:id?" component={Library} />
+                <Route path="/wishlist" component={Wishlist} />
+                <Route path="/reservations/team" component={TeamReservations} />
+                <Route path="/reservations" component={UserReservations} />
+                <Route path="/edit-book/:id?" component={EditBook} />
+                <Route path="/user-settings" component={UserSettings} />
+                <Redirect exact from="/*" to="/dashboard" />
+              </Switch>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>
           <Switch>
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/library/register-book" component={RegisterBook} />
-            <Route path="/library/:id?" component={Library} />
-            <Route path="/wishlist" component={Wishlist} />
-            <Route path="/reservations/team" component={TeamReservations} />
-            <Route path="/reservations" component={UserReservations} />
-            <Route path="/edit-book/:id?" component={EditBook} />
-            <Route path="/user-settings" component={UserSettings} />
-            <Redirect exact from="/" to="/library" />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/registration" component={Registration} />
+            <Redirect exact from="/" to="/login" />
           </Switch>
         </div>
-      </div>
+      )}
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
   addCounter,
   subtractCounter,
 } from '../store/general/actions';
+import { isAuth } from '../store/user/actions';
 
 const methods = {
   GET: 'GET',
@@ -46,7 +47,6 @@ class HTTPClient {
     if (method === methods.POST || method === methods.PUT) {
       request.send(data);
     }
-
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await request.withCredentials();
@@ -54,8 +54,8 @@ class HTTPClient {
 
       return response.body;
     } catch (e) {
-      this.handleException(e);
       this.afterEach();
+      this.handleException(e, path);
       throw e;
     }
   }
@@ -72,8 +72,11 @@ class HTTPClient {
     return this.baseUrl + path;
   }
 
-  handleException(e) {
+  handleException(e, path) {
     const { response } = e;
+    if (response.statusCode === 401 && !path.includes('auth')) {
+      store.dispatch(isAuth());
+    }
     const toast = {
       type: 'error',
       message: response.body.message,
