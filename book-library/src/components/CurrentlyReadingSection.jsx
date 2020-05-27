@@ -14,6 +14,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
   const [modalState, setModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState({});
+  const [review, setReview] = useState('');
 
   function onCheckInClick(reservation) {
     setSelectedReservation(reservation);
@@ -26,7 +27,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
   }
 
   function onFormConfirm() {
-    dispatch(checkInReservation(selectedReservation.id, 1));
+    dispatch(checkInReservation(selectedReservation.id, review));
     setModalState(false);
   }
 
@@ -43,6 +44,8 @@ const CurrentlyReadingSection = ({ reservations }) => {
             reservation={selectedReservation.bookCase}
             onCancel={() => setModalState(false)}
             onConfirm={() => onFormConfirm()}
+            reviewValue={review}
+            reviewHandler={setReview}
           />
         )}
       </Modal>

@@ -75,7 +75,7 @@ export default (state = initialState, action) => {
     }
 
     case GET_TEAM_RESERVATIONS_END: {
-      const reservations = action.payload.map((reservation) => {
+      const reservations = action.payload.result.map((reservation) => {
         return {
           ...reservation,
         };

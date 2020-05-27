@@ -34,7 +34,6 @@ export const addWaiting = (waiting) => ({
   type: ADD_WAITING_START,
   payload: waiting,
 });
-
 export const addWaitingEnd = () => ({
   type: ADD_WAITING_END,
 });
