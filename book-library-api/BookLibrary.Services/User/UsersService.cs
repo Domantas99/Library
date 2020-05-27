@@ -52,7 +52,8 @@ namespace BookLibrary.Services
                     UserName = newUserInfo.Email,
                     Email = newUserInfo.Email,
                     FullName = newUserInfo.FullName,
-                    AspNetUserId = aspNetUserId
+                    AspNetUserId = aspNetUserId,
+                    OfficeId = newUserInfo.OfficeId
                 });
             }
             catch

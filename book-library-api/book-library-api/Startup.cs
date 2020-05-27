@@ -68,7 +68,7 @@ namespace BookLibrary.Api
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
                     options.SlidingExpiration = true;
-                    options.ExpireTimeSpan = new TimeSpan(1, 0, 0);
+                    options.ExpireTimeSpan = new TimeSpan(0, 20, 0);
                     options.Events.OnRedirectToLogin = context =>
                     {
                         context.Response.StatusCode = 401;
@@ -80,6 +80,16 @@ namespace BookLibrary.Api
                         return Task.CompletedTask;
                     };
                 });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+            });
 
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<ICommentsService, CommentsService>();

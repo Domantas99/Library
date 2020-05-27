@@ -7,6 +7,7 @@ using BookLibrary.DTO.Users;
 using BookLibrary.Services.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,12 @@ namespace BookLibrary.Api.Controllers.Auth
 			await _usersService.CreateUser(userDetails, user.Id);
 
 			return await Login(userDetails);
+		}
+
+		[HttpGet]
+		[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+		public ActionResult Ping() {
+			return Ok();
 		}
 
 		[HttpPost]

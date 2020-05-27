@@ -4,6 +4,8 @@
 import superagent from 'superagent';
 import store from '../store/store';
 import { displayToast, addCounter, subtractCounter } from '../store/general/actions';
+import history from './history';
+import { isAuth } from '../store/user/actions';
 
 const methods = {
   GET: 'GET',
@@ -18,7 +20,6 @@ class HTTPClient {
   }
 
   async get(path) {
-
     return this._makeRequest(methods.GET, path);
   }
 
@@ -43,7 +44,6 @@ class HTTPClient {
     if (method === methods.POST || method === methods.PUT) {
       request.send(data);
     }
-
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await request.withCredentials();
@@ -51,8 +51,8 @@ class HTTPClient {
 
       return response.body;
     } catch (e) {
-      this.handleException(e);
       this.afterEach();
+      this.handleException(e, path);
       throw e;
     }
   }
@@ -69,8 +69,13 @@ class HTTPClient {
     return this.baseUrl + path;
   }
 
-  handleException(e) {
-    const { response } = e;
+  handleException(e, path) {
+    const { response, request } = e;
+    if (response.statusCode === 401 && !path.includes('auth')) {
+      console.log(path, 'ieejes');
+      store.dispatch(isAuth());
+      // history.replace('/login');
+    }
     const toast = {
       type: 'error',
       message: response.body.message,
