@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookLibrary.DataBase.Models;
 using BookLibrary.DTO.Books;
+using BookLibrary.DTO.Comments;
 using BookLibrary.DTO.Reservations;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
@@ -82,9 +83,9 @@ namespace BookLibrary.Api.Controllers.Books
         }
 
         [HttpGet("{id}/comments")]
-        public async Task<ActionResult<ICollection<BookComment>>> GetComments(int id)
+        public async Task<ActionResult<PagedResponseResult<PagedList<CommentDTO>>>> GetComments(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
         {
-            return await _booksService.GetComments(id);
+            return await _booksService.GetComments(id, page, pageSize);
         }
 
         [HttpGet("{id}/reservations")]

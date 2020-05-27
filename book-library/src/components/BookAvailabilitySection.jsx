@@ -245,13 +245,15 @@ const BookAvailabilitySection = ({
         height="400px"
         width="400px"
       >
-        <CheckInForm
-          reservation={activeReservation}
-          onCancel={() => setCheckInModalState(false)}
-          onConfirm={() => onCheckInSubmitClick()}
-          reviewValue={reservationReview}
-          reviewHandler={setReservationReview}
-        />
+        {activeReservation && (
+          <CheckInForm
+            reservation={activeReservation}
+            onCancel={() => setCheckInModalState(false)}
+            onConfirm={() => onCheckInSubmitClick()}
+            reviewValue={reservationReview}
+            reviewHandler={setReservationReview}
+          />
+        )}
       </Modal>
       <Modal
         modalState={cantFindModal}

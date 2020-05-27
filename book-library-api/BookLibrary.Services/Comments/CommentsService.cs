@@ -1,4 +1,5 @@
 ﻿using BookLibrary.DataBase.Models;
+using BookLibrary.DTO.Comments;
 using BookLibrary.DTO.Response;
 using BookLibrary.Services.Contracts;
 using BookLibrary.Services.ExceptionHandling.Exceptions;
@@ -20,19 +21,37 @@ namespace BookLibrary.Services.Comments
             _context = context;
         }
 
-        public async Task<BookComment> AddComment(BookComment comment)
+        public async Task<CommentDTO> AddComment(CommentCreateDTO comment, string userId)
         {
             try
             {
-                _context.BookComment.Add(comment);
+                var user = _context.User.Where(x => x.AspNetUserId == userId).FirstOrDefault();
+                var newComment = new BookComment { BookId = comment.BookId, Comment = comment.Comment, CreatedOn = DateTime.Now, UserId = user.Id };
+                _context.BookComment.Add(newComment);
                 await _context.SaveChangesAsync();
+                return (CommentDTO)newComment;
             }
             catch
             {
                 throw new HandledException("There was an error adding a comment");
             }
+        }
 
-            return comment;
+        public async Task<CommentDTO> DeleteComment(int id, string userId)
+        {
+            var user = _context.User.Where(x => x.AspNetUserId == userId).FirstOrDefault();
+            var comment = _context.BookComment.Include(x => x.User).Where(x => x.Id == id).FirstOrDefault();
+
+            if (user.IsAdmin || user.Id == comment.UserId)
+            {
+                _context.BookComment.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
+            else {
+                throw new HandledException("Only the comment's author or an admin can delete a comment");
+            }
+
+            return (CommentDTO)comment;
         }
 
         public async Task<BookComment> GetComment(int id)

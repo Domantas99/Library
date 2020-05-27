@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addComment } from '../store/comments/actions';
 
-export default ({ book }) => {
+const CommentForm = ({ book, page, pageSize }) => {
   const dispatch = useDispatch();
 
   const [commentText, setCommentText] = useState('');
@@ -10,6 +11,7 @@ export default ({ book }) => {
   const handleDefaultClear = (event) => {
     if (!handleDefaultClear.fired) {
       handleDefaultClear.fired = true;
+      // eslint-disable-next-line no-param-reassign
       event.target.value = '';
     }
   };
@@ -20,7 +22,7 @@ export default ({ book }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(addComment({ bookId: book, comment: commentText, createdBy: 1 }));
+    dispatch(addComment({ book, comment: commentText, page, pageSize }));
     document.getElementById('comment-form').reset();
     handleChange.fired = false;
     setCommentText('');
@@ -37,3 +39,11 @@ export default ({ book }) => {
     </form>
   );
 };
+
+CommentForm.propTypes = {
+  book: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  page: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+};
+
+export default CommentForm;

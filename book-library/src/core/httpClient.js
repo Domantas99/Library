@@ -3,7 +3,11 @@
 /* eslint-disable no-underscore-dangle */
 import superagent from 'superagent';
 import store from '../store/store';
-import { displayToast, addCounter, subtractCounter } from '../store/general/actions';
+import {
+  displayToast,
+  addCounter,
+  subtractCounter,
+} from '../store/general/actions';
 
 const methods = {
   GET: 'GET',
@@ -18,7 +22,6 @@ class HTTPClient {
   }
 
   async get(path) {
-
     return this._makeRequest(methods.GET, path);
   }
 

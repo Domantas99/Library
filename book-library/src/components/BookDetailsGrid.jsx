@@ -6,31 +6,45 @@ const BookDetailsGrid = ({ bookDetails }) => (
     <h3>Details</h3>
     <div className="book-details__grid">
       <span className="text-secondary">Original Title</span>
-      <span className="book-details__detail">{bookDetails?.title}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.title}
+      </span>
 
       <span className="text-secondary">Format</span>
       <span className="book-details__detail">
-        {bookDetails?.format} | {bookDetails?.numberOfPages} pages
+        {`${bookDetails && bookDetails.format} | ${
+          bookDetails && bookDetails.numberOfPages
+        } pages`}
       </span>
       <span className="text-secondary">Publication date</span>
-      <span className="book-details__detail">{bookDetails?.releaseDate}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.releaseDate}
+      </span>
 
       <span className="text-secondary">Publisher</span>
-      <span className="book-details__detail">{bookDetails?.publisher}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.publisher}
+      </span>
 
       <span className="text-secondary">Category</span>
-      <span className="book-details__detail">{bookDetails?.category}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.category}
+      </span>
 
       <span className="text-secondary">ISBN</span>
-      <span className="book-details__detail">{bookDetails?.isbn}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.isbn}
+      </span>
 
       <span className="text-secondary">Edition Language</span>
       <span className="book-details__detail">
-        {bookDetails?.editionLanguage}
+        {bookDetails && bookDetails.editionLanguage}
       </span>
 
       <span className="text-secondary">Series</span>
-      <span className="book-details__detail">{bookDetails?.series}</span>
+      <span className="book-details__detail">
+        {bookDetails && bookDetails.series}
+      </span>
     </div>
   </>
 );

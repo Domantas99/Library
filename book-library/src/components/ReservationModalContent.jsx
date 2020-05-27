@@ -4,11 +4,12 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
 import { formatDate } from '../utilities/dateHalper';
 
 export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
+  const userData = useSelector((state) => state.user.userData);
   const [returndate, handleDateChange] = useState(
     formatDate(reservation.plannedReturnOn) ||
       formatDate(reservation.returnDate) ||
@@ -84,10 +85,10 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
             <h4>Check out for:</h4>
             <select
               onChange={(e) => setCheckOutUser(e.target.value)}
-              value={selectedCheckOutUser}
+              value={selectedCheckOutUser || userData.userId}
             >
               {notReadingUsers.map((user) => (
-                <option value={user.userId}>
+                <option key={user.userId} value={user.userId}>
                   {/* <img src={user.imageUrl}/> */}
                   {user.fullName}
                 </option>

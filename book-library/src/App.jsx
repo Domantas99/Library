@@ -43,27 +43,27 @@ function App() {
 
   return (
     <>
-        {spinnerCount!==0  && <Spinner />}
-        <div className="header">
-          <SearchBar />
-          <Button onClick={() => dispatch(login())}>Login</Button>
+      {spinnerCount !== 0 && <Spinner />}
+      <div className="header">
+        <SearchBar />
+        <Button onClick={() => dispatch(login())}>Login</Button>
+      </div>
+      <Navigation />
+      <div className="page">
+        <div className="page__content">
+          <Switch>
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/library/register-book" component={RegisterBook} />
+            <Route path="/library/:id?" component={Library} />
+            <Route path="/wishlist" component={Wishlist} />
+            <Route path="/reservations/team" component={TeamReservations} />
+            <Route path="/reservations" component={UserReservations} />
+            <Route path="/edit-book/:id?" component={EditBook} />
+            <Route path="/user-settings" component={UserSettings} />
+            <Redirect exact from="/" to="/library" />
+          </Switch>
         </div>
-        <Navigation />
-        <div className="page">
-          <div className="page__content">
-            <Switch>
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/library/register-book" component={RegisterBook} />
-              <Route path="/library/:id?" component={Library} />
-              <Route path="/wishlist" component={Wishlist} />
-              <Route path="/reservations/team" component={TeamReservations} />
-              <Route path="/reservations" component={UserReservations} />
-              <Route path="/edit-book/:id?" component={EditBook} />
-              <Route path="/user-settings" component={UserSettings} />
-              <Redirect exact from="/" to="/library" />
-            </Switch>
-          </div>
-        </div>
+      </div>
     </>
   );
 }
