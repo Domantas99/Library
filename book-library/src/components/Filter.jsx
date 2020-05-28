@@ -9,7 +9,6 @@ import FilterModalContent from './FilterModalContent';
 import Modal from './Modal';
 
 const Filter = ({
-  dataAction,
   filterSelector,
   filterMap,
   sortMap,
@@ -59,6 +58,12 @@ const Filter = ({
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
+    dispatch(
+      setFilterAction({
+        ...filterSelector,
+        sort: [event.target.value],
+      })
+    );
   };
 
   const createFilterElements = () => {
@@ -124,7 +129,7 @@ const Filter = ({
 };
 
 Filter.propTypes = {
-  dataAction: PropTypes.func.isRequired,
+  excludedFilters: PropTypes.arrayOf(PropTypes.string),
   filterMap: PropTypes.objectOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -144,8 +149,12 @@ Filter.propTypes = {
         PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       ),
     ])
-  ),
+  ).isRequired,
   setFilterAction: PropTypes.func.isRequired,
+};
+
+Filter.defaultProps = {
+  excludedFilters: [],
 };
 
 export default Filter;

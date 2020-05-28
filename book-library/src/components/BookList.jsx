@@ -39,7 +39,7 @@ function BookList({
             data={element}
             navigate={navigateItems}
             offices={offices}
-            renderActions={(data) => renderItemActions(data, index)}
+            renderActions={(book) => renderItemActions(book, index)}
           />
         );
       });

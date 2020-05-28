@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import {
@@ -48,6 +47,7 @@ const Wishlist = (location) => {
       values: [],
     },
   });
+  /* eslint-disable no-unused-vars */
   const [sortMap, setSortMap] = useState([
     {
       value: 'recent',
@@ -73,6 +73,14 @@ const Wishlist = (location) => {
       value: 'authorza',
       label: 'Author [Z-A]',
     },
+    {
+      value: 'votesasc',
+      label: 'Votes [Ascending]',
+    },
+    {
+      value: 'votesdsc',
+      label: 'Votes [Descending]',
+    },
   ]);
 
   useEffect(() => {
@@ -91,6 +99,22 @@ const Wishlist = (location) => {
 
     setFilterMap(generateFilterMap());
   }, [categories, authors]);
+
+  const filterComponent = useCallback(
+    () => (
+      <Filter
+        dataAction={getWishlist}
+        filterMap={filterMap}
+        filterSelector={filterSelector}
+        sortMap={sortMap}
+        excludedFilters={excludedFilters}
+        setFilterAction={(filterValues) => {
+          return setFilters(filterValues);
+        }}
+      />
+    ),
+    [filterSelector, filterMap, sortMap, excludedFilters]
+  );
 
   useEffect(() => {
     dispatch(setFilters(values));
@@ -111,16 +135,7 @@ const Wishlist = (location) => {
           dataSelector={wishSelector}
           dataAction={getWishlist(values)}
           addLink="/add-wishlist"
-          filterComponent={
-            <Filter
-              dataAction={getWishlist}
-              filterMap={filterMap}
-              filterSelector={filterSelector}
-              sortMap={sortMap}
-              excludedFilters={excludedFilters}
-              setFilterAction={setFilters}
-            />
-          }
+          filterComponent={filterComponent()}
           actionButton={actionButton}
           renderItemActions={(data, index) => (
             <WishListVotes
