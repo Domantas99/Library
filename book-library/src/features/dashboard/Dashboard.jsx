@@ -52,7 +52,7 @@ const Dashboard = () => {
         </Panel>
       </div>
 }
-      {currentlyReadingBooks.length > 0 && (
+      {currentlyReadingBooks && currentlyReadingBooks.length > 0 && (
         <div className="dashboard__sidebar">
           <Panel title="Currently Reading" className="sticky">
             <CurrentlyReadingSection
