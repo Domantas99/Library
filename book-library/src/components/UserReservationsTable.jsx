@@ -135,7 +135,7 @@ const ReservationsTable = () => {
   }, []);
 
   return (
-    <div className="panel__content">
+    <>
       <Filter
         dataAction={(filters) => getReservations(filters)}
         filterSelector={filterSelector}
@@ -144,7 +144,7 @@ const ReservationsTable = () => {
         excludedFilters={excludedFilters}
         setFilterAction={(filters) => setFilters(filters)}
       />
-      <table>
+      <table className="reservations-table">
         <thead>
           <tr>
             <th>Book</th>
@@ -152,13 +152,13 @@ const ReservationsTable = () => {
             <th>Status</th>
             <th>Booked from</th>
             <th>Return Date</th>
-            <th>Status</th>
+            <th />
           </tr>
         </thead>
         <tbody>{tableRows}</tbody>
       </table>
       <span>{`${reservationData.length} reservations`}</span>
-    </div>
+    </>
   );
 };
 

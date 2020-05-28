@@ -249,7 +249,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
   }, [reservationData, page, pageSize]);
 
   return (
-    <div className="panel__content">
+    <>
       <Filter
         dataAction={getTeamReservations}
         filterSelector={filterSelector}
@@ -258,7 +258,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
         excludedFilters={excludedFilters}
         setFilterAction={setTeamFilters}
       />
-      <table>
+      <table className="reservations-table">
         <thead>
           <tr>
             <th>Employee</th>
@@ -267,14 +267,14 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
             <th>Status</th>
             <th>Booked from</th>
             <th>Return Date</th>
-            <th>Status</th>
+            <th />
           </tr>
         </thead>
         <tbody>{tableRows}</tbody>
       </table>
       <span>{`${reservationData.items} reservations`}</span>
       {navButtons}
-    </div>
+    </>
   );
 };
 

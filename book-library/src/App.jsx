@@ -8,8 +8,7 @@ import {
   EditBook,
   Library,
   RegisterBook,
-  TeamReservations,
-  UserReservations,
+  Reservations,
   UserSettings,
   Wishlist,
 } from './features';
@@ -63,7 +62,6 @@ function App() {
         <>
           <div className="header">
             <SearchBar />
-            <Button onClick={() => dispatch(login())}>Login</Button>
           </div>
           <Navigation />
           <div className="page">
@@ -73,8 +71,7 @@ function App() {
                 <Route path="/library/register-book" component={RegisterBook} />
                 <Route path="/library/:id?" component={Library} />
                 <Route path="/wishlist" component={Wishlist} />
-                <Route path="/reservations/team" component={TeamReservations} />
-                <Route path="/reservations" component={UserReservations} />
+                <Route path="/reservations" component={Reservations} />
                 <Route path="/edit-book/:id?" component={EditBook} />
                 <Route path="/user-settings" component={UserSettings} />
                 <Redirect exact from="/*" to="/dashboard" />

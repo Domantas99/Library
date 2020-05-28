@@ -4,20 +4,31 @@
   margin: 0;
   top: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
   position: fixed;
   width: $sidebar-width;
   box-shadow: inset -1px 0px 0px $color-book-shadow;
+  justify-content: space-between;
 
   &__content {
-    margin-top: base(14);
     width: 100%;
+    overflow: hidden auto;
   }
 
   &__header {
-    top: 0;
-    left: 0;
     width: 100%;
     height: $header-height;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    padding: base(2);
+
+    .btn:first-child {
+      margin-bottom: base();
+    }
   }
 
   &__logo {
@@ -31,8 +42,12 @@
   margin: 0 base(2) base(4);
 
   display: flex;
+  position: sticky;
+  top: 0;
   flex-direction: column;
   justify-content: left;
+  background-color: $color-background;
+  z-index: 10;
 
   &__image {
     border-radius: 50%;
@@ -95,7 +110,8 @@
     min-height: 0;
     max-height: 0;
     height: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     flex-direction: column;
     padding: 0 base(2);
     background: $color-background-selected;

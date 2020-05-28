@@ -88,13 +88,13 @@
             justify-content: space-around;
 
             &-edit {
-                background-color: #DCDDE4;
+                background-color: $color-background-dark;
                 color: black;
                 width: 130px;
                 height: 28px;
             }
             &-checkin {
-                background-color: #4568FB;
+                background-color: $color-blue;
                 color: white;
                 width: 130px;
                 height: 28px;

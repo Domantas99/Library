@@ -1,7 +1,9 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   checkInReservation,
   removeWaiting,
@@ -10,6 +12,7 @@ import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
 import { formatDate } from '../utilities/dateHalper';
+import Button from './Button';
 
 const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
@@ -60,40 +63,66 @@ const ReservationsTableItem = ({ data }) => {
         </td>
       )}
       <td>
-        <img src={data.book.coverPictureUrl} alt="" />
-        <span>{data.book.title}</span>
-        <span>{data.book.author}</span>
+        <div className="reservations-table__book">
+          <Link
+            to={`/library/${data.book.id}`}
+            className="reservations-table__image"
+          >
+            <img src={data.book.coverPictureUrl} alt="" />
+          </Link>
+          <div className="reservations-table__book-info">
+            <Link
+              to={`/library/${data.book.id}`}
+              className="reservations-table__title"
+            >
+              {data.book.title}
+            </Link>
+            <span className="reservations-table__author">
+              {data.book.author}
+            </span>
+          </div>
+        </div>
       </td>
       <td>
         <span>{data.office.name}</span>
       </td>
       <td>
-        <span>{data.status}</span>
+        <span className={`reservations-table__status reservations-table__status--${_.toLower(data.status)}`}>{data.status}</span>
       </td>
       <td>{formatDate(data.bookedFrom)}</td>
       <td>{formatDate(data.returnDate)}</td>
       {data.status === 'Borrowed' ? (
         <td>
-          <Modal
-            modalState={modalState}
-            exitAction={() => setModalState(false)}
-            height="auto"
-            width="400px"
-          >
-            <ReservationModalContent
-              reservation={data}
-              onExit={() => setModalState(false)}
-            />
-          </Modal>
-          <button onClick={() => handleModalClick()}>Edit</button>
-          <button onClick={() => setCheckInModalState(true)}>Check In</button>
+          <div className="reservations-table__actions">
+            <Modal
+              modalState={modalState}
+              exitAction={() => setModalState(false)}
+              height="auto"
+              width="400px"
+            >
+              <ReservationModalContent
+                reservation={data}
+                onExit={() => setModalState(false)}
+              />
+            </Modal>
+            <Button secondary mini onClick={() => handleModalClick()}>
+              Edit
+            </Button>
+            <Button mini onClick={() => setCheckInModalState(true)}>
+              Check In
+            </Button>
+          </div>
+        </td>
+      ) : data.status === 'Waiting' ? (
+        <td className="reservations-table__actions">
+          <div className="reservations-table__actions">
+            <Button secondary mini onClick={onLeaveWaitlist}>
+              Leave waitlist
+            </Button>
+          </div>
         </td>
       ) : (
-        data.status === 'Waiting' && (
-          <td>
-            <button onClick={onLeaveWaitlist}>Leave waitlist</button>
-          </td>
-        )
+        <td />
       )}
     </tr>
   );

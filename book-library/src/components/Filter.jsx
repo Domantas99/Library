@@ -44,10 +44,11 @@ const Filter = ({
     return (
       <Button
         mini
+        clear
         key={`${key}-${filter}`}
         onClick={() => removeFilter(key, filter)}
       >
-        {`${filterMap[key].label}: ${filter}`}
+        {`${filterMap[key].label}: ${filter} X`}
       </Button>
     );
   };
@@ -103,7 +104,7 @@ const Filter = ({
   return (
     <>
       {filterElements}
-      <Button onClick={() => handleModalClick()}>Add Filters</Button>
+      <Button mini onClick={() => handleModalClick()}>Add Filters</Button>
       <select
         id="book-list-sorting-field"
         defaultValue={sort}

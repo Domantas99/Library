@@ -1,10 +1,11 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Categories from './Categories';
 import { selectCategory } from '../store/library/actions';
 import UserInfo from './UserInfo';
 import { logOut } from '../store/user/actions';
+import Button from './Button';
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -74,14 +75,10 @@ export default function Navigation() {
             </NavLink>
           </li>
         </ul>
-        <div className="navigation__item">
-          <NavLink to="user-settings">
-            <button>Manage my account</button>
-          </NavLink>
-        </div>
-        <div className="navigation__item">
-          <button onClick={() => onLogOutClick()}>Log out</button>
-        </div>
+      </div>
+      <div className="sidebar__footer">
+        <Link to="/user-settings"><Button clear wide mini>Manage my account</Button></Link>
+        <Button clear wide mini onClick={() => onLogOutClick()}>Log out</Button>
       </div>
     </div>
   );

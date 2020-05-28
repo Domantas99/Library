@@ -1,6 +1,6 @@
 import { Dashboard } from './dashboard';
 import { Library, RegisterBook, EditBook } from './library';
-import { TeamReservations, UserReservations } from './reservations';
+import Reservations from './reservations/Reservations';
 import { UserSettings } from './user-settings';
 import { Wishlist } from './wishlist';
 
@@ -9,8 +9,7 @@ export {
   EditBook,
   Library,
   RegisterBook,
-  TeamReservations,
-  UserReservations,
+  Reservations,
   UserSettings,
   Wishlist,
 };
