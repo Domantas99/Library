@@ -26,6 +26,9 @@ function App() {
   const spinnerCount = useSelector((state) => state.general.spinnerCount);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const isAuthLoading = useSelector((state) => state.user.authLoading);
+  const isAdmin = useSelector(
+    (state) => (state.user.userData?.isAdmin) || false
+  );
 
   const notify = () => {
     toast[myToast.type](myToast.message, {
@@ -68,11 +71,22 @@ function App() {
             <div className="page__content">
               <Switch>
                 <Route path="/dashboard" component={Dashboard} />
-                <Route path="/library/register-book" component={RegisterBook} />
+                {isAdmin ? (
+                  <Route
+                    path="/library/register-book"
+                    component={RegisterBook}
+                  />
+                ) : (
+                  <Redirect from="/library/register-book" to="/dashboard" />
+                )}
                 <Route path="/library/:id?" component={Library} />
                 <Route path="/wishlist" component={Wishlist} />
                 <Route path="/reservations" component={Reservations} />
-                <Route path="/edit-book/:id?" component={EditBook} />
+                {isAdmin ? (
+                  <Route path="/edit-book/:id?" component={EditBook} />
+                ) : (
+                  <Redirect from="/edit-book/:id?" to="/dashboard" />
+                )}
                 <Route path="/user-settings" component={UserSettings} />
                 <Redirect exact from="/*" to="/dashboard" />
               </Switch>
