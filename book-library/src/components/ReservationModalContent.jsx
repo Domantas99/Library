@@ -6,7 +6,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReservation } from '../store/reservations/actions';
-import { formatDate } from '../utilities/dateHalper';
+import { formatDate, isDate } from '../utilities/dateHalper';
+import { displayToast } from '../store/general/actions';
 
 export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
   const userData = useSelector((state) => state.user.userData);
@@ -27,9 +28,19 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
   };
 
   function onSubmitClick() {
-    const obj = createReservationObj();
-    dispatch(addReservation(obj));
-    onExit();
+    if (isDate(returndate) && formatDate(new Date()) <= returndate) {
+      const obj = createReservationObj();
+      dispatch(addReservation(obj));
+      onExit();
+    } else {
+      const toast = {
+        type: 'error',
+        message: 'Wrong date format',
+        duration: 5000,
+        position: 'TOP_RIGHT',
+      };
+      dispatch(displayToast(toast));
+    }
   }
 
   function createReservationObj() {

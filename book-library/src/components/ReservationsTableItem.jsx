@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
@@ -11,8 +12,8 @@ import {
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
-import { formatDate } from '../utilities/dateHalper';
 import Button from './Button';
+import ReturnDate from './ReturnDate';
 
 const ReservationsTableItem = ({ data }) => {
   const dispatch = useDispatch();
@@ -87,10 +88,23 @@ const ReservationsTableItem = ({ data }) => {
         <span>{data.office.name}</span>
       </td>
       <td>
-        <span className={`reservations-table__status reservations-table__status--${_.toLower(data.status)}`}>{data.status}</span>
+        <span
+          className={`reservations-table__status reservations-table__status--${_.toLower(
+            data.status
+          )}`}
+        >
+          {data.status}
+        </span>
       </td>
-      <td>{formatDate(data.bookedFrom)}</td>
-      <td>{formatDate(data.returnDate)}</td>
+      <td>
+        <ReturnDate date={data.bookedFrom} />
+      </td>
+      <td>
+        <ReturnDate
+          validate={data.status === 'Borrowed'}
+          date={data.returnDate}
+        />
+      </td>
       {data.status === 'Borrowed' ? (
         <td>
           <div className="reservations-table__actions">
