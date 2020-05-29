@@ -147,7 +147,8 @@ export function* setBookArchiveStateSaga(action) {
   try {
     const apiResult = yield call(setBookArchiveStatusAPI, action.payload);
     yield put(setBookArchiveStateEnd(action.payload.bookId));
-    const toast = createToast('success', 'Archive status changed successfully');
+    const status = apiResult.isArchived === true ? 'arhived' : 'unarchived';
+    const toast = createToast('success', `Book ${status} successfully`);
     yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
