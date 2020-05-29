@@ -28,22 +28,28 @@ const CurrentlyReadingSection = ({ reservations }) => {
 
   function onFormConfirm() {
     dispatch(checkInReservation(selectedReservation.id, review));
+    setReview('');
     setModalState(false);
+  }
+
+  function closeModal() {
+    setModalState(false);
+    setReview('');
   }
 
   return (
     <ul className="currently-reading">
       <Modal
         modalState={modalState}
-        exitAction={() => setModalState(false)}
+        exitAction={closeModal}
         height="400px"
         width="400px"
       >
         {selectedReservation && selectedReservation.bookCase && (
           <CheckInForm
             reservation={selectedReservation.bookCase}
-            onCancel={() => setModalState(false)}
-            onConfirm={() => onFormConfirm()}
+            onCancel={closeModal}
+            onConfirm={onFormConfirm}
             reviewValue={review}
             reviewHandler={setReview}
           />

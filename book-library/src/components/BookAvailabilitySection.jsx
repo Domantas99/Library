@@ -213,6 +213,9 @@ const BookAvailabilitySection = ({
     if (bookDetails.isUserCurrentlyReading && !user.isAdmin) {
       return currentlyReading;
     }
+    if (bookDetails.isUserCurrentlyReading && user.isAdmin) {
+      return [currentlyReading, offices];
+    }
 
     return offices;
   };

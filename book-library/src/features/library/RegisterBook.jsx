@@ -1,18 +1,15 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BookForm, Panel } from '../../components';
-import { getOffices } from '../../store/office/actions';
 import { addNewBook } from '../../store/library/actions';
 
-export default () => {
+const RegisterBook = () => {
   const dispatch = useDispatch();
   const offices = useSelector((state) => state.office.offices);
-  offices.forEach((o) => (o.count = 0));
-  useEffect(() => {
-    dispatch(getOffices());
-  }, [dispatch]);
+  offices.forEach((o) => {
+    o.count = 0;
+  });
 
   const handleSubmit = (book) => {
     dispatch(addNewBook(book));
@@ -29,3 +26,5 @@ export default () => {
     </Panel>
   );
 };
+
+export default RegisterBook;

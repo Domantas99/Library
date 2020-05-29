@@ -1,24 +1,22 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
-import React, { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { BookForm, Panel } from '../../components';
 import { getBookDetails, updateBook } from '../../store/library/actions';
-import { getOffices } from "../../store/office/actions";
 
-export default () => {
+const EditBook = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
   const offices = useSelector((state) => state.office.offices);
   offices.forEach((o) => {
-    o.count = bookDetails?.library?.find(x => x.officeId === o.id)?.count || 0;
+    o.count =
+      bookDetails?.library?.find((x) => x.officeId === o.id)?.count || 0;
   });
 
   useEffect(() => {
-    dispatch(getBookDetails(id, 1));
-    dispatch(getOffices());
+    dispatch(getBookDetails(id));
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [id]);
 
@@ -42,3 +40,5 @@ export default () => {
     <Link to="/">Return home</Link>
   );
 };
+
+export default EditBook;

@@ -37,11 +37,9 @@ namespace BookLibrary.Api.Controllers.Reservations
         }
 
         [HttpPost]
-        public ActionResult AddReservation(ReservationCreateDto reservation)
+        public async Task<ActionResult<Reservation>> AddReservation(ReservationCreateDto reservation)
         {
-            _reservationsService.AddReservation(reservation, GetUserId());
-
-            return Ok();
+            return await _reservationsService.AddReservation(reservation, GetUserId());
         }
 
         [HttpPost("waiting")]

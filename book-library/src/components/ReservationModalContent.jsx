@@ -90,7 +90,7 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
               {notReadingUsers.map((user) => (
                 <option key={user.userId} value={user.userId}>
                   {/* <img src={user.imageUrl}/> */}
-                  {user.fullName}
+                  {userData.id === user.userId ? 'Myself' : user.fullName}
                 </option>
               ))}
             </select>

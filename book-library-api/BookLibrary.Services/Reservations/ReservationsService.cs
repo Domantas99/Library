@@ -29,7 +29,7 @@ namespace BookLibrary.Services.Reservations
             _context = context;
         }
 
-        public void AddReservation(ReservationCreateDto reservation, string aspNetUserId)
+        public async Task<Reservation> AddReservation(ReservationCreateDto reservation, string aspNetUserId)
         {
             var user = _context.User.FirstOrDefault(u => u.AspNetUserId == aspNetUserId);
 
@@ -45,34 +45,50 @@ namespace BookLibrary.Services.Reservations
                 currentReservation.BookCase.ModifiedOn = DateTime.Today;
 
                 _context.Reservation.Update(currentReservation);
+                await _context.SaveChangesAsync();
+                return currentReservation;
             }
-                else
+            else
+            {
+                try
                 {
-                var library = _context.Library.FirstOrDefault(x => x.BookId == reservation.BookId && x.OfficeId == reservation.OfficeId);
-                    if (library != null && library.Count > 0)
+                    var library = _context.Library.FirstOrDefault(x => x.BookId == reservation.BookId && x.OfficeId == reservation.OfficeId);
+                    if (library.Count > 0)
                     {
-                    var timestamp = DateTime.Now;
-                    _context.Reservation.Add(new Reservation()
-                    {
-                        CheckedOutOn = timestamp,
-                        PlannedReturnOn = reservation.PlannedReturnOn,
-                        UserId = reservation.UserId ?? user.Id,
-                        BookCase = new BookCase()
+                        var timestamp = DateTime.Now;
+                        var res = new Reservation()
                         {
-                            BookId = reservation.BookId,
-                            OfficeId = reservation.OfficeId,
-                            CreatedOn = timestamp,
-                            CreatedBy = user.Id,
-                            ModifiedOn = timestamp,
-                            ModifiedBy = user.Id,
-                            Count = 1,
+                            CheckedOutOn = timestamp,
+                            PlannedReturnOn = reservation.PlannedReturnOn,
+                            UserId = reservation.UserId ?? user.Id,
+                            BookCase = new BookCase()
+                            {
+                                BookId = reservation.BookId,
+                                OfficeId = reservation.OfficeId,
+                                CreatedOn = timestamp,
+                                CreatedBy = user.Id,
+                                ModifiedOn = timestamp,
+                                ModifiedBy = user.Id,
+                                Count = 1,
+                            }
+                        };
+                        _context.Reservation.Add(res);
+                        await _context.SaveChangesAsync();
+                        return res;
                     }
-                    });
+                    else {
+                        throw new HandledException("No books available in the library");
+                    }
                 }
+                catch
+                {
+                    throw new HandledException("There was an error adding reservation");
+                }
+
             }
 
-            _context.SaveChangesAsync();
-            }
+
+        }
 
         public async Task<Waiting> AddWaiting(Waiting waiting)
         {
