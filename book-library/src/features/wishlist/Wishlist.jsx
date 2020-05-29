@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -155,7 +156,6 @@ const Wishlist = (location) => {
                 hasVoted={data.userVoted}
                 onVote={() => handleVote(data.wishId, index)}
               />
-
               <button onClick={() => setBookToMove(data)}>Move</button>
             </div>
           )}
