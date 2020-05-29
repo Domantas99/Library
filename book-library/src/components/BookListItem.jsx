@@ -3,15 +3,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import Modal from './Modal';
-import BookForm from './BookForm';
 
-export default ({ data, navigate, offices, renderActions }) => {
+export default ({ data, navigate, renderActions }) => {
   const history = useHistory();
-  const [moveWishToBookModal, setMoveWishToBookModal] = useState(false);
 
   const availableClass = classNames('book-status__text', {
     'book-status__text--available': data.isAvailableInMyOffice,
@@ -68,24 +65,6 @@ export default ({ data, navigate, offices, renderActions }) => {
           (data.isAvailableInMyOffice ? `Available` : 'Currently unavailable')}
       </div>
       {renderActions(data)}
-      {data.votes !== undefined && (
-        <div>
-          <Modal
-            modalState={moveWishToBookModal}
-            exitAction={() => setMoveWishToBookModal(false)}
-          >
-            <BookForm
-              formTitle="Add wish to library"
-              bookDetails={data}
-              id={data.wishId}
-              offices={offices}
-              moveToWishAction={() => setMoveWishToBookModal(false)}
-            />
-          </Modal>
-
-          <button onClick={() => setMoveWishToBookModal(true)}>Move</button>
-        </div>
-      )}
     </div>
   );
 };

@@ -2,8 +2,8 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { BookForm } from '../../components';
-import { getBookDetails } from '../../store/library/actions';
+import { BookForm, Panel } from '../../components';
+import { getBookDetails, updateBook } from '../../store/library/actions';
 
 const EditBook = () => {
   const { id } = useParams();
@@ -20,17 +20,22 @@ const EditBook = () => {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [id]);
 
+  const handleSubmit = (book) => {
+    dispatch(updateBook(id, book));
+  };
+
   return id ? (
-    <div className="content-wrapper">
+    <Panel title="Edit Book">
       {bookDetails && offices.length !== 0 && bookDetails.length !== 0 && (
         <BookForm
-          formTitle="Book editing"
           bookDetails={bookDetails.book}
+          buttonText="Save"
+          onSubmit={handleSubmit}
           id={id}
           offices={offices}
         />
       )}
-    </div>
+    </Panel>
   ) : (
     <Link to="/">Return home</Link>
   );

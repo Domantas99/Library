@@ -192,7 +192,7 @@ const BookDetails = ({ id }) => {
           </h4>
           <span className="rating__container">
             <span className="rating__stars">{generateRatingStars()}</span>
-            <span>{bookDetails.rating.toFixed(2)}</span>
+            <span>{bookDetails.rating && bookDetails.rating.toFixed(2)}</span>
             <span>
               {`${bookDetails.ratingCount} rating${
                 bookDetails.ratingCount % 100 === 11 ||

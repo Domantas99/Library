@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BookListItem from './BookListItem';
 import { getOffices } from '../store/office/actions';
 
@@ -20,7 +20,6 @@ function BookList({
 }) {
   const dispatch = useDispatch();
   const [bookComponents, setBookComponents] = useState([]);
-  const offices = useSelector((state) => state.office.offices);
 
   useEffect(() => {
     dispatch(getOffices());
@@ -38,7 +37,6 @@ function BookList({
             key={element.id}
             data={element}
             navigate={navigateItems}
-            offices={offices}
             renderActions={(book) => renderItemActions(book, index)}
           />
         );
@@ -46,7 +44,7 @@ function BookList({
     };
 
     setBookComponents(createBookComponents(dataSelector));
-  }, [dataSelector, navigateItems, offices]);
+  }, [dataSelector, navigateItems]);
 
   return (
     <div className="book-grid">
