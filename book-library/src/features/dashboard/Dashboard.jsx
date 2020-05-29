@@ -37,7 +37,7 @@ const Dashboard = () => {
           <BookList
             noSort
             dataSelector={latestBooks}
-            dataAction={getLatestBooks(4, userOffice)}
+            dataAction={getLatestBooks()}
             navigateItems
           />
         </Panel>
@@ -46,7 +46,7 @@ const Dashboard = () => {
           <BookList
             noSort
             dataSelector={recommendedBooks}
-            dataAction={getRecommendedBooks(12)}
+            dataAction={getRecommendedBooks()}
             navigateItems
           />
         </Panel>

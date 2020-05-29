@@ -43,8 +43,8 @@ class HTTPClient {
     const url = this._getUrl(path);
 
     const request = superagent(method, url);
-
     if (method === methods.POST || method === methods.PUT) {
+      request.set('Content-Type', 'application/json');
       request.send(data);
     }
     // eslint-disable-next-line no-useless-catch
