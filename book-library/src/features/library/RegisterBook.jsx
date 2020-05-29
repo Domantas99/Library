@@ -1,17 +1,13 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { BookForm } from '../../components';
-import { getOffices } from '../../store/office/actions';
 
-export default () => {
-  const dispatch = useDispatch();
+const RegisterBook = () => {
   const offices = useSelector((state) => state.office.offices);
-  offices.forEach((o) => (o.count = 0));
-  useEffect(() => {
-    dispatch(getOffices());
-  }, [dispatch]);
+  offices.forEach((o) => {
+    o.count = 0;
+  });
 
   return (
     <div className="content-wrapper">
@@ -19,3 +15,5 @@ export default () => {
     </div>
   );
 };
+
+export default RegisterBook;

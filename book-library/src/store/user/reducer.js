@@ -1,7 +1,13 @@
-import { GET_USER_END, LOGOUT, PING_AUTH_END, PING_AUTH, PING_AUTH_ERROR } from './actionTypes';
+import {
+  GET_USER_END,
+  LOGOUT,
+  PING_AUTH_END,
+  PING_AUTH,
+  PING_AUTH_ERROR,
+} from './actionTypes';
 
 const initialState = {
-  userData: { isAdmin: true },
+  userData: { isAdmin: false },
   isAuthenticated: false,
   authLoading: true,
   users: [
