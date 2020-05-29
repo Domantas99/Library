@@ -80,11 +80,13 @@ export function* getBookCommentsAfterAddSaga(action) {
 }
 
 export function* getBookCommentsAfterCheckinSaga(action) {
-  try {
-    const apiResult = yield call(getBookComments, action.payload);
-    yield put(getBookCommentsEnd(apiResult));
-  } catch (e) {
-    // stops saga from braking on api error
+  if (window.location.pathname !== '/dashboard') {
+    try {
+      const apiResult = yield call(getBookComments, { book: action.payload });
+      yield put(getBookCommentsEnd(apiResult));
+    } catch (e) {
+      // stops saga from braking on api error
+    }
   }
 }
 

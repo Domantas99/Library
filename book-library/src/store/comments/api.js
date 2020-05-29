@@ -11,7 +11,9 @@ export const getComments = () => {
 
 export const getBookComments = ({ book, page, pageSize }) => {
   return httpClient.get(
-    `books/${book}/comments/?page=${page}&pageSize=${pageSize}`
+    `books/${book}/comments/?${page ? `page=${page}&` : ''}${
+      pageSize ? `pageSize=${pageSize}` : ''
+    }`
   );
 };
 
