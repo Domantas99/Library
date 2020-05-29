@@ -14,7 +14,7 @@ namespace BookLibrary.Services.Contracts
         Task<Waiting> AddWaiting(Waiting waiting);
         Task<List<ReservationDTO>> GetReservations(string aspNetUserId);
         Task<List<ReservationDTO>> GetReservations(string aspNetUserId, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort);
-        void AddReservation(ReservationCreateDto reservation, string aspNetUserId);
+        Task<Reservation> AddReservation(ReservationCreateDto reservation, string aspNetUserId);
         Task<Book> CheckInReservation(int reservationId, CheckInDTO data);
         Task<Book> RemoveWaiting(int waitingId);
         Task<PagedResponseResult<PagedList<ReservationDTO>>> GetTeamReservations(List<string> category, List<string> offices, List<string> status, List<string> authors, List<string> users, int page, int pageSize, string sort);
