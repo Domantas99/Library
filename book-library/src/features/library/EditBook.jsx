@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect } from 'react';
-import { useParams, Link, Redirect } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { BookForm } from '../../components';
 import { getBookDetails } from '../../store/library/actions';
