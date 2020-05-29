@@ -31,7 +31,7 @@ export function* getCurrentlyReadingBooksSaga(action) {
 
 export function* getLatestBooksSaga(action) {
   try {
-    const apiResult = yield call(getLatestBooksAPI, action.payload);
+    const apiResult = yield call(getLatestBooksAPI, 4);
     yield put(getLatestBooksEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
@@ -40,7 +40,7 @@ export function* getLatestBooksSaga(action) {
 
 export function* getRecommendedBooksSaga(action) {
   try {
-    const apiResult = yield call(getRecommendedBooksAPI, action.payload);
+    const apiResult = yield call(getRecommendedBooksAPI, 12);
     yield put(getRecommendedBooksEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
@@ -53,4 +53,6 @@ export default function* () {
   yield takeLatest(GET_CURRENTLY_READING_BOOKS, getCurrentlyReadingBooksSaga);
   yield takeLatest(GET_LATEST_BOOKS, getLatestBooksSaga);
   yield takeLatest(GET_RECOMMENDED_BOOKS, getRecommendedBooksSaga);
+  yield takeLatest(CHECK_IN_RESERVATION_END, getRecommendedBooksSaga);
+  yield takeLatest(CHECK_IN_RESERVATION_END, getLatestBooksSaga);
 }
