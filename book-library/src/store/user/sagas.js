@@ -1,8 +1,31 @@
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { getUserApi, login, updateUserApi, logoutApi, registrationApi, pingAuthApi } from './api';
-import { GET_USER, LOGIN, UPDATE_USER, UPDATE_USER_END, LOGIN_END, LOGOUT, REGISTER_END, REGISTER, PING_AUTH } from './actionTypes';
-import { getUserEnd, loginEnd, registerEnd, isAuthEnd, authError } from './actions';
+import {
+  getUserApi,
+  login,
+  updateUserApi,
+  logoutApi,
+  registrationApi,
+  pingAuthApi,
+} from './api';
+import {
+  GET_USER,
+  LOGIN,
+  UPDATE_USER,
+  UPDATE_USER_END,
+  LOGIN_END,
+  LOGOUT,
+  REGISTER_END,
+  REGISTER,
+  PING_AUTH,
+} from './actionTypes';
+import {
+  getUserEnd,
+  loginEnd,
+  registerEnd,
+  isAuthEnd,
+  authError,
+} from './actions';
 import history from '../../core/history';
 
 export function* getUserSaga(action) {
@@ -62,7 +85,6 @@ export function* pingAuthSaga(action) {
     history.push('/login');
   }
 }
-
 
 export default function* () {
   yield takeLatest(GET_USER, getUserSaga);

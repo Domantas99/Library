@@ -155,7 +155,6 @@ const Wishlist = (location) => {
                 hasVoted={data.userVoted}
                 onVote={() => handleVote(data.wishId, index)}
               />
-
               <button onClick={() => setBookToMove(data)}>Move</button>
             </div>
           )}

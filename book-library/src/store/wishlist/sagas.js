@@ -31,15 +31,15 @@ import {
   setFiltersEnd,
   setVoteEnd,
 } from './actions';
-import { paramGenerator } from '../../utilities';
+import { paramGenerator, createToast } from '../../utilities';
+import { displayToast } from '../general/actions';
 
 export function* addWishSaga(action) {
   try {
     const apiResult = yield call(addWishAPI, action.payload);
-    if (!apiResult.error) {
-      yield put(addWishEnd(apiResult));
-      // Closes the modal after put;
-    }
+    yield put(addWishEnd(apiResult));
+    const toast = createToast('success', 'Wish created successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -76,6 +76,8 @@ export function* moveWishToLibrarySaga(action) {
   try {
     const apiResult = yield call(moveWishToLibraryAPI, action.payload);
     yield put(moveWishToLibraryEnd(apiResult));
+    const toast = createToast('success', 'Wish moved to library successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }

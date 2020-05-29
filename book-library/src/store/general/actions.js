@@ -1,8 +1,8 @@
 import { DISPLAY_TOAST, ADD_COUNTER, SUBTRACT_COUNTER } from './actionTypes';
 
-export const displayToast = (message) => ({
+export const displayToast = (toast) => ({
   type: DISPLAY_TOAST,
-  payload: message,
+  payload: toast,
 });
 
 export const addCounter = () => ({ type: ADD_COUNTER });

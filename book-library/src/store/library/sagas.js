@@ -51,16 +51,16 @@ import {
   ADD_RESERVATION_END,
   CHECK_IN_RESERVATION_END,
 } from '../reservations/actionTypes';
-import { paramGenerator } from '../../utilities';
+import { paramGenerator, createToast } from '../../utilities';
+import { displayToast } from '../general/actions';
 
 export function* addNewBookSaga(action) {
   try {
     const apiResult = yield call(addBookAPI, action.payload);
-
     yield put(addNewBookEnd(apiResult));
-    if (!apiResult.error) {
-      history.push('/library');
-    }
+    history.push('/library');
+    const toast = createToast('success', 'Book added successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     //
   }
@@ -71,6 +71,8 @@ export function* deleteBookSaga(action) {
     const apiResult = yield call(deleteBookApi, action.payload);
     history.push('/library');
     yield put(deleteBookEnd(apiResult));
+    const toast = createToast('success', 'Book deleted successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -145,6 +147,9 @@ export function* setBookArchiveStateSaga(action) {
   try {
     const apiResult = yield call(setBookArchiveStatusAPI, action.payload);
     yield put(setBookArchiveStateEnd(action.payload.bookId));
+    const status = apiResult.isArchived === true ? 'arhived' : 'unarchived';
+    const toast = createToast('success', `Book ${status} successfully`);
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -168,6 +173,8 @@ export function* updateBookSaga(action) {
     const apiResult = yield call(updateBook, action.payload);
     history.push(`/library/${action.payload.id}`);
     yield put(updateBookEnd(apiResult));
+    const toast = createToast('success', 'Book updated successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }

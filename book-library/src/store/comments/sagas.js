@@ -16,6 +16,8 @@ import {
   getBookCommentsEnd,
 } from './actions';
 import { CHECK_IN_RESERVATION_END } from '../reservations/actionTypes';
+import { createToast } from '../../utilities';
+import { displayToast } from '../general/actions';
 
 export function* addCommentSaga(action) {
   try {
@@ -31,6 +33,8 @@ export function* addCommentSaga(action) {
         pageSize: action.payload.pageSize,
       })
     );
+    const toast = createToast('success', 'Comment added successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -47,6 +51,8 @@ export function* deleteCommentSaga(action) {
         pageSize: action.payload.pageSize,
       })
     );
+    const toast = createToast('success', 'Comment deleted successfully');
+    yield put(displayToast(toast));
   } catch (e) {
     //
   }
