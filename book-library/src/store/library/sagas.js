@@ -166,6 +166,7 @@ export function* setFiltersSaga(action) {
 export function* updateBookSaga(action) {
   try {
     const apiResult = yield call(updateBook, action.payload);
+    history.push(`/library/${action.payload.id}`);
     yield put(updateBookEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error

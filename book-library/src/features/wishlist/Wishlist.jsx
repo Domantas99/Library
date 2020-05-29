@@ -6,6 +6,7 @@ import {
   getAuthors,
   getCategories,
   getWishlist,
+  moveWishToLibrary,
   setFilters,
   setVote,
 } from '../../store/wishlist/actions';
@@ -18,6 +19,7 @@ import {
   WishForm,
 } from '../../components';
 import WishListVotes from '../../components/WishlistVotes';
+import BookForm from '../../components/BookForm';
 
 const Wishlist = (location) => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const Wishlist = (location) => {
   const filterSelector = useSelector((state) => state.wishlist.filters);
   const categories = useSelector((state) => state.wishlist.categories);
   const authors = useSelector((state) => state.wishlist.authors);
+  const offices = useSelector((state) => state.office.offices);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const [modalState, setModalState] = useState(false);
@@ -82,6 +85,7 @@ const Wishlist = (location) => {
       label: 'Votes [Descending]',
     },
   ]);
+  const [bookToMove, setBookToMove] = useState(null);
 
   useEffect(() => {
     const generateFilterMap = () => {
@@ -128,6 +132,13 @@ const Wishlist = (location) => {
   const handleVote = (wishId, index) => {
     dispatch(setVote(wishId, index));
   };
+
+  const handleMove = (book) => {
+    const obj = { ...book, id: bookToMove.id };
+    dispatch(moveWishToLibrary(obj));
+    setBookToMove(null);
+  };
+
   return (
     <>
       <Panel title="Wishlist">
@@ -138,21 +149,39 @@ const Wishlist = (location) => {
           filterComponent={filterComponent()}
           actionButton={actionButton}
           renderItemActions={(data, index) => (
-            <WishListVotes
-              voteCount={data.votes}
-              hasVoted={data.userVoted}
-              onVote={() => handleVote(data.wishId, index)}
-            />
+            <div>
+              <WishListVotes
+                voteCount={data.votes}
+                hasVoted={data.userVoted}
+                onVote={() => handleVote(data.wishId, index)}
+              />
+
+              <button onClick={() => setBookToMove(data)}>Move</button>
+            </div>
           )}
         />
       </Panel>
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}
-        height="80%"
-        width="56%"
+        height="fit-content"
+        width="550px"
       >
         <WishForm exitAction={() => setModalState(false)} />
+      </Modal>
+      <Modal
+        modalState={!!bookToMove}
+        exitAction={() => setBookToMove(null)}
+        width="550px"
+      >
+        <Panel title="Add wish to library">
+          <BookForm
+            bookDetails={bookToMove}
+            offices={offices}
+            buttonText="Move"
+            onSubmit={handleMove}
+          />
+        </Panel>
       </Modal>
     </>
   );

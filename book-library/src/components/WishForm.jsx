@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addWish } from '../store/wishlist/actions';
+import Button from './Button';
+import Panel from './Panel';
 
 const WishForm = ({ exitAction }) => {
   const dispatch = useDispatch();
@@ -44,60 +46,45 @@ const WishForm = ({ exitAction }) => {
   };
 
   return (
-    <div className="wishform">
-      <div>
-        <h1>Add a new book request</h1>
-      </div>
-      <div>
-        <div className="input-wrapper">
+    <Panel title="Add a new book request">
+      <form noValidate onSubmit={onSubmitClick} className="form">
+        <div className="form__field">
           <label htmlFor="bookTitle">TITLE</label>
-          <br />
           <input type="text" name="title" onChange={(e) => handleChange(e)} />
         </div>
-        <div className="input-wrapper">
+        <div className="form__field">
           <label htmlFor="bookTitle">AUTHOR</label>
-          <br />
           <input type="text" name="author" onChange={(e) => handleChange(e)} />
         </div>
-        <div className="input-wrapper">
+        <div className="form__field">
           <label htmlFor="bookTitle">COVER PICTURE URL</label>
-          <br />
           <input
             type="text"
             name="coverPictureUrl"
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="input-wrapper">
+        <div className="form__field">
           <label htmlFor="bookDate">PUBLICATION DATE</label>
-          <br />
           <input type="date" name="publicationDate" onChange={handleChange} />
         </div>
-        <div className="input-wrapper">
+        <div className="form__field">
           <label htmlFor="bookTitle">COMMENT</label>
-          <br />
           <textarea
             name="comment"
             cols="30"
-            rows="10"
+            rows="5"
             onChange={handleChange}
           />
         </div>
-      </div>
-      <div className="wishform-buttons">
-        <div>
-          <button onClick={() => onCancelClick()}>Cancel</button>
+        <div className="form__buttons">
+          <Button secondary onClick={() => onCancelClick()}>
+            Cancel
+          </Button>
+          <Button type="submit">Submit</Button>
         </div>
-        <div>
-          <button
-            onClick={() => onSubmitClick()}
-            className="wishform-buttons-submit"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
+      </form>
+    </Panel>
   );
 };
 

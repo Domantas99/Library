@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -13,6 +14,7 @@ const Button = ({
   children,
   secondaryAction,
   disabled,
+  type,
 }) => {
   const classes = classNames('btn', {
     btn__secondary: secondary || secondaryAction,
@@ -28,7 +30,7 @@ const Button = ({
     <button
       className={classes}
       onClick={onClick}
-      type="button"
+      type={type}
       disabled={disabled}
     >
       {children}
@@ -50,6 +52,7 @@ Button.propTypes = {
     PropTypes.node,
   ]),
   secondaryAction: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -63,6 +66,7 @@ Button.defaultProps = {
   disabled: false,
   onClick: () => {},
   children: null,
+  type: 'button',
 };
 
 export default Button;
