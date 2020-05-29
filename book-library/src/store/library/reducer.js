@@ -10,6 +10,7 @@ import {
   SELECT_CATEGORY,
   UPDATE_BOOK_END,
   GET_AUTHORS_END,
+  GET_BOOK_DETAILS_START,
 } from './actionTypes';
 import { paramGenerator, paramFormatter, formatDate } from '../../utilities';
 
@@ -49,6 +50,12 @@ export default (state = initialState, action) => {
             releaseDate: formatDate(returnedBook.releaseDate),
           },
         },
+      };
+    }
+    case GET_BOOK_DETAILS_START: {
+      return {
+        ...state,
+        bookDetails: {},
       };
     }
     case GET_BOOK_AVAILABILITY: {

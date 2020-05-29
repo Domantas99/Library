@@ -10,13 +10,13 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import { getBookAvailability } from '../store/library/actions';
 import { checkInReservation } from '../store/reservations/actions';
-import { formatDate } from '../utilities/dateHalper';
 import Button from './Button';
 import CantFind from './CantFind';
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import RadioButton from './Radio';
 import ReservationModalContent from './ReservationModalContent';
+import ReturnDate from './ReturnDate';
 
 const BookAvailabilitySection = ({
   bookDetails,
@@ -142,7 +142,9 @@ const BookAvailabilitySection = ({
         <div>
           Return date:
           <span className="ba-section-currentlyReading-content-date">
-            {activeReservation && formatDate(activeReservation.returnDate)}
+            {activeReservation && (
+              <ReturnDate date={activeReservation.returnDate} validate />
+            )}
           </span>
         </div>
       </div>
