@@ -194,7 +194,6 @@ export default function* () {
   yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
   yield takeLatest(GET_BOOK_AVAILABILITY, getBookAvailabilitySaga);
   yield takeLatest(ADD_WAITING_END, getBookDetailsSaga);
- // yield takeLatest(REMOVE_WAITING_END, getBookAvailabilitySaga);
   yield takeLatest(REMOVE_WAITING_END, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
