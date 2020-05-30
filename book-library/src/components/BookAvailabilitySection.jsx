@@ -164,7 +164,7 @@ const BookAvailabilitySection = ({
       </div>
     </>
   );
-  console.log(bookDetails.isUserInWaitlist, 'cia waitas');
+
   const offices =
     bookInOffices.length > 0 ? (
       <>

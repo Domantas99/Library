@@ -113,7 +113,7 @@ namespace BookLibrary.Services.Reservations
                     return waiting;
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 throw new HandledException("There was an error while joining waitlist");
             }
