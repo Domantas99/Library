@@ -149,6 +149,11 @@ namespace BookLibrary.Services.Books
 
             var ratingsCount = _context.Rating.Where(x => x.BookId == bookId).Count();
 
+            bool isUserInWaitlist = false;
+            if (_context.Waiting.Include(u => u.User).FirstOrDefault(x => x.User.AspNetUserId == userId && x.BookCase.BookId == bookId) != null) {
+                isUserInWaitlist = true;
+            }
+
             var bookDetailsDTO = new BookDetailsDTO
             {
                 Book = book,
@@ -160,6 +165,7 @@ namespace BookLibrary.Services.Books
                 Rating = (book.Rating != null && book.Rating.Count > 0) ? (decimal)(book.Rating.Sum(x => x.Value)) / book.Rating.Count : 0,
                 UserHasRated = userHasRated,
                 RatingCount = ratingsCount,
+                IsUserInWaitlist=isUserInWaitlist
             };
 
             return bookDetailsDTO;

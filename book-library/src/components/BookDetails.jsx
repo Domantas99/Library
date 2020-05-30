@@ -43,7 +43,7 @@ const BookDetails = ({ id }) => {
   const [waiting, setWaiting] = useState({ book, userOffice });
   const [activeOffice, setActiveOffice] = useState(null);
   const [moreBtnState, setMoreBtnState] = useState(false);
-
+  console.log(bookDetails)
   const ref = React.createRef();
 
   useEffect(() => {
@@ -72,6 +72,7 @@ const BookDetails = ({ id }) => {
   };
 
   const closeWaitingModal = () => {
+    setActiveOffice(null);
     setWaitingModal(false);
   };
 

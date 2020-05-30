@@ -14,6 +14,7 @@ namespace BookLibrary.DTO.Books
         public ReservationDTO ActiveReservation { get; set; }
         public ICollection<Library> Library { get; set; }
         public bool IsAnyoneReading { get; set; }
+        public bool IsUserInWaitlist { get; set; }
         public List<UserCheckOutDTO> NotReadingUsers { get; set; }
         public bool UserHasRated { get; set; }
         public decimal Rating { get; set; }

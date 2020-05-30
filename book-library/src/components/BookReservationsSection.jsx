@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Button from './Button';
+import { removeWaiting } from '../store/reservations/actions';
 
 const BookReservationSection = ({
   reservations,
@@ -12,7 +13,13 @@ const BookReservationSection = ({
 }) => {
   const dispatch = useDispatch();
   const [borrowed, setBorrowed] = useState([]);
-  const [waiting, setWaiting] = useState([]);
+  const [waiting, setWaiting] = useState([]); // waitlist
+  const [userWaitingId, setUserWaitingId] = useState(-1);
+  const userId = useSelector((state) => state.user.userData.id);
+
+  function leaveWaitlist() {
+    dispatch(removeWaiting(userWaitingId));
+  }
 
   useEffect(() => {
     const generateReservationComponents = () => {
@@ -93,6 +100,9 @@ const BookReservationSection = ({
             </span>
           </div>
         );
+        if (reservation.user.id === userId) {
+          setUserWaitingId(reservation.id);
+        }
       });
       setBorrowed(borrowedElements);
       setWaiting(waitingElements);
@@ -119,6 +129,9 @@ const BookReservationSection = ({
           <div className="book-reservation__list" ref={reffer}>
             <h3 className="book-reservation__list-title">Waitlist</h3>
             {waiting}
+            {userWaitingId >= 0 && (
+              <Button onClick={() => leaveWaitlist()}>Leave waitlist</Button>
+            )}
           </div>
         </>
       ) : (
