@@ -11,7 +11,7 @@ namespace BookLibrary.Services.Contracts
 {
     public interface IReservationsService
     {
-        Task<Waiting> AddWaiting(Waiting waiting);
+        Task<Waiting> AddWaiting(Waiting waiting, string aspNetUserId);
         Task<List<ReservationDTO>> GetReservations(string aspNetUserId);
         Task<List<ReservationDTO>> GetReservations(string aspNetUserId, List<string> category, List<string> offices, List<string> status, List<string> authors, string sort);
         Task<Reservation> AddReservation(ReservationCreateDto reservation, string aspNetUserId);

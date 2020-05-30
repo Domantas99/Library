@@ -90,14 +90,18 @@ namespace BookLibrary.Services.Reservations
 
         }
 
-        public async Task<Waiting> AddWaiting(Waiting waiting)
+        public async Task<Waiting> AddWaiting(Waiting waiting, string aspNetUserId)
         {
             try
-            {
+            {           
+                waiting.UserId= _context.User.FirstOrDefault(x => x.AspNetUserId == aspNetUserId).Id;
                 var existing = await _context.Waiting.FirstOrDefaultAsync(x => x.UserId == waiting.UserId && x.BookCase.BookId == waiting.BookCase.BookId);
-
+                
                 if (existing == null)
                 {
+                    waiting.BookCase.CreatedOn = waiting.CreatedOn;
+                    waiting.BookCase.ModifiedBy = waiting.UserId;
+                    waiting.BookCase.Count = 0;
                     var library = await _context.Library.FirstOrDefaultAsync(x => x.BookId == waiting.BookCase.BookId && x.OfficeId == waiting.BookCase.OfficeId);
                     if (library != null && library.Count > 0)
                     {
@@ -106,6 +110,7 @@ namespace BookLibrary.Services.Reservations
                     }
 
                     await _context.SaveChangesAsync();
+                    return waiting;
                 }
             }
             catch

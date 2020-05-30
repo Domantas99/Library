@@ -50,6 +50,8 @@ import {
 import {
   ADD_RESERVATION_END,
   CHECK_IN_RESERVATION_END,
+  REMOVE_WAITING_END,
+  ADD_WAITING_END,
 } from '../reservations/actionTypes';
 import { paramGenerator, createToast } from '../../utilities';
 import { displayToast } from '../general/actions';
@@ -191,6 +193,8 @@ export default function* () {
   yield takeLatest(DELETE_BOOK_END, getCategoriesSaga);
   yield takeLatest(GET_AUTHORS_START, getAuthorsSaga);
   yield takeLatest(GET_BOOK_AVAILABILITY, getBookAvailabilitySaga);
+  yield takeLatest(ADD_WAITING_END, getBookDetailsSaga);
+  yield takeLatest(REMOVE_WAITING_END, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_DETAILS_START, getBookDetailsSaga);
   yield takeLatest(GET_BOOK_LIST_START, getBookListSaga);
   yield takeLatest(GET_CATEGORIES_START, getCategoriesSaga);

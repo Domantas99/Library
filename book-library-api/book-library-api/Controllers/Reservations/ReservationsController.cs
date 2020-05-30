@@ -45,7 +45,7 @@ namespace BookLibrary.Api.Controllers.Reservations
         [HttpPost("waiting")]
         public async Task<ActionResult<Waiting>> AddWaiting(Waiting waiting)
         {
-            return await _reservationsService.AddWaiting(waiting);
+            return await _reservationsService.AddWaiting(waiting, GetUserId());
         }
         [HttpDelete("waiting/{waitingId}")]
         public async Task<ActionResult<Book>> RemoveWaiting(int waitingId)

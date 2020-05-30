@@ -108,7 +108,6 @@ const BookAvailabilitySection = ({
           title={<i className="icon icon__office" />}
           name="office"
           onClick={(e) => handleOfficeClick(e, { ...d.office, count: d.count })}
-          disabled={unavailable}
         />
         <div className="book-status__info">
           <div className="book-status__text book-status__text--title">
@@ -173,9 +172,16 @@ const BookAvailabilitySection = ({
         {activeOffice && activeOffice.count < 1 ? (
           <div className="book-status__buttons">
             <div>
-              <Button wide onClick={openWaitingModal} disabled={!activeOffice}>
-                Enter waitlist
-              </Button>
+              {bookDetails.isUserInWaitlist === false && (
+                <Button
+                  wide
+                  onClick={openWaitingModal}
+                  disabled={!activeOffice}
+                >
+                  Enter waitlist
+                </Button>
+              )}
+
               <Button
                 wide
                 secondary

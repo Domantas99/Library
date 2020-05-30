@@ -34,8 +34,9 @@ export const addWaiting = (waiting) => ({
   type: ADD_WAITING_START,
   payload: waiting,
 });
-export const addWaitingEnd = () => ({
+export const addWaitingEnd = (bookId) => ({
   type: ADD_WAITING_END,
+  payload: bookId,
 });
 
 export const checkInReservation = (reservationId, review) => ({

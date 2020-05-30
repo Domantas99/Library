@@ -23,6 +23,7 @@ export default ({ waiting, closeModal }) => {
         BookId: waiting.book.id,
         OfficeId: waiting.office,
       },
+      CreatedOn: new Date(),
     };
   }
 

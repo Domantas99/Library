@@ -8,7 +8,7 @@ export const addReservation = (reservation) => {
 };
 
 export const addWaiting = (waiting) => {
-  httpClient.post('reservations/waiting', waiting);
+  return httpClient.post('reservations/waiting', waiting);
 };
 
 export const checkInReservation = ({ reservationId, review }) => {
