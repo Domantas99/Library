@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getBookReservations } from '../store/reservations/actions';
+
 import Button from './Button';
 
 const BookReservationSection = ({
-  id,
+  reservations,
   reffer,
   unavailableInMyOffice,
   openWaitingModal,
 }) => {
   const dispatch = useDispatch();
-  const reservations = useSelector(
-    (state) => state.reservations.bookReservationData
-  );
   const [borrowed, setBorrowed] = useState([]);
   const [waiting, setWaiting] = useState([]);
-
-  useEffect(() => {
-    dispatch(getBookReservations(id));
-  }, [dispatch, id]);
 
   useEffect(() => {
     const generateReservationComponents = () => {
@@ -141,7 +134,10 @@ const BookReservationSection = ({
 };
 
 BookReservationSection.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  reservations: PropTypes.shape({
+    borrowed: PropTypes.array,
+    waiting: PropTypes.array,
+  }).isRequired,
   reffer: PropTypes.shape({ current: PropTypes.any }).isRequired,
   unavailableInMyOffice: PropTypes.bool.isRequired,
   openWaitingModal: PropTypes.func.isRequired,
