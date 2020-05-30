@@ -16,6 +16,7 @@ import {
   rateBook,
   setBookArchiveState,
 } from '../store/library/actions';
+import { getBookReservations } from '../store/reservations/actions';
 import BookAvailabilitySection from './BookAvailabilitySection';
 import BookCommentsSection from './BookCommentsSection';
 import BookDetailsGrid from './BookDetailsGrid';
@@ -29,6 +30,9 @@ const BookDetails = ({ id }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const bookDetails = useSelector((state) => state.library.bookDetails);
+  const reservations = useSelector(
+    (state) => state.reservations.bookReservationData
+  );
   const { book } = bookDetails;
   const currentUser = useSelector((state) => state.user.userData);
   const userOffice = useSelector((state) => state.user.userData.officeId);
@@ -45,6 +49,7 @@ const BookDetails = ({ id }) => {
   useEffect(() => {
     if (!_.isEmpty(currentUser) && currentUser.id) {
       dispatch(getBookDetails(id, currentUser.id));
+      dispatch(getBookReservations(id));
     }
   }, [dispatch, id, currentUser]);
 
@@ -246,13 +251,18 @@ const BookDetails = ({ id }) => {
               Edit details
             </Button>
           )}
-          <hr />
-          <BookReservationsSection
-            id={id}
-            reffer={ref}
-            unavailableInMyOffice={unavailableInMyOffice}
-            openWaitingModal={openWaitingModal}
-          />
+          {(reservations.borrowed.length > 0 ||
+            reservations.waiting.length > 0) && (
+            <>
+              <hr />
+              <BookReservationsSection
+                reservations={reservations}
+                reffer={ref}
+                unavailableInMyOffice={unavailableInMyOffice}
+                openWaitingModal={openWaitingModal}
+              />
+            </>
+          )}
           <hr />
           <BookCommentsSection id={id} pageSize={5} />
         </div>
