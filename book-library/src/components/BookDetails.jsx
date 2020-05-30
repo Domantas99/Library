@@ -52,11 +52,14 @@ const BookDetails = ({ id }) => {
     }
   }, [dispatch, id, currentUser]);
 
-  const handleScrollClick = () =>
-    ref.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+  const handleScrollClick = () => {
+    if (ref.current !== null) {
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
 
   const createWaitingObj = () => {
     return {
@@ -260,6 +263,7 @@ const BookDetails = ({ id }) => {
                 reffer={ref}
                 unavailableInMyOffice={unavailableInMyOffice}
                 openWaitingModal={openWaitingModal}
+                setActiveOffice={setActiveOffice}
               />
             </>
           )}

@@ -10,6 +10,7 @@ const BookReservationSection = ({
   reffer,
   unavailableInMyOffice,
   openWaitingModal,
+  setActiveOffice,
 }) => {
   const dispatch = useDispatch();
   const [borrowed, setBorrowed] = useState([]);
@@ -19,6 +20,7 @@ const BookReservationSection = ({
 
   function leaveWaitlist() {
     dispatch(removeWaiting(userWaitingId));
+    setActiveOffice(null);
   }
 
   useEffect(() => {

@@ -71,6 +71,7 @@ const BookAvailabilitySection = ({
     dispatch(
       checkInReservation(bookDetails.activeReservation.id, reservationReview)
     );
+    setActiveOffice(null);
     setCheckInModalState(false);
   }
 
@@ -172,15 +173,16 @@ const BookAvailabilitySection = ({
         {activeOffice && activeOffice.count < 1 ? (
           <div className="book-status__buttons">
             <div>
-              {bookDetails.isUserInWaitlist === false && (
-                <Button
-                  wide
-                  onClick={openWaitingModal}
-                  disabled={!activeOffice}
-                >
-                  Enter waitlist
-                </Button>
-              )}
+              {bookDetails.isUserInWaitlist === false &&
+                bookDetails.isUserCurrentlyReading === false && (
+                  <Button
+                    wide
+                    onClick={openWaitingModal}
+                    disabled={!activeOffice}
+                  >
+                    Enter waitlist
+                  </Button>
+                )}
 
               <Button
                 wide
