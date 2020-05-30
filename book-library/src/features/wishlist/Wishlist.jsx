@@ -86,7 +86,7 @@ const Wishlist = (location) => {
     },
   ]);
   const [bookToMove, setBookToMove] = useState(null);
-  console.log(bookToMove);
+
   useEffect(() => {
     const generateFilterMap = () => {
       return {
