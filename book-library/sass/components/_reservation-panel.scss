@@ -2,3 +2,8 @@
   max-width: base(28);
   min-width: base(28);
 }
+
+.reservations-nav {
+  display: flex;
+  flex-direction: row;
+}

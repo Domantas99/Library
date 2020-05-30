@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { getAuthors, getCategories } from '../store/library/actions';
@@ -8,6 +10,7 @@ import {
   getTeamReservations,
   setTeamFilters,
 } from '../store/reservations/actions';
+import Button from './Button';
 import Filter from './Filter';
 import ReservationsTableItem from './ReservationsTableItem';
 
@@ -118,7 +121,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
         status: filterMap.status,
         users: {
           label: 'User',
-          values: users.map((user) => user.userName),
+          values: _.map(users, (user) => user.userName),
         },
       };
     };
@@ -163,7 +166,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     const generateNavButtons = () => {
       const buttons = [];
       buttons.push(
-        <button
+        <Button
           key="prev"
           className="reservations__button-step"
           disabled={!reservationData.hasPreviousPage}
@@ -172,12 +175,12 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
           }}
         >
           &lt; Prev
-        </button>
+        </Button>
       );
       if (page > 1) {
         if (page > 2 && page === reservationData.totalPages) {
           buttons.push(
-            <button
+            <Button
               key={page - 2}
               className="reservations__button-number"
               onClick={() => {
@@ -185,11 +188,11 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
               }}
             >
               {page - 2}
-            </button>
+            </Button>
           );
         }
         buttons.push(
-          <button
+          <Button
             key={page - 1}
             className="reservations__button-number"
             onClick={() => {
@@ -197,17 +200,17 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
             }}
           >
             {page - 1}
-          </button>
+          </Button>
         );
       }
       buttons.push(
-        <button key={page} disabled className="reservations__button-current">
+        <Button key={page} disabled className="reservations__button-current">
           {page}
-        </button>
+        </Button>
       );
       if (page < reservationData.totalPages) {
         buttons.push(
-          <button
+          <Button
             key={page + 1}
             className="reservations__button-number"
             onClick={() => {
@@ -215,11 +218,11 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
             }}
           >
             {page + 1}
-          </button>
+          </Button>
         );
         if (page === 1 && reservationData.totalPages > 2) {
           buttons.push(
-            <button
+            <Button
               key={3}
               className="reservations__button-number"
               onClick={() => {
@@ -227,12 +230,12 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
               }}
             >
               {3}
-            </button>
+            </Button>
           );
         }
       }
       buttons.push(
-        <button
+        <Button
           key="next"
           className="reservations__button-step"
           disabled={!reservationData.hasNextPage}
@@ -241,7 +244,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
           }}
         >
           Next &gt;
-        </button>
+        </Button>
       );
       return buttons;
     };
@@ -273,7 +276,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
         <tbody>{tableRows}</tbody>
       </table>
       <span>{`${reservationData.items} reservations`}</span>
-      {navButtons}
+      <div className="reservations-nav">{navButtons}</div>
     </>
   );
 };
