@@ -108,7 +108,7 @@ const BookReservationSection = ({
       setWaiting(waitingElements);
     };
     generateReservationComponents(reservations);
-  }, [dispatch, reservations]);
+  }, [dispatch, reservations, userId]);
 
   return (
     <>
