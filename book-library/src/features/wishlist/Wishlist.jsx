@@ -86,7 +86,7 @@ const Wishlist = (location) => {
     },
   ]);
   const [bookToMove, setBookToMove] = useState(null);
-
+  console.log(bookToMove);
   useEffect(() => {
     const generateFilterMap = () => {
       return {
@@ -174,6 +174,9 @@ const Wishlist = (location) => {
         width="550px"
       >
         <Panel title="Add wish to library">
+          {bookToMove &&
+            bookToMove.comment.length > 0 &&
+            `Comment: ${bookToMove.comment}`}
           <BookForm
             bookDetails={bookToMove}
             offices={offices}

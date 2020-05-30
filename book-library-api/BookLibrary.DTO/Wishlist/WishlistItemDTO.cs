@@ -16,6 +16,7 @@ namespace BookLibrary.DTO.Wishlist
         public DateTime ReleaseDate { get; set; }
         public int Votes { get; set; }
         public bool UserVoted { get; set; }
+        public string Comment { get; set; }
 
         public static explicit operator WishlistItemDTO(Wish wish) => new WishlistItemDTO {
             WishId = wish.Id,
@@ -25,7 +26,8 @@ namespace BookLibrary.DTO.Wishlist
             CoverPictureUrl = wish.Book.CoverPictureUrl,
             DateAdded = wish.Book.DateAdded,
             ReleaseDate = wish.Book.ReleaseDate,
-            Votes = wish.Votes.Count
+            Votes = wish.Votes.Count,
+            Comment = wish.Comment
         };
     }
 }
