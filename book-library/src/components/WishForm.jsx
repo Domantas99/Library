@@ -35,6 +35,7 @@ const WishForm = ({ exitAction }) => {
         CoverPictureUrl: bookInfo.coverPictureUrl,
         ReleaseDate: bookInfo.publicationDate,
       },
+      CreatedOn: new Date(),
       Comment: bookInfo.comment,
     };
   };
@@ -70,12 +71,7 @@ const WishForm = ({ exitAction }) => {
         </div>
         <div className="form__field">
           <label htmlFor="bookTitle">COMMENT</label>
-          <textarea
-            name="comment"
-            cols="30"
-            rows="5"
-            onChange={handleChange}
-          />
+          <textarea name="comment" cols="30" rows="5" onChange={handleChange} />
         </div>
         <div className="form__buttons">
           <Button secondary onClick={() => onCancelClick()}>

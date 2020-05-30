@@ -57,6 +57,7 @@ namespace BookLibrary.Services.Wishlist
             {
                 wishes = wishes.Where(a => authors.Contains(a.Book.Author)).ToList();
             }
+            
             var wishlist = wishes.Select(wish => new WishlistItemDTO
             {
                 WishId = wish.Id,
@@ -67,7 +68,8 @@ namespace BookLibrary.Services.Wishlist
                 DateAdded = wish.Book.DateAdded,
                 ReleaseDate = wish.Book.ReleaseDate,
                 Votes = wish.Votes.Count,
-                UserVoted = wish.Votes.Where(x => x.UserId == 1).Any()
+                UserVoted = wish.Votes.Where(x => x.UserId == 1).Any(),
+                Comment = wish.Comment
             }).ToList();
 
             switch (sort)
@@ -156,10 +158,6 @@ namespace BookLibrary.Services.Wishlist
             try
             {
                 var wishToRemove = _context.Wish.FirstOrDefault(w => w.BookId == book.Id);
-                if (wishToRemove.Comment != null && wishToRemove.Comment.Length > 0)
-                {
-                    _context.BookComment.Add(new BookComment { Book = book, Comment = wishToRemove.Comment, UserId = wishToRemove.CreatedBy, CreatedOn = wishToRemove.CreatedOn });
-                }
                 var userwishes = _context.UserWish.Where(w => w.WishId == wishToRemove.Id);
                 _context.UserWish.RemoveRange(userwishes);
                 _context.Wish.Remove(wishToRemove);

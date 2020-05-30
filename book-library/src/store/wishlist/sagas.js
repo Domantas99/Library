@@ -75,7 +75,7 @@ export function* getWishlistSaga(action) {
 export function* moveWishToLibrarySaga(action) {
   try {
     const apiResult = yield call(moveWishToLibraryAPI, action.payload);
-    yield put(moveWishToLibraryEnd(apiResult));
+    yield put(moveWishToLibraryEnd());
     const toast = createToast('success', 'Wish moved to library successfully');
     yield put(displayToast(toast));
   } catch (e) {
