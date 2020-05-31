@@ -50,9 +50,7 @@ function BookList({
     <div className="book-grid">
       {!noSort && (
         <div className="book-grid__header">
-          <div className="book-grid__header-filters">
-            {filterComponent && filterComponent}
-          </div>
+          <div className="book-grid__header-filters">{filterComponent}</div>
         </div>
       )}
       {!!addLink && !!actionButton && actionButton}
