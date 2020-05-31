@@ -32,7 +32,7 @@ const Wishlist = (location) => {
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState(['sort']);
   const [modalState, setModalState] = useState(false);
-
+  const isAdmin = useSelector((state) => state.user.userData.isAdmin);
   const actionButton = (
     <ActionItem
       linkTitle="Add new book request"
@@ -155,7 +155,9 @@ const Wishlist = (location) => {
                 hasVoted={data.userVoted}
                 onVote={() => handleVote(data.wishId, index)}
               />
-              <button onClick={() => setBookToMove(data)}>Move</button>
+              {isAdmin === true && (
+                <button onClick={() => setBookToMove(data)}>Move</button>
+              )}
             </div>
           )}
         />
