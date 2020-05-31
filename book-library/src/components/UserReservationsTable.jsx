@@ -84,6 +84,10 @@ const ReservationsTable = () => {
       value: 'returndsc',
       label: 'Return Date (Descending)',
     },
+    {
+      value: 'status',
+      label: 'Status',
+    },
   ]);
 
   useEffect(() => {
