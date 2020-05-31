@@ -253,14 +253,16 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
 
   return (
     <>
-      <Filter
-        dataAction={getTeamReservations}
-        filterSelector={filterSelector}
-        filterMap={filterMap}
-        sortMap={sortMap}
-        excludedFilters={excludedFilters}
-        setFilterAction={setTeamFilters}
-      />
+      <div className="reservations-filter">
+        <Filter
+          dataAction={getTeamReservations}
+          filterSelector={filterSelector}
+          filterMap={filterMap}
+          sortMap={sortMap}
+          excludedFilters={excludedFilters}
+          setFilterAction={setTeamFilters}
+        />
+      </div>
       <table className="reservations-table">
         <thead>
           <tr>

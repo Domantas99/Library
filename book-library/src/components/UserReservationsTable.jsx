@@ -15,8 +15,6 @@ const ReservationsTable = () => {
   const reservationData = useSelector(
     (state) => state.reservations.reservationData
   );
-  /* Assuming every reserved book exists in library and so its category and author are in there.
-    If the excess entries are too much trouble, can add a separate API call. */
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
@@ -137,14 +135,16 @@ const ReservationsTable = () => {
 
   return (
     <>
-      <Filter
-        dataAction={(filters) => getReservations(filters)}
-        filterSelector={filterSelector}
-        filterMap={filterMap}
-        sortMap={sortMap}
-        excludedFilters={excludedFilters}
-        setFilterAction={(filters) => setFilters(filters)}
-      />
+      <div className="reservations-filter">
+        <Filter
+          dataAction={(filters) => getReservations(filters)}
+          filterSelector={filterSelector}
+          filterMap={filterMap}
+          sortMap={sortMap}
+          excludedFilters={excludedFilters}
+          setFilterAction={(filters) => setFilters(filters)}
+        />
+      </div>
       <table className="reservations-table">
         <thead>
           <tr>
