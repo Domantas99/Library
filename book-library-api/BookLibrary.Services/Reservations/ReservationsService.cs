@@ -23,6 +23,7 @@ namespace BookLibrary.Services.Reservations
         private const string sort_bookedfrom_dsc = "fromdsc";
         private const string sort_returndate_asc = "returnasc";
         private const string sort_returndate_dsc = "returndsc";
+        private const string sort_status = "status";
         private readonly LibraryDBContext _context;
         public ReservationsService(LibraryDBContext context)
         {
@@ -211,6 +212,10 @@ namespace BookLibrary.Services.Reservations
                 case sort_returndate_dsc:
                     {
                         return list.OrderByDescending(reservation => reservation.ReturnDate).ToList();
+                    }
+                case sort_status:
+                    {
+                        return list.OrderBy(reservation => reservation.Status).ToList();
                     }
                 default:
                     {
