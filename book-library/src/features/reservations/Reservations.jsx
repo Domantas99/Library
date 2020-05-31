@@ -26,7 +26,7 @@ const Reservations = () => {
             </NavLink>,
             <Redirect from="/reservations/team" to="/reservations" />,
           ],
-    isAdmin
+    [isAdmin]
   );
 
   return (
