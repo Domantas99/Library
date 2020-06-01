@@ -1,30 +1,34 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from 'redux-saga/effects';
 import {
   getUserApi,
+  getUserList,
   login,
-  updateUserApi,
   logoutApi,
-  registrationApi,
   pingAuthApi,
+  registrationApi,
+  updateUserApi,
 } from './api';
 import {
   GET_USER,
+  GET_USER_LIST,
   LOGIN,
-  UPDATE_USER,
-  UPDATE_USER_END,
   LOGIN_END,
   LOGOUT,
-  REGISTER_END,
   REGISTER,
+  REGISTER_END,
   PING_AUTH,
+  UPDATE_USER,
+  UPDATE_USER_END,
 } from './actionTypes';
 import {
+  authError,
   getUserEnd,
+  getUserListEnd,
+  isAuthEnd,
   loginEnd,
   registerEnd,
-  isAuthEnd,
-  authError,
 } from './actions';
 import history from '../../core/history';
 
@@ -36,10 +40,11 @@ export function* getUserSaga(action) {
     // stops saga from braking on api error
   }
 }
-export function* updateUserSaga(action) {
+
+export function* getUserListSaga(action) {
   try {
-    const apiResult = yield call(updateUserApi, action.payload);
-    yield put(getUserEnd(apiResult));
+    const apiResult = yield call(getUserList);
+    yield put(getUserListEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
   }
@@ -56,6 +61,15 @@ export function* loginSaga(action) {
   }
 }
 
+export function* logoutSaga(action) {
+  try {
+    yield call(logoutApi);
+    history.push('/login');
+  } catch (e) {
+    // exception
+  }
+}
+
 export function* registerSaga(action) {
   try {
     const apiResult = yield call(registrationApi, action.payload);
@@ -64,15 +78,6 @@ export function* registerSaga(action) {
     history.push('/');
   } catch (e) {
     // console.log(e);
-  }
-}
-
-export function* logoutSaga(action) {
-  try {
-    yield call(logoutApi);
-    history.push('/login');
-  } catch (e) {
-    // exception
   }
 }
 
@@ -86,14 +91,24 @@ export function* pingAuthSaga(action) {
   }
 }
 
+export function* updateUserSaga(action) {
+  try {
+    const apiResult = yield call(updateUserApi, action.payload);
+    yield put(getUserEnd(apiResult));
+  } catch (e) {
+    // stops saga from braking on api error
+  }
+}
+
 export default function* () {
   yield takeLatest(GET_USER, getUserSaga);
-  yield takeLatest(LOGIN_END, getUserSaga);
-  yield takeLatest(REGISTER_END, getUserSaga);
-  yield takeLatest(UPDATE_USER_END, getUserSaga);
-  yield takeLatest(UPDATE_USER, updateUserSaga);
+  yield takeLatest(GET_USER_LIST, getUserListSaga);
   yield takeLatest(LOGIN, loginSaga);
-  yield takeLatest(REGISTER, registerSaga);
+  yield takeLatest(LOGIN_END, getUserSaga);
   yield takeLatest(LOGOUT, logoutSaga);
+  yield takeLatest(UPDATE_USER, updateUserSaga);
+  yield takeLatest(UPDATE_USER_END, getUserSaga);
   yield takeLatest(PING_AUTH, pingAuthSaga);
+  yield takeLatest(REGISTER, registerSaga);
+  yield takeLatest(REGISTER_END, getUserSaga);
 }

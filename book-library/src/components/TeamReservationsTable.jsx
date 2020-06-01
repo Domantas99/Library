@@ -10,6 +10,7 @@ import {
   getTeamReservations,
   setTeamFilters,
 } from '../store/reservations/actions';
+import { getUserList } from '../store/user/actions';
 import Button from './Button';
 import Filter from './Filter';
 import ReservationsTableItem from './ReservationsTableItem';
@@ -174,6 +175,7 @@ const TeamReservationsTable = ({ pageSize }) => {
     dispatch(getCategories());
     dispatch(getOffices());
     dispatch(getAuthors());
+    dispatch(getUserList());
   }, []);
 
   useEffect(() => {
