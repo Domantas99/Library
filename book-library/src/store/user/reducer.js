@@ -1,5 +1,6 @@
 import {
   GET_USER_END,
+  GET_USER_LIST_END,
   LOGOUT,
   PING_AUTH_END,
   PING_AUTH,
@@ -10,11 +11,7 @@ const initialState = {
   userData: { isAdmin: false },
   isAuthenticated: false,
   authLoading: true,
-  users: [
-    { id: 1, userName: 'Nathaniux123' },
-    { id: 2, userName: 'Beanz' },
-    { id: 3, userName: 'MrAdmin' },
-  ], // TODO need users list implemented
+  users: [],
 };
 
 export default (state = initialState, action) => {
@@ -26,15 +23,23 @@ export default (state = initialState, action) => {
       }
       break;
     }
+
+    case GET_USER_LIST_END: {
+      return { ...state, users: action.payload };
+    }
+
     case LOGOUT: {
       return { initialState };
     }
+
     case PING_AUTH: {
       return { ...state, isAuthenticated: false, authLoading: true };
     }
+
     case PING_AUTH_END: {
       return { ...state, isAuthenticated: true, authLoading: false };
     }
+
     case PING_AUTH_ERROR: {
       return { ...state, authLoading: false };
     }

@@ -25,6 +25,12 @@ namespace BookLibrary.Api.Controllers.Users
             _userManager = userManager;
         }
 
+        [HttpGet("list")]
+        public async Task<ActionResult<List<User>>> GetUserList()
+        {
+            return await _usersService.GetUserList();
+        }
+
         [HttpGet("")]
         public async Task<ActionResult<User>> GetUser()
         {

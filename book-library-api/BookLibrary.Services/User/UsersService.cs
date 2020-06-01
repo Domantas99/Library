@@ -64,5 +64,9 @@ namespace BookLibrary.Services
             
             await _context.SaveChangesAsync();
         }
+        public async Task<List<User>> GetUserList()
+        {
+            return await _context.User.ToListAsync();
+        }
     }
 }

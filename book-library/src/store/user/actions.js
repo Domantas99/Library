@@ -1,16 +1,18 @@
 import {
   GET_USER,
   GET_USER_END,
-  UPDATE_USER,
-  UPDATE_USER_END,
+  GET_USER_LIST,
+  GET_USER_LIST_END,
   LOGIN,
   LOGIN_END,
   LOGOUT,
-  REGISTER,
-  REGISTER_END,
   PING_AUTH,
   PING_AUTH_END,
   PING_AUTH_ERROR,
+  REGISTER,
+  REGISTER_END,
+  UPDATE_USER,
+  UPDATE_USER_END,
 } from './actionTypes';
 
 export const getUser = () => ({
@@ -20,6 +22,16 @@ export const getUserEnd = (userData) => ({
   type: GET_USER_END,
   payload: userData,
 });
+
+export const getUserList = () => ({
+  type: GET_USER_LIST,
+});
+
+export const getUserListEnd = (users) => ({
+  type: GET_USER_LIST_END,
+  payload: users,
+});
+
 export const updateUser = (user) => ({
   type: UPDATE_USER,
   payload: user,

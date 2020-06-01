@@ -11,6 +11,7 @@ namespace BookLibrary.Services.Contracts
     public interface IUsersService
     {
         Task<User> GetUser(string id);
+        Task<List<User>> GetUserList();
         Task<User> UpdateUser(User user);
         Task CreateUser(UserRegisterDTO newUserInfo, string aspNetUserId);
     }
