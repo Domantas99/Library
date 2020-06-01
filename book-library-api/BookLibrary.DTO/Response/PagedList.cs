@@ -18,6 +18,9 @@ namespace BookLibrary.DTO.Response
         public int TotalPages { get => (Items - 1)/ PageSize + 1; }
         public int PageSize { get; private set; }
         public static PagedList<T> CreateFrom(ICollection<T> collection, int page, int pageSize) {
+            if (page > (collection.Count - 1) / pageSize + 1) {
+                page = (collection.Count - 1) / pageSize + 1;
+            }
             return new PagedList<T> { _collection = collection.Skip((page - 1) * pageSize).Take(pageSize) , CurrentPage = page, PageSize = pageSize, Items = collection.Count()};
         }
 

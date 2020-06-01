@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -14,21 +14,17 @@ import Button from './Button';
 import Filter from './Filter';
 import ReservationsTableItem from './ReservationsTableItem';
 
-const TeamReservationsTable = ({ startingPage, pageSize }) => {
+const TeamReservationsTable = ({ pageSize }) => {
   const dispatch = useDispatch();
   const values = queryString.parse(window.location.search);
   const filterSelector = useSelector((state) => state.reservations.teamFilters);
   const reservationData = useSelector(
     (state) => state.reservations.teamReservationData
   );
-  /* Assuming every reserved book exists in library and so its category and author are in there.
-    If the excess entries are too much trouble, can add a separate API call. */
   const categories = useSelector((state) => state.library.categories);
   const offices = useSelector((state) => state.office.offices);
   const authors = useSelector((state) => state.library.authors);
   const users = useSelector((state) => state.user.users);
-
-  const [page, setPage] = useState(startingPage);
   /* eslint-disable no-unused-vars */
   const [excludedFilters, setExcludedFilters] = useState([
     'sort',
@@ -107,6 +103,20 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     },
   ]);
 
+  const setPage = useCallback(
+    (page) => {
+      dispatch(
+        getTeamReservations({
+          ...filterSelector,
+          page: [page],
+          pageSize: [pageSize],
+        })
+      );
+      /* eslint-distable react-hooks/exhaustive-deps */
+    },
+    [filterSelector, pageSize]
+  );
+
   useEffect(() => {
     const generateFilterMap = () => {
       return {
@@ -138,12 +148,12 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
     dispatch(
       getTeamReservations({
         ...filterSelector,
-        page: [page],
+        page: [reservationData.page],
         pageSize: [pageSize],
       })
     );
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [page, pageSize, filterSelector]);
+  }, [filterSelector]);
 
   useEffect(() => {
     const generateTableRows = () => {
@@ -175,56 +185,63 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
           className="reservations__button-step"
           disabled={!reservationData.hasPreviousPage}
           onClick={() => {
-            setPage(page - 1);
+            setPage(reservationData.page - 1);
           }}
         >
           &lt; Prev
         </Button>
       );
-      if (page > 1) {
-        if (page > 2 && page === reservationData.totalPages) {
+      if (reservationData.page > 1) {
+        if (
+          reservationData.page > 2 &&
+          reservationData.page === reservationData.totalPages
+        ) {
           buttons.push(
             <Button
-              key={page - 2}
+              key={reservationData.page - 2}
               className="reservations__button-number"
               onClick={() => {
-                setPage(page - 2);
+                setPage(reservationData.page - 2);
               }}
             >
-              {page - 2}
+              {reservationData.page - 2}
             </Button>
           );
         }
         buttons.push(
           <Button
-            key={page - 1}
+            key={reservationData.page - 1}
             className="reservations__button-number"
             onClick={() => {
-              setPage(page - 1);
+              setPage(reservationData.page - 1);
             }}
           >
-            {page - 1}
+            {reservationData.page - 1}
           </Button>
         );
       }
       buttons.push(
-        <Button key={page} disabled className="reservations__button-current">
-          {page}
+        <Button
+          key={reservationData.page}
+          disabled
+          className="reservations__button-current"
+        >
+          {reservationData.page}
         </Button>
       );
-      if (page < reservationData.totalPages) {
+      if (reservationData.page < reservationData.totalPages) {
         buttons.push(
           <Button
-            key={page + 1}
+            key={reservationData.page + 1}
             className="reservations__button-number"
             onClick={() => {
-              setPage(page + 1);
+              setPage(reservationData.page + 1);
             }}
           >
-            {page + 1}
+            {reservationData.page + 1}
           </Button>
         );
-        if (page === 1 && reservationData.totalPages > 2) {
+        if (reservationData.page === 1 && reservationData.totalPages > 2) {
           buttons.push(
             <Button
               key={3}
@@ -244,7 +261,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
           className="reservations__button-step"
           disabled={!reservationData.hasNextPage}
           onClick={() => {
-            setPage(page + 1);
+            setPage(reservationData.page + 1);
           }}
         >
           Next &gt;
@@ -253,7 +270,7 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
       return buttons;
     };
     setNavButtons(generateNavButtons);
-  }, [reservationData, page, pageSize]);
+  }, [reservationData, pageSize]);
 
   return (
     <>
@@ -288,12 +305,11 @@ const TeamReservationsTable = ({ startingPage, pageSize }) => {
 };
 
 TeamReservationsTable.propTypes = {
-  startingPage: PropTypes.number,
   pageSize: PropTypes.number,
 };
 
 TeamReservationsTable.defaultProps = {
-  startingPage: 1,
   pageSize: 10,
 };
+
 export default TeamReservationsTable;
