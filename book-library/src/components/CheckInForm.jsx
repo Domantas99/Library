@@ -13,6 +13,7 @@ const CheckInForm = ({
 }) => {
   function onConfirmClick() {
     onConfirm();
+    reviewHandler(null);
   }
 
   return (
