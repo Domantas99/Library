@@ -255,6 +255,7 @@ const BookAvailabilitySection = ({
             isAdmin={user && user.isAdmin}
             notReadingUsers={notReadingBookUsers}
             setActiveOffice={setActiveOffice}
+            isUserReading={bookDetails.isUserCurrentlyReading}
             reservation={
               reservationModalMode === false ? reservation : activeReservation
             }

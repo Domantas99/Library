@@ -10,7 +10,14 @@ import { addReservation } from '../store/reservations/actions';
 import { formatDate, isDate } from '../utilities/dateHalper';
 import { displayToast } from '../store/general/actions';
 
-export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
+export default ({
+  reservation,
+  onExit,
+  Edit,
+  isAdmin,
+  notReadingUsers,
+  isUserReading,
+}) => {
   const userData = useSelector((state) => state.user.userData);
   const [returndate, handleDateChange] = useState(
     formatDate(reservation.plannedReturnOn) ||
@@ -22,8 +29,9 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
   const user = useSelector((state) => state.user.userData);
 
   const checkOutUsers = _.filter(notReadingUsers, (u) => u.id !== user.id);
-  checkOutUsers.unshift({ fullName: 'Myself' });
-
+  if (!isUserReading) {
+    checkOutUsers.unshift({ fullName: 'Myself' });
+  }
   const reservationObj = {
     office:
       reservation.activeOffice ||
