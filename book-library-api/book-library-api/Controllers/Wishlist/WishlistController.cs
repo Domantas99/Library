@@ -30,7 +30,7 @@ namespace BookLibrary.Api.Controllers.Wishlist
         [HttpPost("vote/{id}")]
         public ActionResult ManageVote(int id)
         {
-            _wishlistService.ManageVote(id);
+            _wishlistService.ManageVote(id, GetUserId());
             return Ok();
         }
 
