@@ -113,8 +113,8 @@ const TeamReservationsTable = ({ pageSize }) => {
           pageSize: [pageSize],
         })
       );
-      /* eslint-distable react-hooks/exhaustive-deps */
     },
+    /* eslint-distable react-hooks/exhaustive-deps */
     [filterSelector, pageSize]
   );
 
