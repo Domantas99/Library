@@ -24,14 +24,18 @@ export default ({
       formatDate(reservation.returnDate) ||
       newDate()
   );
-  const [selectedCheckOutUser, setCheckOutUser] = useState(null);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
 
-  const checkOutUsers = _.filter(notReadingUsers, (u) => u.id !== user.id);
+  const checkOutUsers = _.filter(notReadingUsers, (u) => u.userId !== user.id);
   if (!isUserReading) {
     checkOutUsers.unshift({ fullName: 'Myself' });
   }
+  const [selectedCheckOutUser, setCheckOutUser] = useState(
+    checkOutUsers[0].userId
+  );
+
   const reservationObj = {
     office:
       reservation.activeOffice ||
@@ -137,7 +141,10 @@ export default ({
       >
         Cancel
       </button>
-      <button onClick={() => onSubmitClick()} disabled={!reservation}>
+      <button
+        onClick={() => onSubmitClick()}
+        disabled={!reservation || checkOutUsers.length <= 0}
+      >
         {reservationObj.book.id ? 'Save Changes' : 'Confirm Reservation'}
       </button>
     </>
