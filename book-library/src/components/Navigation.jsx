@@ -36,7 +36,7 @@ const Navigation = () => {
 
           <li>
             <NavLink
-              to="/library"
+              to="/library?sort=recent"
               className="navigation__item"
               activeClassName="active"
               onClick={() => dispatch(selectCategory(null))}
@@ -51,7 +51,7 @@ const Navigation = () => {
 
           <li>
             <NavLink
-              to="/wishlist"
+              to="/wishlist?sort=recent"
               className="navigation__item"
               activeClassName="active"
             >
