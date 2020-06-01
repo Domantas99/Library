@@ -16,6 +16,6 @@ namespace BookLibrary.Services.Contracts
         Task<List<string>> GetCategories();
         Task<List<string>> GetAuthors();
         Task<List<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId);
-        void ManageVote(int id);
+        void ManageVote(int id, string aspNetUserId);
     }
 }

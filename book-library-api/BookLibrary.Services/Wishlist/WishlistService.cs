@@ -49,6 +49,7 @@ namespace BookLibrary.Services.Wishlist
         public async Task<List<WishlistItemDTO>> GetWishlist(List<string> categories, List<string> authors, string sort, string aspNetUserId)
         {
             var wishes = await _context.Wish.Include(x => x.Book).Include(x => x.Votes).ThenInclude(x => x.User).ToListAsync();
+            var userId = _context.User.Where(u => u.AspNetUserId == aspNetUserId).Select(x => x.Id).FirstOrDefault();
             if (categories != null && categories.Count > 0)
             {
                 wishes = wishes.Where(a => a.Book.Category != null && categories.Contains(a.Book.Category)).ToList();
@@ -68,7 +69,7 @@ namespace BookLibrary.Services.Wishlist
                 DateAdded = wish.Book.DateAdded,
                 ReleaseDate = wish.Book.ReleaseDate,
                 Votes = wish.Votes.Count,
-                UserVoted = wish.Votes.Where(x => x.UserId == 1).Any(),
+                UserVoted = wish.Votes.Where(x => x.UserId == userId).Any(),
                 Comment = wish.Comment
             }).ToList();
 
@@ -118,10 +119,10 @@ namespace BookLibrary.Services.Wishlist
             return wishlist;
         }
 
-        public void ManageVote(int id)
+        public void ManageVote(int id, string aspNetUserId)
         {
             var wish = _context.Wish.Where(x => x.Id == id).Include(x => x.Votes).FirstOrDefault();
-            var userId = 1;
+            var userId = _context.User.Where(u => u.AspNetUserId == aspNetUserId).Select(x=>x.Id).FirstOrDefault();
             if (wish == null)
             {
                 throw new HandledException("No such wishlist book exists");
