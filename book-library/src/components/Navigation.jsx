@@ -1,13 +1,13 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Categories from './Categories';
+import { Link, NavLink } from 'react-router-dom';
 import { selectCategory } from '../store/library/actions';
-import UserInfo from './UserInfo';
 import { logOut } from '../store/user/actions';
 import Button from './Button';
+import Categories from './Categories';
+import UserInfo from './UserInfo';
 
-export default function Navigation() {
+const Navigation = () => {
   const dispatch = useDispatch();
   function onLogOutClick() {
     dispatch(logOut());
@@ -36,7 +36,7 @@ export default function Navigation() {
 
           <li>
             <NavLink
-              to="/library"
+              to="/library?sort=recent"
               className="navigation__item"
               activeClassName="active"
               onClick={() => dispatch(selectCategory(null))}
@@ -51,7 +51,7 @@ export default function Navigation() {
 
           <li>
             <NavLink
-              to="/wishlist"
+              to="/wishlist?sort=recent"
               className="navigation__item"
               activeClassName="active"
             >
@@ -64,7 +64,7 @@ export default function Navigation() {
 
           <li>
             <NavLink
-              to="/reservations"
+              to="/reservations?status=Borrowed&status=Waiting"
               className="navigation__item"
               activeClassName="active"
             >
@@ -77,9 +77,17 @@ export default function Navigation() {
         </ul>
       </div>
       <div className="sidebar__footer">
-        <Link to="/user-settings"><Button clear wide mini>Manage my account</Button></Link>
-        <Button clear wide mini onClick={() => onLogOutClick()}>Log out</Button>
+        <Link to="/user-settings">
+          <Button clear wide mini>
+            Manage my account
+          </Button>
+        </Link>
+        <Button clear wide mini onClick={() => onLogOutClick()}>
+          Log out
+        </Button>
       </div>
     </div>
   );
-}
+};
+
+export default Navigation;

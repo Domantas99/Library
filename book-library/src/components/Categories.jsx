@@ -30,7 +30,7 @@ const Categories = () => {
         </div>
       )}
       <NavLink
-        to="/library"
+        to="/library?sort=recent"
         key="all"
         onClick={() => dispatch(selectCategory(null))}
       >
@@ -45,7 +45,7 @@ const Categories = () => {
       {!_.isEmpty(categories) &&
         categories.map((category) => (
           <Link
-            to={`/library/?category=${category}`}
+            to={`/library/?category=${category}&sort=recent`}
             key={encodeURIComponent(category)}
           >
             <li
