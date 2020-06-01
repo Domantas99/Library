@@ -22,6 +22,7 @@ const initialState = {
     hasPreviousPage: false,
     totalPages: 1,
     items: 0,
+    page: 1,
   },
 };
 
@@ -88,6 +89,7 @@ export default (state = initialState, action) => {
           hasPreviousPage: action.payload.hasPreviousPage,
           totalPages: action.payload.totalPages,
           items: action.payload.items,
+          page: action.payload.page,
         },
       };
     }
