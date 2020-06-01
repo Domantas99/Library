@@ -13,18 +13,18 @@ const Reservations = () => {
     () =>
       isAdmin
         ? [
-            <NavLink exact to="/reservations">
+            <NavLink exact to="/reservations?status=Borrowed&status=Waiting">
               My reservations
             </NavLink>,
-            <NavLink exact to="/reservations/team">
+            <NavLink exact to="/reservations/team?status=Borrowed&status=Waiting">
               Team reservations
             </NavLink>,
           ]
         : [
-            <NavLink exact to="/reservations">
+            <NavLink exact to="/reservations?status=Borrowed&status=Waiting">
               My reservations
             </NavLink>,
-            <Redirect from="/reservations/team" to="/reservations" />,
+            <Redirect from="/reservations/team" to="/reservations?status=Borrowed&status=Waiting" />,
           ],
     [isAdmin]
   );
