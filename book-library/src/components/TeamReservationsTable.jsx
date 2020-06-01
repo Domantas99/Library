@@ -114,7 +114,7 @@ const TeamReservationsTable = ({ pageSize }) => {
         })
       );
     },
-    /* eslint-distable react-hooks/exhaustive-deps */
+    /* eslint-disable react-hooks/exhaustive-deps */
     [filterSelector, pageSize]
   );
 

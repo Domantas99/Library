@@ -264,6 +264,7 @@ const BookDetails = ({ id }) => {
                 unavailableInMyOffice={unavailableInMyOffice}
                 openWaitingModal={openWaitingModal}
                 setActiveOffice={setActiveOffice}
+                isUserInWaitlist={bookDetails.isUserInWaitlist}
               />
             </>
           )}

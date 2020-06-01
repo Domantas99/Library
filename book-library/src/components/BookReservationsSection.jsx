@@ -11,6 +11,7 @@ const BookReservationSection = ({
   unavailableInMyOffice,
   openWaitingModal,
   setActiveOffice,
+  isUserInWaitlist,
 }) => {
   const dispatch = useDispatch();
   const [borrowed, setBorrowed] = useState([]);
@@ -126,20 +127,26 @@ const BookReservationSection = ({
       ) : (
         <></>
       )}
-      {waiting && waiting.length > 0 ? (
+      {waiting ? (
         <>
-          <div className="book-reservation__list" ref={reffer}>
-            <h3 className="book-reservation__list-title">Waitlist</h3>
-            {waiting}
-            {userWaitingId >= 0 && (
-              <Button onClick={() => leaveWaitlist()}>Leave waitlist</Button>
-            )}
-          </div>
+          <hr />
+          <h3 className="book-reservation__list-title">
+            Waitlist
+            {waiting.length <= 0 && ' is empty'}
+          </h3>
+          {waiting.length > 0 && (
+            <div className="book-reservation__list" ref={reffer}>
+              {waiting}
+              {userWaitingId >= 0 && (
+                <Button onClick={() => leaveWaitlist()}>Leave waitlist</Button>
+              )}
+            </div>
+          )}
         </>
       ) : (
         <></>
       )}
-      {unavailableInMyOffice === true && (
+      {unavailableInMyOffice === true && isUserInWaitlist === false && (
         <Button mini dark onClick={openWaitingModal}>
           Join Waitlist
         </Button>
@@ -156,6 +163,8 @@ BookReservationSection.propTypes = {
   reffer: PropTypes.shape({ current: PropTypes.any }).isRequired,
   unavailableInMyOffice: PropTypes.bool.isRequired,
   openWaitingModal: PropTypes.func.isRequired,
+  setActiveOffice: PropTypes.func.isRequired,
+  isUserInWaitlist: PropTypes.bool.isRequired,
 };
 
 export default BookReservationSection;
