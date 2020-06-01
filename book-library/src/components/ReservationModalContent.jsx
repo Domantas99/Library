@@ -5,19 +5,36 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import { addReservation } from '../store/reservations/actions';
 import { formatDate, isDate } from '../utilities/dateHalper';
 import { displayToast } from '../store/general/actions';
 
-export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
+export default ({
+  reservation,
+  onExit,
+  Edit,
+  isAdmin,
+  notReadingUsers,
+  isUserReading,
+}) => {
   const userData = useSelector((state) => state.user.userData);
   const [returndate, handleDateChange] = useState(
     formatDate(reservation.plannedReturnOn) ||
       formatDate(reservation.returnDate) ||
       newDate()
   );
-  const [selectedCheckOutUser, setCheckOutUser] = useState(null);
+
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userData);
+
+  const checkOutUsers = _.filter(notReadingUsers, (u) => u.userId !== user.id);
+  if (!isUserReading) {
+    checkOutUsers.unshift({ fullName: 'Myself' });
+  }
+  const [selectedCheckOutUser, setCheckOutUser] = useState(
+    checkOutUsers[0].userId
+  );
 
   const reservationObj = {
     office:
@@ -98,10 +115,10 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
               onChange={(e) => setCheckOutUser(e.target.value)}
               value={selectedCheckOutUser || userData.userId}
             >
-              {notReadingUsers.map((user) => (
-                <option key={user.userId} value={user.userId}>
+              {checkOutUsers.map((u) => (
+                <option key={u.userId} value={u.userId}>
                   {/* <img src={user.imageUrl}/> */}
-                  {userData.id === user.userId ? 'Myself' : user.fullName}
+                  {u.fullName}
                 </option>
               ))}
             </select>
@@ -124,7 +141,10 @@ export default ({ reservation, onExit, Edit, isAdmin, notReadingUsers }) => {
       >
         Cancel
       </button>
-      <button onClick={() => onSubmitClick()} disabled={!reservation}>
+      <button
+        onClick={() => onSubmitClick()}
+        disabled={!reservation || checkOutUsers.length <= 0}
+      >
         {reservationObj.book.id ? 'Save Changes' : 'Confirm Reservation'}
       </button>
     </>

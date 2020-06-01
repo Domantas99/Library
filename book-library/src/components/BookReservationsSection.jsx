@@ -146,7 +146,7 @@ const BookReservationSection = ({
       ) : (
         <></>
       )}
-      {unavailableInMyOffice === true && isUserInWaitlist === false && (
+      {unavailableInMyOffice && !isUserInWaitlist && (
         <Button mini dark onClick={openWaitingModal}>
           Join Waitlist
         </Button>

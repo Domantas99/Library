@@ -68,8 +68,13 @@ const BookAvailabilitySection = ({
   };
 
   const closeModal = () => {
-    setCheckInModalState(false); 
+    setCheckInModalState(false);
     setReservationReview(null);
+  };
+
+  const onReservationExit = () => {
+    setModalState(false);
+    setActiveOffice(null);
   };
 
   function onCheckInSubmitClick() {
@@ -249,10 +254,12 @@ const BookAvailabilitySection = ({
             Edit={reservationModalMode}
             isAdmin={user && user.isAdmin}
             notReadingUsers={notReadingBookUsers}
+            setActiveOffice={setActiveOffice}
+            isUserReading={bookDetails.isUserCurrentlyReading}
             reservation={
               reservationModalMode === false ? reservation : activeReservation
             }
-            onExit={() => setModalState(false)}
+            onExit={() => onReservationExit()}
             onSubmit={() => ({})}
           />
         )}
