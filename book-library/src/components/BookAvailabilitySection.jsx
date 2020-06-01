@@ -67,6 +67,11 @@ const BookAvailabilitySection = ({
     setActiveOffice(data);
   };
 
+  const closeModal = () => {
+    setCheckInModalState(false); 
+    setReservationReview(null);
+  };
+
   function onCheckInSubmitClick() {
     dispatch(
       checkInReservation(bookDetails.activeReservation.id, reservationReview)
@@ -254,14 +259,14 @@ const BookAvailabilitySection = ({
       </Modal>
       <Modal
         modalState={checkInModalState}
-        exitAction={() => setCheckInModalState(false)}
+        exitAction={() => closeModal()}
         height="400px"
         width="400px"
       >
         {activeReservation && (
           <CheckInForm
             reservation={activeReservation}
-            onCancel={() => setCheckInModalState(false)}
+            onCancel={() => closeModal()}
             onConfirm={() => onCheckInSubmitClick()}
             reviewValue={reservationReview}
             reviewHandler={setReservationReview}
