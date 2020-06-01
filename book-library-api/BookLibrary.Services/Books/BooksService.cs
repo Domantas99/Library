@@ -361,7 +361,7 @@ namespace BookLibrary.Services.Books
 
         public Task<List<BookListDTO>> GetLatestBooks(int count, string userId)
         {
-            var books = BooksWithoutWishes();
+            var books = BooksWithoutWishes().Where(x => (DateTime.Now - x.DateAdded).TotalDays <= 60).ToList();
             books.Sort((a, b) => DateTime.Compare(b.DateAdded, a.DateAdded));
             var bookList = AddAvailabilityInList(books, userId);
             return Task.FromResult(bookList.Take(count).ToList());

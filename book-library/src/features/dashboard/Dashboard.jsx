@@ -20,6 +20,8 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
+    dispatch(getLatestBooks());
+    dispatch(getRecommendedBooks());
     dispatch(getCurrentlyReadingBooks());
   }, [dispatch]);
 
@@ -33,23 +35,23 @@ const Dashboard = () => {
     <div className="dashboard">
       {userOffice &&
       <div>
-        <Panel title="New Books" actions={seeAllLink}>
+        {latestBooks && latestBooks.length > 0 && <Panel title="New Books" actions={seeAllLink}>
           <BookList
             noSort
             dataSelector={latestBooks}
             dataAction={getLatestBooks()}
             navigateItems
           />
-        </Panel>
+        </Panel>}
 
-        <Panel title="You might enjoy" actions={seeAllLink}>
+        {recommendedBooks && recommendedBooks.length > 0 && <Panel title="You might enjoy" actions={seeAllLink}>
           <BookList
             noSort
             dataSelector={recommendedBooks}
             dataAction={getRecommendedBooks()}
             navigateItems
           />
-        </Panel>
+        </Panel>}
       </div>
 }
       {currentlyReadingBooks && currentlyReadingBooks.length > 0 && (
