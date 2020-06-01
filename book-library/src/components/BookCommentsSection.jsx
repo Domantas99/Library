@@ -16,6 +16,7 @@ const BookCommentsSection = ({ id, pageSize }) => {
     (page) => {
       dispatch(getBookComments({ book: id, page, pageSize }));
     },
+    /* eslint-disable react-hooks/exhaustive-deps */
     [id, pageSize]
   );
 
@@ -127,7 +128,8 @@ const BookCommentsSection = ({ id, pageSize }) => {
 
   useEffect(() => {
     dispatch(getBookComments({ book: id, page: 1, pageSize }));
-  }, [dispatch, id, pageSize]);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [id, pageSize, setPage]);
 
   return (
     <div>
