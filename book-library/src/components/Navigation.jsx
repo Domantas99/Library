@@ -78,11 +78,12 @@ const Navigation = () => {
       </div>
       <div className="sidebar__footer">
         <Link to="/user-settings">
-          <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.MINI}>
+          <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.ROUND}>
             Manage my account
           </Button>
         </Link>
-        <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.MINI} onClick={() => onLogOutClick()}>
+        <Button buttonAppearance={BUTTON_APPEARANCE.HEAVY | BUTTON_APPEARANCE.LINK} onClick={() => onLogOutClick()}>
+          <i className="btn__icon btn__icon--logout" />
           Log out
         </Button>
       </div>

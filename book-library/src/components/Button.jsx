@@ -13,9 +13,12 @@ export const BUTTON_APPEARANCE = {
   WIDE: 1 << 7,
   SQUARE: 1 << 8,
   LINK: 1 << 9,
+  DANGER: 1 << 10,
+  ROUND: 1 << 11,
+  HEAVY: 1 << 12,
 };
 
-const Button = ({ buttonAppearance, onClick, children, disabled, type }) => {
+const Button = ({ ref, buttonAppearance, onClick, children, disabled, type }) => {
   const classes = classNames('btn', {
     btn__secondary: buttonAppearance & BUTTON_APPEARANCE.SECONDARY,
     btn__clear: buttonAppearance & BUTTON_APPEARANCE.CLEAR,
@@ -25,6 +28,9 @@ const Button = ({ buttonAppearance, onClick, children, disabled, type }) => {
     btn__mini: buttonAppearance & BUTTON_APPEARANCE.MINI,
     btn__square: buttonAppearance & BUTTON_APPEARANCE.SQUARE,
     btn__link: buttonAppearance & BUTTON_APPEARANCE.LINK,
+    btn__danger: buttonAppearance & BUTTON_APPEARANCE.DANGER,
+    btn__round: buttonAppearance & BUTTON_APPEARANCE.ROUND,
+    btn__heavy: buttonAppearance & BUTTON_APPEARANCE.HEAVY,
     'btn__secondary--action':
       buttonAppearance & BUTTON_APPEARANCE.ACTION &&
       buttonAppearance & BUTTON_APPEARANCE.SECONDARY,
@@ -32,6 +38,7 @@ const Button = ({ buttonAppearance, onClick, children, disabled, type }) => {
 
   return (
     <button
+      ref={ref}
       className={classes}
       onClick={onClick}
       type={type}

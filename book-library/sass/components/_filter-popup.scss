@@ -1,0 +1,196 @@
+.filter-popup {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border-radius: base(0.5);
+  box-shadow: 0 0 base() base(-0.25) rgba(0, 0, 0, 0.25);
+  margin: base(0.75);
+  overflow: hidden;
+
+  &__content {
+    display: grid;
+    grid-template-columns: base(22) base(32) base(32);
+  }
+
+  &__content-item {
+    border-right: solid 1px $color-border;
+    min-height: base(30);
+    max-height: base(30);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+
+    &--padded {
+      padding: 0 base();
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  &__nav-item {
+    @include minMaxHeight(6);
+    border-radius: unset;
+    background-color: transparent;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    color: $color-text-secondary;
+    padding: base(2);
+    border-bottom: solid 1px $color-border;
+    outline: none;
+
+    &:last-child {
+      margin-bottom: -1px;
+    }
+
+    &:hover,
+    &:active,
+    &.active {
+      color: $color-blue;
+      background-color: $color-background-selected;
+      cursor: pointer;
+      border-right: solid 2px $color-blue;
+      margin-right: -1px;
+      padding-right: base(2) - 1px;
+    }
+  }
+
+  &__nav-item-count {
+    @include minMax(2, 2);
+    display: flex;
+    font-size: 10px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    text-align: center;
+    color: $color-white;
+    background-color: $color-text;
+  }
+
+  &__search-wrapper {
+    position: relative;
+    margin-top: base();
+
+    &:after {
+      position: absolute;
+      width: base(2.5);
+      height: base(2.5);
+      content: '';
+      background-size: base(2.5);
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-image: sassvg('search');
+      right: 0;
+      top: base();
+    }
+  }
+
+  &__search {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-radius: unset;
+    border-bottom: solid 1px $color-border;
+    transition: border-color .25s;
+    outline: none;
+    height: base(4);
+    min-height: base(4);
+    padding: base() base(3) base() 0;
+
+    &:focus {
+      border-color: $color-blue;
+    }
+  }
+
+  &__list {
+    overflow: auto;
+
+    & > * {
+      margin: base(2) 0;
+    }
+  }
+
+  &__selected {
+    display: flex;
+    flex-direction: column;
+    line-height: base(5);
+    color: $color-text-secondary;
+  }
+
+  &__selected-category {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__pill {
+    $this: &;
+    background-color: $color-background-secondary;
+    font-weight: $font-weight-bold;
+    color: $color-text;
+    height: fit-content;
+    width: fit-content;
+    min-width: unset;
+    display: flex;
+    flex-direction: row;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: base(.5);
+    position: relative;
+    padding-right: base(2.5);
+    transition: color .2s, background-color .2s;
+
+    &:hover,:active {
+      background-color: $color-background-red;
+      color: $color-red;
+      cursor: pointer;
+
+      &:after {
+        background-color: $color-red;
+      }
+    }
+
+    &:after {
+      transition: background-color .2s;
+      position: absolute;
+      content: '';
+      right: base(.5);
+      top: base(.5);
+      width: base(1.5);
+      height: base(1.5);
+      mask-position: 50% 50%;
+      background-color: $color-text;
+      mask-image: sassvg(remove);
+    }
+  }
+
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border-top: solid 1px $color-border;
+    padding: base() base(2);
+
+    .btn:first-child {
+      margin-right: base();
+    }
+  }
+}
+
+.react-tiny-popover-container {
+  margin-top: base(-1) !important;
+}

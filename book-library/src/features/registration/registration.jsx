@@ -43,7 +43,7 @@ export default function Registration() {
     return 'Successfully registered!';
   }
 
-  function onSubmitClick() {
+  function onSubmit(event) {
     const toastMessage = validate();
     const toast = {
       type: 'error',
@@ -58,10 +58,11 @@ export default function Registration() {
     }
 
     dispatch(displayToast(toast));
+    event.preventDefault();
   }
 
   return (
-    <div className="auth">
+    <form className="auth" onSubmit={onSubmit}>
       <h1 className="auth-title">Registration</h1>
       <div className="auth-form">
         <div className="auth-form-block">
@@ -122,9 +123,9 @@ export default function Registration() {
         </div>
       </div>
       <div className=" auth-form-buttons">
-        <Button onClick={() => onSubmitClick()}>Create an account</Button>
+        <input className="btn" type="submit" value="Create an account" />
         <Button onClick={() => history.push('/login')}>Back</Button>
       </div>
-    </div>
+    </form>
   );
 }

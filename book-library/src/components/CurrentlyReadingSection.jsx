@@ -94,7 +94,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
             >
               Edit
             </Button>
-            <Button onClick={() => onCheckInClick(res)} small wide>
+            <Button onClick={() => onCheckInClick(res)} buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.WIDE}>
               Check In
             </Button>
           </div>

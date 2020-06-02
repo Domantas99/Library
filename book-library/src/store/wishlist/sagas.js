@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-unused-vars */
 import { takeLatest, call, put } from 'redux-saga/effects';
 import history from '../../core/history';

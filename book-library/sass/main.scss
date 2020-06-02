@@ -15,6 +15,7 @@
 @import 'layout/form';
 @import 'layout/modal';
 
+@import './components/button';
 @import './components/book-grid';
 @import './components/search-bar';
 @import './components/search-bar-result-block';
@@ -30,7 +31,7 @@
 @import './components/wishform';
 @import './components/confirmation-form';
 @import './components/cant-find';
-@import './components/filter-modal';
+@import 'components/filter-popup';
 @import './components/check-in-form';
 @import './components/book-availability-section';
 @import './components/user-form';

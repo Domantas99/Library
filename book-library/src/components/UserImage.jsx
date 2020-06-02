@@ -17,12 +17,15 @@ const UserImage = ({ url, small, big }) => {
 };
 
 UserImage.propTypes = {
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
   small: PropTypes.bool,
+  big: PropTypes.bool,
 };
 
 UserImage.defaultProps = {
+  url: null, // Could do a placeholder image here, no?
   small: false,
+  big: false,
 };
 
 export default UserImage;
