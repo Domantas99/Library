@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -20,7 +21,7 @@ const Filter = ({
   setFilterAction,
 }) => {
   const dispatch = useDispatch();
-  const [sort, setSort] = useState(sortMap[0]);
+  const [sort, setSort] = useState(sortMap[0].value);
   const location = useLocation();
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
@@ -29,7 +30,7 @@ const Filter = ({
     (newFilters) => {
       return {
         ...newFilters,
-        sort: [sort],
+        sort: [sort.value],
       };
     },
     [sort]

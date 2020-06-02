@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 import httpClient from '../../core/httpClient';
 import { paramGenerator } from '../../utilities';
