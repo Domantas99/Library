@@ -7,7 +7,9 @@ import {
   Dashboard,
   EditBook,
   Library,
+  Login,
   RegisterBook,
+  Registration,
   Reservations,
   UserSettings,
   Wishlist,
@@ -15,8 +17,6 @@ import {
 import { SearchBar, Navigation, Spinner } from './components';
 import { getUser, isAuth } from './store/user/actions';
 import 'react-toastify/dist/ReactToastify.css';
-import Registration from './features/registration/registration';
-import Login from './features/login/login';
 import { getOffices } from './store/office/actions';
 
 toast.configure();

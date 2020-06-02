@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -22,12 +23,13 @@ export default function Login() {
     });
   }
 
-  function onLoginClick() {
+  function onSubmit(event) {
     dispatch(login(credentials));
+    event.preventDefault();
   }
 
   return (
-    <div className="auth">
+    <form className="auth" onSubmit={onSubmit}>
       <h1 className="auth-title">Login to library</h1>
       <div className="auth-form">
         <div className="auth-form-block">
@@ -53,9 +55,9 @@ export default function Login() {
         </div>
       </div>
       <div className=" auth-form-buttons">
-        <Button onClick={() => onLoginClick()}>Login</Button>
+        <input className="btn" type="submit" value="Login" />
         <Button onClick={() => history.push('/registration')}>Register</Button>
       </div>
-    </div>
+    </form>
   );
 }
