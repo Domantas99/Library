@@ -36,4 +36,10 @@
     &:hover {
         background-color: #E8E9ED;
     }
+    
+}
+
+.selected {
+    color: $color-blue;
+    background-color: $color-background-selected;
 }
