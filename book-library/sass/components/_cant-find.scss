@@ -7,18 +7,18 @@
         margin-top: 20px;
         padding-bottom: 10px;
         font-size: 15px;
+        color: $color-text-secondary;
+        font-weight: 300;
     }
+
     &-buttons {
         padding-top: 48px;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        &-submit {
-            background-color: $color-blue;
-            border-radius: 3px;
-            color: white;
-            margin-left: 15px;
-            width: 120px;
+
+        & > *:first-child {
+            margin-right: base();
         }
     }
 }

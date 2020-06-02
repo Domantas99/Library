@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button, { BUTTON_APPEARANCE } from './Button';
 
 const CheckInForm = ({
   reservation,
@@ -17,41 +18,48 @@ const CheckInForm = ({
   }
 
   return (
-    <div className="checkInForm">
-      <h2>Check in</h2>
-      <div className="checkInForm-content">
-        <div className="checkInForm-content-img">
+    <>
+      <h2 className="reservation-modal__title">Check in</h2>
+      <div className="reservation-modal">
+        <div className="reservation-modal__image">
           <img src={reservation.book.coverPictureUrl} />
         </div>
-        <div>
-          <div className="checkInForm-content-text-info-title">
-            {reservation.book.title}
-          </div>
-          <div className="checkInForm-content-text-info-author">
-            {reservation.book.author}
-          </div>
+        <div className="reservation-modal__content">
+          <h3>{reservation.book.title}</h3>
+          <h5 className="text-secondary">
+            by{' '}
+            <span className="text-underlined">{reservation.book.author}</span>
+          </h5>
+          <hr />
           {reviewHandler && (
-            <div className="checkInForm-content-comment">
-              <label>Review</label>
-              <textarea
-                placeholder="Leave a comment..."
-                value={reviewValue}
-                onChange={(e) => reviewHandler(e.target.value)}
-              />
-            </div>
+            <>
+              <h5 className="reservation-modal__section-title">Review</h5>
+              <div className="form__field">
+                <textarea
+                  placeholder="Leave a comment..."
+                  value={reviewValue}
+                  onChange={(e) => reviewHandler(e.target.value)}
+                />
+              </div>
+            </>
           )}
+          <div className="reservation-modal__buttons">
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR}
+              onClick={() => onCancel()}
+            >
+              Cancel
+            </Button>
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.SMALL}
+              onClick={() => onConfirmClick()}
+            >
+              Confirm
+            </Button>
+          </div>
         </div>
       </div>
-      <div className="checkInForm-buttons">
-        <button onClick={() => onCancel()}>Cancel</button>
-        <button
-          className="checkInForm-buttons-confirm"
-          onClick={() => onConfirmClick()}
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

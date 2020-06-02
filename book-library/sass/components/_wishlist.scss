@@ -1,0 +1,17 @@
+.wishlist {
+  &__actions {
+    margin-top: base(2);
+    display: flex;
+    flex-direction: row;
+
+    & > * {
+      font-weight: $font-weight-bold;
+    }
+
+    & > :first-child {
+      margin-right: base();
+      width: base(8);
+      min-width: base(8);
+    }
+  }
+}

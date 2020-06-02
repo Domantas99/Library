@@ -91,7 +91,7 @@
     padding: base(4);
     text-align: center;
     cursor: pointer;
-    transition: color,background-color .25s;
+    transition: color .25s, background-color .25s;
 
     &:hover {
       color: $color-blue;

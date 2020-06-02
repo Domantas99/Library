@@ -39,8 +39,6 @@ const ReservationsTableItem = ({ data }) => {
       <Modal
         modalState={checkInModalState}
         exitAction={() => setCheckInModalState(false)}
-        height="400px"
-        width="400px"
       >
         {data.user === null ? (
           <CheckInForm
@@ -111,8 +109,6 @@ const ReservationsTableItem = ({ data }) => {
             <Modal
               modalState={modalState}
               exitAction={() => setModalState(false)}
-              height="auto"
-              width="400px"
             >
               <ReservationModalContent
                 reservation={data}

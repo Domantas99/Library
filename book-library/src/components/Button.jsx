@@ -18,7 +18,7 @@ export const BUTTON_APPEARANCE = {
   HEAVY: 1 << 12,
 };
 
-const Button = ({ ref, buttonAppearance, onClick, children, disabled, type }) => {
+const Button = ({ buttonAppearance, onClick, children, disabled, type }) => {
   const classes = classNames('btn', {
     btn__secondary: buttonAppearance & BUTTON_APPEARANCE.SECONDARY,
     btn__clear: buttonAppearance & BUTTON_APPEARANCE.CLEAR,
@@ -38,7 +38,6 @@ const Button = ({ ref, buttonAppearance, onClick, children, disabled, type }) =>
 
   return (
     <button
-      ref={ref}
       className={classes}
       onClick={onClick}
       type={type}

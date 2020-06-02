@@ -90,7 +90,7 @@
     cursor: pointer;
     padding: 0 base(2);
     min-height: base(5.5);
-    transition: background-color,box-shadow .25s;
+    transition: background-color .25s, box-shadow .25s;
 
     &:hover, &.active {
       background-color: $color-background-selected;
@@ -128,7 +128,7 @@
     background: $color-background-selected;
     color: $color-blue;
     box-shadow: inset -2px 0px 0px $color-blue;
-    transition: max-height, padding .25s;
+    transition: max-height .25s, padding .25s;
 
     .active + &{
       max-height: base(100);

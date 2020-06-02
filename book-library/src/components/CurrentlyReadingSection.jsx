@@ -42,8 +42,6 @@ const CurrentlyReadingSection = ({ reservations }) => {
       <Modal
         modalState={modalState}
         exitAction={closeModal}
-        height="400px"
-        width="400px"
       >
         {selectedReservation && selectedReservation.bookCase && (
           <CheckInForm
@@ -59,8 +57,6 @@ const CurrentlyReadingSection = ({ reservations }) => {
       <Modal
         modalState={editModalState}
         exitAction={() => setEditModalState(false)}
-        height="auto"
-        width="400px"
       >
         <ReservationModalContent
           Edit

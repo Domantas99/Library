@@ -22,8 +22,8 @@ export default function Modal({
           backgroundColor: 'rgba(255, 255, 255, 0.55)',
         },
         content: {
-          width,
-          height,
+          width: width || 'fit-content',
+          height: height || 'fit-content',
           margin: 'auto',
           backgroundColor: 'white',
         },

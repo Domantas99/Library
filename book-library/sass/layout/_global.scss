@@ -90,6 +90,10 @@ input[type=radio] {
   color: $color-text-secondary;
 }
 
+.text-uppercase {
+  text-transform: uppercase;
+}
+
 .text-underlined {
   text-decoration: underline;
 }
@@ -109,4 +113,11 @@ input[type=radio] {
 
 .hidden {
   visibility: hidden
+}
+
+hr {
+  width: 100%;
+  border: none;
+  margin: base(2) 0;
+  border-bottom: solid 1px $color-border;
 }

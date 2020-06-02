@@ -9,8 +9,9 @@ import _ from 'lodash';
 import { addReservation } from '../store/reservations/actions';
 import { formatDate, isDate } from '../utilities/dateHalper';
 import { displayToast } from '../store/general/actions';
+import Button, { BUTTON_APPEARANCE } from './Button';
 
-export default ({
+const ReservationModalContent = ({
   reservation,
   onExit,
   Edit,
@@ -84,69 +85,87 @@ export default ({
 
   return (
     <>
-      <h2>{Edit === true ? 'Edit reservation' : 'Check out'}</h2>
-      <div className="">
-        <img src={reservationObj.book.coverPictureUrl} alt="" />
-      </div>
-      <div className="book-details__title">
-        {reservationObj.book.title}
-        <h4 className="text-secondary">
-          by{' '}
-          <span className="text-underlined">{reservationObj.book.author}</span>
-        </h4>
-      </div>
-      <h4>Reserve at:</h4>
-      <div className="ba-section-office-details">
-        <div className="ba-section-list-item-text-title">
-          {reservationObj.office.name} office
+      <h2 className="reservation-modal__title">{Edit === true ? 'Edit reservation' : 'Check out'}</h2>
+      <div className="reservation-modal">
+        <div className="reservation-modal__image">
+          <img src={reservationObj.book.coverPictureUrl} alt="" />
         </div>
-        {Edit === false && (
-          <div className="ba-section-list-item-text-available">
-            {reservation.activeOffice.count} available
+        <div className="reservation-modal__content">
+          <h3>{reservationObj.book.title}</h3>
+          <h5 className="text-secondary">
+            by{' '}
+            <span className="text-underlined">{reservationObj.book.author}</span>
+          </h5>
+          <hr />
+          {isAdmin && !Edit && (
+            <>
+              <h5 className="reservation-modal__section-title">Reserve for</h5>
+              <div className="form__field">
+                <select
+                  onChange={(e) => setCheckOutUser(e.target.value)}
+                  value={selectedCheckOutUser || userData.userId}
+                >
+                  {checkOutUsers.map((u) => (
+                    <option key={u.userId} value={u.userId}>
+                      {/* <img src={user.imageUrl}/> */}
+                      {u.fullName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <hr />
+            </>
+          )}
+          <h5 className="reservation-modal__section-title">Reserve at</h5>
+          <div className="reservation-modal__office">
+            <i className="icon icon__office"/>
+            <div>
+              <span className="ba-section-list-item-text-title">
+                {reservationObj.office.name} office,&nbsp;
+              </span>
+              {!Edit && (
+                <span className="ba-section-list-item-text-available">
+                  {reservation.activeOffice.count} available
+                </span>
+              )}
+              <br />
+              <span className="ba-section-list-item-text-address">
+                {reservationObj.office.fullAddress}
+              </span>
+            </div>
           </div>
-        )}
-        <div className="ba-section-list-item-text-address">
-          {reservationObj.office.fullAddress}
-        </div>
-        {isAdmin === true && Edit === false && (
-          <div className="ba-section-list-item-text-address">
-            <h4>Check out for:</h4>
-            <select
-              onChange={(e) => setCheckOutUser(e.target.value)}
-              value={selectedCheckOutUser || userData.userId}
+          <hr />
+          <h5 className="reservation-modal__section-title">Planned return date</h5>
+          <div className="form__field">
+            <input
+              type="date"
+              name="reservedUntil"
+              min={newDate()}
+              value={returndate}
+              onChange={(e) => handleDateChange(e.target.value)}
+            />
+          </div>
+          <div className="reservation-modal__buttons">
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR}
+              onClick={() => {
+                onExit(false);
+              }}
             >
-              {checkOutUsers.map((u) => (
-                <option key={u.userId} value={u.userId}>
-                  {/* <img src={user.imageUrl}/> */}
-                  {u.fullName}
-                </option>
-              ))}
-            </select>
+              Cancel
+            </Button>
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.SMALL}
+              onClick={() => onSubmitClick()}
+              disabled={!reservation || checkOutUsers.length <= 0}
+            >
+              {reservationObj.book.id ? 'Save Changes' : 'Confirm Reservation'}
+            </Button>
           </div>
-        )}
-        <label htmlFor="reservedUntil">Reserve until:</label>
-        <input
-          type="date"
-          name="reservedUntil"
-          min={newDate()}
-          value={returndate}
-          onChange={(e) => handleDateChange(e.target.value)}
-        />
+        </div>
       </div>
-      {/* TODO We'll need to fix these buttons too. */}
-      <button
-        onClick={() => {
-          onExit(false);
-        }}
-      >
-        Cancel
-      </button>
-      <button
-        onClick={() => onSubmitClick()}
-        disabled={!reservation || checkOutUsers.length <= 0}
-      >
-        {reservationObj.book.id ? 'Save Changes' : 'Confirm Reservation'}
-      </button>
     </>
   );
 };
+
+export default ReservationModalContent;

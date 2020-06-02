@@ -1,5 +1,6 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
+import Button, { BUTTON_APPEARANCE } from './Button';
 
 export default function CantFind({ onExit }) {
   return (
@@ -17,8 +18,8 @@ export default function CantFind({ onExit }) {
           solved.
         </p>
         <div className="cantFind-buttons">
-          <button onClick={() => onExit()}>Cancel</button>
-          <button className="cantFind-buttons-submit">Notify admin</button>
+          <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.SMALL} onClick={() => onExit()}>Cancel</Button>
+          <Button buttonAppearance={BUTTON_APPEARANCE.SMALL} className="cantFind-buttons-submit">Notify admin</Button>
         </div>
       </div>
     </div>

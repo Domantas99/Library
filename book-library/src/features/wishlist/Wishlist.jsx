@@ -14,6 +14,7 @@ import {
 import {
   ActionItem,
   BookList,
+  Button,
   Filter,
   Modal,
   Panel,
@@ -21,6 +22,7 @@ import {
 } from '../../components';
 import WishListVotes from '../../components/WishlistVotes';
 import BookForm from '../../components/BookForm';
+import { BUTTON_APPEARANCE } from '../../components/Button';
 
 const Wishlist = ({ location }) => {
   const dispatch = useDispatch();
@@ -150,14 +152,21 @@ const Wishlist = ({ location }) => {
           filterComponent={filterComponent()}
           actionButton={actionButton}
           renderItemActions={(data, index) => (
-            <div>
+            <div className="wishlist__actions">
               <WishListVotes
                 voteCount={data.votes}
                 hasVoted={data.userVoted}
                 onVote={() => handleVote(data.wishId, index)}
               />
               {isAdmin === true && (
-                <button onClick={() => setBookToMove(data)}>Move</button>
+                <Button
+                  buttonAppearance={
+                    BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.WIDE
+                  }
+                  onClick={() => setBookToMove(data)}
+                >
+                  Move
+                </Button>
               )}
             </div>
           )}
@@ -175,6 +184,7 @@ const Wishlist = ({ location }) => {
         modalState={!!bookToMove}
         exitAction={() => setBookToMove(null)}
         width="550px"
+        height="unset"
       >
         <Panel title="Add wish to library">
           {bookToMove &&

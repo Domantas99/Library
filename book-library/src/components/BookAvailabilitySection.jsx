@@ -244,8 +244,6 @@ const BookAvailabilitySection = ({
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}
-        height="auto"
-        width="400px"
       >
         {(activeOffice || activeReservation) && (
           <ReservationModalContent
@@ -265,8 +263,6 @@ const BookAvailabilitySection = ({
       <Modal
         modalState={checkInModalState}
         exitAction={() => closeModal()}
-        height="400px"
-        width="400px"
       >
         {activeReservation && (
           <CheckInForm
@@ -281,7 +277,6 @@ const BookAvailabilitySection = ({
       <Modal
         modalState={cantFindModal}
         exitAction={() => setCantFindModalState(false)}
-        height="250px"
         width="500px"
       >
         <CantFind onExit={() => setCantFindModalState(false)} />
