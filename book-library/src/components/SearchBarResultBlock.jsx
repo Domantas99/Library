@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { resetSearchbar } from '../store/search-bar/actions';
 
-export default function SearchBarResultBlock({ book }) {
+export default function SearchBarResultBlock({ book, isSelected }) {
   const dispatch = useDispatch();
   return (
     <Link
       to={`/library/${book.id}`}
-      className="suggestions__item"
+      className={`suggestions__item ${isSelected && ' selected'}`}
       onClick={() => dispatch(resetSearchbar())}
     >
       <div className="suggestions__image">
