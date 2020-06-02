@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import {
   getAuthors,
@@ -21,7 +22,7 @@ import {
 import WishListVotes from '../../components/WishlistVotes';
 import BookForm from '../../components/BookForm';
 
-const Wishlist = (location) => {
+const Wishlist = ({ location }) => {
   const dispatch = useDispatch();
   const values = queryString.parse(location.search);
   const wishSelector = useSelector((state) => state.wishlist.bookData);
@@ -189,6 +190,17 @@ const Wishlist = (location) => {
       </Modal>
     </>
   );
+};
+
+Wishlist.propTypes = {
+  location: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({ search: PropTypes.string }),
+  ]),
+};
+
+Wishlist.defaultProps = {
+  location: '',
 };
 
 export default Wishlist;
