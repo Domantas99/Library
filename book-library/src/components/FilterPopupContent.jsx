@@ -227,6 +227,10 @@ const FilterPopupContent = ({
     setCheckedBoxes(handleCheckboxes());
   }, [newFilters]);
 
+  useEffect(() => {
+    setNewFilters({ ...filters });
+  }, [filters]);
+
   const onSubmit = () => {
     dispatch(setFilterAction(newFilters));
     modalHandler(false);
