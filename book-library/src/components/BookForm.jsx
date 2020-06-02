@@ -113,7 +113,13 @@ const BookForm = ({ bookDetails, offices, onSubmit, buttonText }) => {
     setOffices(offices);
   }, [offices]);
 
-  const handleChange = (name, value) => {
+  const handleSelectChange = (name, value) => {
+    handleChange({ target: { name, value } });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setFormState({
       ...formState,
       [name]: value,
@@ -229,7 +235,12 @@ const BookForm = ({ bookDetails, offices, onSubmit, buttonText }) => {
       </div>
       <div className={classes.bookFormat}>
         <label htmlFor="bookFormat">FORMAT</label>
-        <Select placeholder="Select format" options={["Paperback", "E-book", "Audiobook"]} value={formState.bookFormat} onChange={(value) => handleChange("bookFormat", value)} />
+        <Select
+          placeholder="Select format"
+          options={['Paperback', 'E-book', 'Audiobook']}
+          value={formState.bookFormat}
+          onChange={(value) => handleSelectChange('bookFormat', value)}
+        />
         <span className="error">{formState.errors.bookFormat}</span>
       </div>
       <div className={classes.bookPages}>

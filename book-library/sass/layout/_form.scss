@@ -73,8 +73,14 @@
     }
   }
 
-  &__radio {
-    $this: &;
+  @mixin checkRadio($type) {
+    $types: (
+            "radio" : ("checked": radio_checked, "unchecked": radio_unchecked),
+            "checkbox" : ("checked": check_box, "unchecked": check_box_blank)
+    );
+
+    $icons: map-get($types, $type);
+
     cursor: pointer;
     user-select: none;
     padding-left: base(4);
@@ -85,7 +91,13 @@
 
     input:checked ~ .fake {
       background-color: $color-blue;
-      mask-image: sassvg(radio_checked);
+      mask-image: sassvg(map-get($icons, "checked"));
+    }
+
+    &:hover {
+      .fake {
+        background-color: $color-blue;
+      }
     }
 
     .fake {
@@ -99,7 +111,19 @@
       background-color: $color-text;
 
       mask-position: 50% 50%;
-      mask-image: sassvg(radio_unchecked);
+      mask-image: sassvg(map-get($icons, "unchecked"));
+    }
+  }
+
+  &__radio {
+    @include checkRadio(radio);
+  }
+
+  &__checkbox {
+    @include checkRadio(checkbox);
+
+    .fake {
+      background-color: $color-background-secondary;
     }
   }
 

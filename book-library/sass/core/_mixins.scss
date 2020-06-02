@@ -46,9 +46,13 @@
   text-overflow: ellipsis;
 }
 
+@mixin minMaxHeight($height: 1){
+  max-height: base($height);
+  min-height: base($height);
+}
+
 @mixin minMax($width: 1, $height: 1) {
   max-width: base($width);
   min-width: base($width);
-  max-height: base($height);
-  min-height: base($height);
+  @include minMaxHeight($height);
 }

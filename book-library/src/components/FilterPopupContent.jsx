@@ -4,9 +4,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from './Button';
+import _ from 'lodash';
+import classNames from 'classnames';
+import Button, { BUTTON_APPEARANCE } from './Button';
 
-const FilterModalContent = ({
+const FilterPopupContent = ({
   filters,
   filterMap,
   setFilterAction,
@@ -65,18 +67,27 @@ const FilterModalContent = ({
     [addFilter, removeFilter, filterIsActive]
   );
 
+  const handleActiveFilterMenuChange = (filterCategory) => {
+    setSearchText('');
+    setActiveFilter(filterCategory);
+  };
+
   const generateCategoryFilterItem = useCallback(
     (category, filter) => {
       return (
-        <div key={`${category}-${filter}`}>
+        <label
+          key={`${category}-${filter}`}
+          className="form__input form__checkbox"
+        >
+          {filter}
           <input
             type="checkbox"
             id={`checkbox-${category}-${filter}`}
             onChange={() => handleFilterChange(category, filter)}
             checked={checkedBoxes.includes(`checkbox-${category}-${filter}`)}
           />
-          <label htmlFor={`checkbox-${category}-${filter}`}>{filter}</label>
-        </div>
+          <span className="fake" />
+        </label>
       );
     },
     [checkedBoxes, handleFilterChange]
@@ -105,34 +116,44 @@ const FilterModalContent = ({
 
   const generateCategoryButton = useCallback(
     ([filterCategory, filterObj]) => {
+      const buttonClass = classNames('filter-popup__nav-item', {
+        active: filterCategory === activeFilter,
+      });
+
       return (
-        <Button
+        <button
+          type="button"
+          className={buttonClass}
           key={filterCategory}
           onClick={() => {
-            setActiveFilter(filterCategory);
+            handleActiveFilterMenuChange(filterCategory);
           }}
         >
-          {`${filterObj.label}${
-            newFilters[filterCategory]
-              ? ` ${newFilters[filterCategory].length}`
-              : ' 0'
-          }`}
-        </Button>
+          {filterObj.label}
+          <span className="filter-popup__nav-item-count">
+            {newFilters[filterCategory] ? newFilters[filterCategory].length : 0}
+          </span>
+        </button>
       );
     },
-    [newFilters]
+    [newFilters, activeFilter]
   );
 
   useEffect(() => {
     const generateFilterMenu = () => {
       return (
-        <div className="filter-modal__categories">
+        <div className="filter-popup__content-item filter-popup__nav">
           {Object.entries(filterMap).map(generateCategoryButton)}
         </div>
       );
     };
+
+    if (!activeFilter) {
+      setActiveFilter(_.head(_.head(Object.entries(filterMap))));
+    }
+
     setFilterMenu(generateFilterMenu());
-  }, [filterMap, newFilters, generateCategoryButton]);
+  }, [filterMap, newFilters, activeFilter, generateCategoryButton]);
 
   useEffect(() => {
     setFilteredOptions(
@@ -155,23 +176,33 @@ const FilterModalContent = ({
     };
     const generateActiveFilterComponents = () => {
       return (
-        <div className="filter-modal__active">
+        <div className="filter-popup__content-item filter-popup__content-item--padded filter-popup__selected">
           <span>{`${countTotalSelections()} SELECTED`}</span>
           {Object.entries(filterMap).map(([filterCategory, filterObj]) => {
             const pills = newFilters[filterCategory]
               ? Object.values(newFilters[filterCategory]).map((filter) => {
                   return (
-                    <Button
+                    <button
+                      type="button"
+                      className="filter-popup__pill"
                       key={`${filterCategory}-${filter}`}
                       onClick={() => removeFilter(filterCategory, filter)}
                     >
-                      {`${filterObj.label}: ${filter}`}
-                    </Button>
+                      {filter}
+                    </button>
                   );
                 })
               : [];
+
+            if (_.isEmpty(pills)) {
+              return null;
+            }
+
             return (
-              <div key={filterCategory}>
+              <div
+                key={filterCategory}
+                className="filter-popup__selected-category"
+              >
                 <span>{filterObj.label}</span>
                 {pills}
               </div>
@@ -202,28 +233,39 @@ const FilterModalContent = ({
   };
 
   return (
-    <div className="filter-modal__body">
-      <div className="filter-modal__menu">
+    <div className="filter-popup">
+      <div className="filter-popup__content">
         {filterMenu}
-        <div className="filter-modal__options">
-          <input
-            type="text"
-            placeholder="Search"
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          {categorizedFilters[activeFilter]}
+        <div className="filter-popup__content-item filter-popup__content-item--padded">
+          <div className="filter-popup__search-wrapper">
+            <input
+              className="filter-popup__search"
+              type="text"
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </div>
+          <div className="filter-popup__list">
+            {categorizedFilters[activeFilter]}
+          </div>
         </div>
         {activeFilterComponents}
       </div>
-      <div className="filter-modal__buttons">
-        <Button onClick={() => modalHandler(false)}>Cancel</Button>
+      <div className="filter-popup__buttons">
+        <Button
+          buttonAppearance={BUTTON_APPEARANCE.CLEAR}
+          onClick={() => modalHandler(false)}
+        >
+          Cancel
+        </Button>
         <Button onClick={onSubmit}>Apply</Button>
       </div>
     </div>
   );
 };
 
-FilterModalContent.propTypes = {
+FilterPopupContent.propTypes = {
   filters: PropTypes.objectOf(
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
   ).isRequired,
@@ -237,4 +279,4 @@ FilterModalContent.propTypes = {
   modalHandler: PropTypes.func.isRequired,
 };
 
-export default FilterModalContent;
+export default FilterPopupContent;

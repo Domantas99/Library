@@ -67,10 +67,16 @@
     grid-row: 1 / span 2;
   }
 
-  &-moreContent {
+  &__more {
+    position: relative;
+  }
+
+  &__more-content {
     display: flex;
     flex-direction: column;
     position: absolute;
-    background-color: white;
+    top: base(4);
+    background-color: transparent;
+    width: fit-content;
   }
 }

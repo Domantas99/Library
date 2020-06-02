@@ -8,9 +8,9 @@ import { useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
+import Popover from 'react-tiny-popover';
 import Button, { BUTTON_APPEARANCE } from './Button';
-import FilterModalContent from './FilterModalContent';
-import Modal from './Modal';
+import FilterPopupContent from './FilterPopupContent';
 import Select from './Select';
 
 const Filter = ({
@@ -24,7 +24,7 @@ const Filter = ({
   const [sort, setSort] = useState(sortMap[0].value);
   const location = useLocation();
   const [filterElements, setFilterElements] = useState([]);
-  const [modalState, setModalState] = useState(false);
+  const [popupState, setPopupState] = useState(false);
 
   const generateSortedFilters = useCallback(
     (newFilters) => {
@@ -48,17 +48,24 @@ const Filter = ({
   const createFilterPill = (key, filter) => {
     return (
       <Button
-        buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.MINI}
+        buttonAppearance={
+          BUTTON_APPEARANCE.SECONDARY |
+          BUTTON_APPEARANCE.MINI |
+          BUTTON_APPEARANCE.DANGER
+        }
         key={`${key}-${filter}`}
         onClick={() => removeFilter(key, filter)}
       >
-        {`${filterMap[key].label}: ${filter} X`}
+        <b>
+          {`${filterMap[key].label}: ${filter}`}
+          &nbsp;&nbsp;&#x2716;
+        </b>
       </Button>
     );
   };
 
-  const handleModalClick = () => {
-    setModalState(true);
+  const handleAddFilter = () => {
+    setPopupState(true);
   };
 
   const handleChangeSort = (sortValue) => {
@@ -107,12 +114,31 @@ const Filter = ({
     <>
       <div className="filters">
         {filterElements}
-        <Button
-          buttonAppearance={BUTTON_APPEARANCE.MINI}
-          onClick={() => handleModalClick()}
+        <Popover
+          align="start"
+          position="bottom"
+          isOpen={popupState}
+          onClickOutside={() => setPopupState(false)}
+          content={
+            <FilterPopupContent
+              filters={filterSelector}
+              filterMap={filterMap}
+              modalHandler={setPopupState}
+              setFilterAction={setFilterAction}
+            />
+          }
         >
-          Add Filters
-        </Button>
+          {(ref) => (
+            <div ref={ref}>
+              <Button
+                buttonAppearance={BUTTON_APPEARANCE.LINK}
+                onClick={handleAddFilter}
+              >
+                + Add Filter
+              </Button>
+            </div>
+          )}
+        </Popover>
       </div>
       <Select
         prefix="Sort by: "
@@ -121,19 +147,6 @@ const Filter = ({
         value={sort}
         onChange={handleChangeSort}
       />
-      <Modal
-        modalState={modalState}
-        exitAction={() => setModalState(false)}
-        height="400px"
-        width="80%"
-      >
-        <FilterModalContent
-          filters={filterSelector}
-          filterMap={filterMap}
-          modalHandler={setModalState}
-          setFilterAction={setFilterAction}
-        />
-      </Modal>
     </>
   );
 };

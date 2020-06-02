@@ -11,12 +11,10 @@ export default function UserForm({ user }) {
   const [userInfo, setUserInfo] = useState(user);
   const offices = useSelector((state) => state.office.offices);
 
-  const handleChange = (name, value) => {
-    if (name === 'officeId') {
-      setUserInfo({ ...userInfo, officeId: value, office: offices[value - 1] });
-    } else {
-      setUserInfo({ ...userInfo, [name]: value });
-    }
+  const handleChange = (e) => {
+    const { name, value} = e.target;
+
+    setUserInfo({ ...userInfo, [name]: value, office: undefined });
   };
 
   useEffect(() => {
@@ -74,7 +72,7 @@ export default function UserForm({ user }) {
           <Select
             name="officeId"
             value={currentOffice}
-            onChange={(value) => handleChange('officeId', value.value)}
+            onChange={(selected) => handleChange({target: {name:'officeId', value: selected.value }})}
             options={officeSelections}
           />
         </div>

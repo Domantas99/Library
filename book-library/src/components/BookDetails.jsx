@@ -214,7 +214,7 @@ const BookDetails = ({ id }) => {
             )}
           </span>
           {currentUser && currentUser.isAdmin === true && (
-            <div>
+            <div className="book-details__more">
               <Button
                 onClick={() => setMoreBtnState(!moreBtnState)}
                 buttonAppearance={
@@ -225,10 +225,10 @@ const BookDetails = ({ id }) => {
                 More
               </Button>
               {moreBtnState && (
-                <div className="book-details-moreContent">
+                <div className="book-details__more-content">
                   <Button
                     buttonAppearance={
-                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR
+                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.DANGER | BUTTON_APPEARANCE.WIDE
                     }
                     onClick={onArchiveClick}
                   >
@@ -240,7 +240,7 @@ const BookDetails = ({ id }) => {
                   </Button>
                   <Button
                     buttonAppearance={
-                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR
+                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.DANGER | BUTTON_APPEARANCE.WIDE
                     }
                     onClick={onDeleteClick}
                   >
