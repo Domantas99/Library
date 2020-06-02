@@ -193,7 +193,7 @@ const BookDetails = ({ id }) => {
             {bookDetails.book && bookDetails.book.title}
           </div>
           <h4 className="text-secondary">
-            by
+            {'by '}
             <span className="text-underlined">
               {bookDetails.book && bookDetails.book.author}
             </span>

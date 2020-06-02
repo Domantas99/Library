@@ -1,3 +1,5 @@
+/* eslint-disable no-bitwise */
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -58,7 +60,6 @@ const Filter = ({
   };
 
   const handleChangeSort = (sortValue) => {
-    console.log(sortValue);
     setSort(sortValue);
     dispatch(
       setFilterAction({
@@ -106,9 +107,20 @@ const Filter = ({
     <>
       <div className="filters">
         {filterElements}
-        <Button buttonAppearance={BUTTON_APPEARANCE.MINI} onClick={() => handleModalClick()}>Add Filters</Button>
+        <Button
+          buttonAppearance={BUTTON_APPEARANCE.MINI}
+          onClick={() => handleModalClick()}
+        >
+          Add Filters
+        </Button>
       </div>
-      <Select prefix="Sort by: " small options={sortMap} value={sort} onChange={handleChangeSort} />
+      <Select
+        prefix="Sort by: "
+        small
+        options={sortMap}
+        value={sort}
+        onChange={handleChangeSort}
+      />
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}
