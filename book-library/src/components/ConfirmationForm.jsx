@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import React from 'react';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 
 export default function ConfirmationForm({ text, onNoAction, onYesAction }) {
   return (
@@ -10,7 +10,7 @@ export default function ConfirmationForm({ text, onNoAction, onYesAction }) {
         <h3>{text}</h3>
       </div>
       <div className="confirmation-form-buttons">
-        <Button clear onClick={onNoAction}>
+        <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR} onClick={onNoAction}>
           No
         </Button>
         <Button onClick={onYesAction}>Yes</Button>

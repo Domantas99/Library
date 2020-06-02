@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import { getBookAvailability } from '../store/library/actions';
 import { checkInReservation } from '../store/reservations/actions';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import CantFind from './CantFind';
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
@@ -159,12 +159,11 @@ const BookAvailabilitySection = ({
         </div>
       </div>
       <div className="book-status__buttons">
-        <Button wide onClick={() => setCheckInModalState(true)}>
+        <Button buttonAppearance={BUTTON_APPEARANCE.WIDE} onClick={() => setCheckInModalState(true)}>
           Check in
         </Button>
         <Button
-          wide
-          secondary
+          buttonAppearance={BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY}
           onClick={() => {
             setModalState(true);
             setReservationModalMode(true);
@@ -186,7 +185,7 @@ const BookAvailabilitySection = ({
               {bookDetails.isUserInWaitlist === false &&
                 bookDetails.isUserCurrentlyReading === false && (
                   <Button
-                    wide
+                    buttonAppearance={BUTTON_APPEARANCE.WIDE}
                     onClick={openWaitingModal}
                     disabled={!activeOffice}
                   >
@@ -195,8 +194,7 @@ const BookAvailabilitySection = ({
                 )}
 
               <Button
-                wide
-                secondary
+                buttonAppearance={BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY}
                 onClick={handleScrollClick}
                 disabled={!activeOffice}
               >
@@ -207,7 +205,7 @@ const BookAvailabilitySection = ({
         ) : (
           <div className="book-status__buttons">
             <Button
-              wide
+              buttonAppearance={BUTTON_APPEARANCE.WIDE}
               onClick={() => handleModalClick()}
               disabled={
                 !activeOffice ||

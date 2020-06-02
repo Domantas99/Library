@@ -103,4 +103,6 @@
 .reservations-filter {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: base(3);
 }

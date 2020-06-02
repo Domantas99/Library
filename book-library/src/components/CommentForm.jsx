@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addComment } from '../store/comments/actions';
+import Button, { BUTTON_APPEARANCE } from './Button';
+import UserImage from './UserImage';
 
 const CommentForm = ({ book, page, pageSize }) => {
   const dispatch = useDispatch();
+
+  const userImageUrl = useSelector(state => state.user.userData.profilePictureUrl);
 
   const [commentText, setCommentText] = useState('');
 
@@ -29,13 +33,21 @@ const CommentForm = ({ book, page, pageSize }) => {
   };
 
   return (
-    <form id="comment-form" onSubmit={handleSubmit}>
+    <form id="comment-form" className="comments__form" onSubmit={handleSubmit}>
+      <UserImage url={userImageUrl} small />
       <textarea
+        className="comments__input"
         defaultValue="Leave a comment"
         onFocus={handleDefaultClear}
         onChange={handleChange}
       />
-      <input type="submit" value="Submit" disabled={!commentText} />
+      <Button
+        buttonAppearance={BUTTON_APPEARANCE.SQUARE}
+        type="submit"
+        disabled={!commentText}
+      >
+        <i className="btn__icon btn__icon--send" />
+      </Button>
     </form>
   );
 };

@@ -4,9 +4,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import FilterModalContent from './FilterModalContent';
 import Modal from './Modal';
+import Select from './Select';
 
 const Filter = ({
   filterSelector,
@@ -16,7 +17,7 @@ const Filter = ({
   setFilterAction,
 }) => {
   const dispatch = useDispatch();
-  const [sort, setSort] = useState(sortMap[0].value);
+  const [sort, setSort] = useState(sortMap[0]);
   const [filterElements, setFilterElements] = useState([]);
   const [modalState, setModalState] = useState(false);
   const [sortOptions, setSortOptions] = useState([]);
@@ -43,8 +44,7 @@ const Filter = ({
   const createFilterPill = (key, filter) => {
     return (
       <Button
-        mini
-        clear
+        buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.MINI}
         key={`${key}-${filter}`}
         onClick={() => removeFilter(key, filter)}
       >
@@ -57,12 +57,13 @@ const Filter = ({
     setModalState(true);
   };
 
-  const handleChangeSort = (event) => {
-    setSort(event.target.value);
+  const handleChangeSort = (sortValue) => {
+    console.log(sortValue);
+    setSort(sortValue);
     dispatch(
       setFilterAction({
         ...filterSelector,
-        sort: [event.target.value],
+        sort: [sortValue.value],
       })
     );
   };
@@ -103,15 +104,11 @@ const Filter = ({
 
   return (
     <>
-      {filterElements}
-      <Button mini onClick={() => handleModalClick()}>Add Filters</Button>
-      <select
-        id="book-list-sorting-field"
-        defaultValue={sort}
-        onChange={handleChangeSort}
-      >
-        {sortOptions}
-      </select>
+      <div className="filters">
+        {filterElements}
+        <Button buttonAppearance={BUTTON_APPEARANCE.MINI} onClick={() => handleModalClick()}>Add Filters</Button>
+      </div>
+      <Select prefix="Sort by: " small options={sortMap} value={sort} onChange={handleChangeSort} />
       <Modal
         modalState={modalState}
         exitAction={() => setModalState(false)}

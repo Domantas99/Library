@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { checkInReservation } from '../store/reservations/actions';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
@@ -90,9 +90,7 @@ const CurrentlyReadingSection = ({ reservations }) => {
           <div className="currently-reading__actions">
             <Button
               onClick={() => onEditReservationClick(res)}
-              secondaryAction
-              small
-              wide
+              buttonAppearance={BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.ACTION | BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.WIDE}
             >
               Edit
             </Button>

@@ -3,7 +3,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteComment } from '../store/comments/actions';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
+import UserImage from './UserImage';
 
 const BookCommentComponent = ({ data, page, pageSize }) => {
   const dispatch = useDispatch();
@@ -14,14 +15,26 @@ const BookCommentComponent = ({ data, page, pageSize }) => {
 
   const user = useSelector((state) => state.user.userData);
   return (
-    <div>
-      <img src={data.pictureUrl} />
-      <span>{data.userName}</span>
-      <span>{data.createdOn}</span>
-      {(user.id === data.userId || user.isAdmin) && (
-        <Button onClick={handleDeleteClick}>Delete comment</Button>
-      )}
-      <p>{data.comment}</p>
+    <div className="comments__comment-wrapper">
+      <UserImage url={data.pictureUrl} small />
+      <div className="comments__comment">
+        <h4>{data.userName}</h4>
+        <span>{data.createdOn}</span>
+        <p>{data.comment}</p>
+        {(user.id === data.userId || user.isAdmin) && (
+          <Button
+            buttonAppearance={
+              BUTTON_APPEARANCE.LINK |
+              BUTTON_APPEARANCE.MINI |
+              BUTTON_APPEARANCE.SQUARE
+            }
+            className="comments__delete"
+            onClick={handleDeleteClick}
+          >
+            Delete
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

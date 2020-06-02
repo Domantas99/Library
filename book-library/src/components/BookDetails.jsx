@@ -21,7 +21,7 @@ import BookAvailabilitySection from './BookAvailabilitySection';
 import BookCommentsSection from './BookCommentsSection';
 import BookDetailsGrid from './BookDetailsGrid';
 import BookReservationsSection from './BookReservationsSection';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import ConfirmationForm from './ConfirmationForm';
 import Modal from './Modal';
 import WaitlistModal from './WaitlistModal';
@@ -217,22 +217,33 @@ const BookDetails = ({ id }) => {
             <div>
               <Button
                 onClick={() => setMoreBtnState(!moreBtnState)}
-                mini
-                secondary
+                buttonAppearance={
+                  BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI
+                }
               >
                 <i className="btn__icon btn__icon--settings" />
                 More
               </Button>
               {moreBtnState && (
                 <div className="book-details-moreContent">
-                  <Button small clear onClick={onArchiveClick}>
+                  <Button
+                    buttonAppearance={
+                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR
+                    }
+                    onClick={onArchiveClick}
+                  >
                     {`${
                       bookDetails.book && bookDetails.book.isArchived === true
                         ? 'Una'
                         : 'A'
                     }rchive book`}
                   </Button>
-                  <Button small clear onClick={onDeleteClick}>
+                  <Button
+                    buttonAppearance={
+                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR
+                    }
+                    onClick={onDeleteClick}
+                  >
                     Delete book
                   </Button>
                 </div>
@@ -249,7 +260,10 @@ const BookDetails = ({ id }) => {
             <BookDetailsGrid bookDetails={bookDetails.book} />
           )}
           {currentUser && currentUser.isAdmin === true && (
-            <Button dark mini onClick={handleClick}>
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.DARK | BUTTON_APPEARANCE.MINI}
+              onClick={handleClick}
+            >
               <i className="btn__icon btn__icon--edit" />
               Edit details
             </Button>

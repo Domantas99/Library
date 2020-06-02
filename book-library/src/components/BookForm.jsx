@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import Button from './Button';
+import Select from './Select';
 
 const BookForm = ({ bookDetails, offices, onSubmit, buttonText }) => {
   const [officeData, setOffices] = useState(offices);
@@ -112,9 +113,7 @@ const BookForm = ({ bookDetails, offices, onSubmit, buttonText }) => {
     setOffices(offices);
   }, [offices]);
 
-  const handleChange = (event) => {
-    event.preventDefault();
-    const { name, value } = event.target;
+  const handleChange = (name, value) => {
     setFormState({
       ...formState,
       [name]: value,
@@ -230,18 +229,7 @@ const BookForm = ({ bookDetails, offices, onSubmit, buttonText }) => {
       </div>
       <div className={classes.bookFormat}>
         <label htmlFor="bookFormat">FORMAT</label>
-        <select
-          name="bookFormat"
-          value={formState.bookFormat}
-          onChange={handleChange}
-        >
-          <option value="" disabled hidden>
-            Select format
-          </option>
-          <option value="Paperback">Paperback</option>
-          <option value="E-book">E-book</option>
-          <option value="Audiobook">Audiobook</option>
-        </select>
+        <Select placeholder="Select format" options={["Paperback", "E-book", "Audiobook"]} value={formState.bookFormat} onChange={(value) => handleChange("bookFormat", value)} />
         <span className="error">{formState.errors.bookFormat}</span>
       </div>
       <div className={classes.bookPages}>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getBookComments } from '../store/comments/actions';
 import BookCommentComponent from './BookCommentComponent';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import CommentForm from './CommentForm';
 
 const BookCommentsSection = ({ id, pageSize }) => {
@@ -34,10 +34,13 @@ const BookCommentsSection = ({ id, pageSize }) => {
       });
     };
 
+    const buttonAppearance = BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.SQUARE;
+
     const generateNavButtons = () => {
       const buttons = [];
       buttons.push(
         <Button
+          buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.LINK}
           key="prev"
           className="comments__button-step"
           disabled={!commentData.hasPreviousPage}
@@ -52,6 +55,7 @@ const BookCommentsSection = ({ id, pageSize }) => {
         if (commentData.page > 2 && !commentData.hasNextPage) {
           buttons.push(
             <Button
+              buttonAppearance={buttonAppearance}
               key={commentData.page - 2}
               className="comments__button-number"
               onClick={() => {
@@ -64,6 +68,7 @@ const BookCommentsSection = ({ id, pageSize }) => {
         }
         buttons.push(
           <Button
+            buttonAppearance={buttonAppearance}
             key={commentData.page - 1}
             className="comments__button-number"
             onClick={() => {
@@ -75,13 +80,14 @@ const BookCommentsSection = ({ id, pageSize }) => {
         );
       }
       buttons.push(
-        <Button key={commentData.page} className="comments__button-current">
+        <Button buttonAppearance={buttonAppearance} key={commentData.page} className="comments__button-current">
           {commentData.page}
         </Button>
       );
       if (commentData.hasNextPage) {
         buttons.push(
           <Button
+            buttonAppearance={buttonAppearance}
             key={commentData.page + 1}
             className="comments__button-number"
             onClick={() => {
@@ -94,6 +100,7 @@ const BookCommentsSection = ({ id, pageSize }) => {
         if (commentData.page === 1 && commentData.totalPages > 2) {
           buttons.push(
             <Button
+              buttonAppearance={buttonAppearance}
               key={3}
               className="comments__button-number"
               onClick={() => {
@@ -107,6 +114,7 @@ const BookCommentsSection = ({ id, pageSize }) => {
       }
       buttons.push(
         <Button
+          buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.LINK}
           key="next"
           className="comments__button-step"
           disabled={!commentData.hasNextPage}
@@ -132,16 +140,16 @@ const BookCommentsSection = ({ id, pageSize }) => {
   }, [id, pageSize, setPage]);
 
   return (
-    <div>
-      <span>
-        Comments &bull;
+    <div className="comments">
+      <h3>
+        Comments&emsp;&bull;&emsp;
         {commentData.items}
-      </span>
+      </h3>
       {commentComponents}
       <hr />
-      <div>
-        <span>{`${commentData.items} comments`}</span>
-        <div className="comments__nav">{navButtons}</div>
+      <div className="comments__nav">
+        <h4>{`${commentData.items} comments`}</h4>
+        <div className="comments__nav-buttons">{navButtons}</div>
       </div>
       <CommentForm book={id} page={commentData.page} pageSize={pageSize} />
     </div>

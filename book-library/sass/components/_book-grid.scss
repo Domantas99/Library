@@ -16,6 +16,8 @@
     &-filters {
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
+      flex-grow: 1;
     }
 
     &-sorter {
@@ -24,10 +26,26 @@
   }
 }
 
+.filters {
+  display: flex;
+  white-space: nowrap;
+  flex-direction: row;
+  max-width: 80%;
+  flex-wrap: wrap;
+
+  & > * {
+    margin-right: base();
+  }
+}
+
 .book {
   $this: &;
   display: flex;
   flex-direction: column;
+
+  &--navigable {
+    cursor: pointer;
+  }
 
   &:hover {
     #{$this}__title {

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { selectCategory } from '../store/library/actions';
 import { logOut } from '../store/user/actions';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import Categories from './Categories';
 import UserInfo from './UserInfo';
 
@@ -78,11 +78,11 @@ const Navigation = () => {
       </div>
       <div className="sidebar__footer">
         <Link to="/user-settings">
-          <Button clear wide mini>
+          <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.MINI}>
             Manage my account
           </Button>
         </Link>
-        <Button clear wide mini onClick={() => onLogOutClick()}>
+        <Button buttonAppearance={BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.MINI} onClick={() => onLogOutClick()}>
           Log out
         </Button>
       </div>

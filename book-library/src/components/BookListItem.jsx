@@ -15,6 +15,10 @@ export default ({ data, navigate, renderActions }) => {
     'book-status__text--unavailable': !data.isAvailableInMyOffice,
   });
 
+  const bookClass = classNames('book', {
+    'book--navigable': navigate,
+  });
+
   const generateRatingStars = useCallback(() => {
     const stars = [];
     let i = 1;
@@ -39,7 +43,7 @@ export default ({ data, navigate, renderActions }) => {
     <div>
       <div
         onClick={() => navigate && history.push(`/library/${data.id}`)}
-        className="book"
+        className={bookClass}
         id={`book-${data.id}`}
       >
         <div className="book__image">

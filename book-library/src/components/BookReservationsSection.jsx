@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import { removeWaiting } from '../store/reservations/actions';
 
 const BookReservationSection = ({
@@ -147,7 +147,7 @@ const BookReservationSection = ({
         <></>
       )}
       {unavailableInMyOffice && !isUserInWaitlist && (
-        <Button mini dark onClick={openWaitingModal}>
+        <Button buttonAppearance={BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.DARK} dark onClick={openWaitingModal}>
           Join Waitlist
         </Button>
       )}

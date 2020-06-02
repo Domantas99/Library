@@ -45,3 +45,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@mixin minMax($width: 1, $height: 1) {
+  max-width: base($width);
+  min-width: base($width);
+  max-height: base($height);
+  min-height: base($height);
+}

@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../store/user/actions";
+import UserImage from './UserImage';
 
 export default function UserInfo() {
   const dispatch = useDispatch();
@@ -13,9 +14,7 @@ export default function UserInfo() {
 
   return (
     <div className="user-info">
-      <div className="user-info__image">
-        <img src={user?.profilePictureUrl} alt=""/>
-      </div>
+      <UserImage url={user?.profilePictureUrl} />
       <h2 className="user-info__greeting">Hello, {user?.fullName}!</h2>
       <h5 className="text-secondary">{user?.email}</h5>
       <h5 className="text-secondary">{user?.office?.name} office</h5>

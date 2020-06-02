@@ -103,7 +103,7 @@ input[type=radio] {
 
 .btn {
   $this: &;
-  $btn-icons: 'dashboard', 'library', 'wishlist', 'history', 'thumb_up', 'check_circle', 'help', 'logout', 'star', 'edit', 'settings';
+  $btn-icons: 'dashboard', 'library', 'wishlist', 'history', 'thumb_up', 'check_circle', 'help', 'logout', 'star', 'edit', 'settings', 'send', 'delete';
 
   font-weight: bold;
   cursor: pointer;
@@ -127,6 +127,10 @@ input[type=radio] {
     border: solid 1px $color-border;
     margin: 0 -1px;
     cursor: not-allowed;
+
+    #{$this}__icon {
+      background-color: $color-text-secondary;
+    }
   }
 
   &:hover:enabled,:active:enabled {
@@ -185,13 +189,57 @@ input[type=radio] {
     color: $color-text;
   }
 
+  &__link {
+    &:hover:enabled,:active:enabled {
+      background-color: transparent;
+      text-decoration: underline;
+      border: none;
+    }
+
+    &:disabled {
+      border: none;
+      background-color: transparent;
+    }
+
+    background-color: transparent;
+    border: none;
+    color: $color-text;
+  }
+
   &__small {
     height: base(4);
+
+    #{$this}__square {
+      max-width: base(4);
+      min-width: base(4);
+      width: base(4);
+    }
   }
 
   &__mini {
     height: base(3.5);
     font-weight: normal;
+
+    #{$this}__square {
+      max-width: base(3.5);
+      min-width: base(3.5);
+      width: base(3.5);
+    }
+  }
+
+  &__square {
+    max-width: base(5);
+    min-width: base(5);
+    width: base(5);
+
+    & > :first-child {
+      margin-right: 0;
+    }
+
+    padding: 0;
+    &:hover:enabled,:active:enabled {
+      padding: 0;
+    }
   }
 
   &__wide {
@@ -199,8 +247,10 @@ input[type=radio] {
   }
 
   &__icon {
-    width: 16px;
-    height: 16px;
+    min-width: 16px;
+    max-width: 16px;
+    min-height: 16px;
+    max-height: 16px;
 
     mask-position: 50% 50%;
     background-color: $color-white;

@@ -12,7 +12,7 @@ import {
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import ReturnDate from './ReturnDate';
 
 const ReservationsTableItem = ({ data }) => {
@@ -119,10 +119,10 @@ const ReservationsTableItem = ({ data }) => {
                 onExit={() => setModalState(false)}
               />
             </Modal>
-            <Button secondary mini onClick={() => handleModalClick()}>
+            <Button buttonAppearance={BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI} onClick={() => handleModalClick()}>
               Edit
             </Button>
-            <Button mini onClick={() => setCheckInModalState(true)}>
+            <Button buttonAppearance={BUTTON_APPEARANCE.MINI} onClick={() => setCheckInModalState(true)}>
               Check In
             </Button>
           </div>
@@ -130,7 +130,7 @@ const ReservationsTableItem = ({ data }) => {
       ) : data.status === 'Waiting' ? (
         <td className="reservations-table__actions">
           <div className="reservations-table__actions">
-            <Button secondary mini onClick={onLeaveWaitlist}>
+            <Button buttonAppearance={BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI} onClick={onLeaveWaitlist}>
               Leave waitlist
             </Button>
           </div>

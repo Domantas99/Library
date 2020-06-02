@@ -49,16 +49,27 @@
   background-color: $color-background;
   z-index: 10;
 
-  &__image {
-    border-radius: 50%;
-    overflow: hidden;
-    width: base(7);
-    height: base(7);
-  }
-
   &__greeting {
     margin-top: base(2);
     margin-bottom: $base / 2;
+  }
+}
+
+.user__image {
+  border-radius: 50%;
+  overflow: hidden;
+  @include minMax(7, 7);
+
+  &--big {
+    @include minMax(14, 14);
+  }
+
+  &--small {
+    @include minMax(4.5, 4.5);
+  }
+
+  &--mini {
+    @include minMax(3, 3);
   }
 }
 

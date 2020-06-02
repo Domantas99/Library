@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addWish } from '../store/wishlist/actions';
-import Button from './Button';
+import Button, { BUTTON_APPEARANCE } from './Button';
 import Panel from './Panel';
 
 const WishForm = ({ exitAction }) => {
@@ -74,7 +74,7 @@ const WishForm = ({ exitAction }) => {
           <textarea name="comment" cols="30" rows="5" onChange={handleChange} />
         </div>
         <div className="form__buttons">
-          <Button secondary onClick={() => onCancelClick()}>
+          <Button buttonAppearance={BUTTON_APPEARANCE.SECONDARY} onClick={() => onCancelClick()}>
             Cancel
           </Button>
           <Button type="submit">Submit</Button>

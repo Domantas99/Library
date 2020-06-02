@@ -1,29 +1,33 @@
-/* eslint-disable react/button-has-type */
+/* eslint-disable react/button-has-type,no-bitwise */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const Button = ({
-  secondary,
-  dark,
-  clear,
-  small,
-  mini,
-  onClick,
-  wide,
-  children,
-  secondaryAction,
-  disabled,
-  type,
-}) => {
+export const BUTTON_APPEARANCE = {
+  SECONDARY: 1,
+  ACTION: 1 << 2,
+  DARK: 1 << 3,
+  CLEAR: 1 << 4,
+  SMALL: 1 << 5,
+  MINI: 1 << 6,
+  WIDE: 1 << 7,
+  SQUARE: 1 << 8,
+  LINK: 1 << 9,
+};
+
+const Button = ({ buttonAppearance, onClick, children, disabled, type }) => {
   const classes = classNames('btn', {
-    btn__secondary: secondary || secondaryAction,
-    btn__clear: clear,
-    btn__small: small,
-    btn__wide: wide,
-    btn__dark: dark,
-    btn__mini: mini,
-    'btn__secondary--action': secondaryAction,
+    btn__secondary: buttonAppearance & BUTTON_APPEARANCE.SECONDARY,
+    btn__clear: buttonAppearance & BUTTON_APPEARANCE.CLEAR,
+    btn__small: buttonAppearance & BUTTON_APPEARANCE.SMALL,
+    btn__wide: buttonAppearance & BUTTON_APPEARANCE.WIDE,
+    btn__dark: buttonAppearance & BUTTON_APPEARANCE.DARK,
+    btn__mini: buttonAppearance & BUTTON_APPEARANCE.MINI,
+    btn__square: buttonAppearance & BUTTON_APPEARANCE.SQUARE,
+    btn__link: buttonAppearance & BUTTON_APPEARANCE.LINK,
+    'btn__secondary--action':
+      buttonAppearance & BUTTON_APPEARANCE.ACTION &&
+      buttonAppearance & BUTTON_APPEARANCE.SECONDARY,
   });
 
   return (
@@ -39,30 +43,18 @@ const Button = ({
 };
 
 Button.propTypes = {
-  secondary: PropTypes.bool,
-  clear: PropTypes.bool,
-  small: PropTypes.bool,
-  onClick: PropTypes.func,
-  wide: PropTypes.bool,
-  dark: PropTypes.bool,
-  mini: PropTypes.bool,
+  buttonAppearance: PropTypes.number,
   disabled: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
-  secondaryAction: PropTypes.bool,
+  onClick: PropTypes.func,
   type: PropTypes.string,
 };
 
 Button.defaultProps = {
-  secondary: false,
-  secondaryAction: false,
-  clear: false,
-  small: false,
-  wide: false,
-  dark: false,
-  mini: false,
+  buttonAppearance: 0,
   disabled: false,
   onClick: () => {},
   children: null,

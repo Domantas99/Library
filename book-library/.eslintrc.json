@@ -33,6 +33,7 @@
         "no-debugger":"error",
         "func-names":"off",
         "consistent-return":"off",
+        "no-bitwise": "warn",
         "import/no-named-as-default": 0
     }
 }
