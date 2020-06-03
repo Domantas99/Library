@@ -28,7 +28,6 @@ export default function Registration() {
   }
 
   function validated() {
-    debugger;
     let flag = true;
     let errMessage = '';
 
