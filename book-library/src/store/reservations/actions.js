@@ -17,8 +17,6 @@ import {
   SET_FILTERS_END,
   SET_TEAM_FILTERS_START,
   SET_TEAM_FILTERS_END,
-  UPDATE_RESERVATION_START,
-  UPDATE_RESERVATION_END,
 } from './actionTypes';
 
 export const addReservation = (reservation) => ({
@@ -104,8 +102,3 @@ export const removeWaitingEnd = (bookId) => ({
   payload: bookId,
 });
 
-export const updateReservation = (reservation) => ({
-  type: UPDATE_RESERVATION_START,
-  payload: reservation,
-});
-export const updateReservationEnd = () => ({ type: UPDATE_RESERVATION_END });
