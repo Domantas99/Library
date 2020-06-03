@@ -147,6 +147,7 @@ export default function* () {
   yield takeLatest(ADD_RESERVATION_END, getBookReservationsSaga);
   yield takeLatest(CHECK_IN_RESERVATION_END, getTeamReservationsSaga);
   yield takeLatest(GET_TEAM_RESERVATIONS_START, getTeamReservationsSaga);
+  yield takeLatest(REMOVE_WAITING_END, getTeamReservationsSaga);
   yield takeLatest(REMOVE_WAITING_START, removeWaitingSaga);
   yield takeLatest(REMOVE_WAITING_END, getBookReservationsSaga);
   yield takeLatest(REMOVE_WAITING_END, getReservationsSaga);

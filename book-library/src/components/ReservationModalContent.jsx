@@ -25,7 +25,7 @@ const ReservationModalContent = ({
       formatDate(reservation.returnDate) ||
       newDate()
   );
-  debugger;
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
 
