@@ -24,7 +24,6 @@ const Reservations = () => {
             <NavLink exact to="/reservations?status=Borrowed&status=Waiting">
               My reservations
             </NavLink>,
-            <Redirect from="/reservations/team" to="/reservations?status=Borrowed&status=Waiting" />,
           ],
     [isAdmin]
   );

@@ -9,11 +9,12 @@ const CheckInForm = ({
   onCancel,
   onConfirm,
   reviewValue,
-  reviewHandler=()=>{},
+  reviewHandler,
 }) => {
   function onConfirmClick() {
     onConfirm();
-    reviewHandler(null);
+    if (reviewHandler)
+      reviewHandler(null);
   }
 
   return (

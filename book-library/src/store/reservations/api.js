@@ -19,7 +19,7 @@ export const getBookReservations = (bookId) => {
   return httpClient.get(`books/${bookId}/reservations`);
 };
 
-export const getReservationsList = ({ filters }) => {
+export const getReservationsList = ( filters ) => {
   let url = `reservations/my-reservations`;
   if (filters) {
     url += `?${paramGenerator(filters)}`;
