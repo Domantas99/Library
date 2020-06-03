@@ -31,6 +31,8 @@ import {
   registerEnd,
 } from './actions';
 import history from '../../core/history';
+import { createToast } from '../../utilities';
+import { displayToast } from '../general/actions';
 
 export function* getUserSaga(action) {
   try {
@@ -56,6 +58,8 @@ export function* loginSaga(action) {
     yield put(loginEnd(apiResult));
     yield put(isAuthEnd());
     history.push('/');
+    const toast = createToast('success', 'Logged in successfully!');
+    yield put(displayToast(toast));
   } catch (e) {
     // console.log(e);
   }
@@ -76,6 +80,8 @@ export function* registerSaga(action) {
     yield put(registerEnd(apiResult));
     yield put(isAuthEnd());
     history.push('/');
+    const toast = createToast('success', 'Registered successfully!');
+    yield put(displayToast(toast));
   } catch (e) {
     // console.log(e);
   }

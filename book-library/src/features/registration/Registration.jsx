@@ -27,37 +27,42 @@ export default function Registration() {
     });
   }
 
-  function validate() {
-    if (userData.Password !== userData.PasswordRepeat) {
-      return 'Passwords does not match';
-    }
+  function validated() {
+    debugger;
+    let flag = true;
+    let errMessage = '';
+
     if (
       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(userData.Email) ===
       false
     ) {
-      return 'Incorrect email';
+      errMessage = 'Incorrect email';
+      flag = false;
+    } else if (userData.FullName.length < 6) {
+      errMessage = 'Full name should be minimum 6 characters length';
+      flag = false;
+    } else if (userData.Password !== userData.PasswordRepeat) {
+      errMessage = 'Passwords does not match';
+      flag = false;
     }
-    if (userData.FullName.length < 6) {
-      return 'Full name should be minimum 6 characters length';
+
+    if (!flag) {
+      const toast = {
+        type: 'error',
+        message: errMessage,
+        duration: 5000,
+        position: 'TOP_CENTER',
+      };
+      dispatch(displayToast(toast));
     }
-    return 'Successfully registered!';
+
+    return flag;
   }
 
   function onSubmit(event) {
-    const toastMessage = validate();
-    const toast = {
-      type: 'error',
-      message: toastMessage,
-      duration: 5000,
-      position: 'TOP_CENTER',
-    };
-
-    if (toastMessage === 'Successfully registered!') {
+    if (validated()) {
       dispatch(register(userData));
-      toast.type = 'success';
     }
-
-    dispatch(displayToast(toast));
     event.preventDefault();
   }
 
