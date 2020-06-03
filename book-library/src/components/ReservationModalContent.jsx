@@ -25,7 +25,7 @@ const ReservationModalContent = ({
       formatDate(reservation.returnDate) ||
       newDate()
   );
-
+  debugger;
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userData);
 
@@ -85,7 +85,9 @@ const ReservationModalContent = ({
 
   return (
     <>
-      <h2 className="reservation-modal__title">{Edit === true ? 'Edit reservation' : 'Check out'}</h2>
+      <h2 className="reservation-modal__title">
+        {Edit === true ? 'Edit reservation' : 'Check out'}
+      </h2>
       <div className="reservation-modal">
         <div className="reservation-modal__image">
           <img src={reservationObj.book.coverPictureUrl} alt="" />
@@ -94,7 +96,9 @@ const ReservationModalContent = ({
           <h3>{reservationObj.book.title}</h3>
           <h5 className="text-secondary">
             by{' '}
-            <span className="text-underlined">{reservationObj.book.author}</span>
+            <span className="text-underlined">
+              {reservationObj.book.author}
+            </span>
           </h5>
           <hr />
           {isAdmin && !Edit && (
@@ -118,14 +122,15 @@ const ReservationModalContent = ({
           )}
           <h5 className="reservation-modal__section-title">Reserve at</h5>
           <div className="reservation-modal__office">
-            <i className="icon icon__office"/>
+            <i className="icon icon__office" />
             <div>
               <span className="ba-section-list-item-text-title">
                 {reservationObj.office.name} office,&nbsp;
               </span>
               {!Edit && (
                 <span className="ba-section-list-item-text-available">
-                  {reservation.activeOffice.count} available
+                  {reservation.activeOffice && reservation.activeOffice.count}{' '}
+                  available
                 </span>
               )}
               <br />
@@ -135,7 +140,9 @@ const ReservationModalContent = ({
             </div>
           </div>
           <hr />
-          <h5 className="reservation-modal__section-title">Planned return date</h5>
+          <h5 className="reservation-modal__section-title">
+            Planned return date
+          </h5>
           <div className="form__field">
             <input
               type="date"
@@ -147,7 +154,9 @@ const ReservationModalContent = ({
           </div>
           <div className="reservation-modal__buttons">
             <Button
-              buttonAppearance={BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR}
+              buttonAppearance={
+                BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR
+              }
               onClick={() => {
                 onExit(false);
               }}
