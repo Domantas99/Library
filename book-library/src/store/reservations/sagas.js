@@ -71,7 +71,8 @@ export function* checkInReservationSaga(action) {
 export function* getReservationsSaga(action) {
   try {
     const filt = yield select(getFilters);
-    const apiResult = yield call(getReservationsList, filt);
+    const filter = {...filt, ...action.payload};
+    const apiResult = yield call(getReservationsList, filter);
     yield put(getReservationsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
@@ -90,7 +91,8 @@ export function* getBookReservationsSaga(action) {
 export function* getTeamReservationsSaga(action) {
   try {
     const filt = yield select(getTeamFilters);
-    const apiResult = yield call(getTeamReservations, filt);
+    const filter = {...filt, ...action.payload};
+    const apiResult = yield call(getTeamReservations, filter);
     yield put(getTeamReservationsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
