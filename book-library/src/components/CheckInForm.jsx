@@ -9,7 +9,7 @@ const CheckInForm = ({
   onCancel,
   onConfirm,
   reviewValue,
-  reviewHandler,
+  reviewHandler=()=>{},
 }) => {
   function onConfirmClick() {
     onConfirm();

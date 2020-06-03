@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, select } from 'redux-saga/effects';
 import history from '../../core/history';
 import {
   addReservation,
@@ -43,6 +43,7 @@ import {
   updateReservationEnd,
 } from './actions';
 import { paramGenerator } from '../../utilities';
+import { getFilters, getTeamFilters} from './selectors';
 
 export function* addReservationSaga(action) {
   try {
@@ -73,7 +74,9 @@ export function* checkInReservationSaga(action) {
 
 export function* getReservationsSaga(action) {
   try {
-    const apiResult = yield call(getReservationsList, action.payload);
+    const filt = yield select(getFilters);
+    console.log(filt);
+    const apiResult = yield call(getReservationsList, filt);
     yield put(getReservationsEnd(apiResult));
   } catch (e) {
     // stops saga from braking on api error
