@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
@@ -5,17 +6,14 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-  checkInReservation,
-  removeWaiting,
-} from '../store/reservations/actions';
+import { checkInReservation } from '../store/reservations/actions';
 import CheckInForm from './CheckInForm';
 import Modal from './Modal';
 import ReservationModalContent from './ReservationModalContent';
 import Button, { BUTTON_APPEARANCE } from './Button';
 import ReturnDate from './ReturnDate';
 
-const ReservationsTableItem = ({ data }) => {
+const ReservationsTableItem = ({ data, waitlistLeaveAction }) => {
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
   const [checkInModalState, setCheckInModalState] = useState(false);
@@ -31,7 +29,7 @@ const ReservationsTableItem = ({ data }) => {
   };
 
   const onLeaveWaitlist = () => {
-    dispatch(removeWaiting(data.id));
+    dispatch(waitlistLeaveAction(data.id));
   };
 
   return (
@@ -98,10 +96,12 @@ const ReservationsTableItem = ({ data }) => {
         <ReturnDate date={data.bookedFrom} />
       </td>
       <td>
-        <ReturnDate
-          validate={data.status === 'Borrowed'}
-          date={data.returnDate}
-        />
+        {data.returnDate && (
+          <ReturnDate
+            validate={data.status === 'Borrowed'}
+            date={data.returnDate}
+          />
+        )}
       </td>
       {data.status === 'Borrowed' ? (
         <td>
@@ -115,10 +115,18 @@ const ReservationsTableItem = ({ data }) => {
                 onExit={() => setModalState(false)}
               />
             </Modal>
-            <Button buttonAppearance={BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI} onClick={() => handleModalClick()}>
+            <Button
+              buttonAppearance={
+                BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI
+              }
+              onClick={() => handleModalClick()}
+            >
               Edit
             </Button>
-            <Button buttonAppearance={BUTTON_APPEARANCE.MINI} onClick={() => setCheckInModalState(true)}>
+            <Button
+              buttonAppearance={BUTTON_APPEARANCE.MINI}
+              onClick={() => setCheckInModalState(true)}
+            >
               Check In
             </Button>
           </div>
@@ -126,7 +134,12 @@ const ReservationsTableItem = ({ data }) => {
       ) : data.status === 'Waiting' ? (
         <td className="reservations-table__actions">
           <div className="reservations-table__actions">
-            <Button buttonAppearance={BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI} onClick={onLeaveWaitlist}>
+            <Button
+              buttonAppearance={
+                BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.MINI
+              }
+              onClick={onLeaveWaitlist}
+            >
               Leave waitlist
             </Button>
           </div>

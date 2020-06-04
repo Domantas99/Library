@@ -29,3 +29,7 @@ export const SET_TEAM_FILTERS_END = 'reservations/SET_TEAM_FILTERS_END';
 
 export const REMOVE_WAITING_START = 'reservations/REMOVE_WAITING_START';
 export const REMOVE_WAITING_END = 'reservations/REMOVE_WAITING_END';
+
+export const REMOVE_WAITING_TEAM_START =
+  'reservations/REMOVE_WAITING_TEAM_START';
+export const REMOVE_WAITING_TEAM_END = 'reservations/REMOVE_WAITING_TEAM_END';

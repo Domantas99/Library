@@ -13,6 +13,8 @@ import {
   GET_TEAM_RESERVATIONS_END,
   REMOVE_WAITING_START,
   REMOVE_WAITING_END,
+  REMOVE_WAITING_TEAM_START,
+  REMOVE_WAITING_TEAM_END,
   SET_FILTERS_START,
   SET_FILTERS_END,
   SET_TEAM_FILTERS_START,
@@ -102,3 +104,11 @@ export const removeWaitingEnd = (bookId) => ({
   payload: bookId,
 });
 
+export const removeWaitingTeam = (waitingId) => ({
+  type: REMOVE_WAITING_TEAM_START,
+  payload: waitingId,
+});
+export const removeWaitingTeamEnd = (bookId) => ({
+  type: REMOVE_WAITING_TEAM_END,
+  payload: bookId,
+});

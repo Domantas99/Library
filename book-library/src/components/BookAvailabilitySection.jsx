@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable no-use-before-define,jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -44,13 +45,15 @@ const BookAvailabilitySection = ({
   }, [dispatch, bookId]);
 
   useEffect(() => {
-    const currentOffice = bookInOffices.find((x) => x.id === userOffice);
+    const currentOffice = bookInOffices.find((x) => x.officeId === userOffice);
     if (
       currentOffice &&
       currentOffice.count === 0 &&
       bookDetails.isUserCurrentlyReading === false
     ) {
       setUnavailableInMyOffice(true);
+    } else {
+      setUnavailableInMyOffice(false);
     }
   }, [bookInOffices, setUnavailableInMyOffice, userOffice, bookDetails]);
 
@@ -90,17 +93,6 @@ const BookAvailabilitySection = ({
       dispatch(getBookAvailability(bookDetails.book.id));
     }
   }, [dispatch, bookDetails]);
-
-  useEffect(() => {
-    const officeC = bookInOffices.find((x) => x.id === userOffice);
-    if (
-      officeC &&
-      officeC.count === 0 &&
-      bookDetails.isUserCurrentlyReading === false
-    ) {
-      setUnavailableInMyOffice(true);
-    }
-  }, [bookInOffices, setUnavailableInMyOffice, userOffice, bookDetails]);
 
   const generateOfficeElement = (d) => {
     const unavailable = !d.count;
@@ -159,11 +151,16 @@ const BookAvailabilitySection = ({
         </div>
       </div>
       <div className="book-status__buttons">
-        <Button buttonAppearance={BUTTON_APPEARANCE.WIDE} onClick={() => setCheckInModalState(true)}>
+        <Button
+          buttonAppearance={BUTTON_APPEARANCE.WIDE}
+          onClick={() => setCheckInModalState(true)}
+        >
           Check in
         </Button>
         <Button
-          buttonAppearance={BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY}
+          buttonAppearance={
+            BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY
+          }
           onClick={() => {
             setModalState(true);
             setReservationModalMode(true);
@@ -194,7 +191,9 @@ const BookAvailabilitySection = ({
                 )}
 
               <Button
-                buttonAppearance={BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY}
+                buttonAppearance={
+                  BUTTON_APPEARANCE.WIDE | BUTTON_APPEARANCE.SECONDARY
+                }
                 onClick={handleScrollClick}
                 disabled={!activeOffice}
               >
@@ -241,10 +240,7 @@ const BookAvailabilitySection = ({
   return (
     <>
       <div className="book-status">{availabilitySection()}</div>
-      <Modal
-        modalState={modalState}
-        exitAction={() => setModalState(false)}
-      >
+      <Modal modalState={modalState} exitAction={() => setModalState(false)}>
         {(activeOffice || activeReservation) && (
           <ReservationModalContent
             Edit={reservationModalMode}
@@ -260,10 +256,7 @@ const BookAvailabilitySection = ({
           />
         )}
       </Modal>
-      <Modal
-        modalState={checkInModalState}
-        exitAction={() => closeModal()}
-      >
+      <Modal modalState={checkInModalState} exitAction={() => closeModal()}>
         {activeReservation && (
           <CheckInForm
             reservation={activeReservation}

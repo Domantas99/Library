@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -147,7 +148,11 @@ const BookReservationSection = ({
         <></>
       )}
       {unavailableInMyOffice && !isUserInWaitlist && (
-        <Button buttonAppearance={BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.DARK} dark onClick={openWaitingModal}>
+        <Button
+          buttonAppearance={BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.DARK}
+          dark
+          onClick={openWaitingModal}
+        >
           Join Waitlist
         </Button>
       )}

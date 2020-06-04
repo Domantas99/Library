@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -228,7 +229,10 @@ const BookDetails = ({ id }) => {
                 <div className="book-details__more-content">
                   <Button
                     buttonAppearance={
-                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.DANGER | BUTTON_APPEARANCE.WIDE
+                      BUTTON_APPEARANCE.SMALL |
+                      BUTTON_APPEARANCE.CLEAR |
+                      BUTTON_APPEARANCE.DANGER |
+                      BUTTON_APPEARANCE.WIDE
                     }
                     onClick={onArchiveClick}
                   >
@@ -240,7 +244,10 @@ const BookDetails = ({ id }) => {
                   </Button>
                   <Button
                     buttonAppearance={
-                      BUTTON_APPEARANCE.SMALL | BUTTON_APPEARANCE.CLEAR | BUTTON_APPEARANCE.DANGER | BUTTON_APPEARANCE.WIDE
+                      BUTTON_APPEARANCE.SMALL |
+                      BUTTON_APPEARANCE.CLEAR |
+                      BUTTON_APPEARANCE.DANGER |
+                      BUTTON_APPEARANCE.WIDE
                     }
                     onClick={onDeleteClick}
                   >

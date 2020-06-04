@@ -13,15 +13,15 @@ const Reservations = () => {
     () =>
       isAdmin
         ? [
-            <NavLink exact to="/reservations?status=Borrowed&status=Waiting">
+            <NavLink key="user" exact to="/reservations?status=Borrowed&status=Waiting">
               My reservations
             </NavLink>,
-            <NavLink exact to="/reservations/team?status=Borrowed&status=Waiting">
+            <NavLink key="team" exact to="/reservations/team?status=Borrowed&status=Waiting">
               Team reservations
             </NavLink>,
           ]
         : [
-            <NavLink exact to="/reservations?status=Borrowed&status=Waiting">
+            <NavLink key="user" exact to="/reservations?status=Borrowed&status=Waiting">
               My reservations
             </NavLink>,
           ],
