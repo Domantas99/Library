@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDate } from '../utilities/dateHalper';
 
-export default function ReturnDate({ date, validate }) {
+const ReturnDate = ({ date, validate }) => {
   const today = formatDate(new Date());
   const myDate = formatDate(date);
   const color =
@@ -16,9 +16,15 @@ export default function ReturnDate({ date, validate }) {
       : '';
 
   return <span className={color}>{myDate}</span>;
-}
+};
 
 ReturnDate.propTypes = {
   date: PropTypes.string.isRequired,
-  validate: PropTypes.bool.isRequired,
+  validate: PropTypes.bool,
 };
+
+ReturnDate.defaultProps = {
+  validate: false,
+};
+
+export default ReturnDate;

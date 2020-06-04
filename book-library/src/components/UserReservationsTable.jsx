@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import queryString from 'query-string';
 import { getAuthors, getCategories } from '../store/library/actions';
 import { getOffices } from '../store/office/actions';
-import { getReservations, setFilters } from '../store/reservations/actions';
+import {
+  getReservations,
+  removeWaiting,
+  setFilters,
+} from '../store/reservations/actions';
 import Filter from './Filter';
 import ReservationsTableItem from './ReservationsTableItem';
 
@@ -120,7 +124,11 @@ const ReservationsTable = () => {
     const generateTableRows = () => {
       return reservationData.map((reservation) => {
         return (
-          <ReservationsTableItem key={reservation.id} data={reservation} />
+          <ReservationsTableItem
+            key={reservation.id}
+            data={reservation}
+            waitlistLeaveAction={removeWaiting}
+          />
         );
       });
     };

@@ -8,6 +8,7 @@ import { getAuthors, getCategories } from '../store/library/actions';
 import { getOffices } from '../store/office/actions';
 import {
   getTeamReservations,
+  removeWaitingTeam,
   setTeamFilters,
 } from '../store/reservations/actions';
 import { getUserList } from '../store/user/actions';
@@ -160,7 +161,11 @@ const TeamReservationsTable = ({ pageSize }) => {
     const generateTableRows = () => {
       return reservationData.reservations.map((reservation) => {
         return (
-          <ReservationsTableItem key={reservation.id} data={reservation} />
+          <ReservationsTableItem
+            key={reservation.id}
+            data={reservation}
+            waitlistLeaveAction={removeWaitingTeam}
+          />
         );
       });
     };

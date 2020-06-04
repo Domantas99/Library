@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -110,7 +111,7 @@ const ReservationModalContent = ({
                   value={selectedCheckOutUser || userData.userId}
                 >
                   {checkOutUsers.map((u) => (
-                    <option key={u.userId} value={u.userId}>
+                    <option key={u.userId || 0} value={u.userId}>
                       {/* <img src={user.imageUrl}/> */}
                       {u.fullName}
                     </option>
