@@ -29,7 +29,6 @@
       background-color: $color-text-secondary;
     }
   }
-
   &:hover:enabled,:active:enabled {
     border: solid 1px $color-blue;
     padding: 0 base(2) - 1;

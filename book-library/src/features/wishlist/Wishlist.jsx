@@ -161,7 +161,9 @@ const Wishlist = ({ location }) => {
               {isAdmin === true && (
                 <Button
                   buttonAppearance={
-                    BUTTON_APPEARANCE.MINI | BUTTON_APPEARANCE.SECONDARY | BUTTON_APPEARANCE.WIDE
+                    BUTTON_APPEARANCE.MINI |
+                    BUTTON_APPEARANCE.SECONDARY |
+                    BUTTON_APPEARANCE.WIDE
                   }
                   onClick={() => setBookToMove(data)}
                 >
@@ -187,9 +189,14 @@ const Wishlist = ({ location }) => {
         height="unset"
       >
         <Panel title="Add wish to library">
-          {bookToMove &&
-            bookToMove.comment.length > 0 &&
-            `Comment: ${bookToMove.comment}`}
+          {bookToMove && bookToMove.comment.length > 0 && (
+            <div className="form__field">
+              <label className="form__group-item-label">User comment</label>
+              <p>
+                <h4>{bookToMove.comment}</h4>
+              </p>
+            </div>
+          )}
           <BookForm
             bookDetails={bookToMove}
             offices={offices}
