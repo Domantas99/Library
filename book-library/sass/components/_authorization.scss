@@ -23,12 +23,13 @@
         &-buttons {
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
-            // background-color: green;
+            // justify-content: space-between;
+        }
+        &-login {
+            margin-right: 25px;
+        }
+        &-register {
+            margin-left: 15px;
         }
     }
-
-    
-
-
 }

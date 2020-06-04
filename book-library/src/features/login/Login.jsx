@@ -55,8 +55,14 @@ export default function Login() {
         </div>
       </div>
       <div className=" auth-form-buttons">
-        <input className="btn" type="submit" value="Login" />
-        <Button onClick={() => history.push('/registration')}>Register</Button>
+        <div className="auth-form-login">
+          <input className="btn" type="submit" value="Login" />
+        </div>
+        <div className="auth-form-register">
+          <Button className="btn" onClick={() => history.push('/registration')}>
+            Register
+          </Button>
+        </div>
       </div>
     </form>
   );
