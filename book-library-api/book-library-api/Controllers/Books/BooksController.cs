@@ -34,7 +34,7 @@ namespace BookLibrary.Api.Controllers.Books
             return await _booksService.UpdateBook(id, book);
         }
         [HttpGet]
-        public async Task<ActionResult<ICollection<BookListDTO>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] string status, [FromQuery] List<string> authors, [FromQuery] string sort)
+        public async Task<ActionResult<ICollection<BookListDTO>>> GetBooks([FromQuery]List<string> category, [FromQuery]List<string> offices, [FromQuery] List<string> status, [FromQuery] List<string> authors, [FromQuery] string sort)
         {
             return await _booksService.GetBooks(category, offices, status, authors, GetUserId(), sort);
         }
