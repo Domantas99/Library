@@ -14,7 +14,7 @@ namespace BookLibrary.Services.Contracts
     public interface IBooksService
     {
         Task<Book> AddNewBook(AddBookDTO book);
-        Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string aspNetUserId, string sort);
+        Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, List<string> status, List<string> authors, string aspNetUserId, string sort);
         Task<Book> UpdateBook(int id, Book book);
         Task<List<Book>> GetFilteredBooks(string pattern);
         Task<BookDetailsDTO> GetBook(int bookId, string userId);

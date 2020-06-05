@@ -203,7 +203,7 @@ namespace BookLibrary.Services.Books
             return libraries;
         }
 
-        public Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, string status, List<string> authors, string userId, string sort)
+        public Task<List<BookListDTO>> GetBooks(List<string> categories, List<string> offices, List<string> status, List<string> authors, string userId, string sort)
         {
             try
             {
@@ -220,10 +220,6 @@ namespace BookLibrary.Services.Books
                 {
                     var booksInOffices = _context.Library.Where(a => offices.Contains(a.Office.Name)).Select(a => a.Book.Id).Distinct();
                     books = books.Where(a => booksInOffices.Contains(a.Id)).ToList();
-                }
-                if (!(status == null))
-                {
-                    //TODO Book status needs to get redone from "are there copies in library" if I recall the meeting correctly. 
                 }
                 switch (sort)
                 {
@@ -260,6 +256,11 @@ namespace BookLibrary.Services.Books
                 }
                 
                 List<BookListDTO> bookList = AddAvailabilityInList(books, userId);
+                if (status != null && status.Count > 0)
+                {
+                    bookList = bookList.Where(x => x.IsAvailableInMyOffice && status.Contains("Available") || !x.IsAvailableInMyOffice && status.Contains("Unavailable")).ToList();
+                }
+
                 return Task.FromResult(bookList);
             }
             catch
