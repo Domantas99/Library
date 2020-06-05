@@ -354,6 +354,7 @@ namespace BookLibrary.Services.Books
                                                            book.Author.ToLower().Contains(pattern) ||
                                                            book.Isbn.ToLower().Contains(pattern)) &&
                                                            book.IsArchived == false)
+                                                            .Take(10)
                                                             .ToList();
 
             return Task.FromResult(filteredBooks);
