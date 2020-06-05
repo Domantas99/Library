@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import {
   getAuthors,
-  getCategories,
   getWishlist,
   moveWishToLibrary,
   setFilters,
@@ -44,10 +43,6 @@ const Wishlist = ({ location }) => {
   );
 
   const [filterMap, setFilterMap] = useState({
-    category: {
-      label: 'Category',
-      values: [],
-    },
     authors: {
       label: 'Author',
       values: [],
@@ -93,10 +88,6 @@ const Wishlist = ({ location }) => {
   useEffect(() => {
     const generateFilterMap = () => {
       return {
-        category: {
-          label: 'Category',
-          values: categories,
-        },
         authors: {
           label: 'Author',
           values: authors,
@@ -128,7 +119,6 @@ const Wishlist = ({ location }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getCategories());
     dispatch(getAuthors());
   }, []);
 
