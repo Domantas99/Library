@@ -10,8 +10,8 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const [credentials, setCredentials] = useState({
-    Email: 'admin@library.com',
-    Password: 'Password1!',
+    Email: '',
+    Password: '',
   });
 
   function handleChange(event) {

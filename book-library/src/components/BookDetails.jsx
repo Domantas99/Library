@@ -211,7 +211,15 @@ const BookDetails = ({ id }) => {
               }`}
             </span>
             {bookDetails.userHasRated && (
-              <Button onClick={onRateClick(0)}>Remove Rating</Button>
+              <Button
+                buttonAppearance={
+                  BUTTON_APPEARANCE.LINK | BUTTON_APPEARANCE.MINI
+                }
+                className="comments__delete"
+                onClick={onRateClick(0)}
+              >
+                Remove Rating
+              </Button>
             )}
           </span>
           {currentUser && currentUser.isAdmin === true && (
