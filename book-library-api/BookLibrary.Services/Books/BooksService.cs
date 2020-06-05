@@ -258,6 +258,7 @@ namespace BookLibrary.Services.Books
                             break;
                         }
                 }
+                
                 List<BookListDTO> bookList = AddAvailabilityInList(books, userId);
                 return Task.FromResult(bookList);
             }
@@ -268,7 +269,9 @@ namespace BookLibrary.Services.Books
         }
         private List<BookListDTO> AddAvailabilityInList(List<Book> books, string userId)
         {
-            var userOffice = _context.User.Where(x => x.AspNetUserId == userId).Select(x => x.OfficeId).FirstOrDefault();
+            var user = _context.User.Where(x => x.AspNetUserId == userId).FirstOrDefault();
+
+            var userOffice = user.OfficeId;//_context.User.Where(x => x.AspNetUserId == userId).Select(x => x.OfficeId).FirstOrDefault();
 
             List<BookListDTO> bookList = new List<BookListDTO>();
             foreach (Book book in books)
@@ -313,7 +316,8 @@ namespace BookLibrary.Services.Books
                     Rating = (book.Rating != null && book.Rating.Count > 0) ? (decimal)(book.Rating.Sum(x => x.Value)) / book.Rating.Count : 0,
                 });
             }
-            return bookList;
+            
+            return user.IsAdmin ? bookList : bookList.Where(b => !b.IsArchived).ToList();
         }
         public Task<List<string>> GetCategories()
         {
